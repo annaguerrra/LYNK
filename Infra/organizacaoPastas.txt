@@ -1,0 +1,74 @@
+backend/
+├── src/
+│   ├── domain/
+│   │   ├── entities/
+│   │   │   ├── User.ts
+│   │   │   ├── Course.ts
+│   │   │   ├── Class.ts
+│   │   │   ├── Discipline.ts
+│   │   │   ├── Lesson.ts
+│   │   │   ├── Competency.ts
+│   │   │   ├── Material.ts
+│   │   │   └── Exam.ts
+│   │   │
+│   │   └── repositories/
+│   │       ├── IUserRepository.ts
+│   │       ├── ILessonRepository.ts
+│   │       ├── IMaterialRepository.ts
+│   │       └── IDisciplineRepository.ts
+│   │
+│   ├── application/
+│   │   ├── dtos/
+│   │   │   ├── CreateLessonDTO.ts
+│   │   │   ├── CreateMaterialDTO.ts
+│   │   │   └── CreateUserDTO.ts
+│   │   │
+│   │   └── use-cases/
+│   │       ├── CreateLessonUseCase.ts
+│   │       ├── CreateMaterialUseCase.ts
+│   │       ├── UploadMaterialUseCase.ts
+│   │       └── CreateUserUseCase.ts
+│   │
+│   ├── infrastructure/
+│   │   ├── database/
+│   │   │   ├── sql/
+│   │   │   │   └── connection.ts
+│   │   │   └── mongo/
+│   │   │       └── connection.ts
+│   │   │
+│   │   ├── repositories/
+│   │   │   ├── SqlUserRepository.ts
+│   │   │   ├── SqlLessonRepository.ts
+│   │   │   └── SqlMaterialRepository.ts
+│   │   │
+│   │   └── storage/
+│   │       └── MongoFileStorage.ts
+│   │
+│   ├── api/
+│   │   ├── controllers/
+│   │   │   ├── UserController.ts
+│   │   │   ├── LessonController.ts
+│   │   │   └── MaterialController.ts
+│   │   │
+│   │   ├── routes/
+│   │   │   ├── user.routes.ts
+│   │   │   ├── lesson.routes.ts
+│   │   │   ├── material.routes.ts
+│   │   │   └── index.ts
+│   │   │
+│   │   └── middlewares/
+│   │       ├── authMiddleware.ts
+│   │       └── errorMiddleware.ts
+│   │
+│   ├── shared/
+│   │   ├── errors/
+│   │   │   └── AppError.ts
+│   │   └── utils/
+│   │
+│   ├── app.ts
+│   └── server.ts
+│
+├── .env
+├── package.json
+├── tsconfig.json
+└── README.md
