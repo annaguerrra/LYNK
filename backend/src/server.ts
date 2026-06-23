@@ -1,6 +1,7 @@
 import express from 'express';
-// import routes from "./routes/routes.ts"
 import cors from 'cors'
+import routes from './api/routes/routes.js';
+import connectDB from './infrastructure/database.js';
 // import 'dotenv/config'
 
 const app = express();
@@ -10,7 +11,8 @@ app.use(cors({
     origin: '*'
 }))
 
-// routes(app)
+connectDB()
+routes(app)
 
 app.get('/', (req, res) => {
     res.status(200).send({response : "Sucesso ao Carregar a pagina"})
