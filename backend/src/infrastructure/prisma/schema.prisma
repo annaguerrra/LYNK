@@ -13,3 +13,19 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum UserType {
+  ADMIN
+  INSTRUTOR
+  STUDENT
+}
+
+model Instrutor {
+  id Int @default(autoincrement()) @id
+  name String
+  createdAt DateTime
+  username String
+  password String
+  userType UserType @default(INSTRUTOR)
+  // colocar anexo
+}
