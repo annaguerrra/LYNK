@@ -1,0 +1,18 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+    --blue: #007BC0;
+    --purple: #9E2896;
+    --green: #00884A;
+    --acqua: #18837E;
+    --acquaHover: #0e4d49;
+    --red: #ED0007;
+    --redHover: #6d0206;
+    --gray: #71767C;
+    --black: #000000;
+    --white: #FFFFFF;
+}
