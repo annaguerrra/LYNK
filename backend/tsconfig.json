@@ -19,9 +19,9 @@
     "skipLibCheck": true,
     "moduleResolution": "node16",
     "paths": {    
-      "@domain/*": ["domain/*"],
-      "@application/*": ["application/*"],
-      "@infrastructure/*": ["infrastructure/*"],
+      "@domain/*": ["./domain/*"],
+      "@application/*": ["./application/*"],
+      "@infrastructure/*": ["./infrastructure/*"],
       "@api/*": ["./api/*"],
       "@shared/*": ["./shared/*"]
     }

@@ -35,6 +35,8 @@ model Instrutor {
   specialty Specialties
   active Boolean
 
+  logs Log[]
+  students Student[]
   attachmentId String
 }
 
@@ -48,7 +50,6 @@ model Student {
   course String
 
   areas Area[]
-  logs Log[]
   instrutorId Int
   instrutor Instrutor @relation(fields: [instrutorId], references: [id])
   attachmentId String
@@ -67,13 +68,14 @@ model Class {
 }
 
 model Compentence {
-  id Int
+  id Int @default(autoincrement()) @id
   name String
   numOfHours Int
   createdAt DateTime
 
   classes Class[]
   exams Exam[]
+  disciplines Discipline[]
 }
 
 model Discipline {
@@ -83,6 +85,7 @@ model Discipline {
 
   areaId Int
   area Area @relation(fields: [areaId], references: [id])
+  materials Material[]
   competences Compentence[]
   classes Class[]
   attachmentId String
