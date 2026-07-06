@@ -64,3 +64,8 @@
     --black: #000000;
     --white: #FFFFFF;
 }
+
+.page {
+    
+    padding: 5rem;
+}

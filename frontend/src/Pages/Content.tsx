@@ -4,9 +4,9 @@ export function Content() {
     return (
         <>
             <Header/>
-            <br/>
-            <br/>
-            <span>TESTE AAAAAAA KESSYANE </span>
+            <div className="page">
+
+            </div>
         </>
     );
 }

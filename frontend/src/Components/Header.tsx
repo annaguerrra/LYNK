@@ -1,6 +1,6 @@
 import "./Styles/header.css"
 
-export function Header({ user }) {
+export function Header({ user = null }) {
     return (
         <>
             <div className="header">
