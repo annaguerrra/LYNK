@@ -11,7 +11,7 @@
 
 export const UserType = {
   ADMIN: 'ADMIN',
-  INSTRUTOR: 'INSTRUTOR',
+  INSTRUCTOR: 'INSTRUCTOR',
   STUDENT: 'STUDENT'
 } as const
 

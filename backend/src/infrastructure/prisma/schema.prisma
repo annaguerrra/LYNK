@@ -16,7 +16,7 @@ datasource db {
 
 enum UserType {
   ADMIN
-  INSTRUTOR
+  INSTRUCTOR
   STUDENT
 }
 
@@ -25,15 +25,15 @@ enum Specialties {
   Elotronics
 }
 
-model Instrutor {
+model Instructor {
   id Int @default(autoincrement()) @id
   name String
   createdAt DateTime
   username String
   password String
-  userType UserType @default(INSTRUTOR)
+  userType UserType @default(INSTRUCTOR)
   specialty Specialties
-  active Boolean
+  active Boolean @default(true)
 
   logs Log[]
   students Student[]
@@ -46,12 +46,12 @@ model Student {
   createdAt DateTime
   username String
   password String
-  userType UserType @default(INSTRUTOR)
+  userType UserType @default(STUDENT)
   course String
 
   areas Area[]
-  instrutorId Int
-  instrutor Instrutor @relation(fields: [instrutorId], references: [id])
+  instructorId Int
+  instructor Instructor @relation(fields: [instructorId], references: [id])
   attachmentId String
 }
 
@@ -126,6 +126,6 @@ model Log {
   oldData Json
   newData Json
 
-  instrutorId Int
-  instrutor Instrutor @relation(fields: [instrutorId], references: [id])
+  instructorId Int
+  instructor Instructor @relation(fields: [instructorId], references: [id])
 }
