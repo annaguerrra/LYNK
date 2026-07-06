@@ -1,7 +1,43 @@
+@font-face {
+  font-family: 'Bosch Sans';
+  src:
+    url('../public/fonts/boschsans_regular.woff2') format('woff2'),
+    url('../public/fonts/boschsans_regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bosch Sans';
+  src:
+    url('../public/fonts/boschsans_bold.woff2') format('woff2'),
+    url('../public/fonts/boschsans_bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Bosch Sans';
+  src:
+    url('../public/fonts/boschsans_regularItalic.woff2') format('woff2'),
+    url('../public/fonts/boschsans_regularItalic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Bosch Sans';
+  src:
+    url('../public/fonts/boschsans_boldItalic.woff2') format('woff2'),
+    url('../public/fonts/boschsans_boldItalic.woff') format('woff');
+  font-weight: 700;
+  font-style: italic;
+}
+
 * {
     margin: 0;
     padding: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Bosch Sans', sans-serif;
 }
 
 :root {
