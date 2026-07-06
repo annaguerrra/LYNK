@@ -15,7 +15,7 @@ export function Login() {
                         <h1>Senha</h1>
                     <input className='loginInput' type="text" placeholder='Digite sua senha :'/>
                     </div>
-                    <Button ButtonTitle={"Entrar"} path={'/Discipline'}></Button>
+                    <Button ButtonTitle={"Entrar"} path={'/Disciplines'}></Button>
                 </div>
             </div>
         </>

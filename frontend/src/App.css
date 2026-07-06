@@ -65,7 +65,18 @@
     --white: #FFFFFF;
 }
 
-.page {
-    
+.page {  
     padding: 5rem;
+    height: 100%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.titlePage {
+    color: var(--black);
+    font-weight: bold;
+    font-size: x-large;
 }
