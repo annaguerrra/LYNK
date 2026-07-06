@@ -3,34 +3,34 @@ import { registerInstructorDTO, registerStudentDTO, showInstructorDTO, showStude
 
 export const registerStudent = async (data: registerStudentDTO) => {
     const { name, username, password, userType, course } = data
-    const createdAt = Date.now()
+    const createdAt = Date.now().toString()
 
-    prisma.Student.create({
+    prisma.student.create({
         data: { name, createdAt, username, password, userType, course }
     })
 }
 
 export const registerInstructor = async (data: registerInstructorDTO) => {
     const { name, username, password, userType, specialty, active } = data
-    const createdAt = Date.now()
+    const createdAt = Date.now().toString()
 
-    prisma.Student.create({
+    prisma.instructor.create({
         data: { name, createdAt, username, password, userType, specialty, active }
     })
 }
 
 export const showStudents = async () => {
-    return await prisma.Student.findMany()
+    return await prisma.student.findMany()
 }
 
 export const showInstructors = async () => {
-    return await prisma.Instrutor.findMany()
+    return await prisma.instructor.findMany()
 }
 
 export const showStudent = async (id: number, data: showStudentDTO) => {
     const { name, username, userType, course } = data
 
-    return await prisma.Student.find({
+    return await prisma.student.findFirst({
         where: {
             id: id
         },
@@ -46,7 +46,7 @@ export const showStudent = async (id: number, data: showStudentDTO) => {
 export const showInstructor = async (id: number, data: showInstructorDTO) => {
     const { name, username, userType, specialty, active } = data
 
-    return await prisma.Instrutor.find({
+    return await prisma.instructor.findFirst({
         where: {
             id: id
         },
@@ -61,7 +61,7 @@ export const showInstructor = async (id: number, data: showInstructorDTO) => {
 }
 
 export const deleteStudent = async(id: number) => {
-    return await prisma.Student.delete({
+    return await prisma.student.delete({
         where: {
             id: id
         }
@@ -69,7 +69,7 @@ export const deleteStudent = async(id: number) => {
 }
 
 export const deleteInstructor = async(id: number) => {
-    return await prisma.Instructor.delete({
+    return await prisma.instructor.delete({
         where: {
             id: id
         }
@@ -79,7 +79,7 @@ export const deleteInstructor = async(id: number) => {
 export const updateStudent = async(id: number, data: updateStudentDTO) => {
     const { name, username, password, course } = data
 
-    return await prisma.Student.update({
+    return await prisma.student.update({
         where: {
             id: id
         },
@@ -95,7 +95,7 @@ export const updateStudent = async(id: number, data: updateStudentDTO) => {
 export const updateInstructor = async(id: number, data: updateInstructorDTO) => {
     const { name, username, password, specialty, active } = data
 
-    return await prisma.Student.update({
+    return await prisma.instructor.update({
         where: {
             id: id
         },

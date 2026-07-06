@@ -60,7 +60,6 @@
 ### GET
 - List area
 - View area
-- List courses by area
 
 ### DELETE
 - Delete area
@@ -81,6 +80,7 @@
 - List discipline classes
 - List discipline materials
 - List discipline competencies
+- List discipline by area
 
 ### DELETE
 - Delete discipline

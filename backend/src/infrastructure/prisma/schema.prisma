@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -34,10 +34,10 @@ model Instructor {
   userType UserType @default(INSTRUCTOR)
   specialty Specialties
   active Boolean @default(true)
+  attachmentId String
 
   logs Log[]
   students Student[]
-  attachmentId String
 }
 
 model Student {
@@ -48,11 +48,11 @@ model Student {
   password String
   userType UserType @default(STUDENT)
   course String
+  attachmentId String
 
   areas Area[]
   instructorId Int
   instructor Instructor @relation(fields: [instructorId], references: [id])
-  attachmentId String
 }
 
 model Class {
@@ -88,7 +88,6 @@ model Discipline {
   materials Material[]
   competences Compentence[]
   classes Class[]
-  attachmentId String
 }
 
 model Area {
@@ -97,26 +96,25 @@ model Area {
 
   disciplines Discipline[]
   students Student[]
-  attachmentId String
 }
 
 model Material {
   id Int @default(autoincrement()) @id
   name String
+  attachmentId String
 
   disciplineId Int
   discipline Discipline @relation(fields: [disciplineId], references: [id])
   classId Int
   class Class @relation(fields: [classId], references: [id])
-  attachmentId String
 }
 
 model Exam {
   id Int @default(autoincrement()) @id
   name String
+  attachmentId String
 
   compentences Compentence[]
-  attachmentId String
 }
 
 model Log {
