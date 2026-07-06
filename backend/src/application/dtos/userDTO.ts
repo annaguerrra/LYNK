@@ -8,7 +8,7 @@ export interface registerStudentDTO {
     course: string
 }
 
-export interface registerInstrutorDTO {
+export interface registerInstructorDTO {
     name: string
     username: string
     password: string
@@ -24,10 +24,25 @@ export interface showStudentDTO {
     course: string
 }
 
-export interface showInstrutorDTO {
+export interface showInstructorDTO {
     name: string
     username: string
     userType: UserType
+    specialty: Specialties
+    active: boolean
+}
+
+export interface updateStudentDTO {
+    name: string
+    username: string
+    password: string
+    course: string
+}
+
+export interface updateInstructorDTO {
+    name: string
+    username: string
+    password: string
     specialty: Specialties
     active: boolean
 }
