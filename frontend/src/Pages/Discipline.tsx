@@ -7,8 +7,10 @@ export function Discipline () {
         <>  
             <Header></Header>
             <div className="page">
-                
-                <h1>Bem vindo(a)</h1>
+                <div className="filtersContainer">
+                    <h1 className="titlePage">Bem vindo(a)</h1>
+                    <select name="Área de conhecimento" id="" className="selectFilter"></select>
+                </div>
             </div>
         </>
     )

@@ -1,5 +1,15 @@
-.titlePage {
-    color: var(--black);
-    font-weight: bold;
-    font-size: x-large;
+.filtersContainer {
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.selectFilter {
+    background-color: var(--gray);
+    width: 10vw;
+    height: auto;
+    padding: 1vw;;
+    border: none;
 }
