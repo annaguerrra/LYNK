@@ -4,7 +4,11 @@ export function Login() {
 
     return (
         <>
-            <div></div>
+            <div className="backgroundLogin">
+                <div className='containerLogin'>
+                    
+                </div>
+            </div>
         </>
     )
 }

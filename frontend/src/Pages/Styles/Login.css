@@ -1,3 +1,25 @@
-.background {
+.backgroundLogin {
+    background-image: url("/supergraphic.svg");
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.containerLogin {
+    width: 40%;
+    height: 60%;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.containerLogin img {
     
 }
