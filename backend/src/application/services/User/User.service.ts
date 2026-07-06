@@ -1,5 +1,7 @@
-import { prisma } from "../../infrastructure/lib/prisma.js";
-import { registerInstructorDTO, registerStudentDTO, showInstructorDTO, showStudentDTO, updateInstructorDTO, updateStudentDTO } from "../dtos/userDTO.js";
+import { registerInstructorDTO, registerStudentDTO, showInstructorDTO, showStudentDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
+import { prisma } from "../../../infrastructure/lib/prisma.js";
+
+// adicionar upload de fotos depois de implementar o service dos arquivos
 
 export const registerStudent = async (data: registerStudentDTO) => {
     const { name, username, password, userType, course } = data
@@ -27,35 +29,33 @@ export const showInstructors = async () => {
     return await prisma.instructor.findMany()
 }
 
-export const showStudent = async (id: number, data: showStudentDTO) => {
-    const { name, username, userType, course } = data
+export const showStudent = async (id: number) => {
 
-    return await prisma.student.findFirst({
+    return await prisma.student.findUnique({
         where: {
             id: id
         },
-        data: {
-            name: name,
-            username: username,
-            userType: userType,
-            course: course
-        }  
+        select: {
+            name: true,
+            username: true,
+            userType: true,
+            course: true
+        }
     })
 }
 
-export const showInstructor = async (id: number, data: showInstructorDTO) => {
-    const { name, username, userType, specialty, active } = data
+export const showInstructor = async (id: number) => {
 
     return await prisma.instructor.findFirst({
         where: {
             id: id
         },
-        data: {
-            name: name,
-            username: username,
-            userType: userType,
-            specialty: specialty,
-            active: active
+        select: {
+            name: true,
+            username: true,
+            userType: true,
+            specialty: true,
+            active: true
         }  
     })
 }

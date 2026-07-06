@@ -1,7 +1,5 @@
 import { Specialties, UserType } from "../../infrastructure/src/generated/prisma/enums.js"
 
-// adicionar upload de fotos depois de implementar o service dos arquivos
-
 export interface registerStudentDTO {
     name: string
     username: string
