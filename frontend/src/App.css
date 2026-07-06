@@ -66,6 +66,7 @@
 }
 
 .page {
-    
     padding: 5rem;
+    height: 100%;
+    width: 90%;
 }

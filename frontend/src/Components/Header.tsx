@@ -14,7 +14,7 @@ export function Header({ user = null }) {
                             <i className="icon icon-user" style={{ color: "white" }}></i>
                         </div>
                     
-                    {user}
+                    
                     <span>Instrutor</span>
                     </div>
                 </div>

@@ -10,3 +10,8 @@
   content: "\e29b";
   font-size: 25px;
 }
+
+.icon-left::before {
+  content: "\f0110";
+  font-size: 25px;
+}
