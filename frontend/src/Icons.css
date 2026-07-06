@@ -1,0 +1,12 @@
+.icon {
+  font-family: 'Bosch-Icons';
+  font-style: normal;
+  font-weight: normal;
+  display: inline-block;
+  line-height: 1;
+}
+
+.icon-user::before {
+  content: "\e29b";
+  font-size: 25px;
+}

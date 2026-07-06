@@ -1,6 +1,6 @@
 import "./Styles/header.css"
 
-export function Header() {
+export function Header({ user }) {
     return (
         <>
             <div className="header">
@@ -9,7 +9,14 @@ export function Header() {
                 </div>
                 <div className="bar">
                     <img src="../../public/BoschLogo.png" alt="bosch logo"></img>
-                    <i></i>
+                    <div className="user">
+                        <div className="boxicon">
+                            <i className="icon icon-user" style={{ color: "white" }}></i>
+                        </div>
+                    
+                    {user}
+                    <span>Instrutor</span>
+                    </div>
                 </div>
             </div>
         </>

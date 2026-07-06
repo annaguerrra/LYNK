@@ -1,3 +1,5 @@
+@import "./Icons.css";
+
 @font-face {
   font-family: 'Bosch Sans';
   src:
@@ -34,11 +36,21 @@
   font-style: italic;
 }
 
+@font-face {
+  font-family: 'Bosch-Icons';
+  src: url('../public/fonts/bosch_icon.woff2') format('woff2'),
+       url('../public/fonts/bosch_icon.woff') format('woff');     
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
     margin: 0;
     padding: 0;
     font-family: 'Bosch Sans', sans-serif;
 }
+
+
 
 :root {
     --blue: #007BC0;
