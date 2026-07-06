@@ -11,19 +11,28 @@
       "ESNext.Iterator",
       "ESNext.Promise"
     ],
+
     "module": "nodenext",
+    "moduleResolution": "nodenext",
     "target": "es2024",
+
+    "rootDir": "./src",
+    "outDir": "./dist",
 
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16",
-    "paths": {    
-      "@domain/*": ["./domain/*"],
-      "@application/*": ["./application/*"],
-      "@infrastructure/*": ["./infrastructure/*"],
-      "@api/*": ["./api/*"],
-      "@shared/*": ["./shared/*"]
+
+    "baseUrl": ".",
+    "paths": {
+      "#domain/*": ["./src/domain/*"],
+      "#application/*": ["./src/application/*"],
+      "#infrastructure/*": ["./src/infrastructure/*"],
+      "#api/*": ["./src/api/*"],
+      "#shared/*": ["./src/shared/*"]
     }
-  }
+  },
+
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
 }
