@@ -1,0 +1,23 @@
+.containerModal {
+    width: 40%;
+    height: 60%;
+    background-color: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.containerModal h1 {
+    font-size: xx-large;
+    font-weight: 400;
+}
+
+.modalInput {
+    width: 80%;
+    height: auto;
+    padding: 0.7vw;
+    background-color: var(--gray);
+    font-size: large;
+    border: none;
+}
