@@ -12,14 +12,39 @@
 
 .containerLogin {
     width: 40%;
-    height: 60%;
+    height: 45%;
     background-color: var(--white);
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    padding: 2vw;
 }
 
 .containerLogin img {
-    
+    width: 8vw;
+
+}
+
+.boxTexts {
+    width: auto;
+    height: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.containerLogin h1 {
+    font-size: x-large;
+    font-weight: 400;
+}
+
+.loginInput {
+    width: 35vw;
+    height: auto;
+    padding: 0.7vw;
+    background-color: var(--gray);
+    font-size: large;
+    border: none;
 }
