@@ -1,5 +1,6 @@
 import { registerInstructorDTO, registerStudentDTO, showInstructorDTO, showStudentDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
-import { prisma } from "../../../infrastructure/lib/prisma.js";
+import { prisma } from "../../lib/prisma.js";
+import { AttachmentService } from "../Attachment/AttachmentService.js";
 
 // adicionar upload de fotos depois de implementar o service dos arquivos
 
