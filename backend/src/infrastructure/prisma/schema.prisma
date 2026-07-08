@@ -22,8 +22,26 @@ enum UserType {
 
 enum Specialties {
   Digital
-  Elotronics
+  Eletronics
 }
+
+enum Action {
+  CREATED
+  DELETED
+  UPDATED
+}
+
+enum EntityType {
+  Class
+  Compentence
+  Material
+  Instructor
+  Discipline
+  Area
+  Student
+  Exam
+}
+
 
 model Instructor {
   id Int @default(autoincrement()) @id
@@ -58,9 +76,8 @@ model Student {
 model Class {
   id Int @default(autoincrement()) @id
   name String
-  content String
+  content String @db.Text
   createdAt DateTime
-
   disciplineId Int
   discipline Discipline @relation(fields: [disciplineId], references: [id])
   compentences Compentence[]
@@ -119,8 +136,10 @@ model Exam {
 
 model Log {
   id Int @default(autoincrement()) @id
+  entityType EntityType
+  entityId Int 
   updatedAt DateTime
-  action String
+  action Action
   oldData Json
   newData Json
 

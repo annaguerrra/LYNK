@@ -20,7 +20,30 @@ export type UserType = (typeof UserType)[keyof typeof UserType]
 
 export const Specialties = {
   Digital: 'Digital',
-  Elotronics: 'Elotronics'
+  Eletronics: 'Eletronics'
 } as const
 
 export type Specialties = (typeof Specialties)[keyof typeof Specialties]
+
+
+export const Action = {
+  CREATED: 'CREATED',
+  DELETED: 'DELETED',
+  UPDATED: 'UPDATED'
+} as const
+
+export type Action = (typeof Action)[keyof typeof Action]
+
+
+export const EntityType = {
+  Class: 'Class',
+  Compentence: 'Compentence',
+  Material: 'Material',
+  Instructor: 'Instructor',
+  Discipline: 'Discipline',
+  Area: 'Area',
+  Student: 'Student',
+  Exam: 'Exam'
+} as const
+
+export type EntityType = (typeof EntityType)[keyof typeof EntityType]
