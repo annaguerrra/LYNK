@@ -214,7 +214,7 @@ export type DisciplineWhereInput = {
   areaId?: Prisma.IntFilter<"Discipline"> | number
   area?: Prisma.XOR<Prisma.AreaScalarRelationFilter, Prisma.AreaWhereInput>
   materials?: Prisma.MaterialListRelationFilter
-  competences?: Prisma.CompentenceListRelationFilter
+  competences?: Prisma.CompetenceListRelationFilter
   classes?: Prisma.ClassListRelationFilter
 }
 
@@ -225,7 +225,7 @@ export type DisciplineOrderByWithRelationInput = {
   areaId?: Prisma.SortOrder
   area?: Prisma.AreaOrderByWithRelationInput
   materials?: Prisma.MaterialOrderByRelationAggregateInput
-  competences?: Prisma.CompentenceOrderByRelationAggregateInput
+  competences?: Prisma.CompetenceOrderByRelationAggregateInput
   classes?: Prisma.ClassOrderByRelationAggregateInput
   _relevance?: Prisma.DisciplineOrderByRelevanceInput
 }
@@ -240,7 +240,7 @@ export type DisciplineWhereUniqueInput = Prisma.AtLeast<{
   areaId?: Prisma.IntFilter<"Discipline"> | number
   area?: Prisma.XOR<Prisma.AreaScalarRelationFilter, Prisma.AreaWhereInput>
   materials?: Prisma.MaterialListRelationFilter
-  competences?: Prisma.CompentenceListRelationFilter
+  competences?: Prisma.CompetenceListRelationFilter
   classes?: Prisma.ClassListRelationFilter
 }, "id">
 
@@ -271,7 +271,7 @@ export type DisciplineCreateInput = {
   createdAt?: Date | string
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
-  competences?: Prisma.CompentenceCreateNestedManyWithoutDisciplinesInput
+  competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassCreateNestedManyWithoutDisciplineInput
 }
 
@@ -281,7 +281,7 @@ export type DisciplineUncheckedCreateInput = {
   createdAt?: Date | string
   areaId: number
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
-  competences?: Prisma.CompentenceUncheckedCreateNestedManyWithoutDisciplinesInput
+  competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
@@ -290,7 +290,7 @@ export type DisciplineUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
-  competences?: Prisma.CompentenceUpdateManyWithoutDisciplinesNestedInput
+  competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUpdateManyWithoutDisciplineNestedInput
 }
 
@@ -300,7 +300,7 @@ export type DisciplineUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
-  competences?: Prisma.CompentenceUncheckedUpdateManyWithoutDisciplinesNestedInput
+  competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
@@ -488,7 +488,7 @@ export type DisciplineCreateWithoutClassesInput = {
   createdAt?: Date | string
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
-  competences?: Prisma.CompentenceCreateNestedManyWithoutDisciplinesInput
+  competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
 }
 
 export type DisciplineUncheckedCreateWithoutClassesInput = {
@@ -497,7 +497,7 @@ export type DisciplineUncheckedCreateWithoutClassesInput = {
   createdAt?: Date | string
   areaId: number
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
-  competences?: Prisma.CompentenceUncheckedCreateNestedManyWithoutDisciplinesInput
+  competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
 }
 
 export type DisciplineCreateOrConnectWithoutClassesInput = {
@@ -521,7 +521,7 @@ export type DisciplineUpdateWithoutClassesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
-  competences?: Prisma.CompentenceUpdateManyWithoutDisciplinesNestedInput
+  competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
 }
 
 export type DisciplineUncheckedUpdateWithoutClassesInput = {
@@ -530,7 +530,7 @@ export type DisciplineUncheckedUpdateWithoutClassesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
-  competences?: Prisma.CompentenceUncheckedUpdateManyWithoutDisciplinesNestedInput
+  competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput
 }
 
 export type DisciplineCreateWithoutCompetencesInput = {
@@ -585,7 +585,7 @@ export type DisciplineCreateWithoutAreaInput = {
   name: string
   createdAt?: Date | string
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
-  competences?: Prisma.CompentenceCreateNestedManyWithoutDisciplinesInput
+  competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassCreateNestedManyWithoutDisciplineInput
 }
 
@@ -594,7 +594,7 @@ export type DisciplineUncheckedCreateWithoutAreaInput = {
   name: string
   createdAt?: Date | string
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
-  competences?: Prisma.CompentenceUncheckedCreateNestedManyWithoutDisciplinesInput
+  competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
@@ -628,7 +628,7 @@ export type DisciplineCreateWithoutMaterialsInput = {
   name: string
   createdAt?: Date | string
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
-  competences?: Prisma.CompentenceCreateNestedManyWithoutDisciplinesInput
+  competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassCreateNestedManyWithoutDisciplineInput
 }
 
@@ -637,7 +637,7 @@ export type DisciplineUncheckedCreateWithoutMaterialsInput = {
   name: string
   createdAt?: Date | string
   areaId: number
-  competences?: Prisma.CompentenceUncheckedCreateNestedManyWithoutDisciplinesInput
+  competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
@@ -661,7 +661,7 @@ export type DisciplineUpdateWithoutMaterialsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
-  competences?: Prisma.CompentenceUpdateManyWithoutDisciplinesNestedInput
+  competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUpdateManyWithoutDisciplineNestedInput
 }
 
@@ -670,7 +670,7 @@ export type DisciplineUncheckedUpdateWithoutMaterialsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
-  competences?: Prisma.CompentenceUncheckedUpdateManyWithoutDisciplinesNestedInput
+  competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
@@ -708,7 +708,7 @@ export type DisciplineUpdateWithoutAreaInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
-  competences?: Prisma.CompentenceUpdateManyWithoutDisciplinesNestedInput
+  competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUpdateManyWithoutDisciplineNestedInput
 }
 
@@ -717,7 +717,7 @@ export type DisciplineUncheckedUpdateWithoutAreaInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
-  competences?: Prisma.CompentenceUncheckedUpdateManyWithoutDisciplinesNestedInput
+  competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
@@ -765,7 +765,7 @@ export type DisciplineCountOutputTypeCountMaterialsArgs<ExtArgs extends runtime.
  * DisciplineCountOutputType without action
  */
 export type DisciplineCountOutputTypeCountCompetencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CompentenceWhereInput
+  where?: Prisma.CompetenceWhereInput
 }
 
 /**
@@ -811,7 +811,7 @@ export type $DisciplinePayload<ExtArgs extends runtime.Types.Extensions.Internal
   objects: {
     area: Prisma.$AreaPayload<ExtArgs>
     materials: Prisma.$MaterialPayload<ExtArgs>[]
-    competences: Prisma.$CompentencePayload<ExtArgs>[]
+    competences: Prisma.$CompetencePayload<ExtArgs>[]
     classes: Prisma.$ClassPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1161,7 +1161,7 @@ export interface Prisma__DisciplineClient<T, Null = never, ExtArgs extends runti
   readonly [Symbol.toStringTag]: "PrismaPromise"
   area<T extends Prisma.AreaDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AreaDefaultArgs<ExtArgs>>): Prisma.Prisma__AreaClient<runtime.Types.Result.GetResult<Prisma.$AreaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   materials<T extends Prisma.Discipline$materialsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$materialsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  competences<T extends Prisma.Discipline$competencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$competencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompentencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  competences<T extends Prisma.Discipline$competencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$competencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   classes<T extends Prisma.Discipline$classesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$classesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1567,23 +1567,23 @@ export type Discipline$materialsArgs<ExtArgs extends runtime.Types.Extensions.In
  */
 export type Discipline$competencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Compentence
+   * Select specific fields to fetch from the Competence
    */
-  select?: Prisma.CompentenceSelect<ExtArgs> | null
+  select?: Prisma.CompetenceSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Compentence
+   * Omit specific fields from the Competence
    */
-  omit?: Prisma.CompentenceOmit<ExtArgs> | null
+  omit?: Prisma.CompetenceOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.CompentenceInclude<ExtArgs> | null
-  where?: Prisma.CompentenceWhereInput
-  orderBy?: Prisma.CompentenceOrderByWithRelationInput | Prisma.CompentenceOrderByWithRelationInput[]
-  cursor?: Prisma.CompentenceWhereUniqueInput
+  include?: Prisma.CompetenceInclude<ExtArgs> | null
+  where?: Prisma.CompetenceWhereInput
+  orderBy?: Prisma.CompetenceOrderByWithRelationInput | Prisma.CompetenceOrderByWithRelationInput[]
+  cursor?: Prisma.CompetenceWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.CompentenceScalarFieldEnum | Prisma.CompentenceScalarFieldEnum[]
+  distinct?: Prisma.CompetenceScalarFieldEnum | Prisma.CompetenceScalarFieldEnum[]
 }
 
 /**

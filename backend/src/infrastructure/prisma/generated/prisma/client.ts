@@ -60,10 +60,10 @@ export type Student = Prisma.StudentModel
  */
 export type Class = Prisma.ClassModel
 /**
- * Model Compentence
+ * Model Competence
  * 
  */
-export type Compentence = Prisma.CompentenceModel
+export type Competence = Prisma.CompetenceModel
 /**
  * Model Discipline
  * 

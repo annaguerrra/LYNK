@@ -393,7 +393,7 @@ export const ModelName = {
   Instructor: 'Instructor',
   Student: 'Student',
   Class: 'Class',
-  Compentence: 'Compentence',
+  Competence: 'Competence',
   Discipline: 'Discipline',
   Area: 'Area',
   Material: 'Material',
@@ -414,7 +414,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "instructor" | "student" | "class" | "compentence" | "discipline" | "area" | "material" | "exam" | "log"
+    modelProps: "instructor" | "student" | "class" | "competence" | "discipline" | "area" | "material" | "exam" | "log"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -616,69 +616,69 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Compentence: {
-      payload: Prisma.$CompentencePayload<ExtArgs>
-      fields: Prisma.CompentenceFieldRefs
+    Competence: {
+      payload: Prisma.$CompetencePayload<ExtArgs>
+      fields: Prisma.CompetenceFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.CompentenceFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompentencePayload> | null
+          args: Prisma.CompetenceFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetencePayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.CompentenceFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompentencePayload>
+          args: Prisma.CompetenceFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetencePayload>
         }
         findFirst: {
-          args: Prisma.CompentenceFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompentencePayload> | null
+          args: Prisma.CompetenceFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetencePayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.CompentenceFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompentencePayload>
+          args: Prisma.CompetenceFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetencePayload>
         }
         findMany: {
-          args: Prisma.CompentenceFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompentencePayload>[]
+          args: Prisma.CompetenceFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetencePayload>[]
         }
         create: {
-          args: Prisma.CompentenceCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompentencePayload>
+          args: Prisma.CompetenceCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetencePayload>
         }
         createMany: {
-          args: Prisma.CompentenceCreateManyArgs<ExtArgs>
+          args: Prisma.CompetenceCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.CompentenceDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompentencePayload>
+          args: Prisma.CompetenceDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetencePayload>
         }
         update: {
-          args: Prisma.CompentenceUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompentencePayload>
+          args: Prisma.CompetenceUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetencePayload>
         }
         deleteMany: {
-          args: Prisma.CompentenceDeleteManyArgs<ExtArgs>
+          args: Prisma.CompetenceDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.CompentenceUpdateManyArgs<ExtArgs>
+          args: Prisma.CompetenceUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.CompentenceUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompentencePayload>
+          args: Prisma.CompetenceUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CompetencePayload>
         }
         aggregate: {
-          args: Prisma.CompentenceAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCompentence>
+          args: Prisma.CompetenceAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCompetence>
         }
         groupBy: {
-          args: Prisma.CompentenceGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CompentenceGroupByOutputType>[]
+          args: Prisma.CompetenceGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompetenceGroupByOutputType>[]
         }
         count: {
-          args: Prisma.CompentenceCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CompentenceCountAggregateOutputType> | number
+          args: Prisma.CompetenceCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CompetenceCountAggregateOutputType> | number
         }
       }
     }
@@ -1092,14 +1092,14 @@ export const ClassScalarFieldEnum = {
 export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof ClassScalarFieldEnum]
 
 
-export const CompentenceScalarFieldEnum = {
+export const CompetenceScalarFieldEnum = {
   id: 'id',
   name: 'name',
   numOfHours: 'numOfHours',
   createdAt: 'createdAt'
 } as const
 
-export type CompentenceScalarFieldEnum = (typeof CompentenceScalarFieldEnum)[keyof typeof CompentenceScalarFieldEnum]
+export type CompetenceScalarFieldEnum = (typeof CompetenceScalarFieldEnum)[keyof typeof CompetenceScalarFieldEnum]
 
 
 export const DisciplineScalarFieldEnum = {
@@ -1196,11 +1196,11 @@ export const ClassOrderByRelevanceFieldEnum = {
 export type ClassOrderByRelevanceFieldEnum = (typeof ClassOrderByRelevanceFieldEnum)[keyof typeof ClassOrderByRelevanceFieldEnum]
 
 
-export const CompentenceOrderByRelevanceFieldEnum = {
+export const CompetenceOrderByRelevanceFieldEnum = {
   name: 'name'
 } as const
 
-export type CompentenceOrderByRelevanceFieldEnum = (typeof CompentenceOrderByRelevanceFieldEnum)[keyof typeof CompentenceOrderByRelevanceFieldEnum]
+export type CompetenceOrderByRelevanceFieldEnum = (typeof CompetenceOrderByRelevanceFieldEnum)[keyof typeof CompetenceOrderByRelevanceFieldEnum]
 
 
 export const DisciplineOrderByRelevanceFieldEnum = {
@@ -1415,7 +1415,7 @@ export type GlobalOmitConfig = {
   instructor?: Prisma.InstructorOmit
   student?: Prisma.StudentOmit
   class?: Prisma.ClassOmit
-  compentence?: Prisma.CompentenceOmit
+  competence?: Prisma.CompetenceOmit
   discipline?: Prisma.DisciplineOmit
   area?: Prisma.AreaOmit
   material?: Prisma.MaterialOmit

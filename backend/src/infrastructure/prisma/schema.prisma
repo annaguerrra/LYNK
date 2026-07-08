@@ -63,11 +63,11 @@ model Class {
 
   disciplineId Int
   discipline Discipline @relation(fields: [disciplineId], references: [id])
-  compentences Compentence[]
+  competences Competence[]
   materials Material[]
 }
 
-model Compentence {
+model Competence {
   id Int @default(autoincrement()) @id
   name String
   numOfHours Int
@@ -86,7 +86,7 @@ model Discipline {
   areaId Int
   area Area @relation(fields: [areaId], references: [id])
   materials Material[]
-  competences Compentence[]
+  competences Competence[]
   classes Class[]
 }
 
@@ -114,7 +114,7 @@ model Exam {
   name String
   attachmentId String
 
-  compentences Compentence[]
+  competences Competence[]
 }
 
 model Log {

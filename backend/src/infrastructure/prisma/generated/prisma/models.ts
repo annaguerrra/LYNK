@@ -11,7 +11,7 @@
 export type * from './models/Instructor.js'
 export type * from './models/Student.js'
 export type * from './models/Class.js'
-export type * from './models/Compentence.js'
+export type * from './models/Competence.js'
 export type * from './models/Discipline.js'
 export type * from './models/Area.js'
 export type * from './models/Material.js'

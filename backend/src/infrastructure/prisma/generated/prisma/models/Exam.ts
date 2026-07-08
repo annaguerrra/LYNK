@@ -200,14 +200,14 @@ export type ExamWhereInput = {
   id?: Prisma.IntFilter<"Exam"> | number
   name?: Prisma.StringFilter<"Exam"> | string
   attachmentId?: Prisma.StringFilter<"Exam"> | string
-  compentences?: Prisma.CompentenceListRelationFilter
+  competences?: Prisma.CompetenceListRelationFilter
 }
 
 export type ExamOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   attachmentId?: Prisma.SortOrder
-  compentences?: Prisma.CompentenceOrderByRelationAggregateInput
+  competences?: Prisma.CompetenceOrderByRelationAggregateInput
   _relevance?: Prisma.ExamOrderByRelevanceInput
 }
 
@@ -218,7 +218,7 @@ export type ExamWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ExamWhereInput | Prisma.ExamWhereInput[]
   name?: Prisma.StringFilter<"Exam"> | string
   attachmentId?: Prisma.StringFilter<"Exam"> | string
-  compentences?: Prisma.CompentenceListRelationFilter
+  competences?: Prisma.CompetenceListRelationFilter
 }, "id">
 
 export type ExamOrderByWithAggregationInput = {
@@ -244,27 +244,27 @@ export type ExamScalarWhereWithAggregatesInput = {
 export type ExamCreateInput = {
   name: string
   attachmentId: string
-  compentences?: Prisma.CompentenceCreateNestedManyWithoutExamsInput
+  competences?: Prisma.CompetenceCreateNestedManyWithoutExamsInput
 }
 
 export type ExamUncheckedCreateInput = {
   id?: number
   name: string
   attachmentId: string
-  compentences?: Prisma.CompentenceUncheckedCreateNestedManyWithoutExamsInput
+  competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutExamsInput
 }
 
 export type ExamUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  compentences?: Prisma.CompentenceUpdateManyWithoutExamsNestedInput
+  competences?: Prisma.CompetenceUpdateManyWithoutExamsNestedInput
 }
 
 export type ExamUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  compentences?: Prisma.CompentenceUncheckedUpdateManyWithoutExamsNestedInput
+  competences?: Prisma.CompetenceUncheckedUpdateManyWithoutExamsNestedInput
 }
 
 export type ExamCreateManyInput = {
@@ -326,74 +326,74 @@ export type ExamSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
-export type ExamCreateNestedManyWithoutCompentencesInput = {
-  create?: Prisma.XOR<Prisma.ExamCreateWithoutCompentencesInput, Prisma.ExamUncheckedCreateWithoutCompentencesInput> | Prisma.ExamCreateWithoutCompentencesInput[] | Prisma.ExamUncheckedCreateWithoutCompentencesInput[]
-  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutCompentencesInput | Prisma.ExamCreateOrConnectWithoutCompentencesInput[]
+export type ExamCreateNestedManyWithoutCompetencesInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutCompetencesInput, Prisma.ExamUncheckedCreateWithoutCompetencesInput> | Prisma.ExamCreateWithoutCompetencesInput[] | Prisma.ExamUncheckedCreateWithoutCompetencesInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutCompetencesInput | Prisma.ExamCreateOrConnectWithoutCompetencesInput[]
   connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
 }
 
-export type ExamUncheckedCreateNestedManyWithoutCompentencesInput = {
-  create?: Prisma.XOR<Prisma.ExamCreateWithoutCompentencesInput, Prisma.ExamUncheckedCreateWithoutCompentencesInput> | Prisma.ExamCreateWithoutCompentencesInput[] | Prisma.ExamUncheckedCreateWithoutCompentencesInput[]
-  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutCompentencesInput | Prisma.ExamCreateOrConnectWithoutCompentencesInput[]
+export type ExamUncheckedCreateNestedManyWithoutCompetencesInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutCompetencesInput, Prisma.ExamUncheckedCreateWithoutCompetencesInput> | Prisma.ExamCreateWithoutCompetencesInput[] | Prisma.ExamUncheckedCreateWithoutCompetencesInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutCompetencesInput | Prisma.ExamCreateOrConnectWithoutCompetencesInput[]
   connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
 }
 
-export type ExamUpdateManyWithoutCompentencesNestedInput = {
-  create?: Prisma.XOR<Prisma.ExamCreateWithoutCompentencesInput, Prisma.ExamUncheckedCreateWithoutCompentencesInput> | Prisma.ExamCreateWithoutCompentencesInput[] | Prisma.ExamUncheckedCreateWithoutCompentencesInput[]
-  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutCompentencesInput | Prisma.ExamCreateOrConnectWithoutCompentencesInput[]
-  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutCompentencesInput | Prisma.ExamUpsertWithWhereUniqueWithoutCompentencesInput[]
+export type ExamUpdateManyWithoutCompetencesNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutCompetencesInput, Prisma.ExamUncheckedCreateWithoutCompetencesInput> | Prisma.ExamCreateWithoutCompetencesInput[] | Prisma.ExamUncheckedCreateWithoutCompetencesInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutCompetencesInput | Prisma.ExamCreateOrConnectWithoutCompetencesInput[]
+  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutCompetencesInput | Prisma.ExamUpsertWithWhereUniqueWithoutCompetencesInput[]
   set?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   disconnect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   delete?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
-  update?: Prisma.ExamUpdateWithWhereUniqueWithoutCompentencesInput | Prisma.ExamUpdateWithWhereUniqueWithoutCompentencesInput[]
-  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutCompentencesInput | Prisma.ExamUpdateManyWithWhereWithoutCompentencesInput[]
+  update?: Prisma.ExamUpdateWithWhereUniqueWithoutCompetencesInput | Prisma.ExamUpdateWithWhereUniqueWithoutCompetencesInput[]
+  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutCompetencesInput | Prisma.ExamUpdateManyWithWhereWithoutCompetencesInput[]
   deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
 }
 
-export type ExamUncheckedUpdateManyWithoutCompentencesNestedInput = {
-  create?: Prisma.XOR<Prisma.ExamCreateWithoutCompentencesInput, Prisma.ExamUncheckedCreateWithoutCompentencesInput> | Prisma.ExamCreateWithoutCompentencesInput[] | Prisma.ExamUncheckedCreateWithoutCompentencesInput[]
-  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutCompentencesInput | Prisma.ExamCreateOrConnectWithoutCompentencesInput[]
-  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutCompentencesInput | Prisma.ExamUpsertWithWhereUniqueWithoutCompentencesInput[]
+export type ExamUncheckedUpdateManyWithoutCompetencesNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutCompetencesInput, Prisma.ExamUncheckedCreateWithoutCompetencesInput> | Prisma.ExamCreateWithoutCompetencesInput[] | Prisma.ExamUncheckedCreateWithoutCompetencesInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutCompetencesInput | Prisma.ExamCreateOrConnectWithoutCompetencesInput[]
+  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutCompetencesInput | Prisma.ExamUpsertWithWhereUniqueWithoutCompetencesInput[]
   set?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   disconnect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   delete?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
   connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
-  update?: Prisma.ExamUpdateWithWhereUniqueWithoutCompentencesInput | Prisma.ExamUpdateWithWhereUniqueWithoutCompentencesInput[]
-  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutCompentencesInput | Prisma.ExamUpdateManyWithWhereWithoutCompentencesInput[]
+  update?: Prisma.ExamUpdateWithWhereUniqueWithoutCompetencesInput | Prisma.ExamUpdateWithWhereUniqueWithoutCompetencesInput[]
+  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutCompetencesInput | Prisma.ExamUpdateManyWithWhereWithoutCompetencesInput[]
   deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
 }
 
-export type ExamCreateWithoutCompentencesInput = {
+export type ExamCreateWithoutCompetencesInput = {
   name: string
   attachmentId: string
 }
 
-export type ExamUncheckedCreateWithoutCompentencesInput = {
+export type ExamUncheckedCreateWithoutCompetencesInput = {
   id?: number
   name: string
   attachmentId: string
 }
 
-export type ExamCreateOrConnectWithoutCompentencesInput = {
+export type ExamCreateOrConnectWithoutCompetencesInput = {
   where: Prisma.ExamWhereUniqueInput
-  create: Prisma.XOR<Prisma.ExamCreateWithoutCompentencesInput, Prisma.ExamUncheckedCreateWithoutCompentencesInput>
+  create: Prisma.XOR<Prisma.ExamCreateWithoutCompetencesInput, Prisma.ExamUncheckedCreateWithoutCompetencesInput>
 }
 
-export type ExamUpsertWithWhereUniqueWithoutCompentencesInput = {
+export type ExamUpsertWithWhereUniqueWithoutCompetencesInput = {
   where: Prisma.ExamWhereUniqueInput
-  update: Prisma.XOR<Prisma.ExamUpdateWithoutCompentencesInput, Prisma.ExamUncheckedUpdateWithoutCompentencesInput>
-  create: Prisma.XOR<Prisma.ExamCreateWithoutCompentencesInput, Prisma.ExamUncheckedCreateWithoutCompentencesInput>
+  update: Prisma.XOR<Prisma.ExamUpdateWithoutCompetencesInput, Prisma.ExamUncheckedUpdateWithoutCompetencesInput>
+  create: Prisma.XOR<Prisma.ExamCreateWithoutCompetencesInput, Prisma.ExamUncheckedCreateWithoutCompetencesInput>
 }
 
-export type ExamUpdateWithWhereUniqueWithoutCompentencesInput = {
+export type ExamUpdateWithWhereUniqueWithoutCompetencesInput = {
   where: Prisma.ExamWhereUniqueInput
-  data: Prisma.XOR<Prisma.ExamUpdateWithoutCompentencesInput, Prisma.ExamUncheckedUpdateWithoutCompentencesInput>
+  data: Prisma.XOR<Prisma.ExamUpdateWithoutCompetencesInput, Prisma.ExamUncheckedUpdateWithoutCompetencesInput>
 }
 
-export type ExamUpdateManyWithWhereWithoutCompentencesInput = {
+export type ExamUpdateManyWithWhereWithoutCompetencesInput = {
   where: Prisma.ExamScalarWhereInput
-  data: Prisma.XOR<Prisma.ExamUpdateManyMutationInput, Prisma.ExamUncheckedUpdateManyWithoutCompentencesInput>
+  data: Prisma.XOR<Prisma.ExamUpdateManyMutationInput, Prisma.ExamUncheckedUpdateManyWithoutCompetencesInput>
 }
 
 export type ExamScalarWhereInput = {
@@ -405,18 +405,18 @@ export type ExamScalarWhereInput = {
   attachmentId?: Prisma.StringFilter<"Exam"> | string
 }
 
-export type ExamUpdateWithoutCompentencesInput = {
+export type ExamUpdateWithoutCompetencesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-export type ExamUncheckedUpdateWithoutCompentencesInput = {
+export type ExamUncheckedUpdateWithoutCompetencesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
-export type ExamUncheckedUpdateManyWithoutCompentencesInput = {
+export type ExamUncheckedUpdateManyWithoutCompetencesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -428,11 +428,11 @@ export type ExamUncheckedUpdateManyWithoutCompentencesInput = {
  */
 
 export type ExamCountOutputType = {
-  compentences: number
+  competences: number
 }
 
 export type ExamCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  compentences?: boolean | ExamCountOutputTypeCountCompentencesArgs
+  competences?: boolean | ExamCountOutputTypeCountCompetencesArgs
 }
 
 /**
@@ -448,8 +448,8 @@ export type ExamCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensi
 /**
  * ExamCountOutputType without action
  */
-export type ExamCountOutputTypeCountCompentencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.CompentenceWhereInput
+export type ExamCountOutputTypeCountCompetencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CompetenceWhereInput
 }
 
 
@@ -457,7 +457,7 @@ export type ExamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   name?: boolean
   attachmentId?: boolean
-  compentences?: boolean | Prisma.Exam$compentencesArgs<ExtArgs>
+  competences?: boolean | Prisma.Exam$competencesArgs<ExtArgs>
   _count?: boolean | Prisma.ExamCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["exam"]>
 
@@ -471,14 +471,14 @@ export type ExamSelectScalar = {
 
 export type ExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "attachmentId", ExtArgs["result"]["exam"]>
 export type ExamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  compentences?: boolean | Prisma.Exam$compentencesArgs<ExtArgs>
+  competences?: boolean | Prisma.Exam$competencesArgs<ExtArgs>
   _count?: boolean | Prisma.ExamCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $ExamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Exam"
   objects: {
-    compentences: Prisma.$CompentencePayload<ExtArgs>[]
+    competences: Prisma.$CompetencePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -824,7 +824,7 @@ readonly fields: ExamFieldRefs;
  */
 export interface Prisma__ExamClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  compentences<T extends Prisma.Exam$compentencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Exam$compentencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompentencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  competences<T extends Prisma.Exam$competencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Exam$competencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1200,27 +1200,27 @@ export type ExamDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
- * Exam.compentences
+ * Exam.competences
  */
-export type Exam$compentencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Exam$competencesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the Compentence
+   * Select specific fields to fetch from the Competence
    */
-  select?: Prisma.CompentenceSelect<ExtArgs> | null
+  select?: Prisma.CompetenceSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the Compentence
+   * Omit specific fields from the Competence
    */
-  omit?: Prisma.CompentenceOmit<ExtArgs> | null
+  omit?: Prisma.CompetenceOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.CompentenceInclude<ExtArgs> | null
-  where?: Prisma.CompentenceWhereInput
-  orderBy?: Prisma.CompentenceOrderByWithRelationInput | Prisma.CompentenceOrderByWithRelationInput[]
-  cursor?: Prisma.CompentenceWhereUniqueInput
+  include?: Prisma.CompetenceInclude<ExtArgs> | null
+  where?: Prisma.CompetenceWhereInput
+  orderBy?: Prisma.CompetenceOrderByWithRelationInput | Prisma.CompetenceOrderByWithRelationInput[]
+  cursor?: Prisma.CompetenceWhereUniqueInput
   take?: number
   skip?: number
-  distinct?: Prisma.CompentenceScalarFieldEnum | Prisma.CompentenceScalarFieldEnum[]
+  distinct?: Prisma.CompetenceScalarFieldEnum | Prisma.CompetenceScalarFieldEnum[]
 }
 
 /**

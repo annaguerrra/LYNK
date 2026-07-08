@@ -52,7 +52,7 @@ export const ModelName = {
   Instructor: 'Instructor',
   Student: 'Student',
   Class: 'Class',
-  Compentence: 'Compentence',
+  Competence: 'Competence',
   Discipline: 'Discipline',
   Area: 'Area',
   Material: 'Material',
@@ -117,14 +117,14 @@ export const ClassScalarFieldEnum = {
 export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof ClassScalarFieldEnum]
 
 
-export const CompentenceScalarFieldEnum = {
+export const CompetenceScalarFieldEnum = {
   id: 'id',
   name: 'name',
   numOfHours: 'numOfHours',
   createdAt: 'createdAt'
 } as const
 
-export type CompentenceScalarFieldEnum = (typeof CompentenceScalarFieldEnum)[keyof typeof CompentenceScalarFieldEnum]
+export type CompetenceScalarFieldEnum = (typeof CompetenceScalarFieldEnum)[keyof typeof CompetenceScalarFieldEnum]
 
 
 export const DisciplineScalarFieldEnum = {
@@ -221,11 +221,11 @@ export const ClassOrderByRelevanceFieldEnum = {
 export type ClassOrderByRelevanceFieldEnum = (typeof ClassOrderByRelevanceFieldEnum)[keyof typeof ClassOrderByRelevanceFieldEnum]
 
 
-export const CompentenceOrderByRelevanceFieldEnum = {
+export const CompetenceOrderByRelevanceFieldEnum = {
   name: 'name'
 } as const
 
-export type CompentenceOrderByRelevanceFieldEnum = (typeof CompentenceOrderByRelevanceFieldEnum)[keyof typeof CompentenceOrderByRelevanceFieldEnum]
+export type CompetenceOrderByRelevanceFieldEnum = (typeof CompetenceOrderByRelevanceFieldEnum)[keyof typeof CompetenceOrderByRelevanceFieldEnum]
 
 
 export const DisciplineOrderByRelevanceFieldEnum = {

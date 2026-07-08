@@ -59,7 +59,6 @@
 
 ### GET
 - List area
-- View area
 
 ### DELETE
 - Delete area
