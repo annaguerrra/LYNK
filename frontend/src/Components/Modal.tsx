@@ -1,10 +1,12 @@
 import "./Styles/modal.css"
 
-export function Modal() {
+export function Modal({ onClose }) {
     return (
         <>
-            <div className="containerModal">
-                
+            <div className="modalOverlay" onClick={() => onClose}>
+                <div className="modalBackdrop">
+
+                </div>
             </div>
         </>
     )
