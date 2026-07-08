@@ -1,5 +1,6 @@
 import "./Styles/Discipline.css"
 import { Header } from "../Components/Header"
+import { DisciplineComp } from "../Components/Discipline"
 
 export function Discipline () {
     return (
@@ -10,6 +11,7 @@ export function Discipline () {
                     <h1 className="titlePage">Bem vindo(a)</h1>
                     <select name="Área de conhecimento" id="" className="selectFilter"></select>
                 </div>
+                <DisciplineComp></DisciplineComp>
             </div>
         </>
     )

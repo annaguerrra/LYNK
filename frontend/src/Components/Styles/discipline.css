@@ -1,0 +1,29 @@
+.disciplineBox {
+    background-color: var(--white);
+    width: 20vw;
+    height: 20vh;
+    box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    transition: .5s;
+    cursor: pointer;
+    border: none; 
+}
+
+.disciplineBox h1 {
+    padding: 0.7vw;
+    font-size: x-large;
+}
+
+.disciplineBox h2 {
+    padding: 0.7vw;
+    font-size: large;
+}
+
+.boxColor {
+    background-color: var(--purple);
+    width: 40%;
+    height: 100%;
+}
+

@@ -1,14 +1,33 @@
-import { useNavigate } from "react-router-dom"
-import "./Styles/discipline.css"
+import { useState } from "react";
+import { MoreOpt } from "./MoreOpt";
+import "./Styles/discipline.css";
+import { Modal } from "./Modal";
 
-export function Discipline({discipline}) {
-    const navigate = useNavigate();
+export function DisciplineComp() {
+    const [modal, setModal] = useState<React.ReactNode>(null);
+
+    const options = [
+        {
+            name: "Editar disciplina",
+            onClick: () => setModal(Modal),
+        },
+        {
+            name: "Excluir disciplina",
+            onClick: () => setModal(Modal),
+        },
+    ];
 
     return (
-        <>
-            <button className="backgroundButton" onClick={() => navigate(path)}>
-                <h1>{ButtonTitle}</h1>
-            </button>
+        <> 
+        <div className="disciplineBox"> 
+            <div className="boxColor"></div> 
+            <div> 
+                <h1>Discipline</h1> 
+                <h2>Knowledge area</h2> 
+            </div> 
+            <MoreOpt data={options}></MoreOpt> 
+        </div>
         </>
-    )
+    );
+    {modal}
 }
