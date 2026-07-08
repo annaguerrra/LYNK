@@ -167,8 +167,10 @@ export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof Exam
 
 export const LogScalarFieldEnum = {
   id: 'id',
-  updatedAt: 'updatedAt',
+  entityType: 'entityType',
+  entityId: 'entityId',
   action: 'action',
+  updatedAt: 'updatedAt',
   oldData: 'oldData',
   newData: 'newData',
   instructorId: 'instructorId'
@@ -273,11 +275,4 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-export const LogOrderByRelevanceFieldEnum = {
-  action: 'action'
-} as const
-
-export type LogOrderByRelevanceFieldEnum = (typeof LogOrderByRelevanceFieldEnum)[keyof typeof LogOrderByRelevanceFieldEnum]
 

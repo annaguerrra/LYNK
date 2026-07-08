@@ -25,6 +25,24 @@ enum Specialties {
   Eletronics
 }
 
+enum Action {
+  CREATED
+  DELETED
+  UPDATED
+}
+
+enum EntityType {
+  Class
+  Compentence
+  Material
+  Instructor
+  Discipline
+  Area
+  Student
+  Exam
+}
+
+
 model Instructor {
   id Int @default(autoincrement()) @id
   name String
@@ -58,7 +76,7 @@ model Student {
 model Class {
   id Int @default(autoincrement()) @id
   name String
-  content String
+  content String @db.Text
   createdAt DateTime @default(now())
 
   disciplineId Int
@@ -119,11 +137,12 @@ model Exam {
 
 model Log {
   id Int @default(autoincrement()) @id
+  entityType EntityType
+  entityId Int 
+  action Action
   updatedAt DateTime @default(now())
-  action String
   oldData Json
   newData Json
-
   instructorId Int
   instructor Instructor @relation(fields: [instructorId], references: [id])
 }

@@ -34,7 +34,6 @@
 ### POST
 - Create class
 - Assign competency to class
-- Attach file to class
 
 ### GET
 - List classes

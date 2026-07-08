@@ -1142,8 +1142,10 @@ export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof Exam
 
 export const LogScalarFieldEnum = {
   id: 'id',
-  updatedAt: 'updatedAt',
+  entityType: 'entityType',
+  entityId: 'entityId',
   action: 'action',
+  updatedAt: 'updatedAt',
   oldData: 'oldData',
   newData: 'newData',
   instructorId: 'instructorId'
@@ -1250,13 +1252,6 @@ export const QueryMode = {
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
-export const LogOrderByRelevanceFieldEnum = {
-  action: 'action'
-} as const
-
-export type LogOrderByRelevanceFieldEnum = (typeof LogOrderByRelevanceFieldEnum)[keyof typeof LogOrderByRelevanceFieldEnum]
-
-
 
 /**
  * Field references
@@ -1302,6 +1297,20 @@ export type EnumSpecialtiesFieldRefInput<$PrismaModel> = FieldRefInputType<$Pris
  * Reference to a field of type 'Boolean'
  */
 export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
+ * Reference to a field of type 'EntityType'
+ */
+export type EnumEntityTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EntityType'>
+    
+
+
+/**
+ * Reference to a field of type 'Action'
+ */
+export type EnumActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Action'>
     
 
 
