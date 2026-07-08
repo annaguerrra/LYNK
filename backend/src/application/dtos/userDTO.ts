@@ -1,4 +1,5 @@
 import { Specialties, UserType } from "../../infrastructure/src/generated/prisma/enums.js"
+import { UploadedFile } from "./attachmentDTO.js"
 
 export interface registerStudentDTO {
     name: string
@@ -6,6 +7,8 @@ export interface registerStudentDTO {
     password: string
     userType: UserType
     course: string
+    file: UploadedFile
+    instructorId: number
 }
 
 export interface registerInstructorDTO {
@@ -15,6 +18,7 @@ export interface registerInstructorDTO {
     userType: UserType
     specialty: Specialties
     active: boolean
+    file: UploadedFile
 }
 
 export interface showStudentDTO {

@@ -16,7 +16,7 @@ export class AreaService implements IAreaService{
         return await prisma.area.findMany()
     }
 
-    async showArea(id: number): Promise<showAreaDTO| null> {
+    async showArea(id: number): Promise<showAreaDTO | null> {
         return await prisma.area.findFirst({
             where: {
                 id: id

@@ -274,7 +274,7 @@ export type LogScalarWhereWithAggregatesInput = {
 }
 
 export type LogCreateInput = {
-  updatedAt: Date | string
+  updatedAt?: Date | string
   action: string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -283,7 +283,7 @@ export type LogCreateInput = {
 
 export type LogUncheckedCreateInput = {
   id?: number
-  updatedAt: Date | string
+  updatedAt?: Date | string
   action: string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -309,7 +309,7 @@ export type LogUncheckedUpdateInput = {
 
 export type LogCreateManyInput = {
   id?: number
-  updatedAt: Date | string
+  updatedAt?: Date | string
   action: string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -424,7 +424,7 @@ export type LogUncheckedUpdateManyWithoutInstructorNestedInput = {
 }
 
 export type LogCreateWithoutInstructorInput = {
-  updatedAt: Date | string
+  updatedAt?: Date | string
   action: string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -432,7 +432,7 @@ export type LogCreateWithoutInstructorInput = {
 
 export type LogUncheckedCreateWithoutInstructorInput = {
   id?: number
-  updatedAt: Date | string
+  updatedAt?: Date | string
   action: string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -478,7 +478,7 @@ export type LogScalarWhereInput = {
 
 export type LogCreateManyInstructorInput = {
   id?: number
-  updatedAt: Date | string
+  updatedAt?: Date | string
   action: string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue

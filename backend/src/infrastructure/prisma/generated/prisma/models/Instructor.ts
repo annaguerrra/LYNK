@@ -318,7 +318,7 @@ export type InstructorScalarWhereWithAggregatesInput = {
 
 export type InstructorCreateInput = {
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -332,7 +332,7 @@ export type InstructorCreateInput = {
 export type InstructorUncheckedCreateInput = {
   id?: number
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -373,7 +373,7 @@ export type InstructorUncheckedUpdateInput = {
 export type InstructorCreateManyInput = {
   id?: number
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -518,7 +518,7 @@ export type InstructorUpdateOneRequiredWithoutLogsNestedInput = {
 
 export type InstructorCreateWithoutStudentsInput = {
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -531,7 +531,7 @@ export type InstructorCreateWithoutStudentsInput = {
 export type InstructorUncheckedCreateWithoutStudentsInput = {
   id?: number
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -584,7 +584,7 @@ export type InstructorUncheckedUpdateWithoutStudentsInput = {
 
 export type InstructorCreateWithoutLogsInput = {
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -597,7 +597,7 @@ export type InstructorCreateWithoutLogsInput = {
 export type InstructorUncheckedCreateWithoutLogsInput = {
   id?: number
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType

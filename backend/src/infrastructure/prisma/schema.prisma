@@ -22,13 +22,13 @@ enum UserType {
 
 enum Specialties {
   Digital
-  Elotronics
+  Eletronics
 }
 
 model Instructor {
   id Int @default(autoincrement()) @id
   name String
-  createdAt DateTime
+  createdAt DateTime @default(now())
   username String
   password String
   userType UserType @default(INSTRUCTOR)
@@ -43,7 +43,7 @@ model Instructor {
 model Student {
   id Int @default(autoincrement()) @id
   name String
-  createdAt DateTime
+  createdAt DateTime @default(now())
   username String
   password String
   userType UserType @default(STUDENT)
@@ -59,7 +59,7 @@ model Class {
   id Int @default(autoincrement()) @id
   name String
   content String
-  createdAt DateTime
+  createdAt DateTime @default(now())
 
   disciplineId Int
   discipline Discipline @relation(fields: [disciplineId], references: [id])
@@ -71,7 +71,7 @@ model Compentence {
   id Int @default(autoincrement()) @id
   name String
   numOfHours Int
-  createdAt DateTime
+  createdAt DateTime @default(now())
 
   classes Class[]
   exams Exam[]
@@ -81,7 +81,7 @@ model Compentence {
 model Discipline {
   id Int @default(autoincrement()) @id
   name String
-  createdAt DateTime
+  createdAt DateTime @default(now())
 
   areaId Int
   area Area @relation(fields: [areaId], references: [id])
@@ -119,7 +119,7 @@ model Exam {
 
 model Log {
   id Int @default(autoincrement()) @id
-  updatedAt DateTime
+  updatedAt DateTime @default(now())
   action String
   oldData Json
   newData Json
