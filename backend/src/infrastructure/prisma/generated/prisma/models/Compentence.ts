@@ -266,7 +266,7 @@ export type CompentenceScalarWhereWithAggregatesInput = {
 export type CompentenceCreateInput = {
   name: string
   numOfHours: number
-  createdAt: Date | string
+  createdAt?: Date | string
   classes?: Prisma.ClassCreateNestedManyWithoutCompentencesInput
   exams?: Prisma.ExamCreateNestedManyWithoutCompentencesInput
   disciplines?: Prisma.DisciplineCreateNestedManyWithoutCompetencesInput
@@ -276,7 +276,7 @@ export type CompentenceUncheckedCreateInput = {
   id?: number
   name: string
   numOfHours: number
-  createdAt: Date | string
+  createdAt?: Date | string
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutCompentencesInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutCompentencesInput
   disciplines?: Prisma.DisciplineUncheckedCreateNestedManyWithoutCompetencesInput
@@ -305,7 +305,7 @@ export type CompentenceCreateManyInput = {
   id?: number
   name: string
   numOfHours: number
-  createdAt: Date | string
+  createdAt?: Date | string
 }
 
 export type CompentenceUpdateManyMutationInput = {
@@ -485,7 +485,7 @@ export type CompentenceUncheckedUpdateManyWithoutExamsNestedInput = {
 export type CompentenceCreateWithoutClassesInput = {
   name: string
   numOfHours: number
-  createdAt: Date | string
+  createdAt?: Date | string
   exams?: Prisma.ExamCreateNestedManyWithoutCompentencesInput
   disciplines?: Prisma.DisciplineCreateNestedManyWithoutCompetencesInput
 }
@@ -494,7 +494,7 @@ export type CompentenceUncheckedCreateWithoutClassesInput = {
   id?: number
   name: string
   numOfHours: number
-  createdAt: Date | string
+  createdAt?: Date | string
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutCompentencesInput
   disciplines?: Prisma.DisciplineUncheckedCreateNestedManyWithoutCompetencesInput
 }
@@ -533,7 +533,7 @@ export type CompentenceScalarWhereInput = {
 export type CompentenceCreateWithoutDisciplinesInput = {
   name: string
   numOfHours: number
-  createdAt: Date | string
+  createdAt?: Date | string
   classes?: Prisma.ClassCreateNestedManyWithoutCompentencesInput
   exams?: Prisma.ExamCreateNestedManyWithoutCompentencesInput
 }
@@ -542,7 +542,7 @@ export type CompentenceUncheckedCreateWithoutDisciplinesInput = {
   id?: number
   name: string
   numOfHours: number
-  createdAt: Date | string
+  createdAt?: Date | string
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutCompentencesInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutCompentencesInput
 }
@@ -571,7 +571,7 @@ export type CompentenceUpdateManyWithWhereWithoutDisciplinesInput = {
 export type CompentenceCreateWithoutExamsInput = {
   name: string
   numOfHours: number
-  createdAt: Date | string
+  createdAt?: Date | string
   classes?: Prisma.ClassCreateNestedManyWithoutCompentencesInput
   disciplines?: Prisma.DisciplineCreateNestedManyWithoutCompetencesInput
 }
@@ -580,7 +580,7 @@ export type CompentenceUncheckedCreateWithoutExamsInput = {
   id?: number
   name: string
   numOfHours: number
-  createdAt: Date | string
+  createdAt?: Date | string
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutCompentencesInput
   disciplines?: Prisma.DisciplineUncheckedCreateNestedManyWithoutCompetencesInput
 }

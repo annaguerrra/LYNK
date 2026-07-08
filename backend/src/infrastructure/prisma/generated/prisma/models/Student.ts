@@ -322,7 +322,7 @@ export type StudentScalarWhereWithAggregatesInput = {
 
 export type StudentCreateInput = {
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -335,7 +335,7 @@ export type StudentCreateInput = {
 export type StudentUncheckedCreateInput = {
   id?: number
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -373,7 +373,7 @@ export type StudentUncheckedUpdateInput = {
 export type StudentCreateManyInput = {
   id?: number
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -548,7 +548,7 @@ export type StudentUncheckedUpdateManyWithoutAreasNestedInput = {
 
 export type StudentCreateWithoutInstructorInput = {
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -560,7 +560,7 @@ export type StudentCreateWithoutInstructorInput = {
 export type StudentUncheckedCreateWithoutInstructorInput = {
   id?: number
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -612,7 +612,7 @@ export type StudentScalarWhereInput = {
 
 export type StudentCreateWithoutAreasInput = {
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -624,7 +624,7 @@ export type StudentCreateWithoutAreasInput = {
 export type StudentUncheckedCreateWithoutAreasInput = {
   id?: number
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType
@@ -657,7 +657,7 @@ export type StudentUpdateManyWithWhereWithoutAreasInput = {
 export type StudentCreateManyInstructorInput = {
   id?: number
   name: string
-  createdAt: Date | string
+  createdAt?: Date | string
   username: string
   password: string
   userType?: $Enums.UserType

@@ -46,7 +46,7 @@ enum EntityType {
 model Instructor {
   id Int @default(autoincrement()) @id
   name String
-  createdAt DateTime
+  createdAt DateTime @default(now())
   username String
   password String
   userType UserType @default(INSTRUCTOR)
@@ -61,7 +61,7 @@ model Instructor {
 model Student {
   id Int @default(autoincrement()) @id
   name String
-  createdAt DateTime
+  createdAt DateTime @default(now())
   username String
   password String
   userType UserType @default(STUDENT)
@@ -77,7 +77,8 @@ model Class {
   id Int @default(autoincrement()) @id
   name String
   content String @db.Text
-  createdAt DateTime
+  createdAt DateTime @default(now())
+
   disciplineId Int
   discipline Discipline @relation(fields: [disciplineId], references: [id])
   compentences Compentence[]
@@ -88,7 +89,7 @@ model Compentence {
   id Int @default(autoincrement()) @id
   name String
   numOfHours Int
-  createdAt DateTime
+  createdAt DateTime @default(now())
 
   classes Class[]
   exams Exam[]
@@ -98,7 +99,7 @@ model Compentence {
 model Discipline {
   id Int @default(autoincrement()) @id
   name String
-  createdAt DateTime
+  createdAt DateTime @default(now())
 
   areaId Int
   area Area @relation(fields: [areaId], references: [id])
@@ -138,11 +139,10 @@ model Log {
   id Int @default(autoincrement()) @id
   entityType EntityType
   entityId Int 
-  updatedAt DateTime
   action Action
+  updatedAt DateTime @default(now())
   oldData Json
   newData Json
-
   instructorId Int
   instructor Instructor @relation(fields: [instructorId], references: [id])
 }

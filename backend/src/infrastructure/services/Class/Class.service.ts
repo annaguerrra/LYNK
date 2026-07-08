@@ -55,8 +55,8 @@ export class ClassService implements IClassService{
 
         const lastUpdate = await prisma.log.findFirst({
             where:{
-                
-            }
+                entityId: id
+            }, 
         })
     }
     async viewCompetencies(id: number): Promise<string[]> {
