@@ -50,6 +50,7 @@
 
 ### PUT
 - Edit classes
+- Assign competency to classes
 
 ## Area - Thais
 
@@ -86,14 +87,13 @@
 
 ### PUT
 - Edit discipline
+- Assign competency to discipline
 
 
 ## Competency - Thais
 
 ### POST
 - Create competency
-- Assign competency to discipline
-- Assign competency to classes
 
 ### GET
 - List competencies

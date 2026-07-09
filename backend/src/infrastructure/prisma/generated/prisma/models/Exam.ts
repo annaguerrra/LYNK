@@ -28,56 +28,66 @@ export type AggregateExam = {
 
 export type ExamAvgAggregateOutputType = {
   id: number | null
+  disciplineId: number | null
 }
 
 export type ExamSumAggregateOutputType = {
   id: number | null
+  disciplineId: number | null
 }
 
 export type ExamMinAggregateOutputType = {
   id: number | null
   name: string | null
   attachmentId: string | null
+  disciplineId: number | null
 }
 
 export type ExamMaxAggregateOutputType = {
   id: number | null
   name: string | null
   attachmentId: string | null
+  disciplineId: number | null
 }
 
 export type ExamCountAggregateOutputType = {
   id: number
   name: number
   attachmentId: number
+  disciplineId: number
   _all: number
 }
 
 
 export type ExamAvgAggregateInputType = {
   id?: true
+  disciplineId?: true
 }
 
 export type ExamSumAggregateInputType = {
   id?: true
+  disciplineId?: true
 }
 
 export type ExamMinAggregateInputType = {
   id?: true
   name?: true
   attachmentId?: true
+  disciplineId?: true
 }
 
 export type ExamMaxAggregateInputType = {
   id?: true
   name?: true
   attachmentId?: true
+  disciplineId?: true
 }
 
 export type ExamCountAggregateInputType = {
   id?: true
   name?: true
   attachmentId?: true
+  disciplineId?: true
   _all?: true
 }
 
@@ -171,6 +181,7 @@ export type ExamGroupByOutputType = {
   id: number
   name: string
   attachmentId: string
+  disciplineId: number
   _count: ExamCountAggregateOutputType | null
   _avg: ExamAvgAggregateOutputType | null
   _sum: ExamSumAggregateOutputType | null
@@ -200,6 +211,8 @@ export type ExamWhereInput = {
   id?: Prisma.IntFilter<"Exam"> | number
   name?: Prisma.StringFilter<"Exam"> | string
   attachmentId?: Prisma.StringFilter<"Exam"> | string
+  disciplineId?: Prisma.IntFilter<"Exam"> | number
+  discipline?: Prisma.XOR<Prisma.DisciplineScalarRelationFilter, Prisma.DisciplineWhereInput>
   competences?: Prisma.CompetenceListRelationFilter
 }
 
@@ -207,6 +220,8 @@ export type ExamOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   attachmentId?: Prisma.SortOrder
+  disciplineId?: Prisma.SortOrder
+  discipline?: Prisma.DisciplineOrderByWithRelationInput
   competences?: Prisma.CompetenceOrderByRelationAggregateInput
   _relevance?: Prisma.ExamOrderByRelevanceInput
 }
@@ -218,6 +233,8 @@ export type ExamWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.ExamWhereInput | Prisma.ExamWhereInput[]
   name?: Prisma.StringFilter<"Exam"> | string
   attachmentId?: Prisma.StringFilter<"Exam"> | string
+  disciplineId?: Prisma.IntFilter<"Exam"> | number
+  discipline?: Prisma.XOR<Prisma.DisciplineScalarRelationFilter, Prisma.DisciplineWhereInput>
   competences?: Prisma.CompetenceListRelationFilter
 }, "id">
 
@@ -225,6 +242,7 @@ export type ExamOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   attachmentId?: Prisma.SortOrder
+  disciplineId?: Prisma.SortOrder
   _count?: Prisma.ExamCountOrderByAggregateInput
   _avg?: Prisma.ExamAvgOrderByAggregateInput
   _max?: Prisma.ExamMaxOrderByAggregateInput
@@ -239,11 +257,13 @@ export type ExamScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Exam"> | number
   name?: Prisma.StringWithAggregatesFilter<"Exam"> | string
   attachmentId?: Prisma.StringWithAggregatesFilter<"Exam"> | string
+  disciplineId?: Prisma.IntWithAggregatesFilter<"Exam"> | number
 }
 
 export type ExamCreateInput = {
   name: string
   attachmentId: string
+  discipline: Prisma.DisciplineCreateNestedOneWithoutExamsInput
   competences?: Prisma.CompetenceCreateNestedManyWithoutExamsInput
 }
 
@@ -251,12 +271,14 @@ export type ExamUncheckedCreateInput = {
   id?: number
   name: string
   attachmentId: string
+  disciplineId: number
   competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutExamsInput
 }
 
 export type ExamUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  discipline?: Prisma.DisciplineUpdateOneRequiredWithoutExamsNestedInput
   competences?: Prisma.CompetenceUpdateManyWithoutExamsNestedInput
 }
 
@@ -264,6 +286,7 @@ export type ExamUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  disciplineId?: Prisma.IntFieldUpdateOperationsInput | number
   competences?: Prisma.CompetenceUncheckedUpdateManyWithoutExamsNestedInput
 }
 
@@ -271,6 +294,7 @@ export type ExamCreateManyInput = {
   id?: number
   name: string
   attachmentId: string
+  disciplineId: number
 }
 
 export type ExamUpdateManyMutationInput = {
@@ -282,6 +306,7 @@ export type ExamUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  disciplineId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ExamListRelationFilter = {
@@ -304,26 +329,31 @@ export type ExamCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   attachmentId?: Prisma.SortOrder
+  disciplineId?: Prisma.SortOrder
 }
 
 export type ExamAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  disciplineId?: Prisma.SortOrder
 }
 
 export type ExamMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   attachmentId?: Prisma.SortOrder
+  disciplineId?: Prisma.SortOrder
 }
 
 export type ExamMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   attachmentId?: Prisma.SortOrder
+  disciplineId?: Prisma.SortOrder
 }
 
 export type ExamSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  disciplineId?: Prisma.SortOrder
 }
 
 export type ExamCreateNestedManyWithoutCompetencesInput = {
@@ -364,15 +394,59 @@ export type ExamUncheckedUpdateManyWithoutCompetencesNestedInput = {
   deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
 }
 
+export type ExamCreateNestedManyWithoutDisciplineInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutDisciplineInput, Prisma.ExamUncheckedCreateWithoutDisciplineInput> | Prisma.ExamCreateWithoutDisciplineInput[] | Prisma.ExamUncheckedCreateWithoutDisciplineInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutDisciplineInput | Prisma.ExamCreateOrConnectWithoutDisciplineInput[]
+  createMany?: Prisma.ExamCreateManyDisciplineInputEnvelope
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+}
+
+export type ExamUncheckedCreateNestedManyWithoutDisciplineInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutDisciplineInput, Prisma.ExamUncheckedCreateWithoutDisciplineInput> | Prisma.ExamCreateWithoutDisciplineInput[] | Prisma.ExamUncheckedCreateWithoutDisciplineInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutDisciplineInput | Prisma.ExamCreateOrConnectWithoutDisciplineInput[]
+  createMany?: Prisma.ExamCreateManyDisciplineInputEnvelope
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+}
+
+export type ExamUpdateManyWithoutDisciplineNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutDisciplineInput, Prisma.ExamUncheckedCreateWithoutDisciplineInput> | Prisma.ExamCreateWithoutDisciplineInput[] | Prisma.ExamUncheckedCreateWithoutDisciplineInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutDisciplineInput | Prisma.ExamCreateOrConnectWithoutDisciplineInput[]
+  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutDisciplineInput | Prisma.ExamUpsertWithWhereUniqueWithoutDisciplineInput[]
+  createMany?: Prisma.ExamCreateManyDisciplineInputEnvelope
+  set?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  disconnect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  delete?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  update?: Prisma.ExamUpdateWithWhereUniqueWithoutDisciplineInput | Prisma.ExamUpdateWithWhereUniqueWithoutDisciplineInput[]
+  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutDisciplineInput | Prisma.ExamUpdateManyWithWhereWithoutDisciplineInput[]
+  deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
+}
+
+export type ExamUncheckedUpdateManyWithoutDisciplineNestedInput = {
+  create?: Prisma.XOR<Prisma.ExamCreateWithoutDisciplineInput, Prisma.ExamUncheckedCreateWithoutDisciplineInput> | Prisma.ExamCreateWithoutDisciplineInput[] | Prisma.ExamUncheckedCreateWithoutDisciplineInput[]
+  connectOrCreate?: Prisma.ExamCreateOrConnectWithoutDisciplineInput | Prisma.ExamCreateOrConnectWithoutDisciplineInput[]
+  upsert?: Prisma.ExamUpsertWithWhereUniqueWithoutDisciplineInput | Prisma.ExamUpsertWithWhereUniqueWithoutDisciplineInput[]
+  createMany?: Prisma.ExamCreateManyDisciplineInputEnvelope
+  set?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  disconnect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  delete?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  connect?: Prisma.ExamWhereUniqueInput | Prisma.ExamWhereUniqueInput[]
+  update?: Prisma.ExamUpdateWithWhereUniqueWithoutDisciplineInput | Prisma.ExamUpdateWithWhereUniqueWithoutDisciplineInput[]
+  updateMany?: Prisma.ExamUpdateManyWithWhereWithoutDisciplineInput | Prisma.ExamUpdateManyWithWhereWithoutDisciplineInput[]
+  deleteMany?: Prisma.ExamScalarWhereInput | Prisma.ExamScalarWhereInput[]
+}
+
 export type ExamCreateWithoutCompetencesInput = {
   name: string
   attachmentId: string
+  discipline: Prisma.DisciplineCreateNestedOneWithoutExamsInput
 }
 
 export type ExamUncheckedCreateWithoutCompetencesInput = {
   id?: number
   name: string
   attachmentId: string
+  disciplineId: number
 }
 
 export type ExamCreateOrConnectWithoutCompetencesInput = {
@@ -403,20 +477,88 @@ export type ExamScalarWhereInput = {
   id?: Prisma.IntFilter<"Exam"> | number
   name?: Prisma.StringFilter<"Exam"> | string
   attachmentId?: Prisma.StringFilter<"Exam"> | string
+  disciplineId?: Prisma.IntFilter<"Exam"> | number
+}
+
+export type ExamCreateWithoutDisciplineInput = {
+  name: string
+  attachmentId: string
+  competences?: Prisma.CompetenceCreateNestedManyWithoutExamsInput
+}
+
+export type ExamUncheckedCreateWithoutDisciplineInput = {
+  id?: number
+  name: string
+  attachmentId: string
+  competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutExamsInput
+}
+
+export type ExamCreateOrConnectWithoutDisciplineInput = {
+  where: Prisma.ExamWhereUniqueInput
+  create: Prisma.XOR<Prisma.ExamCreateWithoutDisciplineInput, Prisma.ExamUncheckedCreateWithoutDisciplineInput>
+}
+
+export type ExamCreateManyDisciplineInputEnvelope = {
+  data: Prisma.ExamCreateManyDisciplineInput | Prisma.ExamCreateManyDisciplineInput[]
+  skipDuplicates?: boolean
+}
+
+export type ExamUpsertWithWhereUniqueWithoutDisciplineInput = {
+  where: Prisma.ExamWhereUniqueInput
+  update: Prisma.XOR<Prisma.ExamUpdateWithoutDisciplineInput, Prisma.ExamUncheckedUpdateWithoutDisciplineInput>
+  create: Prisma.XOR<Prisma.ExamCreateWithoutDisciplineInput, Prisma.ExamUncheckedCreateWithoutDisciplineInput>
+}
+
+export type ExamUpdateWithWhereUniqueWithoutDisciplineInput = {
+  where: Prisma.ExamWhereUniqueInput
+  data: Prisma.XOR<Prisma.ExamUpdateWithoutDisciplineInput, Prisma.ExamUncheckedUpdateWithoutDisciplineInput>
+}
+
+export type ExamUpdateManyWithWhereWithoutDisciplineInput = {
+  where: Prisma.ExamScalarWhereInput
+  data: Prisma.XOR<Prisma.ExamUpdateManyMutationInput, Prisma.ExamUncheckedUpdateManyWithoutDisciplineInput>
 }
 
 export type ExamUpdateWithoutCompetencesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  discipline?: Prisma.DisciplineUpdateOneRequiredWithoutExamsNestedInput
 }
 
 export type ExamUncheckedUpdateWithoutCompetencesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  disciplineId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ExamUncheckedUpdateManyWithoutCompetencesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  disciplineId?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type ExamCreateManyDisciplineInput = {
+  id?: number
+  name: string
+  attachmentId: string
+}
+
+export type ExamUpdateWithoutDisciplineInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  competences?: Prisma.CompetenceUpdateManyWithoutExamsNestedInput
+}
+
+export type ExamUncheckedUpdateWithoutDisciplineInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  competences?: Prisma.CompetenceUncheckedUpdateManyWithoutExamsNestedInput
+}
+
+export type ExamUncheckedUpdateManyWithoutDisciplineInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
@@ -457,6 +599,8 @@ export type ExamSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   id?: boolean
   name?: boolean
   attachmentId?: boolean
+  disciplineId?: boolean
+  discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
   competences?: boolean | Prisma.Exam$competencesArgs<ExtArgs>
   _count?: boolean | Prisma.ExamCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["exam"]>
@@ -467,10 +611,12 @@ export type ExamSelectScalar = {
   id?: boolean
   name?: boolean
   attachmentId?: boolean
+  disciplineId?: boolean
 }
 
-export type ExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "attachmentId", ExtArgs["result"]["exam"]>
+export type ExamOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "attachmentId" | "disciplineId", ExtArgs["result"]["exam"]>
 export type ExamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
   competences?: boolean | Prisma.Exam$competencesArgs<ExtArgs>
   _count?: boolean | Prisma.ExamCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -478,12 +624,14 @@ export type ExamInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
 export type $ExamPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Exam"
   objects: {
+    discipline: Prisma.$DisciplinePayload<ExtArgs>
     competences: Prisma.$CompetencePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     name: string
     attachmentId: string
+    disciplineId: number
   }, ExtArgs["result"]["exam"]>
   composites: {}
 }
@@ -824,6 +972,7 @@ readonly fields: ExamFieldRefs;
  */
 export interface Prisma__ExamClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  discipline<T extends Prisma.DisciplineDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DisciplineDefaultArgs<ExtArgs>>): Prisma.Prisma__DisciplineClient<runtime.Types.Result.GetResult<Prisma.$DisciplinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   competences<T extends Prisma.Exam$competencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Exam$competencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -857,6 +1006,7 @@ export interface ExamFieldRefs {
   readonly id: Prisma.FieldRef<"Exam", 'Int'>
   readonly name: Prisma.FieldRef<"Exam", 'String'>
   readonly attachmentId: Prisma.FieldRef<"Exam", 'String'>
+  readonly disciplineId: Prisma.FieldRef<"Exam", 'Int'>
 }
     
 

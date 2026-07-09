@@ -106,6 +106,7 @@ model Discipline {
   materials Material[]
   competences Competence[]
   classes Class[]
+  exams Exam[]
 }
 
 model Area {
@@ -132,6 +133,8 @@ model Exam {
   name String
   attachmentId String
 
+  disciplineId Int
+  discipline Discipline @relation(fields: [disciplineId], references: [id])
   competences Competence[]
 }
 
