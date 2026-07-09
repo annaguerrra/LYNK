@@ -4,14 +4,20 @@
   font-weight: normal;
   display: inline-block;
   line-height: 1;
+  
 }
+
+
 
 .icon-user::before {
   content: "\e29b";
-  font-size: 25px;
 }
 
 .icon-left::before {
   content: "\f0110";
-  font-size: 25px;
+}
+
+.icon-close::before {
+  content: "\e0f0";
+  font-size: inherit;
 }

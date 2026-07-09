@@ -1,3 +1,5 @@
+import "./Styles/buttonBack.css"
+
 export function ButtonBack() {
     return (
         <>

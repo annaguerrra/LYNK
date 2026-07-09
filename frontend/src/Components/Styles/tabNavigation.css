@@ -1,0 +1,209 @@
+.a-tab-navigation {
+    background-color: rgb(255, 255, 255);
+    border-bottom: 1px solid black;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding: 0;
+    position: relative;
+    scrollbar-width: none;
+    width: 100%
+}
+
+.a-tab-navigation::-webkit-scrollbar {
+    height: 0
+}
+
+.a-tab-navigation:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: -3px;
+    position: relative;
+    --focus-border-radius: 0px
+}
+
+.a-tab-navigation:focus-visible:after {
+    border-radius: var(--focus-border-radius);
+    content: "";
+    height: 100%;
+    left: 0;
+    outline: 3px solid var(--background);
+    outline-offset: -6px;
+    position: absolute;
+    top: 0;
+    width: 100%
+}
+
+.a-tab-navigation__wrapper {
+    margin-bottom: 1em;
+    margin-top: 1em;
+    position: relative
+}
+
+.a-tab-navigation__item {
+    margin: 0;
+    padding: 0
+}
+
+.a-tab-navigation__item:before {
+    content: none
+}
+
+.a-tab-navigation button {
+    background: rgba(0, 0, 0, 0);
+    border: 0;
+    color: var(--nested-pure__enabled__default__front, var(--integrated-pure__enabled__default__front))
+}
+
+.a-tab-navigation button:focus-visible {
+    outline: 3px solid var(--nested-pure__enabled__default__front, var(--plain-pure__enabled__default__front));
+    outline-offset: -3px;
+    position: relative;
+    --focus-border-radius: 0px
+}
+
+.a-tab-navigation button:focus-visible:after {
+    border-radius: var(--focus-border-radius);
+    content: "";
+    height: 100%;
+    left: 0;
+    outline: 3px solid var(--background);
+    outline-offset: -6px;
+    position: absolute;
+    top: 0;
+    width: 100%
+}
+
+.a-tab-navigation a {
+    color: var(--nested-pure__enabled__default__front, var(--integrated-pure__enabled__default__front));
+    display: inline-block;
+    text-decoration: none
+}
+
+.a-tab-navigation a:focus-visible {
+    outline: 3px solid var(--nested-pure__enabled__default__front, var(--plain-pure__enabled__default__front));
+    outline-offset: -3px;
+    position: relative;
+    --focus-border-radius: 0px
+}
+
+.a-tab-navigation a:focus-visible:after {
+    border-radius: var(--focus-border-radius);
+    content: "";
+    height: 100%;
+    left: 0;
+    outline: 3px solid var(--background);
+    outline-offset: -6px;
+    position: absolute;
+    top: 0;
+    width: 100%
+}
+
+.a-tab-navigation__button-left,
+.a-tab-navigation__button-right {
+    background-color: var(--background);
+    display: none;
+    height: calc(100% - 1px);
+    position: absolute;
+    top: 0
+}
+
+.a-tab-navigation__button-left:active,
+.a-tab-navigation__button-left:hover,
+.a-tab-navigation__button-right:active,
+.a-tab-navigation__button-right:hover {
+    background-color: var(--background)
+}
+
+.a-tab-navigation__button-left:focus-visible,
+.a-tab-navigation__button-right:focus-visible {
+    position: absolute
+}
+
+.a-tab-navigation__button-left.a-button .a-button__icon,
+.a-tab-navigation__button-right.a-button .a-button__icon {
+    display: inline-block;
+    padding: .75rem .25rem .625rem
+}
+
+.a-tab-navigation__button-left {
+    left: 0;
+    z-index: 1
+}
+
+.a-tab-navigation__button-right {
+    right: 0
+}
+
+.a-tab-navigation--scrollLeft .a-tab-navigation__button-left,
+.a-tab-navigation--scrollRight .a-tab-navigation__button-right {
+    display: block
+}
+
+.a-tab-navigation__tab {
+    cursor: pointer;
+    padding: .75rem 1rem 0;
+    white-space: nowrap
+}
+
+.a-tab-navigation__tab:hover {
+    color: var(--nested-pure__enabled__hovered__front, var(--integrated-pure__enabled__hovered__front))
+}
+
+.a-tab-navigation__tab:active {
+    color: var(--nested-pure__enabled__pressed__front, var(--integrated-pure__enabled__pressed__front))
+}
+
+.a-tab-navigation__tab.-disabled {
+    background-color: var(--nested-pure__disabled__default__fill, var(--integrated-pure__disabled__default__fill));
+    color: var(--nested-pure__disabled__default__front, var(--integrated-pure__disabled__default__front));
+    cursor: default;
+    pointer-events: none
+}
+
+.a-tab-navigation__tab.-selected {
+    background-color: var(--nested-pure__enabled__default__fill, var(--accent-pure__enabled__default__fill));
+    color: var(--nested-pure__enabled__default__front, var(--accent-pure__enabled__default__front))
+}
+
+.a-tab-navigation__tab.-selected:hover {
+    color: var(--nested-pure__enabled__hovered__front, var(--accent-pure__enabled__hovered__front))
+}
+
+.a-tab-navigation__tab.-selected:active {
+    color: var(--nested-pure__enabled__pressed__front, var(--accent-pure__enabled__pressed__front))
+}
+
+.a-tab-navigation__tab.-only-icon {
+    padding-left: .75rem;
+    padding-right: .75rem
+}
+
+.a-tab-navigation__tab-content {
+    align-items: center;
+    border: 0;
+    border-bottom: .125rem solid black;
+    display: inline-flex;
+    letter-spacing: 0;
+    padding-bottom: .5625rem
+}
+
+.-selected .a-tab-navigation__tab-content {
+    border-color: var(--nested-pure__enabled__default__front, var(--accent-pure__enabled__default__front))
+}
+
+.-selected .a-tab-navigation__tab-content:hover {
+    border-color: var(--nested-pure__enabled__hovered__front, var(--accent-pure__enabled__hovered__front))
+}
+
+.-selected .a-tab-navigation__tab-content:active {
+    border-color: var(--nested-pure__enabled__pressed__front, var(--accent-pure__enabled__pressed__front))
+}
+
+.a-tab-navigation__icon+.a-tab-navigation__label {
+    margin-left: .5rem;
+    text-align: left
+}
+
+.a-tab-navigation__icon {
+    font-size: 1.5rem
+}

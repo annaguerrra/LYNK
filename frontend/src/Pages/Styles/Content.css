@@ -1,0 +1,9 @@
+.headerContent {
+    display: inline-flex;
+    width: 100%;
+    height: max-content;
+}
+
+.content {
+    width: 100%;
+}

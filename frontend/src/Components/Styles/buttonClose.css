@@ -1,14 +1,8 @@
-.btnBack {
-    width: 35px;
-    height: 35px;
+.btnClose {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: white;
     border: 0px;
-    margin-right: 2rem;
 }
 
-.btnBack .icon-left::before {
-    font-size: 60px;
-}
