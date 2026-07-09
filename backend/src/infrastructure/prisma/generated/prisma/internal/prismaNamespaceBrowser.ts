@@ -120,7 +120,7 @@ export type ClassScalarFieldEnum = (typeof ClassScalarFieldEnum)[keyof typeof Cl
 export const CompetenceScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  numOfHours: 'numOfHours',
+  numOfClasses: 'numOfClasses',
   createdAt: 'createdAt'
 } as const
 
@@ -131,6 +131,7 @@ export const DisciplineScalarFieldEnum = {
   id: 'id',
   name: 'name',
   createdAt: 'createdAt',
+  workLoad: 'workLoad',
   areaId: 'areaId'
 } as const
 

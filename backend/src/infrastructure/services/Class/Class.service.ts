@@ -1,9 +1,11 @@
+import { ClassDTO } from "#application/dtos/classDTO.js";
 import { ClassPayload, IClassService } from "#application/services/Class/IClass.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Class } from "#infrastructure/prisma/generated/prisma/client.js";
+import { error } from "node:console";
 
 export class ClassService implements IClassService{
-    async create(payload: ClassPayload, disciplineId: number, instructorId: number): Promise<Class> {
+    async create(payload: ClassDTO, disciplineId: number, instructorId: number): Promise<Class> {
         const {name, content} = payload;
         const createdClass = await prisma.class.create({
             data:{
@@ -21,7 +23,7 @@ export class ClassService implements IClassService{
 
         await prisma.log.create({
             data:{
-                action:"CLASS_CREATED",
+                action:"CREATED",
                 newData:{
                     name,
                     content
@@ -45,22 +47,42 @@ export class ClassService implements IClassService{
 
         return classes;
     }
-    async findOne(payload: ClassPayload, id: number): Promise<Class> {
+    async findOne(id: number): Promise<ClassDTO>{
         const target = await prisma.class.findFirst({
             where:{id}
         });
         if(!target){
-            return null;
+            throw new Error("Class not Found!");
         }
-
-        const lastUpdate = await prisma.log.findFirst({
+        
+        const log = await prisma.log.findFirst({
             where:{
-                entityId: id
-            }, 
-        })
+                entityId: id,
+                entityType: "Class"
+            }
+        });
+        
+        const lastUpdate = log?.updatedAt
+
+        return {
+            ...target,
+            lastUpdate
+        }
     }
     async viewCompetencies(id: number): Promise<string[]> {
-        throw new Error("Method not implemented.");
+        const target = await prisma.class.findMany({
+            where:{
+                id: id
+            },
+            select:{
+                competences:{
+                    select:{
+                        name: true
+                    }
+                }
+            }
+        });
+        
     }
     async delete(id: number): Promise<string> {
         throw new Error("Method not implemented.");

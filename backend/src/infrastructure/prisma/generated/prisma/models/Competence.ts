@@ -28,32 +28,32 @@ export type AggregateCompetence = {
 
 export type CompetenceAvgAggregateOutputType = {
   id: number | null
-  numOfHours: number | null
+  numOfClasses: number | null
 }
 
 export type CompetenceSumAggregateOutputType = {
   id: number | null
-  numOfHours: number | null
+  numOfClasses: number | null
 }
 
 export type CompetenceMinAggregateOutputType = {
   id: number | null
   name: string | null
-  numOfHours: number | null
+  numOfClasses: number | null
   createdAt: Date | null
 }
 
 export type CompetenceMaxAggregateOutputType = {
   id: number | null
   name: string | null
-  numOfHours: number | null
+  numOfClasses: number | null
   createdAt: Date | null
 }
 
 export type CompetenceCountAggregateOutputType = {
   id: number
   name: number
-  numOfHours: number
+  numOfClasses: number
   createdAt: number
   _all: number
 }
@@ -61,32 +61,32 @@ export type CompetenceCountAggregateOutputType = {
 
 export type CompetenceAvgAggregateInputType = {
   id?: true
-  numOfHours?: true
+  numOfClasses?: true
 }
 
 export type CompetenceSumAggregateInputType = {
   id?: true
-  numOfHours?: true
+  numOfClasses?: true
 }
 
 export type CompetenceMinAggregateInputType = {
   id?: true
   name?: true
-  numOfHours?: true
+  numOfClasses?: true
   createdAt?: true
 }
 
 export type CompetenceMaxAggregateInputType = {
   id?: true
   name?: true
-  numOfHours?: true
+  numOfClasses?: true
   createdAt?: true
 }
 
 export type CompetenceCountAggregateInputType = {
   id?: true
   name?: true
-  numOfHours?: true
+  numOfClasses?: true
   createdAt?: true
   _all?: true
 }
@@ -180,7 +180,7 @@ export type CompetenceGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type CompetenceGroupByOutputType = {
   id: number
   name: string
-  numOfHours: number
+  numOfClasses: number
   createdAt: Date
   _count: CompetenceCountAggregateOutputType | null
   _avg: CompetenceAvgAggregateOutputType | null
@@ -210,7 +210,7 @@ export type CompetenceWhereInput = {
   NOT?: Prisma.CompetenceWhereInput | Prisma.CompetenceWhereInput[]
   id?: Prisma.IntFilter<"Competence"> | number
   name?: Prisma.StringFilter<"Competence"> | string
-  numOfHours?: Prisma.IntFilter<"Competence"> | number
+  numOfClasses?: Prisma.IntFilter<"Competence"> | number
   createdAt?: Prisma.DateTimeFilter<"Competence"> | Date | string
   classes?: Prisma.ClassListRelationFilter
   exams?: Prisma.ExamListRelationFilter
@@ -220,7 +220,7 @@ export type CompetenceWhereInput = {
 export type CompetenceOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  numOfHours?: Prisma.SortOrder
+  numOfClasses?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   classes?: Prisma.ClassOrderByRelationAggregateInput
   exams?: Prisma.ExamOrderByRelationAggregateInput
@@ -234,7 +234,7 @@ export type CompetenceWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.CompetenceWhereInput[]
   NOT?: Prisma.CompetenceWhereInput | Prisma.CompetenceWhereInput[]
   name?: Prisma.StringFilter<"Competence"> | string
-  numOfHours?: Prisma.IntFilter<"Competence"> | number
+  numOfClasses?: Prisma.IntFilter<"Competence"> | number
   createdAt?: Prisma.DateTimeFilter<"Competence"> | Date | string
   classes?: Prisma.ClassListRelationFilter
   exams?: Prisma.ExamListRelationFilter
@@ -244,7 +244,7 @@ export type CompetenceWhereUniqueInput = Prisma.AtLeast<{
 export type CompetenceOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  numOfHours?: Prisma.SortOrder
+  numOfClasses?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.CompetenceCountOrderByAggregateInput
   _avg?: Prisma.CompetenceAvgOrderByAggregateInput
@@ -259,13 +259,13 @@ export type CompetenceScalarWhereWithAggregatesInput = {
   NOT?: Prisma.CompetenceScalarWhereWithAggregatesInput | Prisma.CompetenceScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Competence"> | number
   name?: Prisma.StringWithAggregatesFilter<"Competence"> | string
-  numOfHours?: Prisma.IntWithAggregatesFilter<"Competence"> | number
+  numOfClasses?: Prisma.IntWithAggregatesFilter<"Competence"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Competence"> | Date | string
 }
 
 export type CompetenceCreateInput = {
   name: string
-  numOfHours: number
+  numOfClasses: number
   createdAt?: Date | string
   classes?: Prisma.ClassCreateNestedManyWithoutCompetencesInput
   exams?: Prisma.ExamCreateNestedManyWithoutCompetencesInput
@@ -275,7 +275,7 @@ export type CompetenceCreateInput = {
 export type CompetenceUncheckedCreateInput = {
   id?: number
   name: string
-  numOfHours: number
+  numOfClasses: number
   createdAt?: Date | string
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutCompetencesInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutCompetencesInput
@@ -284,7 +284,7 @@ export type CompetenceUncheckedCreateInput = {
 
 export type CompetenceUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classes?: Prisma.ClassUpdateManyWithoutCompetencesNestedInput
   exams?: Prisma.ExamUpdateManyWithoutCompetencesNestedInput
@@ -294,7 +294,7 @@ export type CompetenceUpdateInput = {
 export type CompetenceUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classes?: Prisma.ClassUncheckedUpdateManyWithoutCompetencesNestedInput
   exams?: Prisma.ExamUncheckedUpdateManyWithoutCompetencesNestedInput
@@ -304,20 +304,20 @@ export type CompetenceUncheckedUpdateInput = {
 export type CompetenceCreateManyInput = {
   id?: number
   name: string
-  numOfHours: number
+  numOfClasses: number
   createdAt?: Date | string
 }
 
 export type CompetenceUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CompetenceUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -340,32 +340,32 @@ export type CompetenceOrderByRelevanceInput = {
 export type CompetenceCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  numOfHours?: Prisma.SortOrder
+  numOfClasses?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type CompetenceAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  numOfHours?: Prisma.SortOrder
+  numOfClasses?: Prisma.SortOrder
 }
 
 export type CompetenceMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  numOfHours?: Prisma.SortOrder
+  numOfClasses?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type CompetenceMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  numOfHours?: Prisma.SortOrder
+  numOfClasses?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type CompetenceSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  numOfHours?: Prisma.SortOrder
+  numOfClasses?: Prisma.SortOrder
 }
 
 export type CompetenceCreateNestedManyWithoutClassesInput = {
@@ -484,7 +484,7 @@ export type CompetenceUncheckedUpdateManyWithoutExamsNestedInput = {
 
 export type CompetenceCreateWithoutClassesInput = {
   name: string
-  numOfHours: number
+  numOfClasses: number
   createdAt?: Date | string
   exams?: Prisma.ExamCreateNestedManyWithoutCompetencesInput
   disciplines?: Prisma.DisciplineCreateNestedManyWithoutCompetencesInput
@@ -493,7 +493,7 @@ export type CompetenceCreateWithoutClassesInput = {
 export type CompetenceUncheckedCreateWithoutClassesInput = {
   id?: number
   name: string
-  numOfHours: number
+  numOfClasses: number
   createdAt?: Date | string
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutCompetencesInput
   disciplines?: Prisma.DisciplineUncheckedCreateNestedManyWithoutCompetencesInput
@@ -526,13 +526,13 @@ export type CompetenceScalarWhereInput = {
   NOT?: Prisma.CompetenceScalarWhereInput | Prisma.CompetenceScalarWhereInput[]
   id?: Prisma.IntFilter<"Competence"> | number
   name?: Prisma.StringFilter<"Competence"> | string
-  numOfHours?: Prisma.IntFilter<"Competence"> | number
+  numOfClasses?: Prisma.IntFilter<"Competence"> | number
   createdAt?: Prisma.DateTimeFilter<"Competence"> | Date | string
 }
 
 export type CompetenceCreateWithoutDisciplinesInput = {
   name: string
-  numOfHours: number
+  numOfClasses: number
   createdAt?: Date | string
   classes?: Prisma.ClassCreateNestedManyWithoutCompetencesInput
   exams?: Prisma.ExamCreateNestedManyWithoutCompetencesInput
@@ -541,7 +541,7 @@ export type CompetenceCreateWithoutDisciplinesInput = {
 export type CompetenceUncheckedCreateWithoutDisciplinesInput = {
   id?: number
   name: string
-  numOfHours: number
+  numOfClasses: number
   createdAt?: Date | string
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutCompetencesInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutCompetencesInput
@@ -570,7 +570,7 @@ export type CompetenceUpdateManyWithWhereWithoutDisciplinesInput = {
 
 export type CompetenceCreateWithoutExamsInput = {
   name: string
-  numOfHours: number
+  numOfClasses: number
   createdAt?: Date | string
   classes?: Prisma.ClassCreateNestedManyWithoutCompetencesInput
   disciplines?: Prisma.DisciplineCreateNestedManyWithoutCompetencesInput
@@ -579,7 +579,7 @@ export type CompetenceCreateWithoutExamsInput = {
 export type CompetenceUncheckedCreateWithoutExamsInput = {
   id?: number
   name: string
-  numOfHours: number
+  numOfClasses: number
   createdAt?: Date | string
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutCompetencesInput
   disciplines?: Prisma.DisciplineUncheckedCreateNestedManyWithoutCompetencesInput
@@ -608,7 +608,7 @@ export type CompetenceUpdateManyWithWhereWithoutExamsInput = {
 
 export type CompetenceUpdateWithoutClassesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   exams?: Prisma.ExamUpdateManyWithoutCompetencesNestedInput
   disciplines?: Prisma.DisciplineUpdateManyWithoutCompetencesNestedInput
@@ -617,7 +617,7 @@ export type CompetenceUpdateWithoutClassesInput = {
 export type CompetenceUncheckedUpdateWithoutClassesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   exams?: Prisma.ExamUncheckedUpdateManyWithoutCompetencesNestedInput
   disciplines?: Prisma.DisciplineUncheckedUpdateManyWithoutCompetencesNestedInput
@@ -626,13 +626,13 @@ export type CompetenceUncheckedUpdateWithoutClassesInput = {
 export type CompetenceUncheckedUpdateManyWithoutClassesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CompetenceUpdateWithoutDisciplinesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classes?: Prisma.ClassUpdateManyWithoutCompetencesNestedInput
   exams?: Prisma.ExamUpdateManyWithoutCompetencesNestedInput
@@ -641,7 +641,7 @@ export type CompetenceUpdateWithoutDisciplinesInput = {
 export type CompetenceUncheckedUpdateWithoutDisciplinesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classes?: Prisma.ClassUncheckedUpdateManyWithoutCompetencesNestedInput
   exams?: Prisma.ExamUncheckedUpdateManyWithoutCompetencesNestedInput
@@ -650,13 +650,13 @@ export type CompetenceUncheckedUpdateWithoutDisciplinesInput = {
 export type CompetenceUncheckedUpdateManyWithoutDisciplinesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CompetenceUpdateWithoutExamsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classes?: Prisma.ClassUpdateManyWithoutCompetencesNestedInput
   disciplines?: Prisma.DisciplineUpdateManyWithoutCompetencesNestedInput
@@ -665,7 +665,7 @@ export type CompetenceUpdateWithoutExamsInput = {
 export type CompetenceUncheckedUpdateWithoutExamsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   classes?: Prisma.ClassUncheckedUpdateManyWithoutCompetencesNestedInput
   disciplines?: Prisma.DisciplineUncheckedUpdateManyWithoutCompetencesNestedInput
@@ -674,7 +674,7 @@ export type CompetenceUncheckedUpdateWithoutExamsInput = {
 export type CompetenceUncheckedUpdateManyWithoutExamsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  numOfHours?: Prisma.IntFieldUpdateOperationsInput | number
+  numOfClasses?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -730,7 +730,7 @@ export type CompetenceCountOutputTypeCountDisciplinesArgs<ExtArgs extends runtim
 export type CompetenceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  numOfHours?: boolean
+  numOfClasses?: boolean
   createdAt?: boolean
   classes?: boolean | Prisma.Competence$classesArgs<ExtArgs>
   exams?: boolean | Prisma.Competence$examsArgs<ExtArgs>
@@ -743,11 +743,11 @@ export type CompetenceSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type CompetenceSelectScalar = {
   id?: boolean
   name?: boolean
-  numOfHours?: boolean
+  numOfClasses?: boolean
   createdAt?: boolean
 }
 
-export type CompetenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "numOfHours" | "createdAt", ExtArgs["result"]["competence"]>
+export type CompetenceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "numOfClasses" | "createdAt", ExtArgs["result"]["competence"]>
 export type CompetenceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   classes?: boolean | Prisma.Competence$classesArgs<ExtArgs>
   exams?: boolean | Prisma.Competence$examsArgs<ExtArgs>
@@ -765,7 +765,7 @@ export type $CompetencePayload<ExtArgs extends runtime.Types.Extensions.Internal
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     name: string
-    numOfHours: number
+    numOfClasses: number
     createdAt: Date
   }, ExtArgs["result"]["competence"]>
   composites: {}
@@ -1141,7 +1141,7 @@ export interface Prisma__CompetenceClient<T, Null = never, ExtArgs extends runti
 export interface CompetenceFieldRefs {
   readonly id: Prisma.FieldRef<"Competence", 'Int'>
   readonly name: Prisma.FieldRef<"Competence", 'String'>
-  readonly numOfHours: Prisma.FieldRef<"Competence", 'Int'>
+  readonly numOfClasses: Prisma.FieldRef<"Competence", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Competence", 'DateTime'>
 }
     

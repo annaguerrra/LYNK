@@ -78,7 +78,6 @@ model Class {
   name String
   content String @db.Text
   createdAt DateTime @default(now())
-
   disciplineId Int
   discipline Discipline @relation(fields: [disciplineId], references: [id])
   competences Competence[]
@@ -88,7 +87,7 @@ model Class {
 model Competence {
   id Int @default(autoincrement()) @id
   name String
-  numOfHours Int
+  numOfClasses Int
   createdAt DateTime @default(now())
 
   classes Class[]
@@ -100,7 +99,7 @@ model Discipline {
   id Int @default(autoincrement()) @id
   name String
   createdAt DateTime @default(now())
-
+  workLoad Int
   areaId Int
   area Area @relation(fields: [areaId], references: [id])
   materials Material[]

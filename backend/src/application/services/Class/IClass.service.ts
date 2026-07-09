@@ -1,16 +1,11 @@
+import { ClassDTO } from "#application/dtos/classDTO.js";
 import { Class } from "#infrastructure/prisma/generated/prisma/client.js";
 
-export interface ClassPayload{
-    classId: number
-    name: string
-    content: string
-}
-
 export interface IClassService{
-    create(payload: ClassPayload, disciplineId: number, instructorId: number): Promise<Class>;
+    create(payload: ClassDTO, disciplineId: number, instructorId: number): Promise<Class>;
     findAll(): Promise<Class[]>;
-    findOne(payload: ClassPayload, id: number):  Promise<Class>;
+    findOne(id: number): Promise<ClassDTO>;
     viewCompetencies(id: number): Promise<string[]>;
     delete(id: number): Promise<string>;
-    edit(payload: ClassPayload):  Promise<Class>;
+    edit(payload: ClassDTO):  Promise<Class>;
 }
