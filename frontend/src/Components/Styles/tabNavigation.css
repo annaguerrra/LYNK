@@ -30,7 +30,7 @@
 
 .a-tab-navigation__tab:hover,
 .a-tab-navigation__tab:active {
-    color: black;
+    color: black;    
 }
 
 .a-tab-navigation__tab.-selected {
@@ -42,6 +42,10 @@
     align-items: center;
     padding-bottom: .5625rem;
     border-bottom: .125rem solid transparent;
+}
+
+.a-tab-navigation__tab-content .a-tab-navigation__label {
+    font-size: 18px;
 }
 
 .a-tab-navigation__tab.-selected .a-tab-navigation__tab-content {

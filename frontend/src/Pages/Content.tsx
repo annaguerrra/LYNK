@@ -9,6 +9,7 @@ import { ExamsView } from "./ContentViews/ExamsView";
 
 export function Content() {
     const [selectedTab, setSelectedTab] = useState("exams");
+    const [markdown, setMarkdown] = useState("Olaaa")
 
     return (
         <>
@@ -27,7 +28,13 @@ export function Content() {
       {selectedTab === "classes" && <ClassesView/>}
       {selectedTab === "competences" && <CompetencesView/>}
       {selectedTab === "exams" && <ExamsView/>}
+
+                <textarea value={markdown} onChange={(e) => setMarkdown(e.target.value)}>
+
+                </textarea>
                 </div>
+
+
             </div>
         </>
     );
