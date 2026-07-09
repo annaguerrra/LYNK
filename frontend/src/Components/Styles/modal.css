@@ -24,10 +24,18 @@
   gap: 3vw;
   padding: 8vw; 
   background-color: #ffffff;
-  opacity: 100;
   width: 35vw; 
   height: auto;
   padding: 1vw;
+}
+
+.modalContainer input {
+  width: 90%;
+  height: auto;
+  padding: 0.7vw;
+  background-color: var(--gray);
+  font-size: large;
+  border: none;
 }
 
 .titleContainer {
@@ -40,15 +48,6 @@
 }
 
 .titleContainer h1 {
-    padding: 0.7vw;
-    font-size: x-large;
-}
-
-.modalInput {
-    width: 90%;
-    height: auto;
-    padding: 0.7vw;
-    background-color: var(--gray);
-    font-size: large;
-    border: none;
+  padding: 0.7vw;
+  font-size: x-large;
 }

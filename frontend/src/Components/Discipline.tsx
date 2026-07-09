@@ -3,10 +3,12 @@ import "./Styles/discipline.css";
 import { Modal } from "./Modal";
 import { useNavigate } from "react-router-dom";
 import { useModal } from "../Providers/modalContext";
+import { useState } from "react";
 
 export function DisciplineComp({Discipline, Area}) {
     const navigate = useNavigate();
-     const { modal, openModal } = useModal();
+    const { modal, openModal } = useModal();
+    const [texto, setTexto] = useState("")
 
     const options = [
         {
@@ -19,6 +21,18 @@ export function DisciplineComp({Discipline, Area}) {
         },
     ];
 
+    const inputs = [
+        {
+            name: "Editar"
+        },
+        {
+            name: "Excluir"
+        },
+         {
+            name: "Consultar"
+        }
+    ]
+
     return (
         <> 
         <div className="disciplineBox"> 
@@ -30,7 +44,8 @@ export function DisciplineComp({Discipline, Area}) {
             <MoreOpt data={options}></MoreOpt> 
         </div>
         {modal && (
-            <Modal Title={"Editar disciplina"}></Modal>
+            <Modal Title={"Editar disciplina"} Inputs={inputs}>
+            </Modal>
         )}
         </>
     );

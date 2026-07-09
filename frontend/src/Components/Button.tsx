@@ -1,13 +1,11 @@
-import { useNavigate } from "react-router-dom";
+import "./Styles/button.css"
 
 interface ButtonProps {
     ButtonTitle: string;
-    path?: string;
     onClose?: () => void;
 }
 
-export function Button({ ButtonTitle, path, onClose }: ButtonProps) {
-    const navigate = useNavigate();
+export function Button({ ButtonTitle, onClose }: ButtonProps) {
 
     return (
         <button className="backgroundButton" onClick={onClose}>
