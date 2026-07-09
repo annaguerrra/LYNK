@@ -1,10 +1,15 @@
+import "./Styles/Content.css"
+import { useState } from "react";
 import { ButtonBack } from "../Components/ButtonBack";
-import { ButtonClose } from "../Components/ButtonClose";
 import { Header } from "../Components/Header";
 import { TabNavigation } from "../Components/TabNavigation";
-import "./Styles/Content.css"
+import { ClassesView } from "./ContentViews/ClassesView";
+import { CompetencesView } from "./ContentViews/CompetencesView";
+import { ExamsView } from "./ContentViews/ExamsView";
 
 export function Content() {
+    const [selectedTab, setSelectedTab] = useState("exams");
+
     return (
         <>
             <Header />
@@ -14,8 +19,14 @@ export function Content() {
                     <span style={{ fontWeight: "bold", fontSize: "30px" }}>Introdução a Python</span>
                 </div>
                 <div className="content">
-                    <TabNavigation/>
-                    <ButtonClose size="50" />
+                    <TabNavigation
+                    selected={selectedTab}
+                    onChange={setSelectedTab}
+      />
+
+      {selectedTab === "classes" && <ClassesView/>}
+      {selectedTab === "competences" && <CompetencesView/>}
+      {selectedTab === "exams" && <ExamsView/>}
                 </div>
             </div>
         </>

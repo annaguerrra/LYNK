@@ -1,64 +1,54 @@
-import { useState } from "react";
 import "./Styles/tabNavigation.css"
 
-export function TabNavigation() {
-    const [selected, setSelected] = useState("inicio");
+type TabNavigationProps = {
+    selected: string;
+    onChange: (tab: string) => void;
+};
 
-  return (
-    <div className="a-tab-navigation__wrapper">
-      <ul className="a-tab-navigation">
-        <li className="a-tab-navigation__item">
-          <button
-            className={`a-tab-navigation__tab ${
-              selected === "inicio" ? "-selected" : ""
-            }`}
-            onClick={() => setSelected("inicio")}
-          >
-            <span className="a-tab-navigation__tab-content">
-              <span className="a-tab-navigation__label">Início</span>
-            </span>
-          </button>
-        </li>
+export function TabNavigation({
+    selected,
+    onChange,
+}: TabNavigationProps) {
+    return (
+        <div className="a-tab-navigation__wrapper">
+            <ul className="a-tab-navigation">
+                <li className="a-tab-navigation__item">
+                    <button
+                        className={`a-tab-navigation__tab ${selected === "classes" ? "-selected" : ""
+                            }`}
+                        onClick={() => onChange("classes")}
+                    >
+                        <span className="a-tab-navigation__tab-content">
+                            <span className="a-tab-navigation__label">Aulas</span>
+                        </span>
+                    </button>
+                </li>
 
-        <li className="a-tab-navigation__item">
-          <button
-            className={`a-tab-navigation__tab ${
-              selected === "produtos" ? "-selected" : ""
-            }`}
-            onClick={() => setSelected("produtos")}
-          >
-            <span className="a-tab-navigation__tab-content">
-              <span className="a-tab-navigation__label">Produtos</span>
-            </span>
-          </button>
-        </li>
+                <li className="a-tab-navigation__item">
+                    <button
+                        className={`a-tab-navigation__tab ${selected === "competences" ? "-selected" : ""
+                            }`}
+                        onClick={() => onChange("competences")}
+                    >
+                        <span className="a-tab-navigation__tab-content">
+                            <span className="a-tab-navigation__label">Competências</span>
+                        </span>
+                    </button>
+                </li>
 
-        <li className="a-tab-navigation__item">
-          <button
-            className={`a-tab-navigation__tab ${
-              selected === "servicos" ? "-selected" : ""
-            }`}
-            onClick={() => setSelected("servicos")}
-          >
-            <span className="a-tab-navigation__tab-content">
-              <span className="a-tab-navigation__label">Serviços</span>
-            </span>
-          </button>
-        </li>
+                <li className="a-tab-navigation__item">
+                    <button
+                        className={`a-tab-navigation__tab ${selected === "exams" ? "-selected" : ""
+                            }`}
+                        onClick={() => onChange("exams")}
+                    >
+                        <span className="a-tab-navigation__tab-content">
+                            <span className="a-tab-navigation__label">Avaliações</span>
+                        </span>
+                    </button>
+                </li>
 
-        <li className="a-tab-navigation__item">
-          <button
-            className={`a-tab-navigation__tab ${
-              selected === "contato" ? "-selected" : ""
-            }`}
-            onClick={() => setSelected("contato")}
-          >
-            <span className="a-tab-navigation__tab-content">
-              <span className="a-tab-navigation__label">Contato</span>
-            </span>
-          </button>
-        </li>
-      </ul>
-    </div>
-  );
+            </ul>
+        </div>
+    );
 }
