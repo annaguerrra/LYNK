@@ -4,19 +4,22 @@ import { Login } from './Pages/Login'
 import { Discipline } from './Pages/Discipline'
 import { Class } from './Pages/Class'
 import { Content } from './Pages/Content'
+import { ModalProvider } from './Providers/modalContext'
 
 function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login/>}></Route>
-          <Route path="/Disciplines" element={<Discipline/>}></Route>
-          <Route path="/Content" element={<Content/>}></Route>
-          <Route path="/Class" element={<Class/>}></Route>
-        </Routes>
-      </BrowserRouter>
+      <ModalProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route path="/Disciplines" element={<Discipline />} />
+            <Route path="/Content" element={<Content />} />
+            <Route path="/Class" element={<Class />} />
+          </Routes>
+        </BrowserRouter>
+      </ModalProvider>
     </>
   )
 }

@@ -1,21 +1,21 @@
-import { useState } from "react";
 import { MoreOpt } from "./MoreOpt";
 import "./Styles/discipline.css";
 import { Modal } from "./Modal";
 import { useNavigate } from "react-router-dom";
+import { useModal } from "../Providers/modalContext";
 
-export function DisciplineComp() {
+export function DisciplineComp({Discipline, Area}) {
     const navigate = useNavigate();
-    const [modal, setModal] = useState(false);
+     const { modal, openModal } = useModal();
 
     const options = [
         {
             name: "Editar disciplina",
-            onClick: () => setModal(true),
+            onClick: openModal
         },
         {
             name: "Excluir disciplina",
-            onClick: () => setModal(true),
+            onClick: openModal
         },
     ];
 
@@ -24,13 +24,13 @@ export function DisciplineComp() {
         <div className="disciplineBox"> 
             <div className="boxColor" onClick={() => navigate("/Class")}></div> 
             <div> 
-                <h1>Discipline</h1> 
-                <h2>Knowledge area</h2> 
+                <h1>{Discipline}</h1> 
+                <h2>{Area}</h2> 
             </div> 
             <MoreOpt data={options}></MoreOpt> 
         </div>
         {modal && (
-            <Modal onClose={modal}></Modal>
+            <Modal Title={"Editar disciplina"}></Modal>
         )}
         </>
     );

@@ -1,7 +1,7 @@
 .modalOverlay {
   position: fixed;
   inset: 0;
-  z-index: 10;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,39 +16,39 @@
 }
 
 .modalContainer {
-  z-index: 1;
+  position: fixed;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 3vw;
   padding: 8vw; 
   background-color: #ffffff;
-  border-radius: 10px; 
-  width: 70vw; 
+  opacity: 100;
+  width: 35vw; 
+  height: auto;
+  padding: 1vw;
 }
 
-.modalContainer img {
-    width: 35vw;
-}
-
-.modalInput{
-    padding: 2vw;
-    width: 65vw;
-    border-radius: 10px;
-    border: none;
-    background-color: rgb(201, 199, 199);
-}
-
-.modalButton {
-  padding: 2vw;
-  color: #ffffff;
-  border-radius: 10px;
-  cursor: pointer;
-  border: none;
-  transition: .5s;
-  background-color: #873480;
+.titleContainer {
   width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.modalButton:hover {
-  background-color: #501d4c;
+.titleContainer h1 {
+    padding: 0.7vw;
+    font-size: x-large;
+}
+
+.modalInput {
+    width: 90%;
+    height: auto;
+    padding: 0.7vw;
+    background-color: var(--gray);
+    font-size: large;
+    border: none;
 }
