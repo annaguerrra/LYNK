@@ -57,7 +57,9 @@ export const ModelName = {
   Area: 'Area',
   Material: 'Material',
   Exam: 'Exam',
-  Log: 'Log'
+  Log: 'Log',
+  ExamAttachment: 'ExamAttachment',
+  MaterialAttachment: 'MaterialAttachment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -149,7 +151,6 @@ export type AreaScalarFieldEnum = (typeof AreaScalarFieldEnum)[keyof typeof Area
 export const MaterialScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  attachmentId: 'attachmentId',
   disciplineId: 'disciplineId',
   classId: 'classId'
 } as const
@@ -160,7 +161,6 @@ export type MaterialScalarFieldEnum = (typeof MaterialScalarFieldEnum)[keyof typ
 export const ExamScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  attachmentId: 'attachmentId',
   disciplineId: 'disciplineId'
 } as const
 
@@ -179,6 +179,24 @@ export const LogScalarFieldEnum = {
 } as const
 
 export type LogScalarFieldEnum = (typeof LogScalarFieldEnum)[keyof typeof LogScalarFieldEnum]
+
+
+export const ExamAttachmentScalarFieldEnum = {
+  id: 'id',
+  examId: 'examId',
+  attachmentId: 'attachmentId'
+} as const
+
+export type ExamAttachmentScalarFieldEnum = (typeof ExamAttachmentScalarFieldEnum)[keyof typeof ExamAttachmentScalarFieldEnum]
+
+
+export const MaterialAttachmentScalarFieldEnum = {
+  id: 'id',
+  materialId: 'materialId',
+  attachmentId: 'attachmentId'
+} as const
+
+export type MaterialAttachmentScalarFieldEnum = (typeof MaterialAttachmentScalarFieldEnum)[keyof typeof MaterialAttachmentScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -247,16 +265,14 @@ export type AreaOrderByRelevanceFieldEnum = (typeof AreaOrderByRelevanceFieldEnu
 
 
 export const MaterialOrderByRelevanceFieldEnum = {
-  name: 'name',
-  attachmentId: 'attachmentId'
+  name: 'name'
 } as const
 
 export type MaterialOrderByRelevanceFieldEnum = (typeof MaterialOrderByRelevanceFieldEnum)[keyof typeof MaterialOrderByRelevanceFieldEnum]
 
 
 export const ExamOrderByRelevanceFieldEnum = {
-  name: 'name',
-  attachmentId: 'attachmentId'
+  name: 'name'
 } as const
 
 export type ExamOrderByRelevanceFieldEnum = (typeof ExamOrderByRelevanceFieldEnum)[keyof typeof ExamOrderByRelevanceFieldEnum]
@@ -277,4 +293,18 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const ExamAttachmentOrderByRelevanceFieldEnum = {
+  attachmentId: 'attachmentId'
+} as const
+
+export type ExamAttachmentOrderByRelevanceFieldEnum = (typeof ExamAttachmentOrderByRelevanceFieldEnum)[keyof typeof ExamAttachmentOrderByRelevanceFieldEnum]
+
+
+export const MaterialAttachmentOrderByRelevanceFieldEnum = {
+  attachmentId: 'attachmentId'
+} as const
+
+export type MaterialAttachmentOrderByRelevanceFieldEnum = (typeof MaterialAttachmentOrderByRelevanceFieldEnum)[keyof typeof MaterialAttachmentOrderByRelevanceFieldEnum]
 

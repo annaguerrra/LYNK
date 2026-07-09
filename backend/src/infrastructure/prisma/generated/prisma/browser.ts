@@ -62,3 +62,13 @@ export type Exam = Prisma.ExamModel
  * 
  */
 export type Log = Prisma.LogModel
+/**
+ * Model ExamAttachment
+ * 
+ */
+export type ExamAttachment = Prisma.ExamAttachmentModel
+/**
+ * Model MaterialAttachment
+ * 
+ */
+export type MaterialAttachment = Prisma.MaterialAttachmentModel

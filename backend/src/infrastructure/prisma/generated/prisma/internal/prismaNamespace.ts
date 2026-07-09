@@ -398,7 +398,9 @@ export const ModelName = {
   Area: 'Area',
   Material: 'Material',
   Exam: 'Exam',
-  Log: 'Log'
+  Log: 'Log',
+  ExamAttachment: 'ExamAttachment',
+  MaterialAttachment: 'MaterialAttachment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -414,7 +416,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "instructor" | "student" | "class" | "competence" | "discipline" | "area" | "material" | "exam" | "log"
+    modelProps: "instructor" | "student" | "class" | "competence" | "discipline" | "area" | "material" | "exam" | "log" | "examAttachment" | "materialAttachment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1012,6 +1014,138 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ExamAttachment: {
+      payload: Prisma.$ExamAttachmentPayload<ExtArgs>
+      fields: Prisma.ExamAttachmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ExamAttachmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamAttachmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ExamAttachmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamAttachmentPayload>
+        }
+        findFirst: {
+          args: Prisma.ExamAttachmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamAttachmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ExamAttachmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamAttachmentPayload>
+        }
+        findMany: {
+          args: Prisma.ExamAttachmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamAttachmentPayload>[]
+        }
+        create: {
+          args: Prisma.ExamAttachmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamAttachmentPayload>
+        }
+        createMany: {
+          args: Prisma.ExamAttachmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ExamAttachmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamAttachmentPayload>
+        }
+        update: {
+          args: Prisma.ExamAttachmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamAttachmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ExamAttachmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ExamAttachmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ExamAttachmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExamAttachmentPayload>
+        }
+        aggregate: {
+          args: Prisma.ExamAttachmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExamAttachment>
+        }
+        groupBy: {
+          args: Prisma.ExamAttachmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExamAttachmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ExamAttachmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExamAttachmentCountAggregateOutputType> | number
+        }
+      }
+    }
+    MaterialAttachment: {
+      payload: Prisma.$MaterialAttachmentPayload<ExtArgs>
+      fields: Prisma.MaterialAttachmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.MaterialAttachmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaterialAttachmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.MaterialAttachmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaterialAttachmentPayload>
+        }
+        findFirst: {
+          args: Prisma.MaterialAttachmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaterialAttachmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.MaterialAttachmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaterialAttachmentPayload>
+        }
+        findMany: {
+          args: Prisma.MaterialAttachmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaterialAttachmentPayload>[]
+        }
+        create: {
+          args: Prisma.MaterialAttachmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaterialAttachmentPayload>
+        }
+        createMany: {
+          args: Prisma.MaterialAttachmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.MaterialAttachmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaterialAttachmentPayload>
+        }
+        update: {
+          args: Prisma.MaterialAttachmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaterialAttachmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.MaterialAttachmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.MaterialAttachmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.MaterialAttachmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$MaterialAttachmentPayload>
+        }
+        aggregate: {
+          args: Prisma.MaterialAttachmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMaterialAttachment>
+        }
+        groupBy: {
+          args: Prisma.MaterialAttachmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MaterialAttachmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.MaterialAttachmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.MaterialAttachmentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1124,7 +1258,6 @@ export type AreaScalarFieldEnum = (typeof AreaScalarFieldEnum)[keyof typeof Area
 export const MaterialScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  attachmentId: 'attachmentId',
   disciplineId: 'disciplineId',
   classId: 'classId'
 } as const
@@ -1135,7 +1268,6 @@ export type MaterialScalarFieldEnum = (typeof MaterialScalarFieldEnum)[keyof typ
 export const ExamScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  attachmentId: 'attachmentId',
   disciplineId: 'disciplineId'
 } as const
 
@@ -1154,6 +1286,24 @@ export const LogScalarFieldEnum = {
 } as const
 
 export type LogScalarFieldEnum = (typeof LogScalarFieldEnum)[keyof typeof LogScalarFieldEnum]
+
+
+export const ExamAttachmentScalarFieldEnum = {
+  id: 'id',
+  examId: 'examId',
+  attachmentId: 'attachmentId'
+} as const
+
+export type ExamAttachmentScalarFieldEnum = (typeof ExamAttachmentScalarFieldEnum)[keyof typeof ExamAttachmentScalarFieldEnum]
+
+
+export const MaterialAttachmentScalarFieldEnum = {
+  id: 'id',
+  materialId: 'materialId',
+  attachmentId: 'attachmentId'
+} as const
+
+export type MaterialAttachmentScalarFieldEnum = (typeof MaterialAttachmentScalarFieldEnum)[keyof typeof MaterialAttachmentScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1222,16 +1372,14 @@ export type AreaOrderByRelevanceFieldEnum = (typeof AreaOrderByRelevanceFieldEnu
 
 
 export const MaterialOrderByRelevanceFieldEnum = {
-  name: 'name',
-  attachmentId: 'attachmentId'
+  name: 'name'
 } as const
 
 export type MaterialOrderByRelevanceFieldEnum = (typeof MaterialOrderByRelevanceFieldEnum)[keyof typeof MaterialOrderByRelevanceFieldEnum]
 
 
 export const ExamOrderByRelevanceFieldEnum = {
-  name: 'name',
-  attachmentId: 'attachmentId'
+  name: 'name'
 } as const
 
 export type ExamOrderByRelevanceFieldEnum = (typeof ExamOrderByRelevanceFieldEnum)[keyof typeof ExamOrderByRelevanceFieldEnum]
@@ -1252,6 +1400,20 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const ExamAttachmentOrderByRelevanceFieldEnum = {
+  attachmentId: 'attachmentId'
+} as const
+
+export type ExamAttachmentOrderByRelevanceFieldEnum = (typeof ExamAttachmentOrderByRelevanceFieldEnum)[keyof typeof ExamAttachmentOrderByRelevanceFieldEnum]
+
+
+export const MaterialAttachmentOrderByRelevanceFieldEnum = {
+  attachmentId: 'attachmentId'
+} as const
+
+export type MaterialAttachmentOrderByRelevanceFieldEnum = (typeof MaterialAttachmentOrderByRelevanceFieldEnum)[keyof typeof MaterialAttachmentOrderByRelevanceFieldEnum]
 
 
 
@@ -1432,6 +1594,8 @@ export type GlobalOmitConfig = {
   material?: Prisma.MaterialOmit
   exam?: Prisma.ExamOmit
   log?: Prisma.LogOmit
+  examAttachment?: Prisma.ExamAttachmentOmit
+  materialAttachment?: Prisma.MaterialAttachmentOmit
 }
 
 /* Types for Logging */

@@ -751,6 +751,7 @@ export type DisciplineUncheckedUpdateWithoutMaterialsInput = {
 export type DisciplineCreateWithoutExamsInput = {
   name: string
   createdAt?: Date | string
+  workLoad: number
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
   competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
@@ -761,6 +762,7 @@ export type DisciplineUncheckedCreateWithoutExamsInput = {
   id?: number
   name: string
   createdAt?: Date | string
+  workLoad: number
   areaId: number
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
   competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
@@ -786,6 +788,7 @@ export type DisciplineUpdateToOneWithWhereWithoutExamsInput = {
 export type DisciplineUpdateWithoutExamsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
   competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
@@ -796,6 +799,7 @@ export type DisciplineUncheckedUpdateWithoutExamsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
   competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput

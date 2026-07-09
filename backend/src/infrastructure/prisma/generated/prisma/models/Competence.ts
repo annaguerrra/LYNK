@@ -265,7 +265,7 @@ export type CompetenceScalarWhereWithAggregatesInput = {
 
 export type CompetenceCreateInput = {
   name: string
-  numOfClasses: number
+  numOfClasses?: number
   createdAt?: Date | string
   classes?: Prisma.ClassCreateNestedManyWithoutCompetencesInput
   exams?: Prisma.ExamCreateNestedManyWithoutCompetencesInput
@@ -275,7 +275,7 @@ export type CompetenceCreateInput = {
 export type CompetenceUncheckedCreateInput = {
   id?: number
   name: string
-  numOfClasses: number
+  numOfClasses?: number
   createdAt?: Date | string
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutCompetencesInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutCompetencesInput
@@ -304,7 +304,7 @@ export type CompetenceUncheckedUpdateInput = {
 export type CompetenceCreateManyInput = {
   id?: number
   name: string
-  numOfClasses: number
+  numOfClasses?: number
   createdAt?: Date | string
 }
 
@@ -484,7 +484,7 @@ export type CompetenceUncheckedUpdateManyWithoutExamsNestedInput = {
 
 export type CompetenceCreateWithoutClassesInput = {
   name: string
-  numOfClasses: number
+  numOfClasses?: number
   createdAt?: Date | string
   exams?: Prisma.ExamCreateNestedManyWithoutCompetencesInput
   disciplines?: Prisma.DisciplineCreateNestedManyWithoutCompetencesInput
@@ -493,7 +493,7 @@ export type CompetenceCreateWithoutClassesInput = {
 export type CompetenceUncheckedCreateWithoutClassesInput = {
   id?: number
   name: string
-  numOfClasses: number
+  numOfClasses?: number
   createdAt?: Date | string
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutCompetencesInput
   disciplines?: Prisma.DisciplineUncheckedCreateNestedManyWithoutCompetencesInput
@@ -532,7 +532,7 @@ export type CompetenceScalarWhereInput = {
 
 export type CompetenceCreateWithoutDisciplinesInput = {
   name: string
-  numOfClasses: number
+  numOfClasses?: number
   createdAt?: Date | string
   classes?: Prisma.ClassCreateNestedManyWithoutCompetencesInput
   exams?: Prisma.ExamCreateNestedManyWithoutCompetencesInput
@@ -541,7 +541,7 @@ export type CompetenceCreateWithoutDisciplinesInput = {
 export type CompetenceUncheckedCreateWithoutDisciplinesInput = {
   id?: number
   name: string
-  numOfClasses: number
+  numOfClasses?: number
   createdAt?: Date | string
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutCompetencesInput
   exams?: Prisma.ExamUncheckedCreateNestedManyWithoutCompetencesInput
@@ -570,7 +570,7 @@ export type CompetenceUpdateManyWithWhereWithoutDisciplinesInput = {
 
 export type CompetenceCreateWithoutExamsInput = {
   name: string
-  numOfClasses: number
+  numOfClasses?: number
   createdAt?: Date | string
   classes?: Prisma.ClassCreateNestedManyWithoutCompetencesInput
   disciplines?: Prisma.DisciplineCreateNestedManyWithoutCompetencesInput
@@ -579,7 +579,7 @@ export type CompetenceCreateWithoutExamsInput = {
 export type CompetenceUncheckedCreateWithoutExamsInput = {
   id?: number
   name: string
-  numOfClasses: number
+  numOfClasses?: number
   createdAt?: Date | string
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutCompetencesInput
   disciplines?: Prisma.DisciplineUncheckedCreateNestedManyWithoutCompetencesInput

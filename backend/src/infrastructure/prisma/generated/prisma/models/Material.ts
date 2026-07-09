@@ -41,7 +41,6 @@ export type MaterialSumAggregateOutputType = {
 export type MaterialMinAggregateOutputType = {
   id: number | null
   name: string | null
-  attachmentId: string | null
   disciplineId: number | null
   classId: number | null
 }
@@ -49,7 +48,6 @@ export type MaterialMinAggregateOutputType = {
 export type MaterialMaxAggregateOutputType = {
   id: number | null
   name: string | null
-  attachmentId: string | null
   disciplineId: number | null
   classId: number | null
 }
@@ -57,7 +55,6 @@ export type MaterialMaxAggregateOutputType = {
 export type MaterialCountAggregateOutputType = {
   id: number
   name: number
-  attachmentId: number
   disciplineId: number
   classId: number
   _all: number
@@ -79,7 +76,6 @@ export type MaterialSumAggregateInputType = {
 export type MaterialMinAggregateInputType = {
   id?: true
   name?: true
-  attachmentId?: true
   disciplineId?: true
   classId?: true
 }
@@ -87,7 +83,6 @@ export type MaterialMinAggregateInputType = {
 export type MaterialMaxAggregateInputType = {
   id?: true
   name?: true
-  attachmentId?: true
   disciplineId?: true
   classId?: true
 }
@@ -95,7 +90,6 @@ export type MaterialMaxAggregateInputType = {
 export type MaterialCountAggregateInputType = {
   id?: true
   name?: true
-  attachmentId?: true
   disciplineId?: true
   classId?: true
   _all?: true
@@ -190,7 +184,6 @@ export type MaterialGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 export type MaterialGroupByOutputType = {
   id: number
   name: string
-  attachmentId: string
   disciplineId: number
   classId: number
   _count: MaterialCountAggregateOutputType | null
@@ -221,9 +214,9 @@ export type MaterialWhereInput = {
   NOT?: Prisma.MaterialWhereInput | Prisma.MaterialWhereInput[]
   id?: Prisma.IntFilter<"Material"> | number
   name?: Prisma.StringFilter<"Material"> | string
-  attachmentId?: Prisma.StringFilter<"Material"> | string
   disciplineId?: Prisma.IntFilter<"Material"> | number
   classId?: Prisma.IntFilter<"Material"> | number
+  attachments?: Prisma.MaterialAttachmentListRelationFilter
   discipline?: Prisma.XOR<Prisma.DisciplineScalarRelationFilter, Prisma.DisciplineWhereInput>
   class?: Prisma.XOR<Prisma.ClassScalarRelationFilter, Prisma.ClassWhereInput>
 }
@@ -231,9 +224,9 @@ export type MaterialWhereInput = {
 export type MaterialOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  attachmentId?: Prisma.SortOrder
   disciplineId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
+  attachments?: Prisma.MaterialAttachmentOrderByRelationAggregateInput
   discipline?: Prisma.DisciplineOrderByWithRelationInput
   class?: Prisma.ClassOrderByWithRelationInput
   _relevance?: Prisma.MaterialOrderByRelevanceInput
@@ -245,9 +238,9 @@ export type MaterialWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.MaterialWhereInput[]
   NOT?: Prisma.MaterialWhereInput | Prisma.MaterialWhereInput[]
   name?: Prisma.StringFilter<"Material"> | string
-  attachmentId?: Prisma.StringFilter<"Material"> | string
   disciplineId?: Prisma.IntFilter<"Material"> | number
   classId?: Prisma.IntFilter<"Material"> | number
+  attachments?: Prisma.MaterialAttachmentListRelationFilter
   discipline?: Prisma.XOR<Prisma.DisciplineScalarRelationFilter, Prisma.DisciplineWhereInput>
   class?: Prisma.XOR<Prisma.ClassScalarRelationFilter, Prisma.ClassWhereInput>
 }, "id">
@@ -255,7 +248,6 @@ export type MaterialWhereUniqueInput = Prisma.AtLeast<{
 export type MaterialOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  attachmentId?: Prisma.SortOrder
   disciplineId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
   _count?: Prisma.MaterialCountOrderByAggregateInput
@@ -271,14 +263,13 @@ export type MaterialScalarWhereWithAggregatesInput = {
   NOT?: Prisma.MaterialScalarWhereWithAggregatesInput | Prisma.MaterialScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Material"> | number
   name?: Prisma.StringWithAggregatesFilter<"Material"> | string
-  attachmentId?: Prisma.StringWithAggregatesFilter<"Material"> | string
   disciplineId?: Prisma.IntWithAggregatesFilter<"Material"> | number
   classId?: Prisma.IntWithAggregatesFilter<"Material"> | number
 }
 
 export type MaterialCreateInput = {
   name: string
-  attachmentId: string
+  attachments?: Prisma.MaterialAttachmentCreateNestedManyWithoutMaterialInput
   discipline: Prisma.DisciplineCreateNestedOneWithoutMaterialsInput
   class: Prisma.ClassCreateNestedOneWithoutMaterialsInput
 }
@@ -286,14 +277,14 @@ export type MaterialCreateInput = {
 export type MaterialUncheckedCreateInput = {
   id?: number
   name: string
-  attachmentId: string
   disciplineId: number
   classId: number
+  attachments?: Prisma.MaterialAttachmentUncheckedCreateNestedManyWithoutMaterialInput
 }
 
 export type MaterialUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachments?: Prisma.MaterialAttachmentUpdateManyWithoutMaterialNestedInput
   discipline?: Prisma.DisciplineUpdateOneRequiredWithoutMaterialsNestedInput
   class?: Prisma.ClassUpdateOneRequiredWithoutMaterialsNestedInput
 }
@@ -301,28 +292,25 @@ export type MaterialUpdateInput = {
 export type MaterialUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
   disciplineId?: Prisma.IntFieldUpdateOperationsInput | number
   classId?: Prisma.IntFieldUpdateOperationsInput | number
+  attachments?: Prisma.MaterialAttachmentUncheckedUpdateManyWithoutMaterialNestedInput
 }
 
 export type MaterialCreateManyInput = {
   id?: number
   name: string
-  attachmentId: string
   disciplineId: number
   classId: number
 }
 
 export type MaterialUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type MaterialUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
   disciplineId?: Prisma.IntFieldUpdateOperationsInput | number
   classId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -346,7 +334,6 @@ export type MaterialOrderByRelevanceInput = {
 export type MaterialCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  attachmentId?: Prisma.SortOrder
   disciplineId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
 }
@@ -360,7 +347,6 @@ export type MaterialAvgOrderByAggregateInput = {
 export type MaterialMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  attachmentId?: Prisma.SortOrder
   disciplineId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
 }
@@ -368,7 +354,6 @@ export type MaterialMaxOrderByAggregateInput = {
 export type MaterialMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  attachmentId?: Prisma.SortOrder
   disciplineId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
 }
@@ -377,6 +362,11 @@ export type MaterialSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   disciplineId?: Prisma.SortOrder
   classId?: Prisma.SortOrder
+}
+
+export type MaterialScalarRelationFilter = {
+  is?: Prisma.MaterialWhereInput
+  isNot?: Prisma.MaterialWhereInput
 }
 
 export type MaterialCreateNestedManyWithoutClassInput = {
@@ -463,17 +453,31 @@ export type MaterialUncheckedUpdateManyWithoutDisciplineNestedInput = {
   deleteMany?: Prisma.MaterialScalarWhereInput | Prisma.MaterialScalarWhereInput[]
 }
 
+export type MaterialCreateNestedOneWithoutAttachmentsInput = {
+  create?: Prisma.XOR<Prisma.MaterialCreateWithoutAttachmentsInput, Prisma.MaterialUncheckedCreateWithoutAttachmentsInput>
+  connectOrCreate?: Prisma.MaterialCreateOrConnectWithoutAttachmentsInput
+  connect?: Prisma.MaterialWhereUniqueInput
+}
+
+export type MaterialUpdateOneRequiredWithoutAttachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.MaterialCreateWithoutAttachmentsInput, Prisma.MaterialUncheckedCreateWithoutAttachmentsInput>
+  connectOrCreate?: Prisma.MaterialCreateOrConnectWithoutAttachmentsInput
+  upsert?: Prisma.MaterialUpsertWithoutAttachmentsInput
+  connect?: Prisma.MaterialWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.MaterialUpdateToOneWithWhereWithoutAttachmentsInput, Prisma.MaterialUpdateWithoutAttachmentsInput>, Prisma.MaterialUncheckedUpdateWithoutAttachmentsInput>
+}
+
 export type MaterialCreateWithoutClassInput = {
   name: string
-  attachmentId: string
+  attachments?: Prisma.MaterialAttachmentCreateNestedManyWithoutMaterialInput
   discipline: Prisma.DisciplineCreateNestedOneWithoutMaterialsInput
 }
 
 export type MaterialUncheckedCreateWithoutClassInput = {
   id?: number
   name: string
-  attachmentId: string
   disciplineId: number
+  attachments?: Prisma.MaterialAttachmentUncheckedCreateNestedManyWithoutMaterialInput
 }
 
 export type MaterialCreateOrConnectWithoutClassInput = {
@@ -508,22 +512,21 @@ export type MaterialScalarWhereInput = {
   NOT?: Prisma.MaterialScalarWhereInput | Prisma.MaterialScalarWhereInput[]
   id?: Prisma.IntFilter<"Material"> | number
   name?: Prisma.StringFilter<"Material"> | string
-  attachmentId?: Prisma.StringFilter<"Material"> | string
   disciplineId?: Prisma.IntFilter<"Material"> | number
   classId?: Prisma.IntFilter<"Material"> | number
 }
 
 export type MaterialCreateWithoutDisciplineInput = {
   name: string
-  attachmentId: string
+  attachments?: Prisma.MaterialAttachmentCreateNestedManyWithoutMaterialInput
   class: Prisma.ClassCreateNestedOneWithoutMaterialsInput
 }
 
 export type MaterialUncheckedCreateWithoutDisciplineInput = {
   id?: number
   name: string
-  attachmentId: string
   classId: number
+  attachments?: Prisma.MaterialAttachmentUncheckedCreateNestedManyWithoutMaterialInput
 }
 
 export type MaterialCreateOrConnectWithoutDisciplineInput = {
@@ -552,70 +555,138 @@ export type MaterialUpdateManyWithWhereWithoutDisciplineInput = {
   data: Prisma.XOR<Prisma.MaterialUpdateManyMutationInput, Prisma.MaterialUncheckedUpdateManyWithoutDisciplineInput>
 }
 
+export type MaterialCreateWithoutAttachmentsInput = {
+  name: string
+  discipline: Prisma.DisciplineCreateNestedOneWithoutMaterialsInput
+  class: Prisma.ClassCreateNestedOneWithoutMaterialsInput
+}
+
+export type MaterialUncheckedCreateWithoutAttachmentsInput = {
+  id?: number
+  name: string
+  disciplineId: number
+  classId: number
+}
+
+export type MaterialCreateOrConnectWithoutAttachmentsInput = {
+  where: Prisma.MaterialWhereUniqueInput
+  create: Prisma.XOR<Prisma.MaterialCreateWithoutAttachmentsInput, Prisma.MaterialUncheckedCreateWithoutAttachmentsInput>
+}
+
+export type MaterialUpsertWithoutAttachmentsInput = {
+  update: Prisma.XOR<Prisma.MaterialUpdateWithoutAttachmentsInput, Prisma.MaterialUncheckedUpdateWithoutAttachmentsInput>
+  create: Prisma.XOR<Prisma.MaterialCreateWithoutAttachmentsInput, Prisma.MaterialUncheckedCreateWithoutAttachmentsInput>
+  where?: Prisma.MaterialWhereInput
+}
+
+export type MaterialUpdateToOneWithWhereWithoutAttachmentsInput = {
+  where?: Prisma.MaterialWhereInput
+  data: Prisma.XOR<Prisma.MaterialUpdateWithoutAttachmentsInput, Prisma.MaterialUncheckedUpdateWithoutAttachmentsInput>
+}
+
+export type MaterialUpdateWithoutAttachmentsInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  discipline?: Prisma.DisciplineUpdateOneRequiredWithoutMaterialsNestedInput
+  class?: Prisma.ClassUpdateOneRequiredWithoutMaterialsNestedInput
+}
+
+export type MaterialUncheckedUpdateWithoutAttachmentsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  disciplineId?: Prisma.IntFieldUpdateOperationsInput | number
+  classId?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
 export type MaterialCreateManyClassInput = {
   id?: number
   name: string
-  attachmentId: string
   disciplineId: number
 }
 
 export type MaterialUpdateWithoutClassInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachments?: Prisma.MaterialAttachmentUpdateManyWithoutMaterialNestedInput
   discipline?: Prisma.DisciplineUpdateOneRequiredWithoutMaterialsNestedInput
 }
 
 export type MaterialUncheckedUpdateWithoutClassInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
   disciplineId?: Prisma.IntFieldUpdateOperationsInput | number
+  attachments?: Prisma.MaterialAttachmentUncheckedUpdateManyWithoutMaterialNestedInput
 }
 
 export type MaterialUncheckedUpdateManyWithoutClassInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
   disciplineId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type MaterialCreateManyDisciplineInput = {
   id?: number
   name: string
-  attachmentId: string
   classId: number
 }
 
 export type MaterialUpdateWithoutDisciplineInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachments?: Prisma.MaterialAttachmentUpdateManyWithoutMaterialNestedInput
   class?: Prisma.ClassUpdateOneRequiredWithoutMaterialsNestedInput
 }
 
 export type MaterialUncheckedUpdateWithoutDisciplineInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.IntFieldUpdateOperationsInput | number
+  attachments?: Prisma.MaterialAttachmentUncheckedUpdateManyWithoutMaterialNestedInput
 }
 
 export type MaterialUncheckedUpdateManyWithoutDisciplineInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
   classId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
+
+/**
+ * Count Type MaterialCountOutputType
+ */
+
+export type MaterialCountOutputType = {
+  attachments: number
+}
+
+export type MaterialCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  attachments?: boolean | MaterialCountOutputTypeCountAttachmentsArgs
+}
+
+/**
+ * MaterialCountOutputType without action
+ */
+export type MaterialCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MaterialCountOutputType
+   */
+  select?: Prisma.MaterialCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * MaterialCountOutputType without action
+ */
+export type MaterialCountOutputTypeCountAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MaterialAttachmentWhereInput
+}
 
 
 export type MaterialSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  attachmentId?: boolean
   disciplineId?: boolean
   classId?: boolean
+  attachments?: boolean | Prisma.Material$attachmentsArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.MaterialCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["material"]>
 
 
@@ -623,27 +694,28 @@ export type MaterialSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
 export type MaterialSelectScalar = {
   id?: boolean
   name?: boolean
-  attachmentId?: boolean
   disciplineId?: boolean
   classId?: boolean
 }
 
-export type MaterialOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "attachmentId" | "disciplineId" | "classId", ExtArgs["result"]["material"]>
+export type MaterialOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "disciplineId" | "classId", ExtArgs["result"]["material"]>
 export type MaterialInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  attachments?: boolean | Prisma.Material$attachmentsArgs<ExtArgs>
   discipline?: boolean | Prisma.DisciplineDefaultArgs<ExtArgs>
   class?: boolean | Prisma.ClassDefaultArgs<ExtArgs>
+  _count?: boolean | Prisma.MaterialCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $MaterialPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Material"
   objects: {
+    attachments: Prisma.$MaterialAttachmentPayload<ExtArgs>[]
     discipline: Prisma.$DisciplinePayload<ExtArgs>
     class: Prisma.$ClassPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     name: string
-    attachmentId: string
     disciplineId: number
     classId: number
   }, ExtArgs["result"]["material"]>
@@ -986,6 +1058,7 @@ readonly fields: MaterialFieldRefs;
  */
 export interface Prisma__MaterialClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  attachments<T extends Prisma.Material$attachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Material$attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaterialAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   discipline<T extends Prisma.DisciplineDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DisciplineDefaultArgs<ExtArgs>>): Prisma.Prisma__DisciplineClient<runtime.Types.Result.GetResult<Prisma.$DisciplinePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   class<T extends Prisma.ClassDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ClassDefaultArgs<ExtArgs>>): Prisma.Prisma__ClassClient<runtime.Types.Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1019,7 +1092,6 @@ export interface Prisma__MaterialClient<T, Null = never, ExtArgs extends runtime
 export interface MaterialFieldRefs {
   readonly id: Prisma.FieldRef<"Material", 'Int'>
   readonly name: Prisma.FieldRef<"Material", 'String'>
-  readonly attachmentId: Prisma.FieldRef<"Material", 'String'>
   readonly disciplineId: Prisma.FieldRef<"Material", 'Int'>
   readonly classId: Prisma.FieldRef<"Material", 'Int'>
 }
@@ -1362,6 +1434,30 @@ export type MaterialDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Materials to delete.
    */
   limit?: number
+}
+
+/**
+ * Material.attachments
+ */
+export type Material$attachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MaterialAttachment
+   */
+  select?: Prisma.MaterialAttachmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MaterialAttachment
+   */
+  omit?: Prisma.MaterialAttachmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MaterialAttachmentInclude<ExtArgs> | null
+  where?: Prisma.MaterialAttachmentWhereInput
+  orderBy?: Prisma.MaterialAttachmentOrderByWithRelationInput | Prisma.MaterialAttachmentOrderByWithRelationInput[]
+  cursor?: Prisma.MaterialAttachmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MaterialAttachmentScalarFieldEnum | Prisma.MaterialAttachmentScalarFieldEnum[]
 }
 
 /**
