@@ -1,7 +1,7 @@
 import { registerCompetenceDTO, updateCompetenceDTO } from "#application/dtos/competenceDTO.js";
 import { ICompetenceService } from "#application/services/Competence/ICompetence.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
-import { Competence, Area } from "#infrastructure/prisma/generated/prisma/client.js";
+import { Competence } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export class CompetenceService implements ICompetenceService {
 
@@ -16,16 +16,32 @@ export class CompetenceService implements ICompetenceService {
         return await prisma.competence.findMany()
     }
 
-    getCompetenceByName(name: string): Promise<Area | null> {
-        throw new Error("Method not implemented.");
+    async getCompetenceByName(name: string): Promise<Competence | null> {
+        return await prisma.competence.findFirst({
+            where: {
+                name: name
+            }
+        })
     }
 
-    updateCompetence(id: number, data: updateCompetenceDTO): Promise<Area> {
-        throw new Error("Method not implemented.");
+    async updateCompetence(id: number, data: updateCompetenceDTO): Promise<Competence> {
+        const { name } = data
+        return await prisma.competence.update({
+            where: {
+                id: id
+            },
+            data: {
+                name: name
+            }
+        })
     }
 
-    deleteCompetence(id: number): Promise<void> {
-        throw new Error("Method not implemented.");
+    async deleteCompetence(id: number): Promise<void> {
+        await prisma.competence.delete({
+            where: {
+                id: id
+            }
+        })
     }
 
 }

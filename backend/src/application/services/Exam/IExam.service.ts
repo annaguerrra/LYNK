@@ -6,4 +6,5 @@ export interface IExamService {
     attachtFile(data: attachtFileDTO): Promise<Exam>
     showExams(): Promise<Exam[]>
     showExam(id: number): Promise<showExamDTO>
+    dowloadExam():
 }

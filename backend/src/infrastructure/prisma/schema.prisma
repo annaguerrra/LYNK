@@ -87,7 +87,7 @@ model Class {
 model Competence {
   id Int @default(autoincrement()) @id
   name String
-  numOfClasses Int
+  numOfClasses Int @default(0)
   createdAt DateTime @default(now())
 
   classes Class[]
