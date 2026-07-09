@@ -6,9 +6,9 @@ import { Competence, Area } from "#infrastructure/prisma/generated/prisma/client
 export class CompetenceService implements ICompetenceService {
 
     async registerCompetence(data: registerCompetenceDTO): Promise<Competence> {
-        const { name, numOfHours } = data
+        const { name } = data
         return await prisma.competence.create({
-            data: { name, numOfHours}
+            data: { name }
         })
     }
     

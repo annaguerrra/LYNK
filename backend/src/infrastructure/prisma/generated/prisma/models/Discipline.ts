@@ -228,6 +228,7 @@ export type DisciplineWhereInput = {
   materials?: Prisma.MaterialListRelationFilter
   competences?: Prisma.CompetenceListRelationFilter
   classes?: Prisma.ClassListRelationFilter
+  exams?: Prisma.ExamListRelationFilter
 }
 
 export type DisciplineOrderByWithRelationInput = {
@@ -240,6 +241,7 @@ export type DisciplineOrderByWithRelationInput = {
   materials?: Prisma.MaterialOrderByRelationAggregateInput
   competences?: Prisma.CompetenceOrderByRelationAggregateInput
   classes?: Prisma.ClassOrderByRelationAggregateInput
+  exams?: Prisma.ExamOrderByRelationAggregateInput
   _relevance?: Prisma.DisciplineOrderByRelevanceInput
 }
 
@@ -256,6 +258,7 @@ export type DisciplineWhereUniqueInput = Prisma.AtLeast<{
   materials?: Prisma.MaterialListRelationFilter
   competences?: Prisma.CompetenceListRelationFilter
   classes?: Prisma.ClassListRelationFilter
+  exams?: Prisma.ExamListRelationFilter
 }, "id">
 
 export type DisciplineOrderByWithAggregationInput = {
@@ -290,6 +293,7 @@ export type DisciplineCreateInput = {
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
   competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassCreateNestedManyWithoutDisciplineInput
+  exams?: Prisma.ExamCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUncheckedCreateInput = {
@@ -301,6 +305,7 @@ export type DisciplineUncheckedCreateInput = {
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
   competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutDisciplineInput
+  exams?: Prisma.ExamUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUpdateInput = {
@@ -311,6 +316,7 @@ export type DisciplineUpdateInput = {
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
   competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUpdateManyWithoutDisciplineNestedInput
+  exams?: Prisma.ExamUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateInput = {
@@ -322,6 +328,7 @@ export type DisciplineUncheckedUpdateInput = {
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
   competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUncheckedUpdateManyWithoutDisciplineNestedInput
+  exams?: Prisma.ExamUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineCreateManyInput = {
@@ -511,6 +518,20 @@ export type DisciplineUpdateOneRequiredWithoutMaterialsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DisciplineUpdateToOneWithWhereWithoutMaterialsInput, Prisma.DisciplineUpdateWithoutMaterialsInput>, Prisma.DisciplineUncheckedUpdateWithoutMaterialsInput>
 }
 
+export type DisciplineCreateNestedOneWithoutExamsInput = {
+  create?: Prisma.XOR<Prisma.DisciplineCreateWithoutExamsInput, Prisma.DisciplineUncheckedCreateWithoutExamsInput>
+  connectOrCreate?: Prisma.DisciplineCreateOrConnectWithoutExamsInput
+  connect?: Prisma.DisciplineWhereUniqueInput
+}
+
+export type DisciplineUpdateOneRequiredWithoutExamsNestedInput = {
+  create?: Prisma.XOR<Prisma.DisciplineCreateWithoutExamsInput, Prisma.DisciplineUncheckedCreateWithoutExamsInput>
+  connectOrCreate?: Prisma.DisciplineCreateOrConnectWithoutExamsInput
+  upsert?: Prisma.DisciplineUpsertWithoutExamsInput
+  connect?: Prisma.DisciplineWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DisciplineUpdateToOneWithWhereWithoutExamsInput, Prisma.DisciplineUpdateWithoutExamsInput>, Prisma.DisciplineUncheckedUpdateWithoutExamsInput>
+}
+
 export type DisciplineCreateWithoutClassesInput = {
   name: string
   createdAt?: Date | string
@@ -518,6 +539,7 @@ export type DisciplineCreateWithoutClassesInput = {
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
   competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
+  exams?: Prisma.ExamCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUncheckedCreateWithoutClassesInput = {
@@ -528,6 +550,7 @@ export type DisciplineUncheckedCreateWithoutClassesInput = {
   areaId: number
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
   competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
+  exams?: Prisma.ExamUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineCreateOrConnectWithoutClassesInput = {
@@ -553,6 +576,7 @@ export type DisciplineUpdateWithoutClassesInput = {
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
   competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
+  exams?: Prisma.ExamUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateWithoutClassesInput = {
@@ -563,6 +587,7 @@ export type DisciplineUncheckedUpdateWithoutClassesInput = {
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
   competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput
+  exams?: Prisma.ExamUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineCreateWithoutCompetencesInput = {
@@ -572,6 +597,7 @@ export type DisciplineCreateWithoutCompetencesInput = {
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
   classes?: Prisma.ClassCreateNestedManyWithoutDisciplineInput
+  exams?: Prisma.ExamCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUncheckedCreateWithoutCompetencesInput = {
@@ -582,6 +608,7 @@ export type DisciplineUncheckedCreateWithoutCompetencesInput = {
   areaId: number
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutDisciplineInput
+  exams?: Prisma.ExamUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineCreateOrConnectWithoutCompetencesInput = {
@@ -623,6 +650,7 @@ export type DisciplineCreateWithoutAreaInput = {
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
   competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassCreateNestedManyWithoutDisciplineInput
+  exams?: Prisma.ExamCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUncheckedCreateWithoutAreaInput = {
@@ -633,6 +661,7 @@ export type DisciplineUncheckedCreateWithoutAreaInput = {
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
   competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutDisciplineInput
+  exams?: Prisma.ExamUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineCreateOrConnectWithoutAreaInput = {
@@ -668,6 +697,7 @@ export type DisciplineCreateWithoutMaterialsInput = {
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
   competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassCreateNestedManyWithoutDisciplineInput
+  exams?: Prisma.ExamCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineUncheckedCreateWithoutMaterialsInput = {
@@ -678,6 +708,7 @@ export type DisciplineUncheckedCreateWithoutMaterialsInput = {
   areaId: number
   competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
   classes?: Prisma.ClassUncheckedCreateNestedManyWithoutDisciplineInput
+  exams?: Prisma.ExamUncheckedCreateNestedManyWithoutDisciplineInput
 }
 
 export type DisciplineCreateOrConnectWithoutMaterialsInput = {
@@ -703,6 +734,7 @@ export type DisciplineUpdateWithoutMaterialsInput = {
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
   competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUpdateManyWithoutDisciplineNestedInput
+  exams?: Prisma.ExamUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateWithoutMaterialsInput = {
@@ -711,6 +743,61 @@ export type DisciplineUncheckedUpdateWithoutMaterialsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
+  competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput
+  classes?: Prisma.ClassUncheckedUpdateManyWithoutDisciplineNestedInput
+  exams?: Prisma.ExamUncheckedUpdateManyWithoutDisciplineNestedInput
+}
+
+export type DisciplineCreateWithoutExamsInput = {
+  name: string
+  createdAt?: Date | string
+  area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
+  materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
+  competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
+  classes?: Prisma.ClassCreateNestedManyWithoutDisciplineInput
+}
+
+export type DisciplineUncheckedCreateWithoutExamsInput = {
+  id?: number
+  name: string
+  createdAt?: Date | string
+  areaId: number
+  materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
+  competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
+  classes?: Prisma.ClassUncheckedCreateNestedManyWithoutDisciplineInput
+}
+
+export type DisciplineCreateOrConnectWithoutExamsInput = {
+  where: Prisma.DisciplineWhereUniqueInput
+  create: Prisma.XOR<Prisma.DisciplineCreateWithoutExamsInput, Prisma.DisciplineUncheckedCreateWithoutExamsInput>
+}
+
+export type DisciplineUpsertWithoutExamsInput = {
+  update: Prisma.XOR<Prisma.DisciplineUpdateWithoutExamsInput, Prisma.DisciplineUncheckedUpdateWithoutExamsInput>
+  create: Prisma.XOR<Prisma.DisciplineCreateWithoutExamsInput, Prisma.DisciplineUncheckedCreateWithoutExamsInput>
+  where?: Prisma.DisciplineWhereInput
+}
+
+export type DisciplineUpdateToOneWithWhereWithoutExamsInput = {
+  where?: Prisma.DisciplineWhereInput
+  data: Prisma.XOR<Prisma.DisciplineUpdateWithoutExamsInput, Prisma.DisciplineUncheckedUpdateWithoutExamsInput>
+}
+
+export type DisciplineUpdateWithoutExamsInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
+  materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
+  competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
+  classes?: Prisma.ClassUpdateManyWithoutDisciplineNestedInput
+}
+
+export type DisciplineUncheckedUpdateWithoutExamsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  areaId?: Prisma.IntFieldUpdateOperationsInput | number
+  materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
   competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUncheckedUpdateManyWithoutDisciplineNestedInput
 }
@@ -722,6 +809,7 @@ export type DisciplineUpdateWithoutCompetencesInput = {
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
   classes?: Prisma.ClassUpdateManyWithoutDisciplineNestedInput
+  exams?: Prisma.ExamUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateWithoutCompetencesInput = {
@@ -732,6 +820,7 @@ export type DisciplineUncheckedUpdateWithoutCompetencesInput = {
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
   classes?: Prisma.ClassUncheckedUpdateManyWithoutDisciplineNestedInput
+  exams?: Prisma.ExamUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateManyWithoutCompetencesInput = {
@@ -756,6 +845,7 @@ export type DisciplineUpdateWithoutAreaInput = {
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
   competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUpdateManyWithoutDisciplineNestedInput
+  exams?: Prisma.ExamUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateWithoutAreaInput = {
@@ -766,6 +856,7 @@ export type DisciplineUncheckedUpdateWithoutAreaInput = {
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
   competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput
   classes?: Prisma.ClassUncheckedUpdateManyWithoutDisciplineNestedInput
+  exams?: Prisma.ExamUncheckedUpdateManyWithoutDisciplineNestedInput
 }
 
 export type DisciplineUncheckedUpdateManyWithoutAreaInput = {
@@ -784,12 +875,14 @@ export type DisciplineCountOutputType = {
   materials: number
   competences: number
   classes: number
+  exams: number
 }
 
 export type DisciplineCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   materials?: boolean | DisciplineCountOutputTypeCountMaterialsArgs
   competences?: boolean | DisciplineCountOutputTypeCountCompetencesArgs
   classes?: boolean | DisciplineCountOutputTypeCountClassesArgs
+  exams?: boolean | DisciplineCountOutputTypeCountExamsArgs
 }
 
 /**
@@ -823,6 +916,13 @@ export type DisciplineCountOutputTypeCountClassesArgs<ExtArgs extends runtime.Ty
   where?: Prisma.ClassWhereInput
 }
 
+/**
+ * DisciplineCountOutputType without action
+ */
+export type DisciplineCountOutputTypeCountExamsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ExamWhereInput
+}
+
 
 export type DisciplineSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -834,6 +934,7 @@ export type DisciplineSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   materials?: boolean | Prisma.Discipline$materialsArgs<ExtArgs>
   competences?: boolean | Prisma.Discipline$competencesArgs<ExtArgs>
   classes?: boolean | Prisma.Discipline$classesArgs<ExtArgs>
+  exams?: boolean | Prisma.Discipline$examsArgs<ExtArgs>
   _count?: boolean | Prisma.DisciplineCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["discipline"]>
 
@@ -853,6 +954,7 @@ export type DisciplineInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   materials?: boolean | Prisma.Discipline$materialsArgs<ExtArgs>
   competences?: boolean | Prisma.Discipline$competencesArgs<ExtArgs>
   classes?: boolean | Prisma.Discipline$classesArgs<ExtArgs>
+  exams?: boolean | Prisma.Discipline$examsArgs<ExtArgs>
   _count?: boolean | Prisma.DisciplineCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -863,6 +965,7 @@ export type $DisciplinePayload<ExtArgs extends runtime.Types.Extensions.Internal
     materials: Prisma.$MaterialPayload<ExtArgs>[]
     competences: Prisma.$CompetencePayload<ExtArgs>[]
     classes: Prisma.$ClassPayload<ExtArgs>[]
+    exams: Prisma.$ExamPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1214,6 +1317,7 @@ export interface Prisma__DisciplineClient<T, Null = never, ExtArgs extends runti
   materials<T extends Prisma.Discipline$materialsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$materialsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MaterialPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   competences<T extends Prisma.Discipline$competencesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$competencesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CompetencePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   classes<T extends Prisma.Discipline$classesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$classesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClassPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  exams<T extends Prisma.Discipline$examsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Discipline$examsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExamPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1660,6 +1764,30 @@ export type Discipline$classesArgs<ExtArgs extends runtime.Types.Extensions.Inte
   take?: number
   skip?: number
   distinct?: Prisma.ClassScalarFieldEnum | Prisma.ClassScalarFieldEnum[]
+}
+
+/**
+ * Discipline.exams
+ */
+export type Discipline$examsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Exam
+   */
+  select?: Prisma.ExamSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Exam
+   */
+  omit?: Prisma.ExamOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExamInclude<ExtArgs> | null
+  where?: Prisma.ExamWhereInput
+  orderBy?: Prisma.ExamOrderByWithRelationInput | Prisma.ExamOrderByWithRelationInput[]
+  cursor?: Prisma.ExamWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ExamScalarFieldEnum | Prisma.ExamScalarFieldEnum[]
 }
 
 /**

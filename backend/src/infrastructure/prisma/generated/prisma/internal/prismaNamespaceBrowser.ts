@@ -160,7 +160,8 @@ export type MaterialScalarFieldEnum = (typeof MaterialScalarFieldEnum)[keyof typ
 export const ExamScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  attachmentId: 'attachmentId'
+  attachmentId: 'attachmentId',
+  disciplineId: 'disciplineId'
 } as const
 
 export type ExamScalarFieldEnum = (typeof ExamScalarFieldEnum)[keyof typeof ExamScalarFieldEnum]
