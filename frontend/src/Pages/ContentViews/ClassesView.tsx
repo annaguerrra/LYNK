@@ -1,7 +1,7 @@
 export function ClassesView() {
     return (
         <>
-        <div></div>
+            <div>Aulaaa</div>
         </>
     )
 }

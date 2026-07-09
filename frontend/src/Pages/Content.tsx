@@ -1,11 +1,14 @@
+import "./Styles/Content.css"
 import { useState } from "react";
 import { ButtonBack } from "../Components/ButtonBack";
 import { Header } from "../Components/Header";
 import { TabNavigation } from "../Components/TabNavigation";
-import "./Styles/Content.css"
+import { ClassesView } from "./ContentViews/ClassesView";
+import { CompetencesView } from "./ContentViews/CompetencesView";
+import { ExamsView } from "./ContentViews/ExamsView";
 
 export function Content() {
-    const [selectedTab, setSelectedTab] = useState("aulas");
+    const [selectedTab, setSelectedTab] = useState("exams");
 
     return (
         <>
@@ -21,9 +24,9 @@ export function Content() {
                     onChange={setSelectedTab}
       />
 
-      {selectedTab === "aulas" && <p>Aulas</p>}
-      {selectedTab === "competencias" && <p>Competencias</p>}
-      {selectedTab === "avaliacoes" && <p>Avaliacoes</p>}
+      {selectedTab === "classes" && <ClassesView/>}
+      {selectedTab === "competences" && <CompetencesView/>}
+      {selectedTab === "exams" && <ExamsView/>}
                 </div>
             </div>
         </>

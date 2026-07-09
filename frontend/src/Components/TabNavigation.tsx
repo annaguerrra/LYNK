@@ -14,9 +14,9 @@ export function TabNavigation({
             <ul className="a-tab-navigation">
                 <li className="a-tab-navigation__item">
                     <button
-                        className={`a-tab-navigation__tab ${selected === "aulas" ? "-selected" : ""
+                        className={`a-tab-navigation__tab ${selected === "classes" ? "-selected" : ""
                             }`}
-                        onClick={() => onChange("aulas")}
+                        onClick={() => onChange("classes")}
                     >
                         <span className="a-tab-navigation__tab-content">
                             <span className="a-tab-navigation__label">Aulas</span>
@@ -26,9 +26,9 @@ export function TabNavigation({
 
                 <li className="a-tab-navigation__item">
                     <button
-                        className={`a-tab-navigation__tab ${selected === "competencias" ? "-selected" : ""
+                        className={`a-tab-navigation__tab ${selected === "competences" ? "-selected" : ""
                             }`}
-                        onClick={() => onChange("competencias")}
+                        onClick={() => onChange("competences")}
                     >
                         <span className="a-tab-navigation__tab-content">
                             <span className="a-tab-navigation__label">Competências</span>
@@ -38,9 +38,9 @@ export function TabNavigation({
 
                 <li className="a-tab-navigation__item">
                     <button
-                        className={`a-tab-navigation__tab ${selected === "avaliacoes" ? "-selected" : ""
+                        className={`a-tab-navigation__tab ${selected === "exams" ? "-selected" : ""
                             }`}
-                        onClick={() => onChange("avaliacoes")}
+                        onClick={() => onChange("exams")}
                     >
                         <span className="a-tab-navigation__tab-content">
                             <span className="a-tab-navigation__label">Avaliações</span>
