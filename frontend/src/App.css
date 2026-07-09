@@ -54,6 +54,8 @@
 
 :root {
     --blue: #007BC0;
+    --blueHover: #03659e;
+    --blueActive: #03517e;
     --purple: #9E2896;
     --green: #00884A;
     --acqua: #18837E;
