@@ -1,9 +1,8 @@
-export interface JwtTokenPayload{
-    userId: String
-    usertype: "student" | "instructor" | "admin"
-}
+import { JwtTokenDTO } from "#application/dtos/authDTO.js";
 
 export interface IJwtTokenService{
-    generate(payload: JwtTokenPayload): string;
-    verify(token: string): JwtTokenPayload;
+    generate(payload: JwtTokenDTO): string;
+    verify(token: string): JwtTokenDTO;
 }
+
+export { JwtTokenDTO };
