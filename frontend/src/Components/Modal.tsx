@@ -19,14 +19,14 @@ export function Modal({ Title, Inputs }: ModalProps) {
     return (
         <>
             <div className="modalOverlay">
-                <div className="modalBackdrop" onClick={closeModal}>
-                </div>
+                {/* <div className="modalBackdrop" onClick={closeModal}>
+                </div> */}
                     <div className="modalContainer">
                         <div className="titleContainer">
                             <h1>{Title}</h1>
-                            <ButtonClose size={40}></ButtonClose>
+                            <ButtonClose size={40} onClose={closeModal}></ButtonClose>
                         </div>
-                        {Inputs.map((input) => <input placeholder={input.name}></input>)}
+                        {Inputs.map((input) => <input key={input.name} placeholder={input.name}></input>)}
 
                         <Button ButtonTitle={"Enviar"} onClose={closeModal}></Button>
                     </div>

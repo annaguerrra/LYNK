@@ -3,15 +3,14 @@ import "./Styles/discipline.css";
 import { Modal } from "./Modal";
 import { useNavigate } from "react-router-dom";
 import { useModal } from "../Providers/modalContext";
-import { useState } from "react";
 
 export function DisciplineComp({Discipline, Area}) {
     const navigate = useNavigate();
     const { modal, openModal } = useModal();
-    const [texto, setTexto] = useState("")
 
     const options = [
         {
+            id: 1,
             name: "Editar disciplina",
             onClick: openModal
         },
@@ -28,7 +27,7 @@ export function DisciplineComp({Discipline, Area}) {
         {
             name: "Excluir"
         },
-         {
+        {
             name: "Consultar"
         }
     ]

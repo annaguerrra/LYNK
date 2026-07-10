@@ -13,7 +13,7 @@ export function ModalProvider({ children }) {
     const [modal, setModal] = useState(false);
 
     const openModal = () => setModal(true);
-    const closeModal = () => setModal(false);
+    const closeModal = () => {setModal(false), console.trace("CLOSE")};
     const toggleModal = () => setModal(prev => !prev);
 
     useEffect(() => {
