@@ -1,18 +1,21 @@
+import { Competence, ExamAttachment } from "#infrastructure/prisma/generated/prisma/client.js"
 import { UploadedFile } from "./attachmentDTO.js"
 
 export interface registerExamDTO {
     name: string
-    file: UploadedFile
+    files: UploadedFile[]
     disciplineId: number
+    competencesId: number[]
 }
 
 export interface attachtFileDTO {
-    name: string
-    file: UploadedFile
+    examId: number
+    files: UploadedFile[]
 }
 
 export interface showExamDTO {
     name: string
-    files: UploadedFile[]
+    files: ExamAttachment[]
     discipline: string
+    competences: string[]
 }
