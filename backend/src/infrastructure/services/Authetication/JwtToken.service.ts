@@ -1,8 +1,7 @@
 import jwt, { Secret, SignOptions } from "jsonwebtoken";
-import { IJwtTokenService, JwtTokenPayload } from "#application/services/Authetication/IJwtToken.service.js";
-import { UserType } from "#infrastructure/src/generated/prisma/enums.js";
+import { IJwtTokenService, JwtTokenDTO } from "#application/services/Authetication/IJwtToken.service.js";
 
-export class JwtTokenService implements IJwtTokenService{
+export class JwtTokenService implements IJwtTokenService {
     private readonly secret: Secret;
     private readonly expiresIn: SignOptions["expiresIn"];
     
@@ -15,19 +14,23 @@ export class JwtTokenService implements IJwtTokenService{
         this.expiresIn = "1d"
     }
 
-    generate(payload: JwtTokenPayload): string {
+    generate(payload: JwtTokenDTO): string {
         return jwt.sign(payload, this.secret, {
             expiresIn: this.expiresIn
         });
     }
-    verify(token: string): JwtTokenPayload {
+    verify(token: string): JwtTokenDTO {
         const decoded = jwt.verify(token, this.secret);
 
         if (typeof decoded === "string") {
             throw new Error("Error. Invalid Token.");
         }
 
-        const payload = decoded as JwtTokenPayload;
+        const payload = decoded as JwtTokenDTO;
+        
+        if( !payload.userId){
+            throw new Error("Error. Invalid User Id");
+        }
 
         if (
             payload.usertype !== "student" &&
