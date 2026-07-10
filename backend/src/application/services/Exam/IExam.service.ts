@@ -5,6 +5,6 @@ export interface IExamService {
     registerExam(data: registerExamDTO): Promise<Exam>
     attachtFile(data: attachtFileDTO): Promise<Exam>
     showExams(): Promise<Exam[]>
-    showExam(id: number): Promise<showExamDTO>
+    getExamById(id: number): Promise<Exam>
     // dowloadExam():
 }

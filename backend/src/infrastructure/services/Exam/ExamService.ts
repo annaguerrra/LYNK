@@ -74,18 +74,12 @@ export class ExamService implements IExamService {
         return await prisma.exam.findMany()
     }
 
-    async showExam(id: number): Promise<showExamDTO> {
-        //finalizar
-
+    async getExamById(id: number): Promise<Exam> {
         return await prisma.exam.findFirst({
             where: {
                 id: id
-            },
-            select: {
-                name: true,
-                attachments: true
             }
         })
     }
 
-}
+}  
