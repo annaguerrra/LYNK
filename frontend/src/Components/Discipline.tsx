@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "./Button";
 import { ButtonClose } from "./ButtonClose";
+import { ButtonExclude } from "./ButtonExclude";
 import { ButtonCancel } from "./ButtonCancel";
 
 export function DisciplineComp({Discipline, Area}) {
@@ -60,17 +61,14 @@ export function DisciplineComp({Discipline, Area}) {
 
         {excludeModal && (
              <div className="modalOverlay">
-                <div className="modalContainer">
-                    <div className="titleContainer">
-                        <h1>Excluir disciplina</h1>
-                        <ButtonClose size={40} onClose={() => setExcludeModal(false)}></ButtonClose>
-                    </div>
+                <div className="modalExcludeContainer">
+                <div className="redString"></div>
                     <p>Deseja excluir a disciplina {Discipline}?</p>
 
                     <div>
-                        <ButtonCancel ButtonTitle={"Excluir"} onClose={() => setExcludeModal(false)}></ButtonCancel>
+                        <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeModal(false)}></ButtonExclude>
                         <br />
-                        <Button ButtonTitle={"Cancelar"} onClose={() => setExcludeModal(false)}></Button>
+                        <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeModal(false)}></ButtonCancel>
                     </div>
                 </div>
             </div>

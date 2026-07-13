@@ -1,4 +1,4 @@
-.backgroundCancelButton {
+.backgroundExcludeButton {
     background-color: var(--red);
     height: auto;
     padding: 0.5vw 2vw ;
@@ -10,11 +10,11 @@
     border: none; 
 }
 
-.backgroundCancelButton h1 {
+.backgroundExcludeButton h1 {
     color: var(--white);
     font-size: large;
 }
 
-.backgroundCancelButton:hover {
+.backgroundExcludeButton:hover {
     background-color: var(--redHover);
 }

@@ -93,14 +93,6 @@
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-.modalBackdrop {
-  position: absolute;
-  inset: 0;
-  background-color: #000000;
-  opacity: 0.60;
-  z-index: -1;
-}
-
 .modalContainer {
   position: fixed;
   z-index: 1000;
@@ -108,20 +100,12 @@
   flex-direction: column;
   align-items: center;
   gap: 3vw;
-  padding: 8vw; 
   background-color: #ffffff;
   width: 35vw; 
   height: auto;
   padding: 1vw;
 }
 
-.textBox {
-  width: auto;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: self-start;
-}
 
 .modalContainer input {
   width: 30.5vw;
@@ -145,6 +129,14 @@
   font-size: x-large;
 }
 
+.textBox {
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+}
+
 .titleContainer {
   width: 100%;
   height: auto;
@@ -157,4 +149,28 @@
 .titleContainer h1 {
   padding: 0.7vw;
   font-size: x-large;
+}
+
+.modalExcludeContainer {
+  position: fixed;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3vw;
+  background-color: #ffffff;
+  width: 35vw; 
+  height: auto;
+}
+
+.redString {
+  background-color: var(--red);
+  width: 100%;
+  height: 1vh;
+}
+
+.buttonsBox {
+  display: flex;
+  flex-direction: row;
+  
 }

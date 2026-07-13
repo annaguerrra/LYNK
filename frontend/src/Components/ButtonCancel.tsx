@@ -1,4 +1,4 @@
-import "./Styles/buttonCancel.css"
+import "./Styles/buttonExclude.css"
 
 interface ButtonCancelProps {
     ButtonTitle: string;
