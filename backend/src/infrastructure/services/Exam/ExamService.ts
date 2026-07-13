@@ -1,5 +1,5 @@
 import { DownloadedFile } from "#application/dtos/attachmentDTO.js";
-import { registerExamDTO, attachtFileDTO, showExamDTO, updateExamDTO } from "#application/dtos/examDTO.js";
+import { registerExamDTO, attachtFileDTO, updateExamDTO } from "#application/dtos/examDTO.js";
 import { IExamService } from "#application/services/Exam/IExam.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Exam } from "#infrastructure/prisma/generated/prisma/client.js";
@@ -10,24 +10,39 @@ export class ExamService implements IExamService {
     
     async registerExam(data: registerExamDTO): Promise<Exam> {
         const { name, files, disciplineId, competencesId } = data
-        const attachmentIds = await Promise.all(
-            files.map(file => this.attachmentService.upload(file))
-        );
-        
-        return await prisma.exam.create({
-            data: {
-                name: name,
-                disciplineId: disciplineId,
-                competences: {
-                    connect: competencesId.map(id => ({ id }))
-                },
-                attachments: {
-                    create: attachmentIds.map(id => ({
-                        attachmentId: id
-                    }))
+        const uploadedIds: string[] = []
+
+        try {
+            const attachmentIds = await Promise.all(
+                files.map(async file => {
+                    const id = await this.attachmentService.upload(file)
+                    uploadedIds.push(id)
+                    return id
+                })
+            )
+            
+            return await prisma.exam.create({
+                data: {
+                    name: name,
+                    disciplineId: disciplineId,
+                    competences: {
+                        connect: competencesId.map(id => ({ id }))
+                    },
+                    attachments: {
+                        create: attachmentIds.map(id => ({
+                            attachmentId: id
+                        }))
+                    }
                 }
-            }
-        })
+            })
+
+        } catch (e) {
+            await Promise.allSettled(
+                uploadedIds.map(id => this.attachmentService.delete(id))
+            )
+
+            throw e
+        }
 
         // const attachments = await prisma.examAttachment.createMany({
         //     data: attachmentIds.map(id => ({
