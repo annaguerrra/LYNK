@@ -25,12 +25,13 @@ import {
     Separator
 } from '@mdxeditor/editor'
 import { Header } from "../Components/Header"
-import { useState } from 'react'
+import { use, useState } from 'react'
 import '@mdxeditor/editor/style.css'
 import './Styles/Class.css'
 
 export function Class() {
 
+    const [editMode, setEditMode] = useState(true)
     const [content, setContent] = useState(`# Aula de Programação
 
 Bem-vindo ao editor.
@@ -40,37 +41,55 @@ Bem-vindo ao editor.
 Selecione um texto e clique em **Negrito**.
 `)
 
+    const editorPlugins = [
+        headingsPlugin(),
+        listsPlugin(),
+        quotePlugin(),
+        imagePlugin(),
+        tablePlugin(),
+        thematicBreakPlugin(),
+        linkPlugin(),
+        codeBlockPlugin({
+            defaultCodeBlockLanguage: 'csharp'
+        }),
+        codeMirrorPlugin({
+            codeBlockLanguages: {
+                csharp: 'C#',
+                javascript: 'JavaScript',
+                typescript: 'TypeScript',
+                html: 'HTML',
+                css: 'CSS',
+                sql: 'SQL'
+            }
+        }),
+        markdownShortcutPlugin()
+    ]
+
     return (
         <>
             <Header></Header>
 
             <div className="page-class">
-                <div className="markdownEditBox">
+
+                {!editMode && (
+                    <div className='markdownBox'>
+                        <button onClick={() => setEditMode(true)}>Editar</button>
+                        <MDXEditor
+                            key={content}
+                            markdown={content}
+                            readOnly
+                            plugins={editorPlugins}
+                        />
+                    </div>
+                )}
+
+
+                {editMode && <div className="markdownEditBox">
                     <MDXEditor className='mdx-editor'
                         markdown={content}
                         onChange={setContent}
                         plugins={[
-                            headingsPlugin(),
-                            listsPlugin(),
-                            quotePlugin(),
-                            tablePlugin(),
-                            linkPlugin(),
-                            imagePlugin(),
-                            thematicBreakPlugin(),
-                            codeBlockPlugin({
-                                defaultCodeBlockLanguage: 'csharp'
-                            }),
-                            codeMirrorPlugin({
-                                codeBlockLanguages: {
-                                    csharp: 'C#',
-                                    javascript: 'JavaScript',
-                                    typescript: 'TypeScript',
-                                    html: 'HTML',
-                                    css: 'CSS',
-                                    sql: 'SQL'
-                                }
-                            }),
-                            markdownShortcutPlugin(),
+                            ...editorPlugins,
                             toolbarPlugin({
                                 toolbarContents: () => (
                                     <div className="toolbar-group">
@@ -105,14 +124,14 @@ Selecione um texto e clique em **Negrito**.
 
                                         </div>
                                         <div className='toolbar-end'>
-                                            <button>Salvar</button>
+                                            <button onClick={() => setEditMode(false)}>Salvar</button>
                                         </div>
                                     </div>
                                 )
                             })
                         ]}
                     />
-                </div>
+                </div>}
                 <div className="attachmentsBox">
 
                 </div>
