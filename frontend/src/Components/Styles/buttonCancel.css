@@ -1,0 +1,21 @@
+.backgroundCancelButton {
+    background-color: var(--red);
+    width: 20vw;
+    height: auto;
+    padding: 0.7vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: .5s;
+    cursor: pointer;
+    border: none; 
+}
+
+.backgroundCancelButton h1 {
+    color: var(--white);
+    font-size: x-large;
+}
+
+.backgroundCancelButton:hover {
+    background-color: var(--redHover);
+}
