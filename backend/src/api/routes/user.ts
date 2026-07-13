@@ -1,3 +1,4 @@
+import { authMiddleware } from '#api/middleware/authMiddleware.js';
 import express from 'express';
 
 const route = express.Router();
@@ -7,5 +8,6 @@ const route = express.Router();
         // .get('/show', UserController.show)
         // .put('/update', UserController.update)
         // .delete('/delete', UserController.delete)
-
+        // .post('/login', authMiddleware, AuthController.login)
+        
 export default route;

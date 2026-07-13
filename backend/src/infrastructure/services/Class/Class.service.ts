@@ -4,14 +4,14 @@ import { prisma } from "#infrastructure/lib/prisma.js";
 import { Class, EntityType } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export class ClassService implements IClassService{
-    async create(payload: ClassDTO, disciplineId: number, instructorId: number): Promise<Class> {
+    async create(payload: ClassDTO, disciplineId: number, userId: number): Promise<Class> {
         const {name, content} = payload;
         const createdClass = await prisma.class.create({
             data:{
                 name, 
                 content,
                 createdAt: new Date(),
-
+                
                 discipline:{
                     connect:{
                         id: disciplineId
@@ -31,14 +31,13 @@ export class ClassService implements IClassService{
                     name,
                     content
                 },
-                instructor:{
-                    // jwt
-                }
+                instructorId: userId
             }
         });
 
         return createdClass;
     }
+
     async findAll(): Promise<findAllDTO[]> {
         const target =  await prisma.class.findMany({
             select:{
@@ -55,6 +54,7 @@ export class ClassService implements IClassService{
         }
         return target;
     }
+
     async findOne(id: number): Promise<ClassDTO>{
         const target = await prisma.class.findFirst({
             where:{id}
@@ -77,6 +77,7 @@ export class ClassService implements IClassService{
             lastUpdate
         }
     }
+
     async viewCompetences(id: number): Promise<viewCompetencesDTO> {
         const target = await prisma.class.findUnique({
             where:{
@@ -101,7 +102,7 @@ export class ClassService implements IClassService{
         }
     }
 
-    async delete(id: number): Promise<boolean> {
+    async delete(id: number, userId: number): Promise<boolean> {
        const target = await prisma.class.delete({
         where:{
             id: id
@@ -120,15 +121,14 @@ export class ClassService implements IClassService{
                 oldData:{},
                 updatedAt: new Date(),
                 newData:{},
-                instructor:{
-                    // jwt
-                }
+                instructorId: userId
             }
         });
 
        return true;
     }
-    async edit(payload: ClassDTO, id: number): Promise<editClass> {
+    
+    async edit(payload: ClassDTO, id: number, userId: number): Promise<editClass> {
         const { name, content} = payload
         const target = await prisma.class.findUnique({
             where:{
@@ -165,9 +165,7 @@ export class ClassService implements IClassService{
                     name: updatedClass.name,
                     content: updatedClass.content
                 },
-                instructor:{
-                    // jwt
-                }
+                instructorId: userId
             }
         });
         return {
