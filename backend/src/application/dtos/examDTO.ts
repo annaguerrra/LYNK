@@ -13,9 +13,8 @@ export interface attachtFileDTO {
     files: UploadedFile[]
 }
 
-export interface showExamDTO {
+export interface updateExamDTO {
     name: string
-    files: ExamAttachment[]
-    discipline: string
-    competences: string[]
+    disciplineId: number
+    competencesId: number[]
 }

@@ -1,7 +1,6 @@
 import { DownloadedFile, UploadedFile } from "#application/dtos/attachmentDTO.js";
 import { IAttachmentService } from "#application/services/Attachment/IAttachment.service.js";
 import { GridFSBucket, ObjectId } from "mongodb";
-import { Readable } from "node:stream";
 
 export class AttachmentService implements IAttachmentService{
     constructor(private bucket: GridFSBucket) {}
@@ -27,7 +26,7 @@ export class AttachmentService implements IAttachmentService{
         return uploadStream.id.toString();
     }
 
-    async dowload(id: string): Promise<DownloadedFile> {
+    async download(id: string): Promise<DownloadedFile> {
         const objectId = new ObjectId(id)
            
         const file = await this.bucket.find({

@@ -1,4 +1,5 @@
-import { registerExamDTO, attachtFileDTO, showExamDTO } from "#application/dtos/examDTO.js";
+import { DownloadedFile } from "#application/dtos/attachmentDTO.js";
+import { registerExamDTO, attachtFileDTO, showExamDTO, updateExamDTO } from "#application/dtos/examDTO.js";
 import { IExamService } from "#application/services/Exam/IExam.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Exam } from "#infrastructure/prisma/generated/prisma/client.js";
@@ -13,36 +14,38 @@ export class ExamService implements IExamService {
             files.map(file => this.attachmentService.upload(file))
         );
         
-        const examId = await prisma.exam.create({
+        return await prisma.exam.create({
             data: {
                 name: name,
                 disciplineId: disciplineId,
                 competences: {
                     connect: competencesId.map(id => ({ id }))
+                },
+                attachments: {
+                    create: attachmentIds.map(id => ({
+                        attachmentId: id
+                    }))
                 }
-            },
-            select: {
-                id: true
             }
         })
 
-        const attachments = await prisma.examAttachment.createMany({
-            data: attachmentIds.map(id => ({
-                examId: examId,
-                attachmentId: id
-            }))
-        })
+        // const attachments = await prisma.examAttachment.createMany({
+        //     data: attachmentIds.map(id => ({
+        //         examId: examId,
+        //         attachmentId: id
+        //     }))
+        // })
 
-        await prisma.exam.update({
-            where: {
-                id: examId
-            },
-            data: {
-                attachments: attachments
-            }
-        })
+        // return await prisma.exam.update({
+        //     where: {
+        //         id: examId
+        //     },
+        //     data: {
+        //         attachments: attachments
+        //     }
+        // })
 
-        return prisma.exam.findFirst({where: {id: examId}})
+        // maneira antiga de fazer
 
     }
 
@@ -52,19 +55,16 @@ export class ExamService implements IExamService {
             files.map(file => this.attachmentService.upload(file))
         );
 
-        const attachments = await prisma.examAttachment.createMany({
-            data: attachmentIds.map(id => ({
-                examId: examId,
-                attachmentId: id
-            }))
-        })
-
         return await prisma.exam.update({
             where: {
                 id: examId
             },
             data: {
-                attachments: attachments
+                attachments: {
+                    create: attachmentIds.map(id => ({
+                        attachmentId: id
+                    }))
+                }
             }
         })
 
@@ -75,11 +75,50 @@ export class ExamService implements IExamService {
     }
 
     async getExamById(id: number): Promise<Exam> {
-        return await prisma.exam.findFirst({
+        return await prisma.exam.findFirstOrThrow({
             where: {
                 id: id
             }
         })
+    }
+
+    async updateExam(id: number, data: updateExamDTO): Promise<Exam> {
+        const { name, disciplineId, competencesId } = data
+
+        return await prisma.exam.update({
+            where: {
+                id: id
+            },
+            data: {
+                name: name,
+                disciplineId: disciplineId,
+                competences: {
+                    connect: competencesId.map(id => ({ id }))
+                }
+            }
+        })
+    }
+
+    async removeExam(id: number): Promise<Exam> {
+        return await prisma.exam.delete({
+            where: {
+                id: id
+            }
+        })
+    }
+
+    async downloadExam(examId: number, examAttachmentId: number): Promise<DownloadedFile> {
+        const examAttachment = await prisma.examAttachment.findUnique({
+            where: {
+                id: examAttachmentId
+            }
+        })
+
+        if(!examAttachment || examAttachment.examId !== examId){
+            throw new Error("File not found")
+        }
+
+        return this.attachmentService.download(examAttachment.attachmentId)
     }
 
 }  
