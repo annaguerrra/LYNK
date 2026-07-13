@@ -3,6 +3,7 @@ import { registerExamDTO, attachtFileDTO, updateExamDTO } from "#application/dto
 import { IExamService } from "#application/services/Exam/IExam.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Exam } from "#infrastructure/prisma/generated/prisma/client.js";
+import { error } from "node:console";
 import { AttachmentService } from "../Attachment/AttachmentService.js";
 
 export class ExamService implements IExamService {
@@ -115,7 +116,24 @@ export class ExamService implements IExamService {
     }
 
     async removeExam(id: number): Promise<Exam> {
-        return await prisma.exam.delete({
+        const exam = await prisma.exam.findUnique({
+            where: {
+                id: id
+            },
+            include: {
+                attachments: true
+            }
+        })
+
+        if(!exam){
+            throw new Error("Exam not found")
+        }
+
+        await Promise.all(
+            exam.attachments.map(a => this.attachmentService.delete(a.attachmentId))
+        )
+
+        return prisma.exam.delete({
             where: {
                 id: id
             }
