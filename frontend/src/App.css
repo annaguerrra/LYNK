@@ -50,6 +50,10 @@
     font-family: 'Bosch Sans', sans-serif;
 }
 
+button {
+  cursor: pointer;
+}
+
 
 
 :root {
