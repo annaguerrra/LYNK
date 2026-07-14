@@ -2,7 +2,6 @@ import { registerCompetenceDTO, updateCompetenceDTO } from "#application/dtos/co
 import { ICompetenceService } from "#application/services/Competence/ICompetence.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Competence } from "#infrastructure/prisma/generated/prisma/client.js";
-import { create } from "node:domain";
 
 export class CompetenceService implements ICompetenceService {
 
@@ -20,7 +19,7 @@ export class CompetenceService implements ICompetenceService {
                 oldData: {},
                 updatedAt: new Date(),
                 newData: {
-                    name
+                    ...createdCompetence
                 },
                 instructorId: userId
             }
@@ -68,10 +67,10 @@ export class CompetenceService implements ICompetenceService {
                 entityType: "Compentence",
                 action: "UPDATED",
                 oldData: {
-                    name: target.name,
+                    ...target
                 },
                 newData: {
-                    name: updatedCompetence.name
+                    ...updatedCompetence
                 },
                 instructorId: userId
             }
@@ -82,7 +81,7 @@ export class CompetenceService implements ICompetenceService {
     }
 
     async deleteCompetence(id: number, userId: number): Promise<boolean> {
-        const target = await prisma.competence.delete({
+        const target = await prisma.competence.findUnique({
             where: {
                 id: id
             }
@@ -91,13 +90,20 @@ export class CompetenceService implements ICompetenceService {
         if(!target)
             throw new Error("Competence not found")
 
+        await prisma.competence.delete({
+            where: {
+                id: id
+            }
+        })
+
         await prisma.log.create({
             data: {
                 action: "DELETED",
                 entityType: "Compentence",
                 entityId: target.id,
-                oldData: {},
-                updatedAt: new Date(),
+                oldData: {
+                    ...target
+                },
                 newData: {},
                 instructorId: userId
             }

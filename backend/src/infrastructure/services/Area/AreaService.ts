@@ -17,9 +17,8 @@ export class AreaService implements IAreaService{
                 entityType: "Area",
                 entityId: createdArea.id,
                 oldData: {},
-                updatedAt: new Date(),
                 newData: {
-                    name
+                    ...createdArea
                 },
                 instructorId: userId
             }
@@ -58,10 +57,10 @@ export class AreaService implements IAreaService{
                 entityType: "Area",
                 action: "UPDATED",
                 oldData: {
-                    name: target.name
+                    ...target
                 },
                 newData: {
-                    name: updatedArea.name 
+                    ...updatedArea 
                 },
                 instructorId: userId
             }
@@ -72,7 +71,7 @@ export class AreaService implements IAreaService{
     }
 
     async deleteArea(id: number, userId: number): Promise<boolean> {
-        const target = await prisma.area.delete({
+        const target = await prisma.area.findUnique({
             where: {
                 id: id
             }
@@ -81,13 +80,18 @@ export class AreaService implements IAreaService{
         if (!target)
             throw new Error("Class not found")
 
+        await prisma.area.delete({
+            where: {
+                id: id
+            }
+        })
+
         await prisma.log.create({
             data: {
                 action: "DELETED",
                 entityType: "Area",
                 entityId: target.id,
-                oldData: {},
-                updatedAt: new Date(),
+                oldData: {...target},
                 newData: {},
                 instructorId: userId
             }
