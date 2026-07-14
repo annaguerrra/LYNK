@@ -110,6 +110,8 @@ export class ExamService implements IExamService {
                 }
             })
 
+            return updatedExam
+
         } catch (e) {
             await Promise.allSettled(
                 uploadedIds.map(id => this.attachmentService.delete(id))
@@ -135,7 +137,16 @@ export class ExamService implements IExamService {
     async updateExam(id: number, data: updateExamDTO, userId: number): Promise<Exam> {
         const { name, disciplineId, competencesId } = data
 
-        return await prisma.exam.update({
+        const target = await prisma.exam.findUnique({
+            where: {
+                id: id
+            }
+        })
+
+        if (!target)
+            throw new Error("Exam not found")
+
+        const updatedExam = await prisma.exam.update({
             where: {
                 id: id
             },
@@ -147,10 +158,25 @@ export class ExamService implements IExamService {
                 }
             }
         })
+
+        await prisma.log.create({
+            data: {
+                entityId: target.id,
+                entityType: "Exam",
+                action: "UPDATED",
+                oldData: {
+                    ...target
+                },
+                newData: {
+                    ...updatedExam
+                },
+                instructorId: userId
+            }
+        })
     }
 
     async removeExam(id: number, userId: number): Promise<Exam> {
-        const exam = await prisma.exam.findUnique({
+        const target = await prisma.exam.findUnique({
             where: {
                 id: id
             },
@@ -159,19 +185,34 @@ export class ExamService implements IExamService {
             }
         })
 
-        if(!exam){
+        if(!target){
             throw new Error("Exam not found")
         }
 
         await Promise.all(
-            exam.attachments.map(a => this.attachmentService.delete(a.attachmentId))
+            target.attachments.map(a => this.attachmentService.delete(a.attachmentId))
         )
 
-        return prisma.exam.delete({
+        const removedExam = await prisma.exam.delete({
             where: {
                 id: id
             }
         })
+
+        await prisma.log.create({
+            data: {
+                action: "DELETED",
+                entityType: "Exam",
+                entityId: target.id,
+                oldData: {
+                    ...target
+                },
+                newData: {},
+                instructorId: userId
+            }
+        })
+
+        return removedExam
     }
 
     async downloadExam(examId: number, examAttachmentId: number): Promise<DownloadedFile> {
@@ -188,6 +229,4 @@ export class ExamService implements IExamService {
         return this.attachmentService.download(examAttachment.attachmentId)
     }
 
-}  
-
-//faltou logs: update, remove e download
+}
