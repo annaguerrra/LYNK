@@ -1,0 +1,14 @@
+.rowContainer {
+    width: 100%;
+    border: 1px solid var(--gray);
+    min-height: 1rem;
+    border-left: 0;
+}
+
+.rowContainer:before {
+    content: "";
+    display: block;
+    background-color: black;
+    width: 5px;
+    height: 100%;
+}

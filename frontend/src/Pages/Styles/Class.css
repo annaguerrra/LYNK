@@ -2,13 +2,23 @@
     padding: 5rem;
     height: 100%;
     display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.content-class {
+    display: flex;
     flex-direction: row;
     align-items: start;
-    gap: 7rem;
+    height: 100%;
+    width: 100%;
+    padding-top: 1rem;
+    gap: 8rem;
 }
 
 .markdownBox {
     flex: 1;
+    min-width: 30rem;
 }
 
 .markdownEditBox {
@@ -17,9 +27,11 @@
     background-color: rgb(255, 255, 255);
     border: 1px solid var(--gray);
     border-radius: 10px;
+    min-width: 30rem;
 }
 
 .attachmentsBox {
+    min-width: 20rem;
     width: 20rem;
     height: 40rem;
     background-color: rgb(255, 255, 255);
@@ -33,6 +45,13 @@
     background-color: var(--purple);
 }
 
+.attachmentsContent {
+    height: 100%;
+    margin: 1rem;  
+    display: flex;
+    flex-direction: column;
+}
+
 .toolbar-group {
     display: flex;
     justify-content: space-between;
@@ -43,8 +62,21 @@
     display: inline-flex;
 }
 
+.toolbar.view {
+    border-bottom: 1px solid var(--gray);
+    padding: .5rem;
+    width: 100%;
+    display: flex;
+    height: 3rem;
+    justify-content: space-between;
+    font-size: 30px;
+    font-weight: bold;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
 .toolbar button {
-    margin-right: 1rem
+    margin-right: .5rem
 }
 
 .toolbar-end {
@@ -62,4 +94,30 @@
 
 .mdxeditor-toolbar {
     border-radius: 10px 10px 0 0;
+}
+
+.buttonEdit {
+    background-color: var(--acqua);
+    border: 0;
+    color: white;
+    padding: .3rem 1rem;
+    font-size: medium;
+    height: max-content;
+}
+
+.inputTitle {
+    border: none;
+    border-bottom: 1px solid #000;
+    outline: none;
+    background: transparent;
+    margin-bottom: 1rem;
+    font-size: 30px;
+    height: 3rem;
+    font-weight: bold;
+    padding: .5rem;
+}
+
+.subtitle {
+    font-weight: bold;
+    font-size: 20px;
 }

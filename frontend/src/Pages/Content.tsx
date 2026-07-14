@@ -21,15 +21,15 @@ export function Content() {
                 </div>
                 <div className="content">
                     <TabNavigation
-                    selected={selectedTab}
-                    onChange={setSelectedTab}
-      />
+                        selected={selectedTab}
+                        onChange={setSelectedTab}
+                    />
 
-      {selectedTab === "classes" && <ClassesView/>}
-      {selectedTab === "competences" && <CompetencesView/>}
-      {selectedTab === "exams" && <ExamsView/>}
+                    {selectedTab === "classes" && <ClassesView />}
+                    {selectedTab === "competences" && <CompetencesView />}
+                    {selectedTab === "exams" && <ExamsView />}
 
-                
+
                 </div>
 
 
