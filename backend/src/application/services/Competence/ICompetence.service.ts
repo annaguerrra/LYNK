@@ -2,9 +2,9 @@ import { registerCompetenceDTO, updateCompetenceDTO } from "#application/dtos/co
 import { Area, Competence } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export interface ICompetenceService {
-    registerCompetence(data: registerCompetenceDTO): Promise<Competence>
+    registerCompetence(data: registerCompetenceDTO, userId: number): Promise<Competence>
     showCompetences(): Promise<Competence[]>
     getCompetenceByName(name: string): Promise<Area | null>
-    updateCompetence(id: number, data: updateCompetenceDTO): Promise<Area>
-    deleteCompetence(id: number): Promise<void>
+    updateCompetence(id: number, data: updateCompetenceDTO, userId: number): Promise<Area>
+    deleteCompetence(id: number, userId: number): Promise<boolean>
 }
