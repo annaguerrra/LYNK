@@ -174,7 +174,7 @@ export class ExamService implements IExamService {
         })
     }
 
-    async downloadExam(examId: number, examAttachmentId: number, userId: number): Promise<DownloadedFile> {
+    async downloadExam(examId: number, examAttachmentId: number): Promise<DownloadedFile> {
         const examAttachment = await prisma.examAttachment.findUnique({
             where: {
                 id: examAttachmentId
