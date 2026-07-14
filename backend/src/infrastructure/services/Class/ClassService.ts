@@ -1,9 +1,12 @@
-import { ClassDTO, editClass, findAllDTO, viewCompetencesDTO } from "#application/dtos/classDTO.js";
+import { assignCompetencyDTO, ClassDTO, downloadContentDTO, editClass, findAllDTO, viewCompetencesDTO, viewContentDTO } from "#application/dtos/classDTO.js";
 import { IClassService } from "#application/services/Class/IClass.service.js";
+import { Class } from "#infrastructure/prisma/generated/prisma/client.js";
+import { DownloadedFile } from "#application/dtos/attachmentDTO.js";
+import { viewMaterialsDTO } from "#application/dtos/materialDTO.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
-import { Class, EntityType } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export class ClassService implements IClassService{
+    
     async create(payload: ClassDTO, disciplineId: number, userId: number): Promise<Class> {
         const {name, content} = payload;
         const createdClass = await prisma.class.create({
@@ -78,6 +81,60 @@ export class ClassService implements IClassService{
         }
     }
 
+    async assignCompetency(payload: assignCompetencyDTO, userId: number): Promise<Class> {
+        const competence = await prisma.competence.findFirst({
+            where:{
+                id: payload.competencyId
+            } 
+        });
+
+        if(!competence){
+            throw new Error("Competence not Found!");
+        }
+
+        const target = await prisma.class.findFirst({
+            where:{
+                id: payload.classId
+            }
+        });
+        
+        if(!target){
+            throw new Error("Class not Found!");
+        }
+        
+        const updatedClass = await prisma.class.update({
+            where:{
+                id: payload.classId
+            },
+            data:{
+                competences:{
+                    connect:{
+                        id: payload.competencyId
+                    }
+                }
+            }
+        });
+
+        await prisma.log.create({
+            data:{
+                action: "UPDATED",
+                entityId: payload.classId,
+                entityType: "Class",
+                newData:{
+                    ...updatedClass
+                },
+                oldData:{
+                    ...target
+                },
+                instructorId: userId
+            }
+        });
+
+        return {
+            ...updatedClass
+        }
+    }
+
     async viewCompetences(id: number): Promise<viewCompetencesDTO> {
         const target = await prisma.class.findUnique({
             where:{
@@ -91,8 +148,8 @@ export class ClassService implements IClassService{
                     }
                 }
             }
-        });
-
+        }); 
+    
         if(!target){
             throw new Error("Class not Found!");
         }
@@ -100,6 +157,51 @@ export class ClassService implements IClassService{
         return {
             competences: target.competences
         }
+    }
+    async viewMaterials(classId: number): Promise<viewMaterialsDTO> {
+        const target = await prisma.class.findFirst({
+            where:{ id: classId },
+            select:{
+                materials:{
+                    where:{ classId: classId },
+                    select:{ name: true }
+                }
+            }
+        });
+
+        if(!target){
+            throw("Class not Found!");
+        }
+
+        return{
+            materials: target.materials
+        }
+    }
+
+    async viewContent(classId: number): Promise<viewContentDTO> {
+        const target = await prisma.class.findFirst({
+            where:{ id: classId},
+            select:{ 
+                name: true,
+                content: true
+            }
+        });
+
+        if(!target){
+            throw new Error("Class not Found!");
+        }
+
+        return {
+            ...target
+        }
+    }
+
+    downloadFiles(classId: number, fileId: string): Promise<DownloadedFile> {
+        throw new Error("Method not implemented.");
+    }
+
+    downloadContent(payload: downloadContentDTO): Promise<Buffer> {
+        throw new Error("Method not implemented.");
     }
 
     async delete(id: number, userId: number): Promise<boolean> {
@@ -150,7 +252,7 @@ export class ClassService implements IClassService{
             }
         });
 
-        await prisma.log.create({
+        const log = await prisma.log.create({
             data:{
                 entityId: target.id,
                 entityType:"Class",
@@ -168,10 +270,13 @@ export class ClassService implements IClassService{
                 instructorId: userId
             }
         });
+
+        const lastUpdate = log.updatedAt;
+
         return {
             ...updatedClass,
-
-        }
+            lastUpdate
+        } 
     }   
 
 }
