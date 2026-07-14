@@ -8,7 +8,7 @@ import { AttachmentService } from "../Attachment/AttachmentService.js";
 export class ExamService implements IExamService {
     constructor(private attachmentService: AttachmentService) {}
     
-    async registerExam(data: registerExamDTO): Promise<Exam> {
+    async registerExam(data: registerExamDTO, userId: number): Promise<Exam> {
         const { name, files, disciplineId, competencesId } = data
         const uploadedIds: string[] = []
 
@@ -21,7 +21,7 @@ export class ExamService implements IExamService {
                 })
             )
             
-            return await prisma.exam.create({
+            const createdExam = await prisma.exam.create({
                 data: {
                     name: name,
                     disciplineId: disciplineId,
@@ -36,6 +36,21 @@ export class ExamService implements IExamService {
                 }
             })
 
+            await prisma.log.create({
+                data: {
+                    action: "CREATED",
+                    entityType: "Exam",
+                    entityId: createdExam.id,
+                    oldData: {},
+                    newData: {
+                        ...createdExam
+                    },
+                    instructorId: userId
+                }
+            })
+
+            return createdExam
+
         } catch (e) {
             await Promise.allSettled(
                 uploadedIds.map(id => this.attachmentService.delete(id))
@@ -43,28 +58,9 @@ export class ExamService implements IExamService {
 
             throw e
         }
-
-        // const attachments = await prisma.examAttachment.createMany({
-        //     data: attachmentIds.map(id => ({
-        //         examId: examId,
-        //         attachmentId: id
-        //     }))
-        // })
-
-        // return await prisma.exam.update({
-        //     where: {
-        //         id: examId
-        //     },
-        //     data: {
-        //         attachments: attachments
-        //     }
-        // })
-
-        // maneira antiga de fazer
-
     }
 
-    async attachtFile(data: attachtFileDTO): Promise<Exam> {
+    async attachtFile(data: attachtFileDTO, userId: number): Promise<Exam> {
         const { examId, files } = data
         const uploadedIds: string[] = []
 
@@ -77,7 +73,16 @@ export class ExamService implements IExamService {
                 })
             )
 
-            return await prisma.exam.update({
+            const target = await prisma.exam.findUnique({
+                where: {
+                    id: examId
+                }
+            })
+
+            if (!target)
+                throw new Error("Exam not found")
+
+            const updatedExam = await prisma.exam.update({
                 where: {
                     id: examId
                 },
@@ -87,6 +92,21 @@ export class ExamService implements IExamService {
                             attachmentId: id
                         }))
                     }
+                }
+            })
+
+            await prisma.log.create({
+                data: {
+                    action: "UPDATED",
+                    entityType: "Exam",
+                    entityId: target.id,
+                    oldData: {
+                        ...target
+                    },
+                    newData: {
+                        ...updatedExam
+                    },
+                    instructorId: userId
                 }
             })
 
@@ -112,7 +132,7 @@ export class ExamService implements IExamService {
         })
     }
 
-    async updateExam(id: number, data: updateExamDTO): Promise<Exam> {
+    async updateExam(id: number, data: updateExamDTO, userId: number): Promise<Exam> {
         const { name, disciplineId, competencesId } = data
 
         return await prisma.exam.update({
@@ -129,7 +149,7 @@ export class ExamService implements IExamService {
         })
     }
 
-    async removeExam(id: number): Promise<Exam> {
+    async removeExam(id: number, userId: number): Promise<Exam> {
         const exam = await prisma.exam.findUnique({
             where: {
                 id: id
@@ -154,7 +174,7 @@ export class ExamService implements IExamService {
         })
     }
 
-    async downloadExam(examId: number, examAttachmentId: number): Promise<DownloadedFile> {
+    async downloadExam(examId: number, examAttachmentId: number, userId: number): Promise<DownloadedFile> {
         const examAttachment = await prisma.examAttachment.findUnique({
             where: {
                 id: examAttachmentId
@@ -169,3 +189,5 @@ export class ExamService implements IExamService {
     }
 
 }  
+
+//faltou logs: update, remove e download

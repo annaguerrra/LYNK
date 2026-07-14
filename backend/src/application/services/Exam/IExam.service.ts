@@ -3,11 +3,11 @@ import { attachtFileDTO, registerExamDTO, updateExamDTO } from "#application/dto
 import { Exam } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export interface IExamService {
-    registerExam(data: registerExamDTO): Promise<Exam>
-    attachtFile(data: attachtFileDTO): Promise<Exam>
+    registerExam(data: registerExamDTO, userId: number): Promise<Exam>
+    attachtFile(data: attachtFileDTO, userId: number): Promise<Exam>
     showExams(): Promise<Exam[]>
     getExamById(id: number): Promise<Exam>
-    updateExam(id: number, data: updateExamDTO): Promise<Exam>
-    removeExam(id: number): Promise<Exam>
+    updateExam(id: number, data: updateExamDTO, userId: number): Promise<Exam>
+    removeExam(id: number, userId: number): Promise<Exam>
     downloadExam(examId: number, examAttachmentId: number): Promise<DownloadedFile>
 }
