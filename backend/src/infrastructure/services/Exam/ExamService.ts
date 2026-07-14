@@ -3,7 +3,6 @@ import { registerExamDTO, attachtFileDTO, updateExamDTO } from "#application/dto
 import { IExamService } from "#application/services/Exam/IExam.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Exam } from "#infrastructure/prisma/generated/prisma/client.js";
-import { error } from "node:console";
 import { AttachmentService } from "../Attachment/AttachmentService.js";
 
 export class ExamService implements IExamService {
@@ -67,22 +66,37 @@ export class ExamService implements IExamService {
 
     async attachtFile(data: attachtFileDTO): Promise<Exam> {
         const { examId, files } = data
-        const attachmentIds = await Promise.all(
-            files.map(file => this.attachmentService.upload(file))
-        );
+        const uploadedIds: string[] = []
 
-        return await prisma.exam.update({
-            where: {
-                id: examId
-            },
-            data: {
-                attachments: {
-                    create: attachmentIds.map(id => ({
-                        attachmentId: id
-                    }))
+        try {
+            const attachmentIds = await Promise.all(
+                files.map(async file => {
+                    const id = await this.attachmentService.upload(file)
+                    uploadedIds.push(id)
+                    return id
+                })
+            )
+
+            return await prisma.exam.update({
+                where: {
+                    id: examId
+                },
+                data: {
+                    attachments: {
+                        create: attachmentIds.map(id => ({
+                            attachmentId: id
+                        }))
+                    }
                 }
-            }
-        })
+            })
+
+        } catch (e) {
+            await Promise.allSettled(
+                uploadedIds.map(id => this.attachmentService.delete(id))
+            )
+
+            throw e
+        }
 
     }
 
