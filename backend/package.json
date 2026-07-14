@@ -41,10 +41,12 @@
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "marked": "^18.0.6",
     "mongodb": "^7.4.0",
     "mongoose": "^9.7.2",
     "multer": "^2.2.0",
-    "ohash": "^2.0.11"
+    "ohash": "^2.0.11",
+    "puppeteer": "^24.43.1"
   },
   "devDependencies": {
     "@types/config": "^3.3.5",

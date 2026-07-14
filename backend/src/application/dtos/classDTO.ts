@@ -1,5 +1,3 @@
-import { Competence } from "#infrastructure/prisma/generated/prisma/client.js"
-
 export interface ClassDTO{
     name: string
     content: string
@@ -39,6 +37,11 @@ export interface viewCompetencesDTO{
 export interface viewContentDTO{
     name: string
     content: string
+}
+
+export interface downloadContentDTO{
+    title: string
+    markdown: string
 }
 
 export interface editClass{
