@@ -3,6 +3,7 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+//fazer migration
 
 generator client {
   provider = "prisma-client"
@@ -42,10 +43,21 @@ enum EntityType {
   Exam
 }
 
+model Admin {
+  id Int @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  username String
+  password String
+  userType UserType @default(ADMIN)
+  specialty Specialties
+  active Boolean @default(true)
+  attachmentId String
+
+  logs Log[]
+}
 
 model Instructor {
   id Int @default(autoincrement()) @id
-  // name String
   createdAt DateTime @default(now())
   username String
   password String
@@ -55,23 +67,15 @@ model Instructor {
   attachmentId String
 
   logs Log[]
-  // students Student[]
 }
 
 model Student {
   id Int @default(autoincrement()) @id
-  // name String
   createdAt DateTime @default(now())
   username String
   password String
   userType UserType @default(STUDENT)
   active Boolean @default(true)
-  // course String
-  // attachmentId String
-
-  // areas Area[]
-  // instructorId Int
-  // instructor Instructor @relation(fields: [instructorId], references: [id])
 }
 
 model Class {
@@ -114,7 +118,6 @@ model Area {
   name String
 
   disciplines Discipline[]
-  students Student[]
 }
 
 model Material {
