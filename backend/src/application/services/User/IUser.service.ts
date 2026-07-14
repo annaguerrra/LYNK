@@ -4,12 +4,17 @@ import { Instructor, Student } from "#infrastructure/prisma/generated/prisma/cli
 export interface IUserService {
     registerStudent(data: registerStudentDTO): Promise<Student>
     registerInstructor(data: registerInstructorDTO): Promise<Instructor>
+    registerAdmin(): Promise<Admin>
     showStudents(): Promise<Student[]>
     showInstructors(): Promise<Instructor[]>
+    showAdmins(): Promise<Admin[]>
     showStudent(id: number): Promise<showStudentDTO | null>
     showInstructor(id: number): Promise<showInstructorDTO | null>
+    showAdmin(): Promise<showAdminDTO | null>
     updateStudent(id: number, data: updateStudentDTO): Promise<Student>
     updateInstructor(id: number, data: updateInstructorDTO): Promise<Instructor>
-    deleteStudent(id: number): Promise<void>
-    deleteInstructor(id: number): Promise<void>
+    updateAdmin(): Promise<Admin>
+    deleteStudent(id: number): Promise<boolean>
+    deleteInstructor(id: number): Promise<boolean>
+    deleteAdmin(): Promise<boolean>
 }

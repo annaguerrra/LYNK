@@ -1,11 +1,8 @@
 import { registerInstructorDTO, registerStudentDTO, showInstructorDTO, showStudentDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { IUserService } from "#application/services/User/IUser.service.js";
 import { Student, Instructor } from "#infrastructure/prisma/generated/prisma/client.js";
-import { connect } from "node:http2";
 import { prisma } from "../../lib/prisma.js";
 import { AttachmentService } from "../Attachment/AttachmentService.js";
-
-// adicionar upload de fotos depois de implementar o service dos arquivos
 
 export class UserService implements IUserService {
     constructor(private attachmentService: AttachmentService) {}
