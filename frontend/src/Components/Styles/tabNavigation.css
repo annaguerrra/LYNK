@@ -26,11 +26,12 @@
     cursor: pointer;
     padding: .75rem 1rem 0;
     white-space: nowrap;
+    transition: color .3s ease;
 }
 
 .a-tab-navigation__tab:hover,
 .a-tab-navigation__tab:active {
-    color: black;    
+    color: black;
 }
 
 .a-tab-navigation__tab.-selected {
@@ -42,6 +43,7 @@
     align-items: center;
     padding-bottom: .5625rem;
     border-bottom: .125rem solid transparent;
+    transition: border-color .3s ease;
 }
 
 .a-tab-navigation__tab-content .a-tab-navigation__label {
