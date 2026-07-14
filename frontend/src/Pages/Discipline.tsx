@@ -1,25 +1,35 @@
-import "./Styles/Discipline.css"
-import { Header } from "../Components/Header"
-import { DisciplineComp } from "../Components/Discipline"
-import { MoreOpt } from "../Components/MoreOpt"
-import { Button } from "../Components/Button"
-import { ButtonClose } from "../Components/ButtonClose"
+import "./Styles/Discipline.css";
+import "./Styles/Modals.css";
+import { Header } from "../Components/Header";
+import { DisciplineComp } from "../Components/Discipline";
+import { MoreOpt } from "../Components/MoreOpt";
+import { Button } from "../Components/Button";
+import { ButtonClose } from "../Components/ButtonClose";
+import { ButtonExclude } from "../Components/ButtonExclude";
+import { ButtonCancel } from "../Components/ButtonCancel";
+import { useState } from "react";
 
 export function Discipline () {
-    // const [editModal, setEditModal] = useState(false);
-    // const [excludeModal, setExcludeModal] = useState(false);
+    const [newModal, setNewModal] = useState(false);
+    const [usersModal, setUsersModal] = useState(false);
+    const [areasModal, setAreasModal] = useState(false);
+    const [newUserModal, setNewUserModal] = useState(false);
 
-    // const options = [
-    //     {
-    //         id: 1,
-    //         name: "Editar disciplina",
-    //         onClick: () => setEditModal(true)
-    //     },
-    //     {
-    //         name: "Excluir disciplina",
-    //         onClick: () => setExcludeModal(true)
-    //     },
-    // ];
+
+    const options = [
+        {
+            name: "Nova disciplina",
+            onClick: () => setNewModal(true)
+        },
+        {
+            name: "Gerenciar usuários",
+            onClick: () => setUsersModal(true)
+        },
+        {
+            name: "Gerenciar áreas",
+            onClick: () => setAreasModal(true)
+        },
+    ];
 
     return (
         <>  
@@ -44,7 +54,7 @@ export function Discipline () {
                                 <option value="Organização">Organização</option>
                             </select>
                         </form>
-                        {/* <MoreOpt data={options}></MoreOpt> */}
+                        <MoreOpt data={options}></MoreOpt>
                     </div>
                 </div>
                 <div className="disciplinesContainer">
@@ -54,13 +64,13 @@ export function Discipline () {
                     <DisciplineComp Discipline={"Organização"} Area={"Administração"}></DisciplineComp>
                 </div>
             </div>
-{/* 
-            {editModal && (
-                <div className="modalOverlay">
-                <div className="modalContainer">
+
+            {newModal && (
+                <div className="modalOverlay" onClick={() => setNewModal(false)}>
+                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                     <div className="titleContainer">
-                        <h1>Editar disciplina</h1>
-                        <ButtonClose size={40} onClose={() => setEditModal(false)}></ButtonClose>
+                        <h1>Registrar disciplina</h1>
+                        <ButtonClose size={40} onClose={() => setNewModal(false)}></ButtonClose>
                     </div>
                     <div className="textBox">
                         <h2>Nome da disciplina</h2>
@@ -73,28 +83,64 @@ export function Discipline () {
                         </select>
                     </div>
 
-                    <Button ButtonTitle={"Enviar"} onClose={() => setEditModal(false)}></Button>
+                    <Button ButtonTitle={"Enviar"} onClose={() => setNewModal(false)}></Button>
                 </div>
             </div>
         )}
 
-        {excludeModal && (
-                <div className="modalOverlay">
-                <div className="modalContainer">
+        {newUserModal && (
+                <div className="modalOverlay" onClick={() => setNewUserModal(false)}>
+                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                    <div className="titleContainer">
+                        <h1>Registrar usuário</h1>
+                        <ButtonClose size={40} onClose={() => setNewUserModal(false)}></ButtonClose>
+                    </div>
+                    <div className="textBox">
+                        <h2>Nome da disciplina</h2>
+                        <input type="text" placeholder="Digite o nome da disciplina"/>
+                    </div>
+                    <div className="textBox">
+                        <h2>Selecione a área de conhecimento</h2>
+                        <select name="" id="">
+                            <option value="Tecnologia" selected></option>
+                        </select>
+                    </div>
+
+                    <Button ButtonTitle={"Enviar"} onClose={() => setNewUserModal(false)}></Button>
+                </div>
+            </div>
+        )}
+
+        {usersModal && (
+                <div className="modalOverlay" onClick={() => setUsersModal(false)}>
+                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                    <div className="titleContainer">
+                        <h1>Gerenciar usuários</h1>
+                        <ButtonClose size={40} onClose={() => setUsersModal(false)}></ButtonClose>
+                    </div>
+                    <div></div>
+
+                </div>
+            </div>
+        )}
+
+        {areasModal && (
+                <div className="modalOverlay" onClick={() => setAreasModal(false)}>
+                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                     <div className="titleContainer">
                         <h1>Excluir disciplina</h1>
-                        <ButtonClose size={40} onClose={() => setExcludeModal(false)}></ButtonClose>
+                        <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose>
                     </div>
-                    <p>Deseja excluir a disciplina {Discipline}?</p>
+                    <p></p>
 
                     <div>
-                        <ButtonCancel ButtonTitle={"Excluir"} onClose={() => setExcludeModal(false)}></ButtonCancel>
+                        <ButtonCancel ButtonTitle={"Excluir"} onClose={() => setAreasModal(false)}></ButtonCancel>
                         <br />
-                        <Button ButtonTitle={"Cancelar"} onClose={() => setExcludeModal(false)}></Button>
+                        <Button ButtonTitle={"Cancelar"} onClose={() => setAreasModal(false)}></Button>
                     </div>
                 </div>
             </div>
-        )} */}
+        )}
         </>
     )
 }

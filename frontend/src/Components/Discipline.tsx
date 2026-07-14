@@ -1,8 +1,8 @@
-import { MoreOpt } from "./MoreOpt";
 import "./Styles/discipline.css";
-import "../App.css";
+import "../Pages/Styles/Modals.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { MoreOpt } from "./MoreOpt";
 import { Button } from "./Button";
 import { ButtonClose } from "./ButtonClose";
 import { ButtonExclude } from "./ButtonExclude";
@@ -15,7 +15,6 @@ export function DisciplineComp({Discipline, Area}) {
 
     const options = [
         {
-            id: 1,
             name: "Editar disciplina",
             onClick: () => setEditModal(true)
         },
@@ -37,15 +36,15 @@ export function DisciplineComp({Discipline, Area}) {
             <MoreOpt data={options}></MoreOpt> 
         </div>
         {editModal && (
-             <div className="modalOverlay">
-                <div className="modalContainer">
+             <div className="modalOverlay" onClick={() => setEditModal(false)}>
+                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                     <div className="titleContainer">
                         <h1>Editar disciplina</h1>
                         <ButtonClose size={40} onClose={() => setEditModal(false)}></ButtonClose>
                     </div>
                     <div className="textBox">
                         <h2>Nome da disciplina</h2>
-                        <input type="text" placeholder="Digite o nome da disciplina"/>
+                        <input type="text" />
                     </div>
                     <div className="textBox">
                         <h2>Selecione a área de conhecimento</h2>
@@ -60,12 +59,12 @@ export function DisciplineComp({Discipline, Area}) {
         )}
 
         {excludeModal && (
-             <div className="modalOverlay">
-                <div className="modalExcludeContainer">
+             <div className="modalExcludeOverlay" onClick={() => setExcludeModal(false)}>
+                <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                 <div className="redString"></div>
                     <p>Deseja excluir a disciplina {Discipline}?</p>
 
-                    <div>
+                    <div className="buttonsBox">
                         <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeModal(false)}></ButtonExclude>
                         <br />
                         <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeModal(false)}></ButtonCancel>
