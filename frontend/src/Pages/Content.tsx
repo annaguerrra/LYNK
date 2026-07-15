@@ -38,8 +38,10 @@ export function Content() {
             <Header />
             <div className="page">
                 <div className="headerContent">
-                    <ButtonBack />
-                    <span style={{ fontWeight: "bold", fontSize: "30px" }}>Introdução a Python</span>
+                    <div className="startBox">
+                        <ButtonBack />
+                        <span style={{ fontWeight: "bold", fontSize: "30px" }}>Introdução a Python</span>
+                    </div>
                     <MoreOpt data={options}></MoreOpt>
                 </div>
                 <div className="content">
@@ -73,9 +75,7 @@ export function Content() {
                         </select>
                     </div>
                     <div className="textBox">
-                        <h2>Selecione o arquivo 
-                            
-                             
+                        <h2>Selecione o arquivo</h2> 
                     </div>
                     <div className="textBox">
                         <h2>Selecione as competências</h2>

@@ -1,10 +1,16 @@
 .headerContent {
-    display: inline-flex;
+    display: flex;
     width: 100%;
     height: max-content;
+    justify-content: space-between;
 }
 
 .content {
     width: 100%;
     padding-top: 3rem;
+}
+
+.startBox {
+    display: flex;
+    flex-direction: row;
 }
