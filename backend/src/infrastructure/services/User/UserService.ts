@@ -19,7 +19,7 @@ export class UserService implements IUserService {
         const { username, password, userType, specialty, file } = data
         const attachmentId = await this.attachmentService.upload(file)
 
-        try{
+        try {
             const createdUser = await prisma.instructor.create({
                 data: { username, password, userType, specialty, attachmentId }
             })
@@ -46,7 +46,22 @@ export class UserService implements IUserService {
     }
 
     async registerAdmin(data: registerAdminDTO): Promise<Admin> {
-         throw new Error("Method not implemented.");
+        const { username, password, userType, specialty, file } = data
+        const attachmentId = await this.attachmentService.upload(file)
+
+        try {
+            const createdUser = await prisma.admin.create({
+                data: { username, password, userType, specialty, attachmentId }
+            })
+
+            // log
+
+            return createdUser
+
+        } catch (e) {
+            await this.attachmentService.delete(attachmentId)
+            throw e
+        }
     }
 
     async showStudents(): Promise<Student[]> {
@@ -58,7 +73,7 @@ export class UserService implements IUserService {
     }
 
     async showAdmins(): Promise<Admin[]> {
-        throw new Error("Method not implemented.");
+        return await prisma.admin.findMany()
     }
 
     async showStudent(id: number): Promise<showStudentDTO | null> {
@@ -88,8 +103,19 @@ export class UserService implements IUserService {
         })
     }
 
-    showAdmin(id: number): Promise<showAdminDTO | null> {
-        throw new Error("Method not implemented.");
+    async showAdmin(id: number): Promise<showAdminDTO | null> {
+        return await prisma.admin.findFirst({
+            where: {
+                id: id
+            },
+            select: {
+                username: true,
+                userType: true,
+                specialty: true,
+                active: true,
+                attachmentId: true
+            }  
+        })
     }
 
     async updateStudent(id: number, data: updateStudentDTO): Promise<Student> {
@@ -139,8 +165,37 @@ export class UserService implements IUserService {
         return updatedUser
     }
 
-    updateAdmin(id: number, data: updateAdminDTO): Promise<Admin> {
-        throw new Error("Method not implemented.");
+    async updateAdmin(id: number, data: updateAdminDTO): Promise<Admin> {
+        const { username, password, specialty, active, file } = data
+        const attachmentId = await this.attachmentService.upload(file)
+
+        const target = await prisma.admin.findUnique({
+            where: {
+                id: id
+            }
+        })
+
+        if (!target)
+            throw new Error("User not found")
+
+        await this.attachmentService.delete(target?.attachmentId)
+
+        const updatedUser = await prisma.admin.update({
+            where: {
+                id: id
+            },
+            data: {
+                username: username,
+                password: password,
+                specialty: specialty,
+                active: active,
+                attachmentId: attachmentId
+            }
+        })
+
+        // log
+
+        return updatedUser
     }
 
     async deleteStudent(id: number): Promise<boolean> {
@@ -163,8 +218,14 @@ export class UserService implements IUserService {
         return true
     }
 
-    deleteAdmin(id: number): Promise<boolean> {
-        throw new Error("Method not implemented.");
+    async deleteAdmin(id: number): Promise<boolean> {
+        await prisma.admin.delete({
+            where: {
+                id: id
+            }
+        })
+
+        return true
     }
 
 }
