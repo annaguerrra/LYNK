@@ -173,6 +173,8 @@ export class ExamService implements IExamService {
                 instructorId: userId
             }
         })
+
+        return updatedExam
     }
 
     async removeExam(id: number, userId: number): Promise<Exam> {

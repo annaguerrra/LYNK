@@ -49,7 +49,7 @@ model Admin {
   password String
   userType UserType @default(ADMIN)
   specialty Specialties
-  active Boolean @default(true)
+  active Boolean @default(false)
   attachmentId String
 
   logs Log[]
@@ -62,7 +62,7 @@ model Instructor {
   password String
   userType UserType @default(INSTRUCTOR)
   specialty Specialties
-  active Boolean @default(true)
+  active Boolean @default(false)
   attachmentId String
 
   logs Log[]
