@@ -2,6 +2,7 @@
     width: 30px;
     position: static;
     right: 0;
+    padding-top: 1vh;
 }
 
 .moreOptModal {

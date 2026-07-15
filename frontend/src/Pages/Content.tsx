@@ -18,6 +18,7 @@ export function Content() {
                 <div className="headerContent">
                     <ButtonBack />
                     <span style={{ fontWeight: "bold", fontSize: "30px" }}>Introdução a Python</span>
+                    
                 </div>
                 <div className="content">
                     <TabNavigation

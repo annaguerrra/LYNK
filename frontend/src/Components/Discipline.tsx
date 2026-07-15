@@ -28,7 +28,7 @@ export function DisciplineComp({Discipline, Area}) {
     return (
         <> 
         <div className="disciplineBox"> 
-            <div className="boxColor" onClick={() => navigate("/Class")}></div> 
+            <div className="boxColor" onClick={() => navigate("/Content")}></div> 
             <div> 
                 <h1>{Discipline}</h1> 
                 <h2>{Area}</h2> 

@@ -74,11 +74,12 @@ button {
 .page {  
     padding: 5rem;
     height: 100%;
-    width: 90%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
 }
 
 .titlePage {

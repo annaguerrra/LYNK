@@ -1,6 +1,8 @@
 import './Styles/Login.css'
 import { Button } from '../Components/Button'
+import { useNavigate } from 'react-router-dom'
 export function Login() {
+    const navigate = useNavigate()
 
     return (
         <>
@@ -15,7 +17,7 @@ export function Login() {
                         <h1>Senha</h1>
                     <input className='loginInput' type="text" placeholder='Digite sua senha :'/>
                     </div>
-                    <Button ButtonTitle={"Entrar"} path={'/Disciplines'}></Button>
+                    <Button ButtonTitle={"Entrar"} onClose={() => navigate('/Disciplines')}></Button>
                 </div>
             </div>
         </>
