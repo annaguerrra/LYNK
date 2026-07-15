@@ -53,6 +53,15 @@
   align-items: self-start;
 }
 
+.scrollBox {
+  width: 90%;
+  height: 10vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: scroll;
+}
+
 .titleContainer {
   width: 100%;
   height: auto;
