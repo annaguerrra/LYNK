@@ -29,8 +29,8 @@ export * from "./enums.js"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Instructors
- * const instructors = await prisma.instructor.findMany()
+ * // Fetch zero or more Admins
+ * const admins = await prisma.admin.findMany()
  * ```
  * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -44,6 +44,11 @@ export { Prisma }
 path.join(__dirname, "query_engine-windows.dll.node")
 path.join(process.cwd(), "src/infrastructure/prisma/generated/prisma/query_engine-windows.dll.node")
 
+/**
+ * Model Admin
+ * 
+ */
+export type Admin = Prisma.AdminModel
 /**
  * Model Instructor
  * 

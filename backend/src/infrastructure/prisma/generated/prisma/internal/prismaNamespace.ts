@@ -390,6 +390,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
+  Admin: 'Admin',
   Instructor: 'Instructor',
   Student: 'Student',
   Class: 'Class',
@@ -416,10 +417,76 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "instructor" | "student" | "class" | "competence" | "discipline" | "area" | "material" | "exam" | "log" | "examAttachment" | "materialAttachment"
+    modelProps: "admin" | "instructor" | "student" | "class" | "competence" | "discipline" | "area" | "material" | "exam" | "log" | "examAttachment" | "materialAttachment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
+    Admin: {
+      payload: Prisma.$AdminPayload<ExtArgs>
+      fields: Prisma.AdminFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AdminFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AdminFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        findFirst: {
+          args: Prisma.AdminFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AdminFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        findMany: {
+          args: Prisma.AdminFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>[]
+        }
+        create: {
+          args: Prisma.AdminCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        createMany: {
+          args: Prisma.AdminCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.AdminDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        update: {
+          args: Prisma.AdminUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        deleteMany: {
+          args: Prisma.AdminDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AdminUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.AdminUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AdminPayload>
+        }
+        aggregate: {
+          args: Prisma.AdminAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAdmin>
+        }
+        groupBy: {
+          args: Prisma.AdminGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AdminCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AdminCountAggregateOutputType> | number
+        }
+      }
+    }
     Instructor: {
       payload: Prisma.$InstructorPayload<ExtArgs>
       fields: Prisma.InstructorFieldRefs
@@ -1185,9 +1252,22 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const AdminScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  username: 'username',
+  password: 'password',
+  userType: 'userType',
+  specialty: 'specialty',
+  active: 'active',
+  attachmentId: 'attachmentId'
+} as const
+
+export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
+
+
 export const InstructorScalarFieldEnum = {
   id: 'id',
-  name: 'name',
   createdAt: 'createdAt',
   username: 'username',
   password: 'password',
@@ -1202,14 +1282,11 @@ export type InstructorScalarFieldEnum = (typeof InstructorScalarFieldEnum)[keyof
 
 export const StudentScalarFieldEnum = {
   id: 'id',
-  name: 'name',
   createdAt: 'createdAt',
   username: 'username',
   password: 'password',
   userType: 'userType',
-  course: 'course',
-  attachmentId: 'attachmentId',
-  instructorId: 'instructorId'
+  active: 'active'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
@@ -1282,7 +1359,8 @@ export const LogScalarFieldEnum = {
   updatedAt: 'updatedAt',
   oldData: 'oldData',
   newData: 'newData',
-  instructorId: 'instructorId'
+  instructorId: 'instructorId',
+  adminId: 'adminId'
 } as const
 
 export type LogScalarFieldEnum = (typeof LogScalarFieldEnum)[keyof typeof LogScalarFieldEnum]
@@ -1321,8 +1399,16 @@ export const JsonNullValueInput = {
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
+export const AdminOrderByRelevanceFieldEnum = {
+  username: 'username',
+  password: 'password',
+  attachmentId: 'attachmentId'
+} as const
+
+export type AdminOrderByRelevanceFieldEnum = (typeof AdminOrderByRelevanceFieldEnum)[keyof typeof AdminOrderByRelevanceFieldEnum]
+
+
 export const InstructorOrderByRelevanceFieldEnum = {
-  name: 'name',
   username: 'username',
   password: 'password',
   attachmentId: 'attachmentId'
@@ -1332,11 +1418,8 @@ export type InstructorOrderByRelevanceFieldEnum = (typeof InstructorOrderByRelev
 
 
 export const StudentOrderByRelevanceFieldEnum = {
-  name: 'name',
   username: 'username',
-  password: 'password',
-  course: 'course',
-  attachmentId: 'attachmentId'
+  password: 'password'
 } as const
 
 export type StudentOrderByRelevanceFieldEnum = (typeof StudentOrderByRelevanceFieldEnum)[keyof typeof StudentOrderByRelevanceFieldEnum]
@@ -1430,16 +1513,16 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
 
 
 /**
- * Reference to a field of type 'String'
+ * Reference to a field of type 'DateTime'
  */
-export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
+export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
     
 
 
 /**
- * Reference to a field of type 'DateTime'
+ * Reference to a field of type 'String'
  */
-export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
+export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
     
 
 
@@ -1585,6 +1668,7 @@ export interface PrismaClientOptions {
   omit?: GlobalOmitConfig
 }
 export type GlobalOmitConfig = {
+  admin?: Prisma.AdminOmit
   instructor?: Prisma.InstructorOmit
   student?: Prisma.StudentOmit
   class?: Prisma.ClassOmit

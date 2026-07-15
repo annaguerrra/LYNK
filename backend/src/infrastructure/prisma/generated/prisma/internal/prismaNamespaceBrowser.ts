@@ -49,6 +49,7 @@ export const AnyNull = runtime.objectEnumValues.instances.AnyNull
 
 
 export const ModelName = {
+  Admin: 'Admin',
   Instructor: 'Instructor',
   Student: 'Student',
   Class: 'Class',
@@ -78,9 +79,22 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const AdminScalarFieldEnum = {
+  id: 'id',
+  createdAt: 'createdAt',
+  username: 'username',
+  password: 'password',
+  userType: 'userType',
+  specialty: 'specialty',
+  active: 'active',
+  attachmentId: 'attachmentId'
+} as const
+
+export type AdminScalarFieldEnum = (typeof AdminScalarFieldEnum)[keyof typeof AdminScalarFieldEnum]
+
+
 export const InstructorScalarFieldEnum = {
   id: 'id',
-  name: 'name',
   createdAt: 'createdAt',
   username: 'username',
   password: 'password',
@@ -95,14 +109,11 @@ export type InstructorScalarFieldEnum = (typeof InstructorScalarFieldEnum)[keyof
 
 export const StudentScalarFieldEnum = {
   id: 'id',
-  name: 'name',
   createdAt: 'createdAt',
   username: 'username',
   password: 'password',
   userType: 'userType',
-  course: 'course',
-  attachmentId: 'attachmentId',
-  instructorId: 'instructorId'
+  active: 'active'
 } as const
 
 export type StudentScalarFieldEnum = (typeof StudentScalarFieldEnum)[keyof typeof StudentScalarFieldEnum]
@@ -175,7 +186,8 @@ export const LogScalarFieldEnum = {
   updatedAt: 'updatedAt',
   oldData: 'oldData',
   newData: 'newData',
-  instructorId: 'instructorId'
+  instructorId: 'instructorId',
+  adminId: 'adminId'
 } as const
 
 export type LogScalarFieldEnum = (typeof LogScalarFieldEnum)[keyof typeof LogScalarFieldEnum]
@@ -214,8 +226,16 @@ export const JsonNullValueInput = {
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
+export const AdminOrderByRelevanceFieldEnum = {
+  username: 'username',
+  password: 'password',
+  attachmentId: 'attachmentId'
+} as const
+
+export type AdminOrderByRelevanceFieldEnum = (typeof AdminOrderByRelevanceFieldEnum)[keyof typeof AdminOrderByRelevanceFieldEnum]
+
+
 export const InstructorOrderByRelevanceFieldEnum = {
-  name: 'name',
   username: 'username',
   password: 'password',
   attachmentId: 'attachmentId'
@@ -225,11 +245,8 @@ export type InstructorOrderByRelevanceFieldEnum = (typeof InstructorOrderByRelev
 
 
 export const StudentOrderByRelevanceFieldEnum = {
-  name: 'name',
   username: 'username',
-  password: 'password',
-  course: 'course',
-  attachmentId: 'attachmentId'
+  password: 'password'
 } as const
 
 export type StudentOrderByRelevanceFieldEnum = (typeof StudentOrderByRelevanceFieldEnum)[keyof typeof StudentOrderByRelevanceFieldEnum]

@@ -30,12 +30,14 @@ export type LogAvgAggregateOutputType = {
   id: number | null
   entityId: number | null
   instructorId: number | null
+  adminId: number | null
 }
 
 export type LogSumAggregateOutputType = {
   id: number | null
   entityId: number | null
   instructorId: number | null
+  adminId: number | null
 }
 
 export type LogMinAggregateOutputType = {
@@ -45,6 +47,7 @@ export type LogMinAggregateOutputType = {
   action: $Enums.Action | null
   updatedAt: Date | null
   instructorId: number | null
+  adminId: number | null
 }
 
 export type LogMaxAggregateOutputType = {
@@ -54,6 +57,7 @@ export type LogMaxAggregateOutputType = {
   action: $Enums.Action | null
   updatedAt: Date | null
   instructorId: number | null
+  adminId: number | null
 }
 
 export type LogCountAggregateOutputType = {
@@ -65,6 +69,7 @@ export type LogCountAggregateOutputType = {
   oldData: number
   newData: number
   instructorId: number
+  adminId: number
   _all: number
 }
 
@@ -73,12 +78,14 @@ export type LogAvgAggregateInputType = {
   id?: true
   entityId?: true
   instructorId?: true
+  adminId?: true
 }
 
 export type LogSumAggregateInputType = {
   id?: true
   entityId?: true
   instructorId?: true
+  adminId?: true
 }
 
 export type LogMinAggregateInputType = {
@@ -88,6 +95,7 @@ export type LogMinAggregateInputType = {
   action?: true
   updatedAt?: true
   instructorId?: true
+  adminId?: true
 }
 
 export type LogMaxAggregateInputType = {
@@ -97,6 +105,7 @@ export type LogMaxAggregateInputType = {
   action?: true
   updatedAt?: true
   instructorId?: true
+  adminId?: true
 }
 
 export type LogCountAggregateInputType = {
@@ -108,6 +117,7 @@ export type LogCountAggregateInputType = {
   oldData?: true
   newData?: true
   instructorId?: true
+  adminId?: true
   _all?: true
 }
 
@@ -206,6 +216,7 @@ export type LogGroupByOutputType = {
   oldData: runtime.JsonValue
   newData: runtime.JsonValue
   instructorId: number
+  adminId: number
   _count: LogCountAggregateOutputType | null
   _avg: LogAvgAggregateOutputType | null
   _sum: LogSumAggregateOutputType | null
@@ -240,7 +251,9 @@ export type LogWhereInput = {
   oldData?: Prisma.JsonFilter<"Log">
   newData?: Prisma.JsonFilter<"Log">
   instructorId?: Prisma.IntFilter<"Log"> | number
+  adminId?: Prisma.IntFilter<"Log"> | number
   instructor?: Prisma.XOR<Prisma.InstructorScalarRelationFilter, Prisma.InstructorWhereInput>
+  admin?: Prisma.XOR<Prisma.AdminScalarRelationFilter, Prisma.AdminWhereInput>
 }
 
 export type LogOrderByWithRelationInput = {
@@ -252,7 +265,9 @@ export type LogOrderByWithRelationInput = {
   oldData?: Prisma.SortOrder
   newData?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
+  adminId?: Prisma.SortOrder
   instructor?: Prisma.InstructorOrderByWithRelationInput
+  admin?: Prisma.AdminOrderByWithRelationInput
 }
 
 export type LogWhereUniqueInput = Prisma.AtLeast<{
@@ -267,7 +282,9 @@ export type LogWhereUniqueInput = Prisma.AtLeast<{
   oldData?: Prisma.JsonFilter<"Log">
   newData?: Prisma.JsonFilter<"Log">
   instructorId?: Prisma.IntFilter<"Log"> | number
+  adminId?: Prisma.IntFilter<"Log"> | number
   instructor?: Prisma.XOR<Prisma.InstructorScalarRelationFilter, Prisma.InstructorWhereInput>
+  admin?: Prisma.XOR<Prisma.AdminScalarRelationFilter, Prisma.AdminWhereInput>
 }, "id">
 
 export type LogOrderByWithAggregationInput = {
@@ -279,6 +296,7 @@ export type LogOrderByWithAggregationInput = {
   oldData?: Prisma.SortOrder
   newData?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
+  adminId?: Prisma.SortOrder
   _count?: Prisma.LogCountOrderByAggregateInput
   _avg?: Prisma.LogAvgOrderByAggregateInput
   _max?: Prisma.LogMaxOrderByAggregateInput
@@ -298,6 +316,7 @@ export type LogScalarWhereWithAggregatesInput = {
   oldData?: Prisma.JsonWithAggregatesFilter<"Log">
   newData?: Prisma.JsonWithAggregatesFilter<"Log">
   instructorId?: Prisma.IntWithAggregatesFilter<"Log"> | number
+  adminId?: Prisma.IntWithAggregatesFilter<"Log"> | number
 }
 
 export type LogCreateInput = {
@@ -308,6 +327,7 @@ export type LogCreateInput = {
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructor: Prisma.InstructorCreateNestedOneWithoutLogsInput
+  admin: Prisma.AdminCreateNestedOneWithoutLogsInput
 }
 
 export type LogUncheckedCreateInput = {
@@ -319,6 +339,7 @@ export type LogUncheckedCreateInput = {
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId: number
+  adminId: number
 }
 
 export type LogUpdateInput = {
@@ -329,6 +350,7 @@ export type LogUpdateInput = {
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructor?: Prisma.InstructorUpdateOneRequiredWithoutLogsNestedInput
+  admin?: Prisma.AdminUpdateOneRequiredWithoutLogsNestedInput
 }
 
 export type LogUncheckedUpdateInput = {
@@ -340,6 +362,7 @@ export type LogUncheckedUpdateInput = {
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId?: Prisma.IntFieldUpdateOperationsInput | number
+  adminId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type LogCreateManyInput = {
@@ -351,6 +374,7 @@ export type LogCreateManyInput = {
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId: number
+  adminId: number
 }
 
 export type LogUpdateManyMutationInput = {
@@ -371,6 +395,7 @@ export type LogUncheckedUpdateManyInput = {
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId?: Prisma.IntFieldUpdateOperationsInput | number
+  adminId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type LogListRelationFilter = {
@@ -392,12 +417,14 @@ export type LogCountOrderByAggregateInput = {
   oldData?: Prisma.SortOrder
   newData?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
+  adminId?: Prisma.SortOrder
 }
 
 export type LogAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
+  adminId?: Prisma.SortOrder
 }
 
 export type LogMaxOrderByAggregateInput = {
@@ -407,6 +434,7 @@ export type LogMaxOrderByAggregateInput = {
   action?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
+  adminId?: Prisma.SortOrder
 }
 
 export type LogMinOrderByAggregateInput = {
@@ -416,12 +444,56 @@ export type LogMinOrderByAggregateInput = {
   action?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
+  adminId?: Prisma.SortOrder
 }
 
 export type LogSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
+  adminId?: Prisma.SortOrder
+}
+
+export type LogCreateNestedManyWithoutAdminInput = {
+  create?: Prisma.XOR<Prisma.LogCreateWithoutAdminInput, Prisma.LogUncheckedCreateWithoutAdminInput> | Prisma.LogCreateWithoutAdminInput[] | Prisma.LogUncheckedCreateWithoutAdminInput[]
+  connectOrCreate?: Prisma.LogCreateOrConnectWithoutAdminInput | Prisma.LogCreateOrConnectWithoutAdminInput[]
+  createMany?: Prisma.LogCreateManyAdminInputEnvelope
+  connect?: Prisma.LogWhereUniqueInput | Prisma.LogWhereUniqueInput[]
+}
+
+export type LogUncheckedCreateNestedManyWithoutAdminInput = {
+  create?: Prisma.XOR<Prisma.LogCreateWithoutAdminInput, Prisma.LogUncheckedCreateWithoutAdminInput> | Prisma.LogCreateWithoutAdminInput[] | Prisma.LogUncheckedCreateWithoutAdminInput[]
+  connectOrCreate?: Prisma.LogCreateOrConnectWithoutAdminInput | Prisma.LogCreateOrConnectWithoutAdminInput[]
+  createMany?: Prisma.LogCreateManyAdminInputEnvelope
+  connect?: Prisma.LogWhereUniqueInput | Prisma.LogWhereUniqueInput[]
+}
+
+export type LogUpdateManyWithoutAdminNestedInput = {
+  create?: Prisma.XOR<Prisma.LogCreateWithoutAdminInput, Prisma.LogUncheckedCreateWithoutAdminInput> | Prisma.LogCreateWithoutAdminInput[] | Prisma.LogUncheckedCreateWithoutAdminInput[]
+  connectOrCreate?: Prisma.LogCreateOrConnectWithoutAdminInput | Prisma.LogCreateOrConnectWithoutAdminInput[]
+  upsert?: Prisma.LogUpsertWithWhereUniqueWithoutAdminInput | Prisma.LogUpsertWithWhereUniqueWithoutAdminInput[]
+  createMany?: Prisma.LogCreateManyAdminInputEnvelope
+  set?: Prisma.LogWhereUniqueInput | Prisma.LogWhereUniqueInput[]
+  disconnect?: Prisma.LogWhereUniqueInput | Prisma.LogWhereUniqueInput[]
+  delete?: Prisma.LogWhereUniqueInput | Prisma.LogWhereUniqueInput[]
+  connect?: Prisma.LogWhereUniqueInput | Prisma.LogWhereUniqueInput[]
+  update?: Prisma.LogUpdateWithWhereUniqueWithoutAdminInput | Prisma.LogUpdateWithWhereUniqueWithoutAdminInput[]
+  updateMany?: Prisma.LogUpdateManyWithWhereWithoutAdminInput | Prisma.LogUpdateManyWithWhereWithoutAdminInput[]
+  deleteMany?: Prisma.LogScalarWhereInput | Prisma.LogScalarWhereInput[]
+}
+
+export type LogUncheckedUpdateManyWithoutAdminNestedInput = {
+  create?: Prisma.XOR<Prisma.LogCreateWithoutAdminInput, Prisma.LogUncheckedCreateWithoutAdminInput> | Prisma.LogCreateWithoutAdminInput[] | Prisma.LogUncheckedCreateWithoutAdminInput[]
+  connectOrCreate?: Prisma.LogCreateOrConnectWithoutAdminInput | Prisma.LogCreateOrConnectWithoutAdminInput[]
+  upsert?: Prisma.LogUpsertWithWhereUniqueWithoutAdminInput | Prisma.LogUpsertWithWhereUniqueWithoutAdminInput[]
+  createMany?: Prisma.LogCreateManyAdminInputEnvelope
+  set?: Prisma.LogWhereUniqueInput | Prisma.LogWhereUniqueInput[]
+  disconnect?: Prisma.LogWhereUniqueInput | Prisma.LogWhereUniqueInput[]
+  delete?: Prisma.LogWhereUniqueInput | Prisma.LogWhereUniqueInput[]
+  connect?: Prisma.LogWhereUniqueInput | Prisma.LogWhereUniqueInput[]
+  update?: Prisma.LogUpdateWithWhereUniqueWithoutAdminInput | Prisma.LogUpdateWithWhereUniqueWithoutAdminInput[]
+  updateMany?: Prisma.LogUpdateManyWithWhereWithoutAdminInput | Prisma.LogUpdateManyWithWhereWithoutAdminInput[]
+  deleteMany?: Prisma.LogScalarWhereInput | Prisma.LogScalarWhereInput[]
 }
 
 export type LogCreateNestedManyWithoutInstructorInput = {
@@ -474,6 +546,68 @@ export type EnumActionFieldUpdateOperationsInput = {
   set?: $Enums.Action
 }
 
+export type LogCreateWithoutAdminInput = {
+  entityType: $Enums.EntityType
+  entityId: number
+  action: $Enums.Action
+  updatedAt?: Date | string
+  oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  instructor: Prisma.InstructorCreateNestedOneWithoutLogsInput
+}
+
+export type LogUncheckedCreateWithoutAdminInput = {
+  id?: number
+  entityType: $Enums.EntityType
+  entityId: number
+  action: $Enums.Action
+  updatedAt?: Date | string
+  oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  instructorId: number
+}
+
+export type LogCreateOrConnectWithoutAdminInput = {
+  where: Prisma.LogWhereUniqueInput
+  create: Prisma.XOR<Prisma.LogCreateWithoutAdminInput, Prisma.LogUncheckedCreateWithoutAdminInput>
+}
+
+export type LogCreateManyAdminInputEnvelope = {
+  data: Prisma.LogCreateManyAdminInput | Prisma.LogCreateManyAdminInput[]
+  skipDuplicates?: boolean
+}
+
+export type LogUpsertWithWhereUniqueWithoutAdminInput = {
+  where: Prisma.LogWhereUniqueInput
+  update: Prisma.XOR<Prisma.LogUpdateWithoutAdminInput, Prisma.LogUncheckedUpdateWithoutAdminInput>
+  create: Prisma.XOR<Prisma.LogCreateWithoutAdminInput, Prisma.LogUncheckedCreateWithoutAdminInput>
+}
+
+export type LogUpdateWithWhereUniqueWithoutAdminInput = {
+  where: Prisma.LogWhereUniqueInput
+  data: Prisma.XOR<Prisma.LogUpdateWithoutAdminInput, Prisma.LogUncheckedUpdateWithoutAdminInput>
+}
+
+export type LogUpdateManyWithWhereWithoutAdminInput = {
+  where: Prisma.LogScalarWhereInput
+  data: Prisma.XOR<Prisma.LogUpdateManyMutationInput, Prisma.LogUncheckedUpdateManyWithoutAdminInput>
+}
+
+export type LogScalarWhereInput = {
+  AND?: Prisma.LogScalarWhereInput | Prisma.LogScalarWhereInput[]
+  OR?: Prisma.LogScalarWhereInput[]
+  NOT?: Prisma.LogScalarWhereInput | Prisma.LogScalarWhereInput[]
+  id?: Prisma.IntFilter<"Log"> | number
+  entityType?: Prisma.EnumEntityTypeFilter<"Log"> | $Enums.EntityType
+  entityId?: Prisma.IntFilter<"Log"> | number
+  action?: Prisma.EnumActionFilter<"Log"> | $Enums.Action
+  updatedAt?: Prisma.DateTimeFilter<"Log"> | Date | string
+  oldData?: Prisma.JsonFilter<"Log">
+  newData?: Prisma.JsonFilter<"Log">
+  instructorId?: Prisma.IntFilter<"Log"> | number
+  adminId?: Prisma.IntFilter<"Log"> | number
+}
+
 export type LogCreateWithoutInstructorInput = {
   entityType: $Enums.EntityType
   entityId: number
@@ -481,6 +615,7 @@ export type LogCreateWithoutInstructorInput = {
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  admin: Prisma.AdminCreateNestedOneWithoutLogsInput
 }
 
 export type LogUncheckedCreateWithoutInstructorInput = {
@@ -491,6 +626,7 @@ export type LogUncheckedCreateWithoutInstructorInput = {
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  adminId: number
 }
 
 export type LogCreateOrConnectWithoutInstructorInput = {
@@ -519,18 +655,47 @@ export type LogUpdateManyWithWhereWithoutInstructorInput = {
   data: Prisma.XOR<Prisma.LogUpdateManyMutationInput, Prisma.LogUncheckedUpdateManyWithoutInstructorInput>
 }
 
-export type LogScalarWhereInput = {
-  AND?: Prisma.LogScalarWhereInput | Prisma.LogScalarWhereInput[]
-  OR?: Prisma.LogScalarWhereInput[]
-  NOT?: Prisma.LogScalarWhereInput | Prisma.LogScalarWhereInput[]
-  id?: Prisma.IntFilter<"Log"> | number
-  entityType?: Prisma.EnumEntityTypeFilter<"Log"> | $Enums.EntityType
-  entityId?: Prisma.IntFilter<"Log"> | number
-  action?: Prisma.EnumActionFilter<"Log"> | $Enums.Action
-  updatedAt?: Prisma.DateTimeFilter<"Log"> | Date | string
-  oldData?: Prisma.JsonFilter<"Log">
-  newData?: Prisma.JsonFilter<"Log">
-  instructorId?: Prisma.IntFilter<"Log"> | number
+export type LogCreateManyAdminInput = {
+  id?: number
+  entityType: $Enums.EntityType
+  entityId: number
+  action: $Enums.Action
+  updatedAt?: Date | string
+  oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  instructorId: number
+}
+
+export type LogUpdateWithoutAdminInput = {
+  entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
+  entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  instructor?: Prisma.InstructorUpdateOneRequiredWithoutLogsNestedInput
+}
+
+export type LogUncheckedUpdateWithoutAdminInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
+  entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  instructorId?: Prisma.IntFieldUpdateOperationsInput | number
+}
+
+export type LogUncheckedUpdateManyWithoutAdminInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
+  entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  instructorId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type LogCreateManyInstructorInput = {
@@ -541,6 +706,7 @@ export type LogCreateManyInstructorInput = {
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  adminId: number
 }
 
 export type LogUpdateWithoutInstructorInput = {
@@ -550,6 +716,7 @@ export type LogUpdateWithoutInstructorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  admin?: Prisma.AdminUpdateOneRequiredWithoutLogsNestedInput
 }
 
 export type LogUncheckedUpdateWithoutInstructorInput = {
@@ -560,6 +727,7 @@ export type LogUncheckedUpdateWithoutInstructorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  adminId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type LogUncheckedUpdateManyWithoutInstructorInput = {
@@ -570,6 +738,7 @@ export type LogUncheckedUpdateManyWithoutInstructorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  adminId?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -583,7 +752,9 @@ export type LogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   oldData?: boolean
   newData?: boolean
   instructorId?: boolean
+  adminId?: boolean
   instructor?: boolean | Prisma.InstructorDefaultArgs<ExtArgs>
+  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["log"]>
 
 
@@ -597,17 +768,20 @@ export type LogSelectScalar = {
   oldData?: boolean
   newData?: boolean
   instructorId?: boolean
+  adminId?: boolean
 }
 
-export type LogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "entityType" | "entityId" | "action" | "updatedAt" | "oldData" | "newData" | "instructorId", ExtArgs["result"]["log"]>
+export type LogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "entityType" | "entityId" | "action" | "updatedAt" | "oldData" | "newData" | "instructorId" | "adminId", ExtArgs["result"]["log"]>
 export type LogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   instructor?: boolean | Prisma.InstructorDefaultArgs<ExtArgs>
+  admin?: boolean | Prisma.AdminDefaultArgs<ExtArgs>
 }
 
 export type $LogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Log"
   objects: {
     instructor: Prisma.$InstructorPayload<ExtArgs>
+    admin: Prisma.$AdminPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -618,6 +792,7 @@ export type $LogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     oldData: runtime.JsonValue
     newData: runtime.JsonValue
     instructorId: number
+    adminId: number
   }, ExtArgs["result"]["log"]>
   composites: {}
 }
@@ -959,6 +1134,7 @@ readonly fields: LogFieldRefs;
 export interface Prisma__LogClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   instructor<T extends Prisma.InstructorDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.InstructorDefaultArgs<ExtArgs>>): Prisma.Prisma__InstructorClient<runtime.Types.Result.GetResult<Prisma.$InstructorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  admin<T extends Prisma.AdminDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.AdminDefaultArgs<ExtArgs>>): Prisma.Prisma__AdminClient<runtime.Types.Result.GetResult<Prisma.$AdminPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -996,6 +1172,7 @@ export interface LogFieldRefs {
   readonly oldData: Prisma.FieldRef<"Log", 'Json'>
   readonly newData: Prisma.FieldRef<"Log", 'Json'>
   readonly instructorId: Prisma.FieldRef<"Log", 'Int'>
+  readonly adminId: Prisma.FieldRef<"Log", 'Int'>
 }
     
 

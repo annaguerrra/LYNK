@@ -36,7 +36,6 @@ export type InstructorSumAggregateOutputType = {
 
 export type InstructorMinAggregateOutputType = {
   id: number | null
-  name: string | null
   createdAt: Date | null
   username: string | null
   password: string | null
@@ -48,7 +47,6 @@ export type InstructorMinAggregateOutputType = {
 
 export type InstructorMaxAggregateOutputType = {
   id: number | null
-  name: string | null
   createdAt: Date | null
   username: string | null
   password: string | null
@@ -60,7 +58,6 @@ export type InstructorMaxAggregateOutputType = {
 
 export type InstructorCountAggregateOutputType = {
   id: number
-  name: number
   createdAt: number
   username: number
   password: number
@@ -82,7 +79,6 @@ export type InstructorSumAggregateInputType = {
 
 export type InstructorMinAggregateInputType = {
   id?: true
-  name?: true
   createdAt?: true
   username?: true
   password?: true
@@ -94,7 +90,6 @@ export type InstructorMinAggregateInputType = {
 
 export type InstructorMaxAggregateInputType = {
   id?: true
-  name?: true
   createdAt?: true
   username?: true
   password?: true
@@ -106,7 +101,6 @@ export type InstructorMaxAggregateInputType = {
 
 export type InstructorCountAggregateInputType = {
   id?: true
-  name?: true
   createdAt?: true
   username?: true
   password?: true
@@ -205,7 +199,6 @@ export type InstructorGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 
 export type InstructorGroupByOutputType = {
   id: number
-  name: string
   createdAt: Date
   username: string
   password: string
@@ -240,7 +233,6 @@ export type InstructorWhereInput = {
   OR?: Prisma.InstructorWhereInput[]
   NOT?: Prisma.InstructorWhereInput | Prisma.InstructorWhereInput[]
   id?: Prisma.IntFilter<"Instructor"> | number
-  name?: Prisma.StringFilter<"Instructor"> | string
   createdAt?: Prisma.DateTimeFilter<"Instructor"> | Date | string
   username?: Prisma.StringFilter<"Instructor"> | string
   password?: Prisma.StringFilter<"Instructor"> | string
@@ -249,12 +241,10 @@ export type InstructorWhereInput = {
   active?: Prisma.BoolFilter<"Instructor"> | boolean
   attachmentId?: Prisma.StringFilter<"Instructor"> | string
   logs?: Prisma.LogListRelationFilter
-  students?: Prisma.StudentListRelationFilter
 }
 
 export type InstructorOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   username?: Prisma.SortOrder
   password?: Prisma.SortOrder
@@ -263,7 +253,6 @@ export type InstructorOrderByWithRelationInput = {
   active?: Prisma.SortOrder
   attachmentId?: Prisma.SortOrder
   logs?: Prisma.LogOrderByRelationAggregateInput
-  students?: Prisma.StudentOrderByRelationAggregateInput
   _relevance?: Prisma.InstructorOrderByRelevanceInput
 }
 
@@ -272,7 +261,6 @@ export type InstructorWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.InstructorWhereInput | Prisma.InstructorWhereInput[]
   OR?: Prisma.InstructorWhereInput[]
   NOT?: Prisma.InstructorWhereInput | Prisma.InstructorWhereInput[]
-  name?: Prisma.StringFilter<"Instructor"> | string
   createdAt?: Prisma.DateTimeFilter<"Instructor"> | Date | string
   username?: Prisma.StringFilter<"Instructor"> | string
   password?: Prisma.StringFilter<"Instructor"> | string
@@ -281,12 +269,10 @@ export type InstructorWhereUniqueInput = Prisma.AtLeast<{
   active?: Prisma.BoolFilter<"Instructor"> | boolean
   attachmentId?: Prisma.StringFilter<"Instructor"> | string
   logs?: Prisma.LogListRelationFilter
-  students?: Prisma.StudentListRelationFilter
 }, "id">
 
 export type InstructorOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   username?: Prisma.SortOrder
   password?: Prisma.SortOrder
@@ -306,7 +292,6 @@ export type InstructorScalarWhereWithAggregatesInput = {
   OR?: Prisma.InstructorScalarWhereWithAggregatesInput[]
   NOT?: Prisma.InstructorScalarWhereWithAggregatesInput | Prisma.InstructorScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Instructor"> | number
-  name?: Prisma.StringWithAggregatesFilter<"Instructor"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Instructor"> | Date | string
   username?: Prisma.StringWithAggregatesFilter<"Instructor"> | string
   password?: Prisma.StringWithAggregatesFilter<"Instructor"> | string
@@ -317,7 +302,6 @@ export type InstructorScalarWhereWithAggregatesInput = {
 }
 
 export type InstructorCreateInput = {
-  name: string
   createdAt?: Date | string
   username: string
   password: string
@@ -326,12 +310,10 @@ export type InstructorCreateInput = {
   active?: boolean
   attachmentId: string
   logs?: Prisma.LogCreateNestedManyWithoutInstructorInput
-  students?: Prisma.StudentCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorUncheckedCreateInput = {
   id?: number
-  name: string
   createdAt?: Date | string
   username: string
   password: string
@@ -340,11 +322,9 @@ export type InstructorUncheckedCreateInput = {
   active?: boolean
   attachmentId: string
   logs?: Prisma.LogUncheckedCreateNestedManyWithoutInstructorInput
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorUpdateInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
@@ -353,12 +333,10 @@ export type InstructorUpdateInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
   logs?: Prisma.LogUpdateManyWithoutInstructorNestedInput
-  students?: Prisma.StudentUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
@@ -367,12 +345,10 @@ export type InstructorUncheckedUpdateInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
   logs?: Prisma.LogUncheckedUpdateManyWithoutInstructorNestedInput
-  students?: Prisma.StudentUncheckedUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorCreateManyInput = {
   id?: number
-  name: string
   createdAt?: Date | string
   username: string
   password: string
@@ -383,7 +359,6 @@ export type InstructorCreateManyInput = {
 }
 
 export type InstructorUpdateManyMutationInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
@@ -395,7 +370,6 @@ export type InstructorUpdateManyMutationInput = {
 
 export type InstructorUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
@@ -413,7 +387,6 @@ export type InstructorOrderByRelevanceInput = {
 
 export type InstructorCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   username?: Prisma.SortOrder
   password?: Prisma.SortOrder
@@ -429,7 +402,6 @@ export type InstructorAvgOrderByAggregateInput = {
 
 export type InstructorMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   username?: Prisma.SortOrder
   password?: Prisma.SortOrder
@@ -441,7 +413,6 @@ export type InstructorMaxOrderByAggregateInput = {
 
 export type InstructorMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  name?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   username?: Prisma.SortOrder
   password?: Prisma.SortOrder
@@ -460,48 +431,6 @@ export type InstructorScalarRelationFilter = {
   isNot?: Prisma.InstructorWhereInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
-}
-
-export type EnumUserTypeFieldUpdateOperationsInput = {
-  set?: $Enums.UserType
-}
-
-export type EnumSpecialtiesFieldUpdateOperationsInput = {
-  set?: $Enums.Specialties
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
-export type InstructorCreateNestedOneWithoutStudentsInput = {
-  create?: Prisma.XOR<Prisma.InstructorCreateWithoutStudentsInput, Prisma.InstructorUncheckedCreateWithoutStudentsInput>
-  connectOrCreate?: Prisma.InstructorCreateOrConnectWithoutStudentsInput
-  connect?: Prisma.InstructorWhereUniqueInput
-}
-
-export type InstructorUpdateOneRequiredWithoutStudentsNestedInput = {
-  create?: Prisma.XOR<Prisma.InstructorCreateWithoutStudentsInput, Prisma.InstructorUncheckedCreateWithoutStudentsInput>
-  connectOrCreate?: Prisma.InstructorCreateOrConnectWithoutStudentsInput
-  upsert?: Prisma.InstructorUpsertWithoutStudentsInput
-  connect?: Prisma.InstructorWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.InstructorUpdateToOneWithWhereWithoutStudentsInput, Prisma.InstructorUpdateWithoutStudentsInput>, Prisma.InstructorUncheckedUpdateWithoutStudentsInput>
-}
-
 export type InstructorCreateNestedOneWithoutLogsInput = {
   create?: Prisma.XOR<Prisma.InstructorCreateWithoutLogsInput, Prisma.InstructorUncheckedCreateWithoutLogsInput>
   connectOrCreate?: Prisma.InstructorCreateOrConnectWithoutLogsInput
@@ -516,74 +445,7 @@ export type InstructorUpdateOneRequiredWithoutLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.InstructorUpdateToOneWithWhereWithoutLogsInput, Prisma.InstructorUpdateWithoutLogsInput>, Prisma.InstructorUncheckedUpdateWithoutLogsInput>
 }
 
-export type InstructorCreateWithoutStudentsInput = {
-  name: string
-  createdAt?: Date | string
-  username: string
-  password: string
-  userType?: $Enums.UserType
-  specialty: $Enums.Specialties
-  active?: boolean
-  attachmentId: string
-  logs?: Prisma.LogCreateNestedManyWithoutInstructorInput
-}
-
-export type InstructorUncheckedCreateWithoutStudentsInput = {
-  id?: number
-  name: string
-  createdAt?: Date | string
-  username: string
-  password: string
-  userType?: $Enums.UserType
-  specialty: $Enums.Specialties
-  active?: boolean
-  attachmentId: string
-  logs?: Prisma.LogUncheckedCreateNestedManyWithoutInstructorInput
-}
-
-export type InstructorCreateOrConnectWithoutStudentsInput = {
-  where: Prisma.InstructorWhereUniqueInput
-  create: Prisma.XOR<Prisma.InstructorCreateWithoutStudentsInput, Prisma.InstructorUncheckedCreateWithoutStudentsInput>
-}
-
-export type InstructorUpsertWithoutStudentsInput = {
-  update: Prisma.XOR<Prisma.InstructorUpdateWithoutStudentsInput, Prisma.InstructorUncheckedUpdateWithoutStudentsInput>
-  create: Prisma.XOR<Prisma.InstructorCreateWithoutStudentsInput, Prisma.InstructorUncheckedCreateWithoutStudentsInput>
-  where?: Prisma.InstructorWhereInput
-}
-
-export type InstructorUpdateToOneWithWhereWithoutStudentsInput = {
-  where?: Prisma.InstructorWhereInput
-  data: Prisma.XOR<Prisma.InstructorUpdateWithoutStudentsInput, Prisma.InstructorUncheckedUpdateWithoutStudentsInput>
-}
-
-export type InstructorUpdateWithoutStudentsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
-  specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  logs?: Prisma.LogUpdateManyWithoutInstructorNestedInput
-}
-
-export type InstructorUncheckedUpdateWithoutStudentsInput = {
-  id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  username?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
-  userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
-  specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
-  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  logs?: Prisma.LogUncheckedUpdateManyWithoutInstructorNestedInput
-}
-
 export type InstructorCreateWithoutLogsInput = {
-  name: string
   createdAt?: Date | string
   username: string
   password: string
@@ -591,12 +453,10 @@ export type InstructorCreateWithoutLogsInput = {
   specialty: $Enums.Specialties
   active?: boolean
   attachmentId: string
-  students?: Prisma.StudentCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorUncheckedCreateWithoutLogsInput = {
   id?: number
-  name: string
   createdAt?: Date | string
   username: string
   password: string
@@ -604,7 +464,6 @@ export type InstructorUncheckedCreateWithoutLogsInput = {
   specialty: $Enums.Specialties
   active?: boolean
   attachmentId: string
-  students?: Prisma.StudentUncheckedCreateNestedManyWithoutInstructorInput
 }
 
 export type InstructorCreateOrConnectWithoutLogsInput = {
@@ -624,7 +483,6 @@ export type InstructorUpdateToOneWithWhereWithoutLogsInput = {
 }
 
 export type InstructorUpdateWithoutLogsInput = {
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
@@ -632,12 +490,10 @@ export type InstructorUpdateWithoutLogsInput = {
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  students?: Prisma.StudentUpdateManyWithoutInstructorNestedInput
 }
 
 export type InstructorUncheckedUpdateWithoutLogsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  name?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
   password?: Prisma.StringFieldUpdateOperationsInput | string
@@ -645,7 +501,6 @@ export type InstructorUncheckedUpdateWithoutLogsInput = {
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
-  students?: Prisma.StudentUncheckedUpdateManyWithoutInstructorNestedInput
 }
 
 
@@ -655,12 +510,10 @@ export type InstructorUncheckedUpdateWithoutLogsInput = {
 
 export type InstructorCountOutputType = {
   logs: number
-  students: number
 }
 
 export type InstructorCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   logs?: boolean | InstructorCountOutputTypeCountLogsArgs
-  students?: boolean | InstructorCountOutputTypeCountStudentsArgs
 }
 
 /**
@@ -680,17 +533,9 @@ export type InstructorCountOutputTypeCountLogsArgs<ExtArgs extends runtime.Types
   where?: Prisma.LogWhereInput
 }
 
-/**
- * InstructorCountOutputType without action
- */
-export type InstructorCountOutputTypeCountStudentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.StudentWhereInput
-}
-
 
 export type InstructorSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  name?: boolean
   createdAt?: boolean
   username?: boolean
   password?: boolean
@@ -699,7 +544,6 @@ export type InstructorSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   active?: boolean
   attachmentId?: boolean
   logs?: boolean | Prisma.Instructor$logsArgs<ExtArgs>
-  students?: boolean | Prisma.Instructor$studentsArgs<ExtArgs>
   _count?: boolean | Prisma.InstructorCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["instructor"]>
 
@@ -707,7 +551,6 @@ export type InstructorSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 
 export type InstructorSelectScalar = {
   id?: boolean
-  name?: boolean
   createdAt?: boolean
   username?: boolean
   password?: boolean
@@ -717,10 +560,9 @@ export type InstructorSelectScalar = {
   attachmentId?: boolean
 }
 
-export type InstructorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "createdAt" | "username" | "password" | "userType" | "specialty" | "active" | "attachmentId", ExtArgs["result"]["instructor"]>
+export type InstructorOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "username" | "password" | "userType" | "specialty" | "active" | "attachmentId", ExtArgs["result"]["instructor"]>
 export type InstructorInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   logs?: boolean | Prisma.Instructor$logsArgs<ExtArgs>
-  students?: boolean | Prisma.Instructor$studentsArgs<ExtArgs>
   _count?: boolean | Prisma.InstructorCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -728,11 +570,9 @@ export type $InstructorPayload<ExtArgs extends runtime.Types.Extensions.Internal
   name: "Instructor"
   objects: {
     logs: Prisma.$LogPayload<ExtArgs>[]
-    students: Prisma.$StudentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    name: string
     createdAt: Date
     username: string
     password: string
@@ -1081,7 +921,6 @@ readonly fields: InstructorFieldRefs;
 export interface Prisma__InstructorClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   logs<T extends Prisma.Instructor$logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Instructor$logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$LogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  students<T extends Prisma.Instructor$studentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Instructor$studentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1112,7 +951,6 @@ export interface Prisma__InstructorClient<T, Null = never, ExtArgs extends runti
  */
 export interface InstructorFieldRefs {
   readonly id: Prisma.FieldRef<"Instructor", 'Int'>
-  readonly name: Prisma.FieldRef<"Instructor", 'String'>
   readonly createdAt: Prisma.FieldRef<"Instructor", 'DateTime'>
   readonly username: Prisma.FieldRef<"Instructor", 'String'>
   readonly password: Prisma.FieldRef<"Instructor", 'String'>
@@ -1484,30 +1322,6 @@ export type Instructor$logsArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.LogScalarFieldEnum | Prisma.LogScalarFieldEnum[]
-}
-
-/**
- * Instructor.students
- */
-export type Instructor$studentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Student
-   */
-  select?: Prisma.StudentSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Student
-   */
-  omit?: Prisma.StudentOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.StudentInclude<ExtArgs> | null
-  where?: Prisma.StudentWhereInput
-  orderBy?: Prisma.StudentOrderByWithRelationInput | Prisma.StudentOrderByWithRelationInput[]
-  cursor?: Prisma.StudentWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.StudentScalarFieldEnum | Prisma.StudentScalarFieldEnum[]
 }
 
 /**
