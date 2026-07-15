@@ -40,6 +40,7 @@ enum EntityType {
   Area
   Student
   Exam
+  Admin
 }
 
 model Admin {
@@ -148,10 +149,10 @@ model Log {
   updatedAt DateTime @default(now())
   oldData Json
   newData Json
-  instructorId Int
-  adminId Int
-  instructor Instructor @relation(fields: [instructorId], references: [id])
-  admin Admin @relation(fields: [adminId], references: [id])
+  instructorId Int?
+  adminId Int?
+  instructor Instructor? @relation(fields: [instructorId], references: [id])
+  admin Admin? @relation(fields: [adminId], references: [id])
 }
 
 model ExamAttachment {

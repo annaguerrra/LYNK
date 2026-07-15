@@ -2,10 +2,14 @@ import { registerAreaDTO} from "#application/dtos/areaDTO.js";
 import { IAreaService } from "#application/services/Area/IArea.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Area } from "#infrastructure/prisma/generated/prisma/client.js";
+import { UserService } from "../User/UserService.js";
 
 export class AreaService implements IAreaService{
+    constructor(private userService: UserService) {}
+
     async registerArea(data: registerAreaDTO, userId: number): Promise<Area> {
         const { name } = data
+        const isAdmin = await this.userService.isAdmin(userId) 
         
         const createdArea =  await prisma.area.create({
             data: { name }
@@ -20,7 +24,8 @@ export class AreaService implements IAreaService{
                 newData: {
                     ...createdArea
                 },
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         })
 
@@ -33,6 +38,7 @@ export class AreaService implements IAreaService{
     
     async updateArea(id: number, data: registerAreaDTO, userId: number): Promise<Area> {
         const { name } = data
+        const isAdmin = await this.userService.isAdmin(userId) 
         const target = await prisma.area.findUnique({
             where: {
                 id: id
@@ -62,7 +68,8 @@ export class AreaService implements IAreaService{
                 newData: {
                     ...updatedArea 
                 },
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         })
 
@@ -71,6 +78,7 @@ export class AreaService implements IAreaService{
     }
 
     async deleteArea(id: number, userId: number): Promise<boolean> {
+        const isAdmin = await this.userService.isAdmin(userId) 
         const target = await prisma.area.findUnique({
             where: {
                 id: id
@@ -93,7 +101,8 @@ export class AreaService implements IAreaService{
                 entityId: target.id,
                 oldData: {...target},
                 newData: {},
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         })
 
