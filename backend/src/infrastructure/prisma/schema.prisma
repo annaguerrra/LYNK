@@ -150,7 +150,9 @@ model Log {
   oldData Json
   newData Json
   instructorId Int
+  adminId Int
   instructor Instructor @relation(fields: [instructorId], references: [id])
+  admin Admin @relation(fields: [adminId], references: [id])
 }
 
 model ExamAttachment {

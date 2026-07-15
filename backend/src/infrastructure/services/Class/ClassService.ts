@@ -1,4 +1,4 @@
-import { assignCompetencyDTO, ClassDTO, downloadContentDTO, editClass, findAllDTO, viewCompetencesDTO, viewContentDTO } from "#application/dtos/classDTO.js";
+import { assignCompetencyDTO, ClassDTO, getContentDTO, editClass, findAllDTO, viewCompetencesDTO, viewContentDTO } from "#application/dtos/classDTO.js";
 import { IClassService } from "#application/services/Class/IClass.service.js";
 import { Class } from "#infrastructure/prisma/generated/prisma/client.js";
 import { DownloadedFile } from "#application/dtos/attachmentDTO.js";
@@ -200,8 +200,22 @@ export class ClassService implements IClassService{
         throw new Error("Method not implemented.");
     }
 
-    downloadContent(payload: downloadContentDTO): Promise<Buffer> {
-        throw new Error("Method not implemented.");
+    async getContent(classId: number): Promise<getContentDTO> {
+        const target = await prisma.class.findUnique({
+            where:{ id: classId },
+            select:{
+                name: true,
+                content: true
+            }
+        });
+
+        if(!target){
+            throw new Error("Class not Found");
+        }
+
+        return {
+            ...target
+        }
     }
 
     async delete(id: number, userId: number): Promise<boolean> {
@@ -278,5 +292,4 @@ export class ClassService implements IClassService{
             lastUpdate
         } 
     }   
-
 }

@@ -39,9 +39,9 @@ export interface viewContentDTO{
     content: string
 }
 
-export interface downloadContentDTO{
-    title: string
-    markdown: string
+export interface getContentDTO{
+    name: string
+    content: string
 }
 
 export interface editClass{
