@@ -4,11 +4,15 @@ import { Class } from "#infrastructure/prisma/generated/prisma/client.js";
 import { DownloadedFile } from "#application/dtos/attachmentDTO.js";
 import { viewMaterialsDTO } from "#application/dtos/materialDTO.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
+import { UserService } from "../User/UserService.js";
 
 export class ClassService implements IClassService{
+    constructor(private userService: UserService) {}
     
     async create(payload: ClassDTO, disciplineId: number, userId: number): Promise<Class> {
         const {name, content} = payload;
+        const isAdmin = await this.userService.isAdmin(userId)
+
         const createdClass = await prisma.class.create({
             data:{
                 name, 
@@ -34,7 +38,8 @@ export class ClassService implements IClassService{
                     name,
                     content
                 },
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         });
 
@@ -82,6 +87,7 @@ export class ClassService implements IClassService{
     }
 
     async assignCompetency(payload: assignCompetencyDTO, userId: number): Promise<Class> {
+        const isAdmin = await this.userService.isAdmin(userId)
         const competence = await prisma.competence.findFirst({
             where:{
                 id: payload.competencyId
@@ -126,7 +132,8 @@ export class ClassService implements IClassService{
                 oldData:{
                     ...target
                 },
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         });
 
@@ -219,11 +226,12 @@ export class ClassService implements IClassService{
     }
 
     async delete(id: number, userId: number): Promise<boolean> {
-       const target = await prisma.class.delete({
-        where:{
-            id: id
-        }
-       });
+        const isAdmin = await this.userService.isAdmin(userId)
+        const target = await prisma.class.delete({
+            where:{
+                id: id
+            }
+        });
 
        if(!target){
         throw new Error("Class not Found!");
@@ -237,7 +245,8 @@ export class ClassService implements IClassService{
                 oldData:{},
                 updatedAt: new Date(),
                 newData:{},
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         });
 
@@ -246,6 +255,7 @@ export class ClassService implements IClassService{
     
     async edit(payload: ClassDTO, id: number, userId: number): Promise<editClass> {
         const { name, content} = payload
+        const isAdmin = await this.userService.isAdmin(userId)
         const target = await prisma.class.findUnique({
             where:{
                 id:id
@@ -281,7 +291,8 @@ export class ClassService implements IClassService{
                     name: updatedClass.name,
                     content: updatedClass.content
                 },
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         });
 

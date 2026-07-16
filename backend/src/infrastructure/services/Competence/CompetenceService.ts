@@ -2,11 +2,14 @@ import { registerCompetenceDTO, updateCompetenceDTO } from "#application/dtos/co
 import { ICompetenceService } from "#application/services/Competence/ICompetence.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Competence } from "#infrastructure/prisma/generated/prisma/client.js";
+import { UserService } from "../User/UserService.js";
 
 export class CompetenceService implements ICompetenceService {
+    constructor(private userService: UserService) {}
 
     async registerCompetence(data: registerCompetenceDTO, userId: number): Promise<Competence> {
         const { name } = data
+        const isAdmin = await this.userService.isAdmin(userId)
         const createdCompetence = await prisma.competence.create({
             data: { name }
         })
@@ -21,7 +24,8 @@ export class CompetenceService implements ICompetenceService {
                 newData: {
                     ...createdCompetence
                 },
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         })
 
@@ -42,6 +46,7 @@ export class CompetenceService implements ICompetenceService {
 
     async updateCompetence(id: number, data: updateCompetenceDTO, userId: number): Promise<Competence> {
         const { name } = data
+        const isAdmin = await this.userService.isAdmin(userId)
 
         const target = await prisma.competence.findUnique({
             where: {
@@ -72,7 +77,8 @@ export class CompetenceService implements ICompetenceService {
                 newData: {
                     ...updatedCompetence
                 },
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         })
         return {
@@ -81,6 +87,7 @@ export class CompetenceService implements ICompetenceService {
     }
 
     async deleteCompetence(id: number, userId: number): Promise<boolean> {
+        const isAdmin = await this.userService.isAdmin(userId)
         const target = await prisma.competence.findUnique({
             where: {
                 id: id
@@ -105,7 +112,8 @@ export class CompetenceService implements ICompetenceService {
                     ...target
                 },
                 newData: {},
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         })
 

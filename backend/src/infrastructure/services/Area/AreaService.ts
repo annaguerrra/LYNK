@@ -9,7 +9,7 @@ export class AreaService implements IAreaService{
 
     async registerArea(data: registerAreaDTO, userId: number): Promise<Area> {
         const { name } = data
-        const isAdmin = await this.userService.isAdmin(userId) 
+        const isAdmin = await this.userService.isAdmin(userId)
         
         const createdArea =  await prisma.area.create({
             data: { name }

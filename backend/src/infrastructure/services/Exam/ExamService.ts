@@ -4,12 +4,17 @@ import { IExamService } from "#application/services/Exam/IExam.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Exam } from "#infrastructure/prisma/generated/prisma/client.js";
 import { AttachmentService } from "../Attachment/AttachmentService.js";
+import { UserService } from "../User/UserService.js";
 
 export class ExamService implements IExamService {
-    constructor(private attachmentService: AttachmentService) {}
+    constructor(
+        private attachmentService: AttachmentService,
+        private userService: UserService
+    ) {}
     
     async registerExam(data: registerExamDTO, userId: number): Promise<Exam> {
         const { name, files, disciplineId, competencesId } = data
+        const isAdmin = await this.userService.isAdmin(userId)
         const uploadedIds: string[] = []
 
         try {
@@ -45,7 +50,8 @@ export class ExamService implements IExamService {
                     newData: {
                         ...createdExam
                     },
-                    instructorId: userId
+                    ...(isAdmin && { adminId: userId }),
+                    ...(!isAdmin && { instructorId: userId })
                 }
             })
 
@@ -61,6 +67,7 @@ export class ExamService implements IExamService {
     }
 
     async attachtFile(data: attachtFileDTO, userId: number): Promise<Exam> {
+        const isAdmin = await this.userService.isAdmin(userId)
         const { examId, files } = data
         const uploadedIds: string[] = []
 
@@ -106,7 +113,8 @@ export class ExamService implements IExamService {
                     newData: {
                         ...updatedExam
                     },
-                    instructorId: userId
+                    ...(isAdmin && { adminId: userId }),
+                    ...(!isAdmin && { instructorId: userId })
                 }
             })
 
@@ -136,6 +144,7 @@ export class ExamService implements IExamService {
 
     async updateExam(id: number, data: updateExamDTO, userId: number): Promise<Exam> {
         const { name, disciplineId, competencesId } = data
+        const isAdmin = await this.userService.isAdmin(userId)
 
         const target = await prisma.exam.findUnique({
             where: {
@@ -170,7 +179,8 @@ export class ExamService implements IExamService {
                 newData: {
                     ...updatedExam
                 },
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         })
 
@@ -178,6 +188,7 @@ export class ExamService implements IExamService {
     }
 
     async removeExam(id: number, userId: number): Promise<Exam> {
+        const isAdmin = await this.userService.isAdmin(userId)
         const target = await prisma.exam.findUnique({
             where: {
                 id: id
@@ -210,7 +221,8 @@ export class ExamService implements IExamService {
                     ...target
                 },
                 newData: {},
-                instructorId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId })
             }
         })
 
