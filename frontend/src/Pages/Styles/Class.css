@@ -24,14 +24,17 @@
 .markdownEditBox {
     flex: 1;
     height: 30rem;
-    background-color: rgb(255, 255, 255);
+    background-color: white;
     border: 1px solid var(--gray);
     border-radius: 10px;
     min-width: 30rem;
 }
 
+.markdownEditBox .mdxeditor {
+}
+
 .attachmentsBox {
-    min-width: 20rem;
+    min-width: 22rem;
     width: 20rem;
     height: 40rem;
     background-color: rgb(255, 255, 255);
@@ -68,6 +71,8 @@
 .toolbar {
     display: inline-flex;
 }
+
+
 
 .toolbar.view {
     border-bottom: 1px solid var(--gray);
@@ -127,4 +132,71 @@
 .subtitle {
     font-weight: bold;
     font-size: 20px;
+}
+
+.buttonsRow {
+    display: inline-flex;
+    gap: .5rem
+}
+
+
+/* classe interna da biblioteca */
+.mdxeditor {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* área editável */
+.mdxeditor-root-contenteditable {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+
+    font-size: 1rem;
+    line-height: 1.8;
+
+    scrollbar-width: thin;
+}
+
+.mdxeditor-root-contenteditable h1 {
+    margin-top: .7rem;
+    font-size: 1.6rem;
+}
+
+.mdxeditor-root-contenteditable h2 {
+    font-size: 1.4rem;
+    margin-top: .7rem;
+}
+
+.mdxeditor-root-contenteditable h3 {
+    font-size: 1.2rem;
+    margin-top: .7rem;
+}
+
+.mdxeditor-root-contenteditable li {
+    margin: 0;
+}
+
+.mdxeditor-root-contenteditable ul,
+.mdxeditor-root-contenteditable ol {
+    padding-left: 2rem;
+}
+
+.mdxeditor-root-contenteditable blockquote {
+    border-left: 4px solid var(--purple);
+    padding-left: 1rem;
+    color: #666;
+    margin: 1rem 0;
+}
+
+.mdxeditor-toolbar button[aria-label="Check list"] {
+    display: none;
+}
+
+.mdxeditor .cm-editor .cm-content,
+.mdxeditor .cm-editor .cm-line,
+.mdxeditor .cm-editor span {
+    font-family: "JetBrains Mono", monospace !important;
 }

@@ -23,9 +23,6 @@
     background-color: var(--blue);
 }
 
-.tagRow.color {
-    background-color: var(--blue);
-}
 
 .contentRow {
     flex: 1;
@@ -33,11 +30,13 @@
     font-size: 14px;
     display: inline-flex;
     justify-content: space-between;
+    gap: 1rem;
 }
 
 .contentRow.--medium {
     font-size: 17px;
     padding: .7rem 1.8rem;
+    gap: 2rem;
 }
 
 
