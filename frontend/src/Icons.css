@@ -21,3 +21,8 @@
   content: "\e0f0";
   font-size: inherit;
 }
+
+.icon-download::before {
+  content: "\e149";
+  font-size: inherit;
+}

@@ -31,11 +31,14 @@ import './Styles/Class.css'
 import { ButtonBack } from '../Components/ButtonBack'
 import { RowItem } from '../Components/RowItem'
 import { ButtonClose } from '../Components/ButtonClose'
+import { ButtonIcon } from '../Components/ButtonIcon'
+import { useNavigate } from 'react-router-dom'
 
 export function Class() {
 
     const [editMode, setEditMode] = useState(false)
     const [titleClass, setTitleClass] = useState("Aula 05")
+    const navigate = useNavigate();
 
 const [content, setContent] = useState(`# Introdução ao Python
 
@@ -117,7 +120,7 @@ Olá, Ana!
             <div className="page-class">
 
                 <div className="headerContent">
-                    <ButtonBack />
+                    <ButtonBack onClick={() => navigate("/content")} />
                 </div>
 
                 <div className='content-class'>
@@ -198,23 +201,65 @@ Olá, Ana!
                             <div className='attachments'>
                                 <RowItem type='class'>
                                     <div>Material_aaa00</div>
-                                    <ButtonClose size={18} onClose={() => { }} />
+                                    <div className='buttonsRow'>
+                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                    </div>
                                 </RowItem>
-                                <RowItem >
+                                <RowItem type='class'>
                                     <div>Material_aaa00</div>
-                                    <ButtonClose size={18} onClose={() => { }} />
+                                    <div className='buttonsRow'>
+                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                    </div>
+                                </RowItem>
+                                <RowItem type='class'>
+                                    <div>Material_aaa00</div>
+                                    <div className='buttonsRow'>
+                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                    </div>
+                                </RowItem>
+                                <RowItem type='class'>
+                                    <div>Material_aaa00000 awdfawdfaw  esfse fesf es fesfs fesf </div>
+                                    <div className='buttonsRow'>
+                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                    </div>
+                                </RowItem>
+                                <RowItem type='class'>
+                                    <div>Material_aaa00</div>
+                                    <div className='buttonsRow'>
+                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                    </div>
+                                </RowItem>
+                                <RowItem type='class'>
+                                    <div>Material_aaa00</div>
+                                    <div className='buttonsRow'>
+                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                    </div>
+                                </RowItem>
+                                <RowItem type='class'>
+                                    <div>Material_aaa00</div>
+                                    <div className='buttonsRow'>
+                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                    </div>
                                 </RowItem>
                             </div>
                             <span className='subtitle'>Competências</span>
                             <div className='attachments'>
-                                <RowItem >
+                                <RowItem type='competence' >
                                     <div>Fazer sei la o que, comepencia de não sei o que mais </div>
-                                    <ButtonClose size={18} onClose={() => { }} />
-                                </RowItem>
-                                <RowItem >
-                                    <div>Teste de nome para o componente usado para representar uma competencia</div>
-                                    <div className='buttonsRow'>
+                                    <div className='buttonsRow'>             
                                         <ButtonClose size={18} onClose={() => { }} />
+                                    </div>
+                                </RowItem>
+                                <RowItem type='competence' >
+                                    <div>Teste de nome para o componente usado para representar uma competencia</div>
+                                    <div className='buttonsRow'>             
                                         <ButtonClose size={18} onClose={() => { }} />
                                     </div>
                                 </RowItem>
