@@ -11,7 +11,7 @@ export class JwtTokenService implements IJwtTokenService {
         if(!secret) throw new Error("JWT Error");
         
         this.secret = secret;
-        this.expiresIn = "1d"
+        this.expiresIn = "4h"
     }
 
     generate(payload: JwtTokenDTO): string {

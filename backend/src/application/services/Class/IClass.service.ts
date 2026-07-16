@@ -13,7 +13,7 @@ export interface IClassService{
     viewMaterials(classId: number): Promise<viewMaterialsDTO>
     viewCompetences(classId: number): Promise<viewCompetencesDTO>;
     viewContent(classId: number): Promise<viewContentDTO>
-    downloadFiles(classId: number, fileId: string): Promise<DownloadedFile>
+    downloadContent(classId: number): Promise<Buffer>
     getContent(classId: number): Promise<getContentDTO>
     // delete
     delete(id: number, userId: number): Promise<boolean>;
