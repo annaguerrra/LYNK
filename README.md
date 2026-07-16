@@ -6,7 +6,7 @@ This project is a class management system designed to organize courses, classes,
 
 The application has a frontend built with React and a backend developed with TypeScript, providing a structured and scalable architecture for managing educational content and user interactions.
 
-The system uses a relational database to store structured data, such as users, courses, classes, disciplines, lessons, and relationships between entities. File-based resources, such as PDFs, DOCX documents, images, and profile photos, can be stored separately using MongoDB/GridFS or another file storage solution, while the relational database stores only the file reference.
+The system uses a relational database to store structured data, such as users, courses, classes, disciplines, lessons, and relationships between entities. File-based resources, such as PDFs, DOCX documents, images, and profile photos, can be stored separately using MongoDB/GridFS, while the relational database stores only the file reference.
 
 The goal of this project is to provide an organized platform where administrators, instructors, and students can manage and access educational information according to their roles.
 
