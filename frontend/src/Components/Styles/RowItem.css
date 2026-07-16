@@ -3,12 +3,29 @@
     border: 1px solid var(--gray);
     min-height: 1rem;
     border-left: 0;
+    display: inline-flex;
 }
 
-.rowContainer:before {
-    content: "";
-    display: block;
-    background-color: black;
+.tagRow {
+    background-color: var(--purple);
     width: 5px;
-    height: 100%;
+}
+
+.contentRow {
+    flex: 1;
+    padding: .5rem 1rem;
+    font-size: 12px;
+    display: inline-flex;
+    justify-content: space-between;
+}
+
+.contentRow.--medium {
+    font-size: 17px;
+    padding: .7rem 1.2rem;
+}
+
+.buttonsRow {
+    width: max-content;
+    padding: .5rem;
+    padding-left: 1.5rem;
 }

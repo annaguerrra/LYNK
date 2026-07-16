@@ -25,7 +25,7 @@ import {
     Separator
 } from '@mdxeditor/editor'
 import { Header } from "../Components/Header"
-import { use, useState } from 'react'
+import { useState } from 'react'
 import '@mdxeditor/editor/style.css'
 import './Styles/Class.css'
 import { ButtonBack } from '../Components/ButtonBack'
@@ -93,6 +93,22 @@ Selecione um texto e clique em **Negrito**.
                                 readOnly
                                 plugins={editorPlugins}
                             />
+                        <RowItem size="--medium">
+                            <div>
+                                <span>Teste: </span>
+                                <span>AAA</span>
+                            </div>
+                            <div>
+                                <span>Teste: </span>
+                                <span>AAA</span>
+                            </div>
+                            <div>
+                                <span>Teste: </span>
+                                <span>AAA</span>
+                            </div>
+                                
+                            
+                        </RowItem>
                         </div>
                     )}
 
@@ -153,7 +169,9 @@ Selecione um texto e clique em **Negrito**.
                     <div className="attachmentsBox">
                         <div className='attachmentsContent'>
                             <span className='subtitle'>Anexos</span>
-                            <RowItem/>
+                            <RowItem >
+                                <div>rgdrgr</div>
+                            </RowItem>
                             <span className='subtitle'>Competências</span>
                         </div>
                     </div>
