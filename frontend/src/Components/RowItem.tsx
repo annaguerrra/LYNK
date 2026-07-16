@@ -1,13 +1,12 @@
 import './Styles/RowItem.css'
 
-export function RowItem({ size = '', children }) {
+export function RowItem({ type = '', color = '', size = '', children }) {
     return (
         <div className='rowContainer'>
-            <div className='tagRow'></div>
+            <div className={`tagRow ${type}`} style={{ backgroundColor: color }}></div>
             <div className={`contentRow ${size}`}>
                 {children}
             </div>
-            <div className='buttonsRow'></div>
         </div>
     )
 }

@@ -52,6 +52,13 @@
     flex-direction: column;
 }
 
+.attachmentsContent .attachments {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    padding: 1rem 0;
+}
+
 .toolbar-group {
     display: flex;
     justify-content: space-between;

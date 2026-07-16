@@ -30,6 +30,7 @@ import '@mdxeditor/editor/style.css'
 import './Styles/Class.css'
 import { ButtonBack } from '../Components/ButtonBack'
 import { RowItem } from '../Components/RowItem'
+import { ButtonClose } from '../Components/ButtonClose'
 
 export function Class() {
 
@@ -93,22 +94,7 @@ Selecione um texto e clique em **Negrito**.
                                 readOnly
                                 plugins={editorPlugins}
                             />
-                        <RowItem size="--medium">
-                            <div>
-                                <span>Teste: </span>
-                                <span>AAA</span>
-                            </div>
-                            <div>
-                                <span>Teste: </span>
-                                <span>AAA</span>
-                            </div>
-                            <div>
-                                <span>Teste: </span>
-                                <span>AAA</span>
-                            </div>
-                                
-                            
-                        </RowItem>
+                        
                         </div>
                     )}
 
@@ -169,9 +155,17 @@ Selecione um texto e clique em **Negrito**.
                     <div className="attachmentsBox">
                         <div className='attachmentsContent'>
                             <span className='subtitle'>Anexos</span>
+                            <div className='attachments'>
+
                             <RowItem >
-                                <div>rgdrgr</div>
+                                <div>Material_aaa00</div>
+                                <ButtonClose size={16} onClose={() => {}}/>
                             </RowItem>
+                            <RowItem >
+                                <div>Material_aaa00</div>
+                                <ButtonClose size={16} onClose={() => {}}/>
+                            </RowItem>
+                            </div>
                             <span className='subtitle'>Competências</span>
                         </div>
                     </div>
