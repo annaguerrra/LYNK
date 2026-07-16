@@ -27,13 +27,15 @@ export function DisciplineComp({Discipline, Area}) {
 
     return (
         <> 
-        <div className="disciplineBox"> 
-            <div className="boxColor" onClick={() => navigate("/Content")}></div> 
-            <div> 
-                <h1>{Discipline}</h1> 
-                <h2>{Area}</h2> 
-            </div> 
-            <MoreOpt data={options}></MoreOpt> 
+        <div className="disciplineBox">
+            <div className="boxColor" onClick={() => navigate('/Content')}></div>
+            <div className="whiteBox">
+                <div onClick={() => navigate('/Content')}>
+                    <h1>{Discipline}</h1>
+                    <h2>{Area}</h2>
+                </div>
+                <MoreOpt data={options}></MoreOpt>
+            </div>
         </div>
         {editModal && (
              <div className="modalOverlay" onClick={() => setEditModal(false)}>

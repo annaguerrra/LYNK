@@ -35,3 +35,9 @@
     flex-direction: row;
     gap: 3vw;
 }
+
+.textoTReste {
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+}

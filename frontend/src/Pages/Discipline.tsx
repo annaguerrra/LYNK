@@ -8,6 +8,7 @@ import { ButtonClose } from "../Components/ButtonClose";
 import { ButtonExclude } from "../Components/ButtonExclude";
 import { ButtonCancel } from "../Components/ButtonCancel";
 import { useState } from "react";
+import { RowItem } from "../Components/RowItem";
 
 export function Discipline () {
     const [newModal, setNewModal] = useState(false);
@@ -29,6 +30,10 @@ export function Discipline () {
             name: "Gerenciar áreas",
             onClick: () => setAreasModal(true)
         },
+    ];
+
+    const userOpt = [
+
     ];
 
     return (
@@ -118,7 +123,11 @@ export function Discipline () {
                         <h1>Gerenciar usuários</h1>
                         <ButtonClose size={40} onClose={() => setUsersModal(false)}></ButtonClose>
                     </div>
-                    <div></div>
+                    <RowItem color='var(--green)'>
+                        <div>
+                            
+                        </div>
+                    </RowItem>
 
                 </div>
             </div>
