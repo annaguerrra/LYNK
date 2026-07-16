@@ -43,7 +43,8 @@ export const EntityType = {
   Discipline: 'Discipline',
   Area: 'Area',
   Student: 'Student',
-  Exam: 'Exam'
+  Exam: 'Exam',
+  Admin: 'Admin'
 } as const
 
 export type EntityType = (typeof EntityType)[keyof typeof EntityType]

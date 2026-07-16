@@ -426,9 +426,9 @@ export type AdminSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
-export type AdminScalarRelationFilter = {
-  is?: Prisma.AdminWhereInput
-  isNot?: Prisma.AdminWhereInput
+export type AdminNullableScalarRelationFilter = {
+  is?: Prisma.AdminWhereInput | null
+  isNot?: Prisma.AdminWhereInput | null
 }
 
 export type DateTimeFieldUpdateOperationsInput = {
@@ -465,10 +465,12 @@ export type AdminCreateNestedOneWithoutLogsInput = {
   connect?: Prisma.AdminWhereUniqueInput
 }
 
-export type AdminUpdateOneRequiredWithoutLogsNestedInput = {
+export type AdminUpdateOneWithoutLogsNestedInput = {
   create?: Prisma.XOR<Prisma.AdminCreateWithoutLogsInput, Prisma.AdminUncheckedCreateWithoutLogsInput>
   connectOrCreate?: Prisma.AdminCreateOrConnectWithoutLogsInput
   upsert?: Prisma.AdminUpsertWithoutLogsInput
+  disconnect?: Prisma.AdminWhereInput | boolean
+  delete?: Prisma.AdminWhereInput | boolean
   connect?: Prisma.AdminWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.AdminUpdateToOneWithWhereWithoutLogsInput, Prisma.AdminUpdateWithoutLogsInput>, Prisma.AdminUncheckedUpdateWithoutLogsInput>
 }

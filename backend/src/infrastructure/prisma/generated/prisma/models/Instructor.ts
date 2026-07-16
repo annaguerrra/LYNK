@@ -426,9 +426,9 @@ export type InstructorSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
 }
 
-export type InstructorScalarRelationFilter = {
-  is?: Prisma.InstructorWhereInput
-  isNot?: Prisma.InstructorWhereInput
+export type InstructorNullableScalarRelationFilter = {
+  is?: Prisma.InstructorWhereInput | null
+  isNot?: Prisma.InstructorWhereInput | null
 }
 
 export type InstructorCreateNestedOneWithoutLogsInput = {
@@ -437,10 +437,12 @@ export type InstructorCreateNestedOneWithoutLogsInput = {
   connect?: Prisma.InstructorWhereUniqueInput
 }
 
-export type InstructorUpdateOneRequiredWithoutLogsNestedInput = {
+export type InstructorUpdateOneWithoutLogsNestedInput = {
   create?: Prisma.XOR<Prisma.InstructorCreateWithoutLogsInput, Prisma.InstructorUncheckedCreateWithoutLogsInput>
   connectOrCreate?: Prisma.InstructorCreateOrConnectWithoutLogsInput
   upsert?: Prisma.InstructorUpsertWithoutLogsInput
+  disconnect?: Prisma.InstructorWhereInput | boolean
+  delete?: Prisma.InstructorWhereInput | boolean
   connect?: Prisma.InstructorWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.InstructorUpdateToOneWithWhereWithoutLogsInput, Prisma.InstructorUpdateWithoutLogsInput>, Prisma.InstructorUncheckedUpdateWithoutLogsInput>
 }
