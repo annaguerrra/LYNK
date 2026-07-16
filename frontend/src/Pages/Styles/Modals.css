@@ -2,7 +2,7 @@
 .modalOverlay {
   position: fixed;
   inset: 0;
-    z-index: 9999;
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,7 +42,7 @@
 }
 
 .modalContainer p {
-  font-size: x-large;
+  font-size: 20px;
 }
 
 .textBox {

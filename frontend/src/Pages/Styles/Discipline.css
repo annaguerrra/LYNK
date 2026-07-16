@@ -36,8 +36,8 @@
     gap: 3vw;
 }
 
-.textoTReste {
+.itemText {
     display: flex;
     align-items: center;
-    font-size: 17px;
+    font-size: 15px;
 }

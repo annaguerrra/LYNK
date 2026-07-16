@@ -15,6 +15,8 @@ export function Discipline () {
     const [usersModal, setUsersModal] = useState(false);
     const [areasModal, setAreasModal] = useState(false);
     const [newUserModal, setNewUserModal] = useState(false);
+    const [editUserModal, setEditUserModal] = useState(false);
+    const [excludeUserModal, setExcludeUserModal] = useState(false);
 
 
     const options = [
@@ -23,8 +25,12 @@ export function Discipline () {
             onClick: () => setNewModal(true)
         },
         {
+            name: "Novo usuário",
+            onClick: () => setNewModal(true)
+        },
+        {
             name: "Gerenciar usuários",
-            onClick: () => setUsersModal(true)
+            onClick: () => setNewUserModal(true)
         },
         {
             name: "Gerenciar áreas",
@@ -33,7 +39,14 @@ export function Discipline () {
     ];
 
     const userOpt = [
-
+        {
+            name: "Editar usuário",
+            onClick: () => setEditUserModal(true)
+        },
+        {
+            name: "Excluir usuário",
+            onClick: () => setExcludeUserModal(true)
+        },
     ];
 
     return (
@@ -105,9 +118,11 @@ export function Discipline () {
                         <input type="text" placeholder="Digite o nome da disciplina"/>
                     </div>
                     <div className="textBox">
-                        <h2>Selecione a área de conhecimento</h2>
+                        <h2>Selecione o tipo de usuário</h2>
                         <select name="" id="">
-                            <option value="Tecnologia" selected></option>
+                            <option value="Administrador" selected></option>
+                            <option value="Instrutor"></option>
+                            <option value="Aluno" ></option>
                         </select>
                     </div>
 
@@ -124,9 +139,10 @@ export function Discipline () {
                         <ButtonClose size={40} onClose={() => setUsersModal(false)}></ButtonClose>
                     </div>
                     <RowItem color='var(--green)'>
-                        <div>
-                            
+                        <div className="itemText">
+                            <p >Manufatura_20252</p>
                         </div>
+                        <MoreOpt data={userOpt}></MoreOpt>
                     </RowItem>
 
                 </div>
