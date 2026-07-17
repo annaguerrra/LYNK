@@ -11,6 +11,14 @@ import { useState } from "react";
 import { RowItem } from "../Components/RowItem";
 
 export function Discipline () {
+    const cores = {
+        Roxo: "var(--purple)",
+        Verde: "var(--green)",
+        "Verde-água": "var(--acqua)",
+    };
+    
+    const [cor, setCor] = useState("Roxo");
+    
     const [newDisciplineModal, setNewDisciplineModal] = useState(false);
     const [usersModal, setUsersModal] = useState(false);
     const [newAreaModal, setNewAreaModal] = useState(false);
@@ -96,7 +104,7 @@ export function Discipline () {
                                 <option value="Organização">Organização</option>
                             </select>
                         </form>
-                        <MoreOpt data={options}></MoreOpt>
+                        <MoreOpt data={options} size={40}></MoreOpt>
                     </div>
                 </div>
                 <div className="disciplinesContainer">
@@ -121,7 +129,7 @@ export function Discipline () {
                     <div className="textBox">
                         <h2>Selecione a área de conhecimento</h2>
                         <select name="" id="">
-                            <option value="Tecnologia" selected></option>
+                            <option value="Tecnologia" selected>Tecnologia</option>
                         </select>
                     </div>
 
@@ -141,9 +149,9 @@ export function Discipline () {
                     <div className="textBox">
                         <h2>Selecione o tipo de usuário</h2>
                         <select name="" id="" className="selectFilter">
-                            <option value="Administrador" selected></option>
-                            <option value="Instrutor"></option>
-                            <option value="Aluno" ></option>
+                            <option value="Administrador" selected>Administrador</option>
+                            <option value="Instrutor">Instrutor</option>
+                            <option value="Aluno" >Aluno</option>
                         </select>
                     </div>
                     <div className="textBox">
@@ -203,9 +211,9 @@ export function Discipline () {
                     <div className="textBox">
                         <h2>Selecione o tipo de usuário</h2>
                         <select name="" id="" className="selectFilter">
-                            <option value="Administrador" selected></option>
-                            <option value="Instrutor"></option>
-                            <option value="Aluno"></option>
+                            <option value="Administrador" selected>Administrador</option>
+                            <option value="Instrutor">Instrutor</option>
+                            <option value="Aluno">Aluno</option>
                         </select>
                     </div>
                     <div className="textBox">
@@ -250,11 +258,13 @@ export function Discipline () {
                         <input type="text"/>
                     </div>
                     <div className="textBox">
-                        <h2>Selecione o tipo de usuário</h2>
-                        <select name="" id="" className="selectFilter">
-                            <option value="Administrador" selected></option>
-                            <option value="Instrutor"></option>
-                            <option value="Aluno" ></option>
+                        <h2>Selecione a cor da área</h2>
+                        <select name="" id="" className="selectFilter" value={cor}
+                        onChange={(e) => setCor(e.target.value)}
+                        style={{ color: cores[cor] }}>
+                            <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
+                            <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
+                            <option value="Verde-água" style={{ color: "var(--acqua)"}}>Verde-água</option>
                         </select>
                     </div>
 
@@ -277,6 +287,33 @@ export function Discipline () {
                         <MoreOpt data={areasOpt}></MoreOpt>
                     </RowItem>
                     <div></div>
+                </div>
+            </div>
+        )}
+
+        {editAreaModal && (
+                <div className="modalOverlay" onClick={() => setEditAreaModal(false)}>
+                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                    <div className="titleContainer">
+                        <h1>Editar  área</h1>
+                        <ButtonClose size={40} onClose={() => setEditAreaModal(false)}></ButtonClose>
+                    </div>
+                    <div className="textBox">
+                        <h2>Nome da área</h2>
+                        <input type="text"/>
+                    </div>
+                    <div className="textBox">
+                        <h2>Selecione a cor da área</h2>
+                        <select name="" id="" className="selectFilter" value={cor}
+                        onChange={(e) => setCor(e.target.value)}
+                        style={{ color: cores[cor] }}>
+                            <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
+                            <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
+                            <option value="Verde-água" style={{ color: "var(--acqua)"}}>Verde-água</option>
+                        </select>
+                    </div>
+
+                    <Button ButtonTitle={"Enviar"} onClose={() => setEditAreaModal(false)}></Button>
                 </div>
             </div>
         )}

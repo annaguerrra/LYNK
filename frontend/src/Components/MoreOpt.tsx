@@ -8,15 +8,16 @@ interface Option {
 
 interface MoreOptProps {
     data: Option[];
+    size: Number;
 }
 
-export function MoreOpt({ data }: MoreOptProps) {
+export function MoreOpt({ data, size }: MoreOptProps) {
     const [open, setOpen] = useState(false);
 
     return (
-        <div className="moreOpt">
-            <div onClick={() => setOpen(!open)}>
-                <img src="/moreOpt.svg" alt="" className="optImg" style={{paddingTop: 0}}/>
+        <div>
+            <div className="moreOpt" onClick={() => setOpen(!open)}>
+                <img src="/moreOpt.svg" alt="" className="optImg" style={{width: `${size}px`}} />
             </div>
 
             {open && (

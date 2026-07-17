@@ -1,8 +1,14 @@
+.moreOpt{
+    padding: 0.2vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .optImg {
     width: 30px;
     position: static;
     right: 0;
-    padding-top: 1vh;
 }
 
 .moreOptModal {
