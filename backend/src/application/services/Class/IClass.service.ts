@@ -5,7 +5,7 @@ import { Class } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export interface IClassService{
     // post
-    create(payload: ClassDTO, disciplineId: number, userId: number): Promise<Class>;
+    create(payload: ClassDTO, userId: number): Promise<Class>;
     assignCompetency(payload: assignCompetencyDTO, userId:number): Promise<Class>;
     // get
     findAll(): Promise<findAllDTO[]>;

@@ -10,8 +10,8 @@ import { PdfService } from "../Pdf/PdfService.js";
 export class ClassService implements IClassService{
     constructor(private userService: UserService) {}
     
-    async create(payload: ClassDTO, disciplineId: number, userId: number): Promise<Class> {
-        const {name, content} = payload;
+    async create(payload: ClassDTO, userId: number): Promise<Class> {
+        const {name, content, disciplineId} = payload;
         const isAdmin = await this.userService.isAdmin(userId)
 
         const createdClass = await prisma.class.create({

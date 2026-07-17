@@ -1,6 +1,7 @@
 export interface ClassDTO{
     name: string
     content: string
+    disciplineId: number
     lastUpdate?: Date
 }
 

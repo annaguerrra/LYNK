@@ -6,8 +6,8 @@ import { Request, Response } from "express";
 import { getBucket } from '#infrastructure/database/database.js';
 
 export default class UserController {
-    private attachmentService = new AttachmentService(getBucket());
-    private userService = new UserService(this.attachmentService);
+    private attachmentService = new AttachmentService(getBucket())
+    private userService = new UserService(this.attachmentService)
 
     async register(req: Request, res: Response){
         const data: (registerStudentDTO | registerInstructorDTO | registerAdminDTO) = req.body
