@@ -1,10 +1,17 @@
 import { DisciplineDTO, assignCompetencyDTO, findAllDTO, viewMaterialsDTO, viewCompetencesDTO, editDisciplineDTO, findOneDTO, viewClassesDTO } from "#application/dtos/disciplineDTO.js";
 import { IDisciplineService } from "#application/services/Discipline/IDiscipline.service.js";
+import { getBucket } from "#infrastructure/database/database.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
+import { UserService } from "#infrastructure/services/User/UserService.js"
+import { AttachmentService } from "../Attachment/AttachmentService.js";
 
 export class DisciplineService implements IDisciplineService{
-    async create(payload: DisciplineDTO): Promise<Discipline> {
+    async create(payload: DisciplineDTO, userID: number): Promise<Discipline> {
+        const attachment = new AttachmentService(getBucket())
+        const userService = new UserService(attachment)
+        const admin = await userService.isAdmin(userID)
+
         const area = await prisma.area.findUnique({ where:{ id: payload.areaID }});
 
         if(!area){
@@ -28,7 +35,8 @@ export class DisciplineService implements IDisciplineService{
                     ...target
                 },
                 oldData: {},
-                instructorId: payload.userID,
+                ...(admin && { adminId: userID }),
+                ...(!admin && { instructorId: userID }),
                 updatedAt: new Date()
             }
         });
@@ -36,6 +44,10 @@ export class DisciplineService implements IDisciplineService{
         return target;
     }
     async assignCompetency(payload: assignCompetencyDTO, userId: number): Promise<Discipline> {
+        const attachment = new AttachmentService(getBucket())
+        const userService = new UserService(attachment)
+        const admin = await userService.isAdmin(userId)
+
         const competence = await prisma.competence.findUnique({ 
             where:{ 
                 id: payload.competencyID
@@ -80,7 +92,8 @@ export class DisciplineService implements IDisciplineService{
                 newData:{
                     ...updatedData
                 },
-                instructorId: userId,
+                ...(admin && { adminId: userId }),
+                ...(!admin && { instructorId: userId }),
                 updatedAt: new Date()
             }
         })
@@ -210,20 +223,125 @@ export class DisciplineService implements IDisciplineService{
 
         return target;
     }
-    async viewMaterials(disciplineID: number): Promise<viewMaterialsDTO> {
-        throw new Error("Method not implemented.");
+    async viewMaterials(disciplineID: number): Promise<viewMaterialsDTO[]> {
+        const target = await prisma.discipline.findMany({
+            where:{
+                id: disciplineID
+            },
+            select:{
+                name: true,
+                materials:{
+                    select:{
+                        name: true
+                    }
+                }
+            }
+        });
+
+        if(!target){
+            throw new Error("Not Classes Found");
+        }
+
+        return target;
     }
-    async viewCompetences(disciplineID: number): Promise<viewCompetencesDTO> {
-        throw new Error("Method not implemented.");
-    }
-    async downloadContent(disciplineID: number): Promise<Buffer> {
-        throw new Error("Method not implemented.");
+    async viewCompetences(disciplineID: number): Promise<viewCompetencesDTO[]> {
+        const target = await prisma.discipline.findMany({
+            where:{
+                id: disciplineID
+            },
+            select:{
+                name: true,
+                competences:{
+                    select:{
+                        name: true,
+                        numOfClasses: true
+                    }
+                }
+            }
+        });
+
+        if(!target){
+            throw new Error("No Classes Found");
+        }
+
+        return target;
     }
     async delete(disciplineID: number, userId: number): Promise<boolean> {
-        throw new Error("Method not implemented.");
+        const attachment = new AttachmentService(getBucket())
+        const userService = new UserService(attachment)
+        const admin = await userService.isAdmin(userId)
+
+        const target = await prisma.discipline.findUnique({ where: { id: disciplineID }});
+
+        try{
+            await prisma.discipline.delete({
+                where:{
+                    id: disciplineID
+                }
+            });
+
+            await prisma.log.create({
+                data:{
+                    action:"DELETED",
+                    entityType: "Discipline",
+                    entityId: disciplineID,
+                    oldData:{
+                        ...target
+                    },
+                    newData: {},
+                    updatedAt: new Date(),
+                    ...(admin && { adminId: userId }),
+                    ...(!admin && { instructorId: userId }),
+                }
+            });
+            return true;
+        } catch(error){
+            throw new Error("Discipline not Found");
+        }
     }
-    async edit(payload: DisciplineDTO, disciplineID: number): Promise<editDisciplineDTO> {
-        throw new Error("Method not implemented.");
+    async edit(payload: DisciplineDTO, disciplineID: number, userID: number): Promise<editDisciplineDTO> {
+        const attachment = new AttachmentService(getBucket())
+        const userService = new UserService(attachment)
+        const admin = await userService.isAdmin(userID)
+
+        const target = await prisma.discipline.findUnique({ where: { id: disciplineID }});
+        if(!target){
+            throw new Error("Discipline Not Found");
+        }
+
+        try{
+            await prisma.discipline.update({
+                where:{
+                    id: disciplineID
+                },
+                data:{
+                    name: payload.name,
+                    workLoad: payload.workload
+                }
+            });
+
+            const log = await prisma.log.create({
+                data:{
+                    action:"UPDATED",
+                    entityType: "Discipline",
+                    entityId: disciplineID,
+                    oldData:{
+                        ...target
+                    },
+                    newData: {},
+                    updatedAt: new Date(),
+                    ...(admin && { adminId: userID }),
+                    ...(!admin && { instructorId: userID }),
+                }
+            });
+            return {
+                name: target?.name,
+                workload: target?.workLoad,
+                lastUpdate: log.updatedAt
+            };
+        } catch(error){
+            throw new Error("Discipline not Found");
+        }
     }
 
 }

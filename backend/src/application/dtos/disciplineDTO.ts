@@ -15,7 +15,7 @@ export interface findAllDTO{
     area:{
         name: string;
     } | null,
-    competence: {
+    competences: {
         name: string
     }[];
     lastUpdate: Date | null;
@@ -35,10 +35,14 @@ export interface findOneDTO{
 }
 
 export interface viewMaterialsDTO{
-    materialID: number
+    name: string;
+    materials: {
+        name: string;
+    }[];
 }
 
 export interface viewCompetencesDTO{
+    name: string;
     competences:{
         name: string
         numOfClasses: number
@@ -54,6 +58,6 @@ export interface viewClassesDTO{
 
 export interface editDisciplineDTO{
     name: string
-    numOfClasses: string
+    workload: number
     lastUpdate?: Date
 }
