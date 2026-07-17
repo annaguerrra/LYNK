@@ -210,6 +210,12 @@ Olá, Ana!
 
                                     <div>Material_aaa00 drgrdgrd rdg rdg rdg rdgrdg dr gdr grdgr  dgdrgdrg r</div>
                                 </RowItem>
+
+                                <label className="fileButton">
+                                    Escolher arquivo
+                                    <input type="file" />
+                                </label>
+
                             </div>
                             <span className='subtitle'>Competências</span>
                             <div className='attachments'>

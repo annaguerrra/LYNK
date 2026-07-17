@@ -11,14 +11,12 @@ export function ExamsView() {
         <>
             <div className="view-page">
                 <RowItem
-                    onClick={() => navigate("/class")}
                     color="var(--green)"
-                    size="--large"
-                    button={true}
+                    size="--medium"
                     actions={
                         <>
                             <ButtonIcon icon="icon-download" size={28} onClick={() => navigate("/")} />
-                            <MoreOpt data={[]} />
+                            <MoreOpt size={22} data={[]} />
                         </>
                     }>
 

@@ -1,5 +1,8 @@
 .view-page {
- width: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: .5rem
 }
 
 .buttonsRow {

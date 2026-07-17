@@ -57,6 +57,7 @@
     display: inline-flex;
     gap: 1.5rem;
     padding: .4rem .7rem;
+    align-items: center;
 }
 
 

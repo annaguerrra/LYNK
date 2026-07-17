@@ -14,14 +14,32 @@ export function ClassesView() {
                     onClick={() => navigate("/class")}
                     color="var(--purple)"
                     size="--medium"
+                    button={true}
                     actions={
                         <>
                             <ButtonIcon icon="icon-download" size={28} onClick={() => navigate("/")} />
-                            <MoreOpt data={[]} />
+                            <MoreOpt size={22} data={[]} />
                         </>
                     }>
 
                     <span>Aula 01 - Instalando bibliotecas</span>
+                    
+
+                </RowItem>
+
+                <RowItem
+                    onClick={() => navigate("/class")}
+                    color="var(--purple)"
+                    size="--medium"
+                    button={true}
+                    actions={
+                        <>
+                            <ButtonIcon icon="icon-download" size={28} onClick={() => navigate("/")} />
+                            <MoreOpt size={22} data={[]} />
+                        </>
+                    }>
+
+                    <span>Aula 02 - Instalando bibliotecas</span>
                     
 
                 </RowItem>
