@@ -13,7 +13,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction, 
     const payload = jwt.verify(token);
 
     req.user = {
-        userId: payload.userId,
+        userId: Number(payload.userId),
         usertype: payload.usertype
     }
 
