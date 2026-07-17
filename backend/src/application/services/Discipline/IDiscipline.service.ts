@@ -1,4 +1,4 @@
-import { assignCompetencyDTO, DisciplineDTO, editDisciplineDTO, findAllDTO, viewCompetencesDTO, viewMaterialsDTO } from "#application/dtos/disciplineDTO.js";
+import { assignCompetencyDTO, DisciplineDTO, editDisciplineDTO, findAllDTO, findOneDTO, viewClassesDTO, viewCompetencesDTO, viewMaterialsDTO } from "#application/dtos/disciplineDTO.js";
 import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export interface IDisciplineService{
@@ -7,8 +7,8 @@ export interface IDisciplineService{
         assignCompetency(payload: assignCompetencyDTO, userId:number): Promise<Discipline>;
         // get
         findAll(): Promise<findAllDTO[]>;
-        findOne(id: number): Promise<Discipline>;
-        viewClasses(id: number): Promise<string>
+        findOne(id: number): Promise<findOneDTO>;
+        viewClasses(id: number): Promise<viewClassesDTO[]>
         viewMaterials(disciplineID: number): Promise<viewMaterialsDTO>
         viewCompetences(disciplineID: number): Promise<viewCompetencesDTO>;
         downloadContent(disciplineID: number): Promise<Buffer>

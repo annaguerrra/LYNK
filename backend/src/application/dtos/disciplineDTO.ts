@@ -13,25 +13,25 @@ export interface assignCompetencyDTO{
 export interface findAllDTO{
     name: string
     area:{
-        areaID: number;
-        name: number;
-    }
-    competences:{
-        competencyID: number;
         name: string;
-    }[];
-    classes:{
-        classID: number;
-        name: string;
-    }[];
-    materials:{
-        materialID: number;
-        name: string;
-    }[];
-    exams:{
-        examID: number;
+    } | null,
+    competence: {
         name: string
-    }
+    }[];
+    lastUpdate: Date | null;
+}
+
+export interface findOneDTO{
+    name: string;
+    id: number;
+    workLoad: number;
+    area:{
+        name: string
+    };
+    competences: {
+        name: string
+    }[];
+    lastUpdate?: Date;
 }
 
 export interface viewMaterialsDTO{
@@ -42,6 +42,13 @@ export interface viewCompetencesDTO{
     competences:{
         name: string
         numOfClasses: number
+    }[];
+}
+
+export interface viewClassesDTO{
+    name: string
+    classes:{
+        name: string
     }[];
 }
 

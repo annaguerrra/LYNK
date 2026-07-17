@@ -1,4 +1,4 @@
-import { DisciplineDTO, assignCompetencyDTO, findAllDTO, viewMaterialsDTO, viewCompetencesDTO, editDisciplineDTO } from "#application/dtos/disciplineDTO.js";
+import { DisciplineDTO, assignCompetencyDTO, findAllDTO, viewMaterialsDTO, viewCompetencesDTO, editDisciplineDTO, findOneDTO, viewClassesDTO } from "#application/dtos/disciplineDTO.js";
 import { IDisciplineService } from "#application/services/Discipline/IDiscipline.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
@@ -88,13 +88,127 @@ export class DisciplineService implements IDisciplineService{
         return updatedData;
     }
     async findAll(): Promise<findAllDTO[]> {
-        throw new Error("Method not implemented.");
+        const target = await prisma.discipline.findMany({
+            select:{
+                id: true,
+                name: true,
+                area:{
+                    select:{
+                        name: true
+                    }
+                },
+                competences:{
+                    select:{
+                        name: true
+                    }
+                }
+            }
+        });
+
+        if(!target){
+            throw new Error("Not Disciplines Found");
+        }
+
+        const log = await prisma.log.findMany({
+            where:{
+                entityId: {
+                    in: target.map((item) => item.id)
+                },
+                entityType: "Discipline"
+            }
+        });
+
+        if(!log){
+            throw new Error("No register found");
+        }
+
+        return target.map((disc) => {
+            const lastUpdate = log.find(
+                (log) => log.entityId === disc.id
+            );
+
+            return {
+                name: disc.name,
+                area:{
+                    name: disc.area.name
+                },
+                competences: disc.competences.map((competence) => {
+                    return{
+                        name: competence.name
+                    }
+                }),
+                lastUpdate: lastUpdate?.updatedAt ?? null
+            }
+        });
+
+
     }
-    async findOne(id: number): Promise<Discipline> {
-        throw new Error("Method not implemented.");
+    async findOne(id: number): Promise<findOneDTO> {
+        const target = await prisma.discipline.findUnique({
+            where: { id: id}
+        });
+
+        if(!target){
+            throw new Error("Discipline Not Found");
+        }
+        const area = await prisma.area.findUnique({
+            where:{ id: target?.areaId},
+            select:{
+                name: true
+            }
+        });
+        if(!area){
+            throw new Error("Area Not Found");
+        }
+        const competence = await prisma.competence.findMany({
+            where:{
+                classes:{
+                   some:{ id: target?.id} 
+                }
+            },
+            select:{
+                name: true
+            }
+        });
+
+        const log = await prisma.log.findFirst({
+            where:{
+                entityId: id,
+                entityType: "Discipline"
+            }
+        });
+
+        const lastUpdate = log?.updatedAt;
+
+        return {
+            id: target.id,
+            name: target.name,
+            workLoad: target.workLoad,
+            area: area,
+            competences: competence,
+            lastUpdate: lastUpdate,
+        }
     }
-    async viewClasses(id: number): Promise<string> {
-        throw new Error("Method not implemented.");
+    async viewClasses(id: number): Promise<viewClassesDTO[]> {
+        const target = await prisma.discipline.findMany({
+            where:{
+                id: id
+            },
+            select:{
+                name: true,
+                classes:{
+                    select:{
+                        name: true
+                    }
+                }
+            }
+        });
+
+        if(!target){
+            throw new Error("Not Classes Found");
+        }
+
+        return target;
     }
     async viewMaterials(disciplineID: number): Promise<viewMaterialsDTO> {
         throw new Error("Method not implemented.");
