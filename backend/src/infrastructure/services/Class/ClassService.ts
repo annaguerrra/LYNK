@@ -5,7 +5,7 @@ import { DownloadedFile } from "#application/dtos/attachmentDTO.js";
 import { viewMaterialsDTO } from "#application/dtos/materialDTO.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { UserService } from "../User/UserService.js";
-import { PdfService } from "../Pdf/Pdf.service.js";
+import { PdfService } from "../Pdf/PdfService.js";
 
 export class ClassService implements IClassService{
     constructor(private userService: UserService) {}

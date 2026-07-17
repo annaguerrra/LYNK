@@ -1,15 +1,22 @@
 import mongoose from 'mongoose';
-import config from '../config/'
-import { GridFSBucket } from "mongodb";
+import config from 'config'
+import { GridFSBucket, MongoClient } from "mongodb";
 
-let bucket: GridFSBucket;
+let client: MongoClient
+let bucket: GridFSBucket
 
 const connectDB = async () => {
     try {
-        const db: string = config.get('db');
-        await mongoose.connect(db);
-        bucket = new GridFSBucket(mongoose.connection.db);
+        const uri: string = config.get("db");
+
+        client = new MongoClient(uri);
+        await client.connect();
+
+        const db = client.db();
+
+        bucket = new GridFSBucket(db)
         console.log('MongoDB Connected');
+        
     } catch (error) {
         console.error('MongoDB Connection Failed', error);
         process.exit(1);
@@ -22,6 +29,14 @@ export const getBucket = (): GridFSBucket => {
     }
 
     return bucket;
+};
+
+export const getClient = (): MongoClient => {
+    if (!client) {
+        throw new Error("MongoDB is not connected.");
+    }
+
+    return client;
 };
 
 export default connectDB;
