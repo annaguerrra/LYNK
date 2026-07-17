@@ -4,7 +4,7 @@ import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
 export interface IDisciplineService{
      // post
         create(payload: DisciplineDTO, userID: number): Promise<Discipline>;
-        assignCompetency(payload: assignCompetencyDTO, userId:number): Promise<Discipline>;
+        assignCompetence(payload: assignCompetencyDTO, userId:number): Promise<Discipline>;
         // get
         findAll(): Promise<findAllDTO[]>;
         findOne(id: number): Promise<findOneDTO>;
