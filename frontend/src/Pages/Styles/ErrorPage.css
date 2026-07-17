@@ -1,0 +1,9 @@
+.errorContainer {
+    display: flex;
+    flex-direction: ;
+}
+
+.errorImg {
+    width: 45vw;
+    height: auto;
+}

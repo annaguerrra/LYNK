@@ -34,7 +34,7 @@ export function DisciplineComp({Discipline, Area}) {
                     <h1>{Discipline}</h1>
                     <h2>{Area}</h2>
                 </div>
-                <MoreOpt data={options}></MoreOpt>
+                <MoreOpt data={options} size={30}></MoreOpt>
             </div>
         </div>
         {editModal && (
