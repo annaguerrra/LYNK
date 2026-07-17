@@ -30,7 +30,7 @@ export function DisciplineComp({Discipline, Area}) {
         <div className="disciplineBox">
             <div className="boxColor" onClick={() => navigate('/Content')}></div>
             <div className="whiteBox">
-                <div onClick={() => navigate('/Content')}>
+                <div onClick={() => navigate('/Content')} style={{height: '100%'}}>
                     <h1>{Discipline}</h1>
                     <h2>{Area}</h2>
                 </div>

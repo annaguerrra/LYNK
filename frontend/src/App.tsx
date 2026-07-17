@@ -19,6 +19,7 @@ function App() {
             <Route path="/Content" element={<Content />} />
             <Route path="/Class" element={<Class />} />
             <Route path="*" element={<ErrorPage />} />
+            <Route path="/erro" element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>
       </ModalProvider>

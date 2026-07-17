@@ -1,13 +1,19 @@
 import "../App.css"
 import "./Styles/ErrorPage.css"
 import { Header } from "../Components/Header"
+import { useLocation } from "react-router-dom";
 
 export function ErrorPage() {
+    const { state } = useLocation();
+    
     return (
         <>
         <Header></Header>
         <div className="page">
-            <img src="./error-500.svg" alt="" className="errorImg"/>
+            <div className="errorContainer">
+                <h1>{state?.errorText || "Ocorreu um erro :("}</h1>
+                <img src="./error-question.png" alt="" className="errorImg"/>
+            </div>
         </div>
         </>
     )

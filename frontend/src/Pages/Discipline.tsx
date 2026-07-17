@@ -9,8 +9,11 @@ import { ButtonExclude } from "../Components/ButtonExclude";
 import { ButtonCancel } from "../Components/ButtonCancel";
 import { useState } from "react";
 import { RowItem } from "../Components/RowItem";
+import { useNavigate } from "react-router-dom";
+import { ErrorPage } from "./ErrorPage";
 
 export function Discipline () {
+    const navigate = useNavigate();
     const cores = {
         Roxo: "var(--purple)",
         Verde: "var(--green)",
@@ -124,7 +127,7 @@ export function Discipline () {
                     </div>
                     <div className="textBox">
                         <h2>Nome da disciplina</h2>
-                        <input type="text" placeholder="Digite o nome da disciplina"/>
+                        <input type="text"/>
                     </div>
                     <div className="textBox">
                         <h2>Selecione a área de conhecimento</h2>
@@ -133,7 +136,7 @@ export function Discipline () {
                         </select>
                     </div>
 
-                    <Button ButtonTitle={"Enviar"} onClose={() => setNewDisciplineModal(false)}></Button>
+                    <Button ButtonTitle={"Enviar"} onClose={() => navigate("/erro", {state: { errorText: "Deu erro" }})}></Button>
                 </div>
             </div>
         )}
@@ -149,9 +152,9 @@ export function Discipline () {
                     <div className="textBox">
                         <h2>Selecione o tipo de usuário</h2>
                         <select name="" id="" className="selectFilter">
-                            <option value="Administrador" selected>Administrador</option>
+                            <option value="Administrador">Administrador</option>
                             <option value="Instrutor">Instrutor</option>
-                            <option value="Aluno" >Aluno</option>
+                            <option value="Aluno" selected>Aluno</option>
                         </select>
                     </div>
                     <div className="textBox">
@@ -211,9 +214,9 @@ export function Discipline () {
                     <div className="textBox">
                         <h2>Selecione o tipo de usuário</h2>
                         <select name="" id="" className="selectFilter">
-                            <option value="Administrador" selected>Administrador</option>
+                            <option value="Administrador">Administrador</option>
                             <option value="Instrutor">Instrutor</option>
-                            <option value="Aluno">Aluno</option>
+                            <option value="Aluno" selected>Aluno</option>
                         </select>
                     </div>
                     <div className="textBox">

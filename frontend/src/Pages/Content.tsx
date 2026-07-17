@@ -42,7 +42,7 @@ export function Content() {
                         <ButtonBack />
                         <span style={{ fontWeight: "bold", fontSize: "30px" }}>Introdução a Python</span>
                     </div>
-                    <MoreOpt data={options}></MoreOpt>
+                    <MoreOpt data={options} size={30}></MoreOpt>
                 </div>
                 <div className="content">
                     <TabNavigation
