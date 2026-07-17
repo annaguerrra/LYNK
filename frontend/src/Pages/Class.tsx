@@ -34,6 +34,7 @@ import { ButtonClose } from '../Components/ButtonClose'
 import { ButtonIcon } from '../Components/ButtonIcon'
 import { useNavigate } from 'react-router-dom'
 import { InputFile } from '../Components/InputFile'
+import LessonSelect from '../Components/LessonSelect'
 
 export function Class() {
 
@@ -215,26 +216,31 @@ Olá, Ana!
                                 <InputFile />
 
                             </div>
+                            <div className='space'></div>
                             <span className='subtitle'>Competências</span>
                             <div className='attachments' >
+                                <LessonSelect/>
                                 <RowItem 
                                     type='competence'
                                     actions={
                                         <>
-                                        
+                                        <ButtonClose size={18} onClose={() => { }} />
                                         </>
                                     } >
                                     <div>Fazer sei la o que, comepencia de não sei o que mais </div>
-                                    <div className='buttonsRow'>
+                                    
+                                </RowItem>
+                                <RowItem
+                                    type='competence'
+                                    actions={
+                                        <>
                                         <ButtonClose size={18} onClose={() => { }} />
-                                    </div>
-                                </RowItem>
-                                <RowItem type='competence' >
+                                        </>
+                                    } >
                                     <div>Teste de nome para o componente usado para representar uma competencia</div>
-                                    <div className='buttonsRow'>
-                                        
-                                    </div>
+                                    
                                 </RowItem>
+                                
                             </div>
                         </div>
                     </div>
