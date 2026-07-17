@@ -74,7 +74,7 @@ export function Content() {
                     </div>
                     <div className="textBox">
                         <h2>Nome da avaliação</h2>
-                        <input type="text" placeholder="Digite o nome da disciplina"/>
+                        <input type="text"/>
                     </div>
                     <div className="textBox">
                         <h2>Selecione a disciplina</h2>

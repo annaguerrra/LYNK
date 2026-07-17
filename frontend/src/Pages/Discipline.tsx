@@ -64,11 +64,13 @@ export function Discipline () {
         },
         {
             name: "Excluir usuário",
-            onClick: () => { setExcludeUserModal(true), setUsersModal(false) }
+            onClick: () => { setExcludeUserModal(true), setUsersModal(false) },
+            color: "red",
         },
         {
             name: "Resetar senha",
-            onClick: () => { setResetPasswordModal(true), setUsersModal(false) }
+            onClick: () => { setResetPasswordModal(true), setUsersModal(false) },
+            color: "red",
         },
     ];
 
@@ -79,7 +81,8 @@ export function Discipline () {
         },
         {
             name: "Excluir área",
-            onClick: () => { setExcludeAreaModal(true), setAreasModal(false) }
+            onClick: () => { setExcludeAreaModal(true), setAreasModal(false) },
+            color: "red",
         },
     ];
 

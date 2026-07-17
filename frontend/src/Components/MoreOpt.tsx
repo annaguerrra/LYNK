@@ -9,6 +9,7 @@ interface Option {
 interface MoreOptProps {
     data: Option[];
     size: Number;
+    color?: string;
 }
 
 export function MoreOpt({ data, size }: MoreOptProps) {
@@ -24,6 +25,7 @@ export function MoreOpt({ data, size }: MoreOptProps) {
                 <div className="moreOptModal">
                     {data.map((option) => (
                         <button
+                            style={{ color: option.color }}
                             key={option.name}
                             onClick={() => {
                                 option.onClick();
