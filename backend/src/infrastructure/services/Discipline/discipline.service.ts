@@ -7,6 +7,7 @@ import { UserService } from "#infrastructure/services/User/UserService.js"
 import { AttachmentService } from "../Attachment/AttachmentService.js";
 
 export class DisciplineService implements IDisciplineService{
+    constructor(private userService: UserService) {}
     async create(payload: DisciplineDTO, userID: number): Promise<Discipline> {
         const attachment = new AttachmentService(getBucket())
         const userService = new UserService(attachment)
@@ -43,7 +44,7 @@ export class DisciplineService implements IDisciplineService{
 
         return target;
     }
-    async assignCompetency(payload: assignCompetencyDTO, userId: number): Promise<Discipline> {
+    async assignCompetence(payload: assignCompetencyDTO, userId: number): Promise<Discipline> {
         const attachment = new AttachmentService(getBucket())
         const userService = new UserService(attachment)
         const admin = await userService.isAdmin(userId)
