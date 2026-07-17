@@ -10,13 +10,19 @@ import { MoreOpt } from "../Components/MoreOpt";
 import { Button } from "../Components/Button";
 import { ButtonCancel } from "../Components/ButtonCancel";
 import { ButtonClose } from "../Components/ButtonClose";
+import { ButtonExclude } from "../Components/ButtonExclude";
+import { useNavigate } from "react-router-dom";
 
 export function Content() {
+    const navigate = useNavigate()
     const [selectedTab, setSelectedTab] = useState("exams");
     const [markdown, setMarkdown] = useState("##Olaaa");
     const [newTest, setNewTest] = useState(false);
+    const [editTest, setEditTest] = useState(false);
     const [newCompetence, setNewCompetence] = useState(false);
-    const [newClass, setNewClass] = useState(false);
+    const [editCompetence, setEditCompetence] = useState(false);
+    const [excludeTestModal, setExcludeTestModal] = useState(false);
+    const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
 
     const options = [
         {
@@ -29,7 +35,7 @@ export function Content() {
         },
         {
             name: "Nova aula",
-            onClick: () => setNewClass(true)
+            onClick: () => navigate('/Class')
         },
     ];
 
@@ -58,7 +64,7 @@ export function Content() {
                 </div>
             </div>
 
-{/* -------------------------------------------------------- USERS MODALS -------------------------------------------------------- */}
+{/* -------------------------------------------------------- TEST MODALS -------------------------------------------------------- */}
             {newTest && (
                 <div className="modalOverlay" onClick={() => setNewTest(false)}>
                 <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
@@ -78,8 +84,9 @@ export function Content() {
                     </div>
                     <div className="textBox">
                         <h2>Selecione o arquivo</h2> 
+                        <input type="file" />
                     </div>
-                    <div className="textBox">
+                    {/* <div className="textBox">
                         <h2>Selecione as competências</h2>
                         <select name="" id="">
                             <option value="Tecnologia" selected></option>
@@ -91,29 +98,78 @@ export function Content() {
                         <h1>.</h1>
                         <h1>.</h1>
                             
-                    </div>
+                    </div> */}
 
                     <Button ButtonTitle={"Enviar"} onClose={() => setNewTest(false)}></Button>
                 </div>
                 </div>
             )}
 
+            {editTest && (
+                <div className="modalOverlay" onClick={() => setEditTest(false)}>
+                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                    <div className="titleContainer">
+                        <h1>Registrar avaliação</h1>
+                        <ButtonClose size={40} onClose={() => setEditTest(false)}></ButtonClose>
+                    </div>
+                    <div className="textBox">
+                        <h2>Nome da avaliação</h2>
+                        <input type="text" placeholder="Digite o nome da disciplina"/>
+                    </div>
+                    <div className="textBox">
+                        <h2>Selecione a disciplina</h2>
+                        <select name="" id="">
+                            <option value="Tecnologia" selected></option>
+                        </select>
+                    </div>
+                    <div className="textBox">
+                        <h2>Selecione o arquivo</h2> 
+                        <input type="file" />
+                    </div>
+                    {/* <div className="textBox">
+                        <h2>Selecione as competências</h2>
+                        <select name="" id="">
+                            <option value="Tecnologia" selected></option>
+                        </select>
+                    </div>
+                    <div className="scrollBox">
+                        <h1>.</h1>
+                        <h1>.</h1>
+                        <h1>.</h1>
+                        <h1>.</h1>
+                            
+                    </div> */}
+
+                    <Button ButtonTitle={"Enviar"} onClose={() => setEditTest(false)}></Button>
+                </div>
+                </div>
+            )}
+
+            {excludeTestModal && (
+                <div className="modalExcludeOverlay" onClick={() => setExcludeTestModal(false)}>
+                <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
+                <div className="redString"></div>
+                    <p>Deseja excluir a avaliação?</p>
+
+                    <div className="buttonsBox">
+                        <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeTestModal(false)}></ButtonExclude>
+                        <br />
+                        <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeTestModal(false)}></ButtonCancel>
+                    </div>
+                </div>
+            </div>
+            )}
+{/* -------------------------------------------------------- COMPETENCE MODALS -------------------------------------------------------- */}
             {newCompetence && (
                     <div className="modalOverlay" onClick={() => setNewCompetence(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         <div className="titleContainer">
-                            <h1>Registrar disciplina</h1>
+                            <h1>Registrar competência</h1>
                             <ButtonClose size={40} onClose={() => setNewCompetence(false)}></ButtonClose>
                         </div>
                         <div className="textBox">
-                            <h2>Nome da disciplina</h2>
-                            <input type="text" placeholder="Digite o nome da disciplina"/>
-                        </div>
-                        <div className="textBox">
-                            <h2>Selecione a área de conhecimento</h2>
-                            <select name="" id="">
-                                <option value="Tecnologia" selected></option>
-                            </select>
+                            <h2>Nome da competência</h2>
+                            <input type="text"/>
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => setNewCompetence(false)}></Button>
@@ -121,29 +177,37 @@ export function Content() {
                 </div>
             )}
 
-            {newClass && (
-                    <div className="modalOverlay" onClick={() => setNewClass(false)}>
+            {editCompetence && (
+                    <div className="modalOverlay" onClick={() => setEditCompetence(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         <div className="titleContainer">
-                            <h1>Registrar disciplina</h1>
-                            <ButtonClose size={40} onClose={() => setNewClass(false)}></ButtonClose>
+                            <h1>Editar competência</h1>
+                            <ButtonClose size={40} onClose={() => setEditCompetence(false)}></ButtonClose>
                         </div>
                         <div className="textBox">
-                            <h2>Nome da disciplina</h2>
-                            <input type="text" placeholder="Digite o nome da disciplina"/>
-                        </div>
-                        <div className="textBox">
-                            <h2>Selecione a área de conhecimento</h2>
-                            <select name="" id="">
-                                <option value="Tecnologia" selected></option>
-                            </select>
+                            <h2>Nome da competência</h2>
+                            <input type="text"/>
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => setNewClass(false)}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => setEditCompetence(false)}></Button>
                     </div>
                 </div>
             )}
 
+            {excludeCompetenceModal && (
+                <div className="modalExcludeOverlay" onClick={() => setExcludeCompetenceModal(false)}>
+                <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
+                <div className="redString"></div>
+                    <p>Deseja excluir a competência?</p>
+
+                    <div className="buttonsBox">
+                        <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeCompetenceModal(false)}></ButtonExclude>
+                        <br />
+                        <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeCompetenceModal(false)}></ButtonCancel>
+                    </div>
+                </div>
+            </div>
+            )}
         </>
     );
 }
