@@ -103,7 +103,6 @@ model Competence {
 model Discipline {
   id Int @default(autoincrement()) @id
   name String
-  createdAt DateTime @default(now())
   workLoad Int
   areaId Int
   area Area @relation(fields: [areaId], references: [id])
