@@ -1,4 +1,4 @@
-import { registerAreaDTO} from "#application/dtos/areaDTO.js";
+import { registerAreaDTO, updateAreaDTO} from "#application/dtos/areaDTO.js";
 import { IAreaService } from "#application/services/Area/IArea.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Area } from "#infrastructure/prisma/generated/prisma/client.js";
@@ -36,7 +36,7 @@ export class AreaService implements IAreaService{
         return await prisma.area.findMany()
     }
     
-    async updateArea(id: number, data: registerAreaDTO, userId: number): Promise<Area> {
+    async updateArea(id: number, data: updateAreaDTO, userId: number): Promise<Area> {
         const { name } = data
         const isAdmin = await this.userService.isAdmin(userId) 
         const target = await prisma.area.findUnique({
