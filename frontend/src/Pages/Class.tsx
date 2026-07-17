@@ -33,6 +33,7 @@ import { RowItem } from '../Components/RowItem'
 import { ButtonClose } from '../Components/ButtonClose'
 import { ButtonIcon } from '../Components/ButtonIcon'
 import { useNavigate } from 'react-router-dom'
+import { InputFile } from '../Components/InputFile'
 
 export function Class() {
 
@@ -211,15 +212,18 @@ Olá, Ana!
                                     <div>Material_aaa00 drgrdgrd rdg rdg rdg rdgrdg dr gdr grdgr  dgdrgdrg r</div>
                                 </RowItem>
 
-                                <label className="fileButton">
-                                    Escolher arquivo
-                                    <input type="file" />
-                                </label>
+                                <InputFile />
 
                             </div>
                             <span className='subtitle'>Competências</span>
-                            <div className='attachments'>
-                                <RowItem type='competence' >
+                            <div className='attachments' >
+                                <RowItem 
+                                    type='competence'
+                                    actions={
+                                        <>
+                                        
+                                        </>
+                                    } >
                                     <div>Fazer sei la o que, comepencia de não sei o que mais </div>
                                     <div className='buttonsRow'>
                                         <ButtonClose size={18} onClose={() => { }} />
@@ -228,7 +232,7 @@ Olá, Ana!
                                 <RowItem type='competence' >
                                     <div>Teste de nome para o componente usado para representar uma competencia</div>
                                     <div className='buttonsRow'>
-                                        <ButtonClose size={18} onClose={() => { }} />
+                                        
                                     </div>
                                 </RowItem>
                             </div>

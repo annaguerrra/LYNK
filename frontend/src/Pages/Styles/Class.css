@@ -62,48 +62,6 @@
 
 
 
-
-
-.fileButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 40px;
-  padding: 0 1.2rem;
-
-  background: transparent;
-  color: var(--gray);
-
-  border: 1px solid var(--gray);
-  border-radius: 0;
-
-  font-size: 14px;
-  cursor: pointer;
-
-  transition: background-color .2s ease, color .2s ease;
-}
-
-.fileButton:hover {
-  background-color: var(--gray);
-  color: white;
-}
-
-.fileButton input {
-  display: none;
-}
-
-.fileButton::before {
-    content: "";
-    
-}
-
-
-
-
-
-
-
 .toolbar-group {
     display: flex;
     justify-content: space-between;

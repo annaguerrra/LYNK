@@ -70,6 +70,10 @@ button {
     --lightGray: #e7e4e4;
     --black: #000000;
     --white: #FFFFFF;
+    --darkGray: #888888;
+    --gray-frok: #a4abb3;
+    --gray-frok-hover: #8a9097;
+    --gray-frok-pressed: #71767c;
 }
 
 .page {  
