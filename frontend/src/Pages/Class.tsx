@@ -40,7 +40,7 @@ export function Class() {
     const [titleClass, setTitleClass] = useState("Aula 05")
     const navigate = useNavigate();
 
-const [content, setContent] = useState(`# Introdução ao Python
+    const [content, setContent] = useState(`# Introdução ao Python
 
 Python é uma linguagem de programação simples, poderosa e muito utilizada.
 
@@ -199,67 +199,29 @@ Olá, Ana!
                         <div className='attachmentsContent'>
                             <span className='subtitle'>Anexos</span>
                             <div className='attachments'>
-                                <RowItem type='class'>
-                                    <div>Material_aaa00</div>
-                                    <div className='buttonsRow'>
-                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                        <ButtonClose size={18} onClose={() => { }} />
-                                    </div>
-                                </RowItem>
-                                <RowItem type='class'>
-                                    <div>Material_aaa00</div>
-                                    <div className='buttonsRow'>
-                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                        <ButtonClose size={18} onClose={() => { }} />
-                                    </div>
-                                </RowItem>
-                                <RowItem type='class'>
-                                    <div>Material_aaa00</div>
-                                    <div className='buttonsRow'>
-                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                        <ButtonClose size={18} onClose={() => { }} />
-                                    </div>
-                                </RowItem>
-                                <RowItem type='class'>
-                                    <div>Material_aaa00000 awdfawdfaw  esfse fesf es fesfs fesf </div>
-                                    <div className='buttonsRow'>
-                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                        <ButtonClose size={18} onClose={() => { }} />
-                                    </div>
-                                </RowItem>
-                                <RowItem type='class'>
-                                    <div>Material_aaa00</div>
-                                    <div className='buttonsRow'>
-                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                        <ButtonClose size={18} onClose={() => { }} />
-                                    </div>
-                                </RowItem>
-                                <RowItem type='class'>
-                                    <div>Material_aaa00</div>
-                                    <div className='buttonsRow'>
-                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                        <ButtonClose size={18} onClose={() => { }} />
-                                    </div>
-                                </RowItem>
-                                <RowItem type='class'>
-                                    <div>Material_aaa00</div>
-                                    <div className='buttonsRow'>
-                                        <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                        <ButtonClose size={18} onClose={() => { }} />
-                                    </div>
+                                <RowItem
+                                    type='class'
+                                    actions={
+                                        <>
+                                            <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                            <ButtonClose size={18} onClose={() => { }} />
+                                        </>
+                                    }>
+
+                                    <div>Material_aaa00 drgrdgrd rdg rdg rdg rdgrdg dr gdr grdgr  dgdrgdrg r</div>
                                 </RowItem>
                             </div>
                             <span className='subtitle'>Competências</span>
                             <div className='attachments'>
                                 <RowItem type='competence' >
                                     <div>Fazer sei la o que, comepencia de não sei o que mais </div>
-                                    <div className='buttonsRow'>             
+                                    <div className='buttonsRow'>
                                         <ButtonClose size={18} onClose={() => { }} />
                                     </div>
                                 </RowItem>
                                 <RowItem type='competence' >
                                     <div>Teste de nome para o componente usado para representar uma competencia</div>
-                                    <div className='buttonsRow'>             
+                                    <div className='buttonsRow'>
                                         <ButtonClose size={18} onClose={() => { }} />
                                     </div>
                                 </RowItem>

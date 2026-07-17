@@ -6,6 +6,8 @@
     display: inline-flex;
 }
 
+
+
 .tagRow {
     background-color: black;
     width: 5px;
@@ -30,14 +32,35 @@
     font-size: 14px;
     display: inline-flex;
     justify-content: space-between;
+    align-items: center;
     gap: 1rem;
+    background-color: transparent;
+    border: 0;
 }
+
 
 .contentRow.--medium {
     font-size: 17px;
     padding: .7rem 1.8rem;
     gap: 2rem;
 }
+
+.contentRow.--large {
+    font-size: 20px;
+    padding: .9rem 1.8rem;
+    gap: 2rem;
+}
+
+
+
+.buttonsRow {
+    display: inline-flex;
+    gap: 1.5rem;
+    padding: .4rem .7rem;
+}
+
+
+
 
 
 

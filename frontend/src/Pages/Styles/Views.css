@@ -1,0 +1,8 @@
+.view-page {
+ width: 100%;
+}
+
+.buttonsRow {
+    display: inline-flex;
+    gap: 1.5rem
+}
