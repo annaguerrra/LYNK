@@ -179,7 +179,7 @@ export function Discipline () {
                         <div className="itemText">
                             <p>Manufatura_20252</p>
                         </div>
-                        <MoreOpt data={userOpt}></MoreOpt>
+                        <MoreOpt data={userOpt} size={25}></MoreOpt>
                     </RowItem>
                     <div></div>
                 </div>
@@ -284,7 +284,7 @@ export function Discipline () {
                         <div className="itemText">
                             <p>Administração</p>
                         </div>
-                        <MoreOpt data={areasOpt}></MoreOpt>
+                        <MoreOpt data={areasOpt} size={25}></MoreOpt>
                     </RowItem>
                     <div></div>
                 </div>
