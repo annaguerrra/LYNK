@@ -11,6 +11,7 @@
 
 .icon-user::before {
   content: "\e29b";
+  font-size: inherit;
 }
 
 .icon-left::before {
@@ -24,5 +25,10 @@
 
 .icon-download::before {
   content: "\e149";
+  font-size: inherit;
+}
+
+.icon-logout::before {
+  content: "\e1cc";
   font-size: inherit;
 }

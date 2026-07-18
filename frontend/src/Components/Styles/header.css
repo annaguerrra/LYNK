@@ -47,8 +47,11 @@
     margin-right: 15px;
 }
 
-.icon-user::before {
-    font-size: 35px;
+.header .bar .user .userPicture {
+    height: 35px;
+    width: 35px;
+    border-radius: 20px;
+    margin-right: 15px;
 }
 
 .userContainer {
@@ -57,20 +60,33 @@
 
 .userBox {
     position: absolute;
-
     top: calc(100% + 8px);
     right: 0;
+    z-index: 9999;
+    padding: 1rem;
 
-    color: var(--red);
-    font-weight: bold;
     background: white;
     box-shadow: 0 4px 12px rgba(0,0,0,.10);
-
-    z-index: 9999;
+    
     display: flex;
-    font-size: 18px;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem 2rem;
+    justify-content: end;
+    flex-direction: column;
+    gap: .8rem;
 }
+
+.textIcon {
+    border: none;
+    background-color: transparent;
+    display: inline-flex;
+    gap: 2rem;
+    align-items: center;
+    font-size: 18px;
+}
+
+.textIcon i {
+    font-size: 22px;
+}
+
+
+
 
