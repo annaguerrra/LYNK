@@ -1,3 +1,4 @@
+
 .moreOpt{
     padding: 0.2vw;
     display: flex;
@@ -6,13 +7,11 @@
 }
 
 .optImg {
-
     position: static;
     right: 0;
 }
 
 .moreOptModal {
-    position: absolute;
     background-color: var(--white);
     display: flex;
     flex-direction: column;
@@ -20,10 +19,12 @@
 }
 
 .moreOptModal button {
+    text-align: left;
     padding: 0.7vw;
     border: none;
     text-decoration: none;
     background-color: transparent;
     font-size: large;
     cursor: pointer;
+    border-color: black;
 }

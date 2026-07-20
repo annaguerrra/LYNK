@@ -1,12 +1,12 @@
 .disciplineBox {
-    width: 19vw;
+    width: 20vw;
     height: 20vh;
     box-shadow: 0 12px 50px -6px rgba(0, 0, 0, 0.1);
     display: flex;
 }
 
 .whiteBox {
-    width: 14.5vw;
+    width: 15.5vw;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
