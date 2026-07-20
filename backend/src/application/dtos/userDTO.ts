@@ -4,12 +4,22 @@ import { UploadedFile } from "./attachmentDTO.js"
 export interface registerStudentDTO {
     username: string
     password: string
+    repeatPassword: string
     userType: UserType
 }
 
 export interface registerInstructorDTO {
     username: string
     password: string
+    repeatPassword: string
+    userType: UserType
+    specialty: Specialties
+}
+
+export interface registerAdminDTO {
+    username: string
+    password: string
+    repeatPassword: string
     userType: UserType
     specialty: Specialties
 }
@@ -28,13 +38,6 @@ export interface loginResponseDTO {
     }
 }
 
-export interface registerAdminDTO {
-    username: string
-    password: string
-    userType: UserType
-    specialty: Specialties
-}
-
 export interface showStudentDTO {
     username: string
     userType: UserType
@@ -45,7 +48,7 @@ export interface showInstructorDTO {
     userType: UserType
     specialty: Specialties
     active: boolean
-    attachmentId: string
+    attachmentId: string | null
 }
 
 export interface showAdminDTO {
@@ -53,7 +56,7 @@ export interface showAdminDTO {
     userType: UserType
     specialty: Specialties
     active: boolean
-    attachmentId: string
+    attachmentId: string | null
 }
 
 export interface updateStudentDTO {

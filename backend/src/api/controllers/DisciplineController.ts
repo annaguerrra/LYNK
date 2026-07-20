@@ -61,10 +61,10 @@ export class DisciplineController{
         }
     }
     async viewMaterial(req: Request, res: Response){
-        const materialId = req.body
+        const disciplineId = req.body
 
         try{
-            await this.disciplineService.viewMaterials(materialId);
+            await this.disciplineService.viewMaterials(disciplineId);
             return res.status(200).send({response: "Success"});
         } catch(e){
             return res.status(500).send({response: e});

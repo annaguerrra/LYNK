@@ -1,23 +1,23 @@
+import { UserType } from "#infrastructure/src/generated/prisma/enums.js"
 import { Request, Response, NextFunction } from "express"
 
-export const validateRegisterStudent = (req: Request, res: Response, next: NextFunction) => {
-    const { username, password, userType } = req.body
-    if(!username || !password || !userType)
-        return res.status(400).send({ response: `There is empty data`})
-    next()
-}
+export const validateRegister = (req: Request, res: Response, next: NextFunction) => {
+    const { username, password, repeatpassword, userType, specialty } = req.body
 
-export const validateRegisterInstructor = (req: Request, res: Response, next: NextFunction) => {
-    const { username, password, userType, specialty } = req.body
-    if(!username || !password || !userType || !specialty)
-        return res.status(400).send({ response: `There is empty data`})
-    next()
-}
+    if (userType === UserType.STUDENT){
 
-export const validateRegisterAdmin = (req: Request, res: Response, next: NextFunction) => {
-    const { username, password, userType, specialty } = req.body
-    if(!username || !password || !userType || !specialty)
-        return res.status(400).send({ response: `There is empty data`})
+        if(!username || !password || !repeatpassword || !userType)
+            return res.status(400).send({ response: `There is empty data`})
+    }
+
+    if (userType === UserType.INSTRUCTOR || userType === UserType.ADMIN){
+
+        if(!username || !password || !repeatpassword || !userType || !specialty)
+            return res.status(400).send({ response: `There is empty data`})
+    }
+
+    if(password != repeatpassword)
+        return res.status(400).send({ response: `Passwords don't match`})
     next()
 }
     

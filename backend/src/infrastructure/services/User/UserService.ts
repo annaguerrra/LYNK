@@ -1,6 +1,6 @@
 import { loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { IUserService } from "#application/services/User/IUser.service.js";
-import { Student, Instructor, Admin, EntityType } from "#infrastructure/prisma/generated/prisma/client.js";
+import { Student, Instructor, Admin } from "#infrastructure/prisma/generated/prisma/client.js";
 import { prisma } from "../../lib/prisma.js";
 import { AttachmentService } from "../Attachment/AttachmentService.js";
 

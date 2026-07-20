@@ -13,3 +13,10 @@ export const validateUpdate = (req: Request, res: Response, next: NextFunction) 
         return res.status(400).send({ response: `There is empty data`})
     next()
 }
+
+export const validateAttach = (req: Request, res: Response, next: NextFunction) => {
+    const { materialId, files } = req.body
+    if(!materialId || !files)
+        return res.status(400).send({ response: `There are empty data`})
+    next()
+}
