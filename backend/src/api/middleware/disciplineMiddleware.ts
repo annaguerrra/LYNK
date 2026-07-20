@@ -1,0 +1,22 @@
+import { Request, Response, NextFunction } from "express"
+
+export const validateRegister = (req: Request, res: Response, next: NextFunction) => {
+    const { name, workload, areaID } = req.body
+    if(!name || !workload || !areaID)
+        return res.status(400).send({ response: `There are empty data`})
+    next()
+}
+
+export const validateCompetence = (req: Request, res: Response, next: NextFunction) => {
+    const { disciplineId, competencyID } = req.body
+    if(!disciplineId || !competencyID)
+        return res.status(400).send({ response: `There are empty data`})
+    next()
+}
+
+export const validateUpdate = (req: Request, res: Response, next: NextFunction) => {
+    const { name, workload } = req.body
+    if(!name || !workload)
+        return res.status(400).send({ response: `There are empty data`})
+    next()
+}

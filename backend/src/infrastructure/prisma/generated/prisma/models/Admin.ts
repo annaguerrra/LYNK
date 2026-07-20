@@ -205,7 +205,7 @@ export type AdminGroupByOutputType = {
   userType: $Enums.UserType
   specialty: $Enums.Specialties
   active: boolean
-  attachmentId: string
+  attachmentId: string | null
   _count: AdminCountAggregateOutputType | null
   _avg: AdminAvgAggregateOutputType | null
   _sum: AdminSumAggregateOutputType | null
@@ -239,7 +239,7 @@ export type AdminWhereInput = {
   userType?: Prisma.EnumUserTypeFilter<"Admin"> | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFilter<"Admin"> | $Enums.Specialties
   active?: Prisma.BoolFilter<"Admin"> | boolean
-  attachmentId?: Prisma.StringFilter<"Admin"> | string
+  attachmentId?: Prisma.StringNullableFilter<"Admin"> | string | null
   logs?: Prisma.LogListRelationFilter
 }
 
@@ -251,7 +251,7 @@ export type AdminOrderByWithRelationInput = {
   userType?: Prisma.SortOrder
   specialty?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  attachmentId?: Prisma.SortOrder
+  attachmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   logs?: Prisma.LogOrderByRelationAggregateInput
   _relevance?: Prisma.AdminOrderByRelevanceInput
 }
@@ -267,7 +267,7 @@ export type AdminWhereUniqueInput = Prisma.AtLeast<{
   userType?: Prisma.EnumUserTypeFilter<"Admin"> | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFilter<"Admin"> | $Enums.Specialties
   active?: Prisma.BoolFilter<"Admin"> | boolean
-  attachmentId?: Prisma.StringFilter<"Admin"> | string
+  attachmentId?: Prisma.StringNullableFilter<"Admin"> | string | null
   logs?: Prisma.LogListRelationFilter
 }, "id">
 
@@ -279,7 +279,7 @@ export type AdminOrderByWithAggregationInput = {
   userType?: Prisma.SortOrder
   specialty?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  attachmentId?: Prisma.SortOrder
+  attachmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.AdminCountOrderByAggregateInput
   _avg?: Prisma.AdminAvgOrderByAggregateInput
   _max?: Prisma.AdminMaxOrderByAggregateInput
@@ -298,7 +298,7 @@ export type AdminScalarWhereWithAggregatesInput = {
   userType?: Prisma.EnumUserTypeWithAggregatesFilter<"Admin"> | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesWithAggregatesFilter<"Admin"> | $Enums.Specialties
   active?: Prisma.BoolWithAggregatesFilter<"Admin"> | boolean
-  attachmentId?: Prisma.StringWithAggregatesFilter<"Admin"> | string
+  attachmentId?: Prisma.StringNullableWithAggregatesFilter<"Admin"> | string | null
 }
 
 export type AdminCreateInput = {
@@ -308,7 +308,7 @@ export type AdminCreateInput = {
   userType?: $Enums.UserType
   specialty: $Enums.Specialties
   active?: boolean
-  attachmentId: string
+  attachmentId?: string | null
   logs?: Prisma.LogCreateNestedManyWithoutAdminInput
 }
 
@@ -320,7 +320,7 @@ export type AdminUncheckedCreateInput = {
   userType?: $Enums.UserType
   specialty: $Enums.Specialties
   active?: boolean
-  attachmentId: string
+  attachmentId?: string | null
   logs?: Prisma.LogUncheckedCreateNestedManyWithoutAdminInput
 }
 
@@ -331,7 +331,7 @@ export type AdminUpdateInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.LogUpdateManyWithoutAdminNestedInput
 }
 
@@ -343,7 +343,7 @@ export type AdminUncheckedUpdateInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.LogUncheckedUpdateManyWithoutAdminNestedInput
 }
 
@@ -355,7 +355,7 @@ export type AdminCreateManyInput = {
   userType?: $Enums.UserType
   specialty: $Enums.Specialties
   active?: boolean
-  attachmentId: string
+  attachmentId?: string | null
 }
 
 export type AdminUpdateManyMutationInput = {
@@ -365,7 +365,7 @@ export type AdminUpdateManyMutationInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AdminUncheckedUpdateManyInput = {
@@ -376,7 +376,7 @@ export type AdminUncheckedUpdateManyInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AdminOrderByRelevanceInput = {
@@ -451,6 +451,10 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
@@ -482,7 +486,7 @@ export type AdminCreateWithoutLogsInput = {
   userType?: $Enums.UserType
   specialty: $Enums.Specialties
   active?: boolean
-  attachmentId: string
+  attachmentId?: string | null
 }
 
 export type AdminUncheckedCreateWithoutLogsInput = {
@@ -493,7 +497,7 @@ export type AdminUncheckedCreateWithoutLogsInput = {
   userType?: $Enums.UserType
   specialty: $Enums.Specialties
   active?: boolean
-  attachmentId: string
+  attachmentId?: string | null
 }
 
 export type AdminCreateOrConnectWithoutLogsInput = {
@@ -519,7 +523,7 @@ export type AdminUpdateWithoutLogsInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type AdminUncheckedUpdateWithoutLogsInput = {
@@ -530,7 +534,7 @@ export type AdminUncheckedUpdateWithoutLogsInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -609,7 +613,7 @@ export type $AdminPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     userType: $Enums.UserType
     specialty: $Enums.Specialties
     active: boolean
-    attachmentId: string
+    attachmentId: string | null
   }, ExtArgs["result"]["admin"]>
   composites: {}
 }
