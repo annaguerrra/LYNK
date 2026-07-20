@@ -63,7 +63,9 @@ button {
     --purple: #9E2896;
     --green: #00884A;
     --acqua: #18837E;
-    --acquaHover: #0e4d49;
+    --acquaHover: #155f5a;
+    --acquaActive: #0e4d49;
+    --acquaSecondaryHover: #cde6e4;
     --red: #ED0007;
     --redHover: #6d0206;
     --gray: #c5c5c5;

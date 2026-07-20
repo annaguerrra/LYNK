@@ -1,9 +1,14 @@
 import { useState } from "react";
 import "./Styles/header.css"
+import "../Pages/Styles/Modals.css"
 import { useNavigate } from "react-router-dom";
+import { ButtonClose } from "./ButtonClose";
+import { Button } from "./Button";
+import ChoosePicture from "./ChoosePicture";
 
 export function Header({ user = null }) {
     const [openBox, setOpenBox] = useState(false);
+    const [pictureModal, setPictureModal] = useState(false);
     const navigate = useNavigate();
 
     return (
@@ -30,7 +35,7 @@ export function Header({ user = null }) {
 
                         {openBox &&
                             <div className="userBox">
-                                <button onClick={() => navigate("/Profile")} className="textIcon">
+                                <button onClick={() => setPictureModal(true)} className="textIcon">
                                     <i className="icon icon-user"></i>
                                     <span>Perfil</span>
                                 </button>
@@ -44,6 +49,8 @@ export function Header({ user = null }) {
                     </div>
                 </div>
             </div>
+
+            <ChoosePicture isOpen={pictureModal} onClose={() => setPictureModal(false) } onSave={() => setPictureModal(false)}/>
         </>
     )
 }
