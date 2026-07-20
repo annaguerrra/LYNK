@@ -1,4 +1,4 @@
-import { registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
+import { loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { IUserService } from "#application/services/User/IUser.service.js";
 import { Student, Instructor, Admin, EntityType } from "#infrastructure/prisma/generated/prisma/client.js";
 import { prisma } from "../../lib/prisma.js";
@@ -106,7 +106,17 @@ export class UserService implements IUserService {
         }
     }
 
-    async login(data: )
+    async login(data: loginPayloadDTO): Promise<loginResponseDTO> {
+        const { username, password } = data;
+
+        const [student, instructor, admin] = await Promise.all([
+            prisma.student.findUnique({
+                where: {
+                    username: email
+                }
+            })
+        ])
+    }
 
     async showStudents(): Promise<Student[]> {
         return await prisma.student.findMany()

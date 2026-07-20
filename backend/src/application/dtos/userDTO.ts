@@ -15,9 +15,18 @@ export interface registerInstructorDTO {
     file: UploadedFile
 }
 
-export interface loginDTO {
+export interface loginPayloadDTO {
     username: string
     password: string
+}
+
+export interface loginResponseDTO {
+    token: string
+    user:{
+        id: number;
+        name: string;
+        userType: UserType
+    }
 }
 
 export interface registerAdminDTO {
