@@ -12,7 +12,6 @@ export interface registerInstructorDTO {
     password: string
     userType: UserType
     specialty: Specialties
-    file: UploadedFile
 }
 
 export interface registerAdminDTO {
@@ -20,7 +19,6 @@ export interface registerAdminDTO {
     password: string
     userType: UserType
     specialty: Specialties
-    file: UploadedFile
 }
 
 export interface showStudentDTO {

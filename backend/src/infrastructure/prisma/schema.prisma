@@ -51,7 +51,7 @@ model Admin {
   userType UserType @default(ADMIN)
   specialty Specialties
   active Boolean @default(false)
-  attachmentId String
+  attachmentId String?
 
   logs Log[]
 }
@@ -64,7 +64,7 @@ model Instructor {
   userType UserType @default(INSTRUCTOR)
   specialty Specialties
   active Boolean @default(false)
-  attachmentId String
+  attachmentId String?
 
   logs Log[]
 }
@@ -84,8 +84,8 @@ model Class {
   content String @db.Text
   createdAt DateTime @default(now())
   disciplineId Int
-  discipline Discipline @relation(fields: [disciplineId], references: [id])
-  competences Competence[]
+  discipline Discipline @relation(fields: [disciplineId], references: [id], onDelete: Cascade)
+  competences Competence[] //n-n
   materials Material[]
 }
 
@@ -95,9 +95,9 @@ model Competence {
   numOfClasses Int @default(0)
   createdAt DateTime @default(now())
 
-  classes Class[]
-  exams Exam[]
-  disciplines Discipline[]
+  classes Class[] //n-n
+  exams Exam[] //n-n
+  disciplines Discipline[] //n-n
 }
 
 model Discipline {
@@ -107,9 +107,9 @@ model Discipline {
   areaId Int
   area Area @relation(fields: [areaId], references: [id])
   materials Material[]
-  competences Competence[]
-  classes Class[]
-  exams Exam[]
+  competences Competence[] //n-n
+  classes Class[] //n-n
+  exams Exam[] //n-n
 }
 
 model Area {
@@ -125,9 +125,9 @@ model Material {
   attachments MaterialAttachment[]
 
   disciplineId Int
-  discipline Discipline @relation(fields: [disciplineId], references: [id])
+  discipline Discipline @relation(fields: [disciplineId], references: [id], onDelete: Cascade)
   classId Int
-  class Class @relation(fields: [classId], references: [id])
+  class Class @relation(fields: [classId], references: [id], onDelete: Cascade)
 }
 
 model Exam {

@@ -46,64 +46,51 @@ export class UserService implements IUserService {
     }
 
     async registerInstructor(data: registerInstructorDTO, userId: number): Promise<Instructor> {
-        const { username, password, userType, specialty, file } = data
-        const attachmentId = await this.attachmentService.upload(file)
+        const { username, password, userType, specialty } = data
 
-        try {
-            const createdUser = await prisma.instructor.create({
-                data: { username, password, userType, specialty, attachmentId }
-            })
+        const createdUser = await prisma.instructor.create({
+            data: { username, password, userType, specialty }
+        })
 
-            await prisma.log.create({
-                data: {
-                    action: "CREATED",
-                    entityType: "Instructor",
-                    entityId: createdUser.id,
-                    oldData: {},
-                    newData: {
-                        ...createdUser
-                    },
-                    adminId: userId                    
-                }
-            })
+        await prisma.log.create({
+            data: {
+                action: "CREATED",
+                entityType: "Instructor",
+                entityId: createdUser.id,
+                oldData: {},
+                newData: {
+                    ...createdUser
+                },
+                adminId: userId                    
+            }
+        })
 
-            return createdUser
-
-        } catch (e) {
-            await this.attachmentService.delete(attachmentId)
-            throw e
-        }
+        return createdUser
 
     }
 
     async registerAdmin(data: registerAdminDTO, userId: number): Promise<Admin> {
-        const { username, password, userType, specialty, file } = data
-        const attachmentId = await this.attachmentService.upload(file)
+        const { username, password, userType, specialty } = data
 
-        try {
-            const createdUser = await prisma.admin.create({
-                data: { username, password, userType, specialty, attachmentId }
-            })
+        const createdUser = await prisma.admin.create({
+            data: { username, password, userType, specialty }
+        })
 
-            await prisma.log.create({
-                data: {
-                    action: "CREATED",
-                    entityType: "Admin",
-                    entityId: createdUser.id,
-                    oldData: {},
-                    newData: {
-                        ...createdUser
-                    },
-                    adminId: userId
-                }
-            })
+        await prisma.log.create({
+            data: {
+                action: "CREATED",
+                entityType: "Admin",
+                entityId: createdUser.id,
+                oldData: {},
+                newData: {
+                    ...createdUser
+                },
+                adminId: userId
+            }
+        })
 
-            return createdUser
+        return createdUser
 
-        } catch (e) {
-            await this.attachmentService.delete(attachmentId)
-            throw e
-        }
     }
 
     async showStudents(): Promise<Student[]> {
@@ -216,38 +203,46 @@ export class UserService implements IUserService {
         if (!target)
             throw new Error("User not found")
 
-        await this.attachmentService.delete(target?.attachmentId)
+        if (target.attachmentId)
+            await this.attachmentService.delete(target?.attachmentId)
 
-        const updatedUser = await prisma.instructor.update({
-            where: {
-                id: id
-            },
-            data: {
-                username: username,
-                password: password,
-                specialty: specialty,
-                active: active,
-                attachmentId: attachmentId
-            }
-        })
-
-        await prisma.log.create({
-            data: {
-                action: "UPDATED",
-                entityType: "Instructor",
-                entityId: target.id,
-                oldData: {
-                    ...target
+        try {
+            const updatedUser = await prisma.instructor.update({
+                where: {
+                    id: id
                 },
-                newData: {
-                    ...updatedUser
-                },
-                ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId }),
-            }
-        })
+                data: {
+                    username: username,
+                    password: password,
+                    specialty: specialty,
+                    active: active,
+                    attachmentId: attachmentId
+                }
+            })
+    
+            await prisma.log.create({
+                data: {
+                    action: "UPDATED",
+                    entityType: "Instructor",
+                    entityId: target.id,
+                    oldData: {
+                        ...target
+                    },
+                    newData: {
+                        ...updatedUser
+                    },
+                    ...(isAdmin && { adminId: userId }),
+                    ...(!isAdmin && { instructorId: userId }),
+                }
+            })
 
-        return updatedUser
+            return updatedUser
+
+        } catch (e) {
+            await this.attachmentService.delete(attachmentId)
+            throw e
+        }
+
     }
 
     async updateAdmin(id: number, data: updateAdminDTO, userId: number): Promise<Admin> {
@@ -263,37 +258,44 @@ export class UserService implements IUserService {
         if (!target)
             throw new Error("User not found")
 
-        await this.attachmentService.delete(target?.attachmentId)
+        if(target.attachmentId)
+            await this.attachmentService.delete(target?.attachmentId)
 
-        const updatedUser = await prisma.admin.update({
-            where: {
-                id: id
-            },
-            data: {
-                username: username,
-                password: password,
-                specialty: specialty,
-                active: active,
-                attachmentId: attachmentId
-            }
-        })
-
-        await prisma.log.create({
-            data: {
-                action: "UPDATED",
-                entityType: "Admin",
-                entityId: target.id,
-                oldData: {
-                    ...target
+        try {
+            const updatedUser = await prisma.admin.update({
+                where: {
+                    id: id
                 },
-                newData: {
-                    ...updatedUser
-                },
-                adminId: userId
-            }
-        })
+                data: {
+                    username: username,
+                    password: password,
+                    specialty: specialty,
+                    active: active,
+                    attachmentId: attachmentId
+                }
+            })
 
-        return updatedUser
+            await prisma.log.create({
+                data: {
+                    action: "UPDATED",
+                    entityType: "Admin",
+                    entityId: target.id,
+                    oldData: {
+                        ...target
+                    },
+                    newData: {
+                        ...updatedUser
+                    },
+                    adminId: userId
+                }
+            })
+
+            return updatedUser
+
+        } catch (e) {
+            await this.attachmentService.delete(attachmentId)
+            throw e
+        }
     }
 
     async deleteStudent(id: number, userId: number): Promise<boolean> {

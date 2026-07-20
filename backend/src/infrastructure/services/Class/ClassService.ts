@@ -1,7 +1,6 @@
 import { assignCompetencyDTO, ClassDTO, getContentDTO, editClass, findAllDTO, viewCompetencesDTO, viewContentDTO } from "#application/dtos/classDTO.js";
 import { IClassService } from "#application/services/Class/IClass.service.js";
 import { Class } from "#infrastructure/prisma/generated/prisma/client.js";
-import { DownloadedFile } from "#application/dtos/attachmentDTO.js";
 import { viewMaterialsDTO } from "#application/dtos/materialDTO.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { UserService } from "../User/UserService.js";
@@ -89,9 +88,10 @@ export class ClassService implements IClassService{
 
     async assignCompetency(payload: assignCompetencyDTO, userId: number): Promise<Class> {
         const isAdmin = await this.userService.isAdmin(userId)
+        const { classId, competencyId } = payload
         const competence = await prisma.competence.findFirst({
             where:{
-                id: payload.competencyId
+                id: competencyId
             } 
         });
 
@@ -101,7 +101,7 @@ export class ClassService implements IClassService{
 
         const target = await prisma.class.findFirst({
             where:{
-                id: payload.classId
+                id: classId
             }
         });
         

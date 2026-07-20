@@ -41,7 +41,6 @@ export type DisciplineSumAggregateOutputType = {
 export type DisciplineMinAggregateOutputType = {
   id: number | null
   name: string | null
-  createdAt: Date | null
   workLoad: number | null
   areaId: number | null
 }
@@ -49,7 +48,6 @@ export type DisciplineMinAggregateOutputType = {
 export type DisciplineMaxAggregateOutputType = {
   id: number | null
   name: string | null
-  createdAt: Date | null
   workLoad: number | null
   areaId: number | null
 }
@@ -57,7 +55,6 @@ export type DisciplineMaxAggregateOutputType = {
 export type DisciplineCountAggregateOutputType = {
   id: number
   name: number
-  createdAt: number
   workLoad: number
   areaId: number
   _all: number
@@ -79,7 +76,6 @@ export type DisciplineSumAggregateInputType = {
 export type DisciplineMinAggregateInputType = {
   id?: true
   name?: true
-  createdAt?: true
   workLoad?: true
   areaId?: true
 }
@@ -87,7 +83,6 @@ export type DisciplineMinAggregateInputType = {
 export type DisciplineMaxAggregateInputType = {
   id?: true
   name?: true
-  createdAt?: true
   workLoad?: true
   areaId?: true
 }
@@ -95,7 +90,6 @@ export type DisciplineMaxAggregateInputType = {
 export type DisciplineCountAggregateInputType = {
   id?: true
   name?: true
-  createdAt?: true
   workLoad?: true
   areaId?: true
   _all?: true
@@ -190,7 +184,6 @@ export type DisciplineGroupByArgs<ExtArgs extends runtime.Types.Extensions.Inter
 export type DisciplineGroupByOutputType = {
   id: number
   name: string
-  createdAt: Date
   workLoad: number
   areaId: number
   _count: DisciplineCountAggregateOutputType | null
@@ -221,7 +214,6 @@ export type DisciplineWhereInput = {
   NOT?: Prisma.DisciplineWhereInput | Prisma.DisciplineWhereInput[]
   id?: Prisma.IntFilter<"Discipline"> | number
   name?: Prisma.StringFilter<"Discipline"> | string
-  createdAt?: Prisma.DateTimeFilter<"Discipline"> | Date | string
   workLoad?: Prisma.IntFilter<"Discipline"> | number
   areaId?: Prisma.IntFilter<"Discipline"> | number
   area?: Prisma.XOR<Prisma.AreaScalarRelationFilter, Prisma.AreaWhereInput>
@@ -234,7 +226,6 @@ export type DisciplineWhereInput = {
 export type DisciplineOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   workLoad?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
   area?: Prisma.AreaOrderByWithRelationInput
@@ -251,7 +242,6 @@ export type DisciplineWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.DisciplineWhereInput[]
   NOT?: Prisma.DisciplineWhereInput | Prisma.DisciplineWhereInput[]
   name?: Prisma.StringFilter<"Discipline"> | string
-  createdAt?: Prisma.DateTimeFilter<"Discipline"> | Date | string
   workLoad?: Prisma.IntFilter<"Discipline"> | number
   areaId?: Prisma.IntFilter<"Discipline"> | number
   area?: Prisma.XOR<Prisma.AreaScalarRelationFilter, Prisma.AreaWhereInput>
@@ -264,7 +254,6 @@ export type DisciplineWhereUniqueInput = Prisma.AtLeast<{
 export type DisciplineOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   workLoad?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
   _count?: Prisma.DisciplineCountOrderByAggregateInput
@@ -280,14 +269,12 @@ export type DisciplineScalarWhereWithAggregatesInput = {
   NOT?: Prisma.DisciplineScalarWhereWithAggregatesInput | Prisma.DisciplineScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Discipline"> | number
   name?: Prisma.StringWithAggregatesFilter<"Discipline"> | string
-  createdAt?: Prisma.DateTimeWithAggregatesFilter<"Discipline"> | Date | string
   workLoad?: Prisma.IntWithAggregatesFilter<"Discipline"> | number
   areaId?: Prisma.IntWithAggregatesFilter<"Discipline"> | number
 }
 
 export type DisciplineCreateInput = {
   name: string
-  createdAt?: Date | string
   workLoad: number
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
@@ -299,7 +286,6 @@ export type DisciplineCreateInput = {
 export type DisciplineUncheckedCreateInput = {
   id?: number
   name: string
-  createdAt?: Date | string
   workLoad: number
   areaId: number
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
@@ -310,7 +296,6 @@ export type DisciplineUncheckedCreateInput = {
 
 export type DisciplineUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
@@ -322,7 +307,6 @@ export type DisciplineUpdateInput = {
 export type DisciplineUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
@@ -334,21 +318,18 @@ export type DisciplineUncheckedUpdateInput = {
 export type DisciplineCreateManyInput = {
   id?: number
   name: string
-  createdAt?: Date | string
   workLoad: number
   areaId: number
 }
 
 export type DisciplineUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type DisciplineUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -377,7 +358,6 @@ export type DisciplineOrderByRelevanceInput = {
 export type DisciplineCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   workLoad?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
 }
@@ -391,7 +371,6 @@ export type DisciplineAvgOrderByAggregateInput = {
 export type DisciplineMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   workLoad?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
 }
@@ -399,7 +378,6 @@ export type DisciplineMaxOrderByAggregateInput = {
 export type DisciplineMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
-  createdAt?: Prisma.SortOrder
   workLoad?: Prisma.SortOrder
   areaId?: Prisma.SortOrder
 }
@@ -534,7 +512,6 @@ export type DisciplineUpdateOneRequiredWithoutExamsNestedInput = {
 
 export type DisciplineCreateWithoutClassesInput = {
   name: string
-  createdAt?: Date | string
   workLoad: number
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
@@ -545,7 +522,6 @@ export type DisciplineCreateWithoutClassesInput = {
 export type DisciplineUncheckedCreateWithoutClassesInput = {
   id?: number
   name: string
-  createdAt?: Date | string
   workLoad: number
   areaId: number
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
@@ -571,7 +547,6 @@ export type DisciplineUpdateToOneWithWhereWithoutClassesInput = {
 
 export type DisciplineUpdateWithoutClassesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
@@ -582,7 +557,6 @@ export type DisciplineUpdateWithoutClassesInput = {
 export type DisciplineUncheckedUpdateWithoutClassesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
@@ -592,7 +566,6 @@ export type DisciplineUncheckedUpdateWithoutClassesInput = {
 
 export type DisciplineCreateWithoutCompetencesInput = {
   name: string
-  createdAt?: Date | string
   workLoad: number
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
@@ -603,7 +576,6 @@ export type DisciplineCreateWithoutCompetencesInput = {
 export type DisciplineUncheckedCreateWithoutCompetencesInput = {
   id?: number
   name: string
-  createdAt?: Date | string
   workLoad: number
   areaId: number
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
@@ -638,14 +610,12 @@ export type DisciplineScalarWhereInput = {
   NOT?: Prisma.DisciplineScalarWhereInput | Prisma.DisciplineScalarWhereInput[]
   id?: Prisma.IntFilter<"Discipline"> | number
   name?: Prisma.StringFilter<"Discipline"> | string
-  createdAt?: Prisma.DateTimeFilter<"Discipline"> | Date | string
   workLoad?: Prisma.IntFilter<"Discipline"> | number
   areaId?: Prisma.IntFilter<"Discipline"> | number
 }
 
 export type DisciplineCreateWithoutAreaInput = {
   name: string
-  createdAt?: Date | string
   workLoad: number
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
   competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
@@ -656,7 +626,6 @@ export type DisciplineCreateWithoutAreaInput = {
 export type DisciplineUncheckedCreateWithoutAreaInput = {
   id?: number
   name: string
-  createdAt?: Date | string
   workLoad: number
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
   competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
@@ -692,7 +661,6 @@ export type DisciplineUpdateManyWithWhereWithoutAreaInput = {
 
 export type DisciplineCreateWithoutMaterialsInput = {
   name: string
-  createdAt?: Date | string
   workLoad: number
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
   competences?: Prisma.CompetenceCreateNestedManyWithoutDisciplinesInput
@@ -703,7 +671,6 @@ export type DisciplineCreateWithoutMaterialsInput = {
 export type DisciplineUncheckedCreateWithoutMaterialsInput = {
   id?: number
   name: string
-  createdAt?: Date | string
   workLoad: number
   areaId: number
   competences?: Prisma.CompetenceUncheckedCreateNestedManyWithoutDisciplinesInput
@@ -729,7 +696,6 @@ export type DisciplineUpdateToOneWithWhereWithoutMaterialsInput = {
 
 export type DisciplineUpdateWithoutMaterialsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
   competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
@@ -740,7 +706,6 @@ export type DisciplineUpdateWithoutMaterialsInput = {
 export type DisciplineUncheckedUpdateWithoutMaterialsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
   competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput
@@ -750,7 +715,6 @@ export type DisciplineUncheckedUpdateWithoutMaterialsInput = {
 
 export type DisciplineCreateWithoutExamsInput = {
   name: string
-  createdAt?: Date | string
   workLoad: number
   area: Prisma.AreaCreateNestedOneWithoutDisciplinesInput
   materials?: Prisma.MaterialCreateNestedManyWithoutDisciplineInput
@@ -761,7 +725,6 @@ export type DisciplineCreateWithoutExamsInput = {
 export type DisciplineUncheckedCreateWithoutExamsInput = {
   id?: number
   name: string
-  createdAt?: Date | string
   workLoad: number
   areaId: number
   materials?: Prisma.MaterialUncheckedCreateNestedManyWithoutDisciplineInput
@@ -787,7 +750,6 @@ export type DisciplineUpdateToOneWithWhereWithoutExamsInput = {
 
 export type DisciplineUpdateWithoutExamsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
@@ -798,7 +760,6 @@ export type DisciplineUpdateWithoutExamsInput = {
 export type DisciplineUncheckedUpdateWithoutExamsInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
@@ -808,7 +769,6 @@ export type DisciplineUncheckedUpdateWithoutExamsInput = {
 
 export type DisciplineUpdateWithoutCompetencesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   area?: Prisma.AreaUpdateOneRequiredWithoutDisciplinesNestedInput
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
@@ -819,7 +779,6 @@ export type DisciplineUpdateWithoutCompetencesInput = {
 export type DisciplineUncheckedUpdateWithoutCompetencesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
@@ -830,7 +789,6 @@ export type DisciplineUncheckedUpdateWithoutCompetencesInput = {
 export type DisciplineUncheckedUpdateManyWithoutCompetencesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   areaId?: Prisma.IntFieldUpdateOperationsInput | number
 }
@@ -838,13 +796,11 @@ export type DisciplineUncheckedUpdateManyWithoutCompetencesInput = {
 export type DisciplineCreateManyAreaInput = {
   id?: number
   name: string
-  createdAt?: Date | string
   workLoad: number
 }
 
 export type DisciplineUpdateWithoutAreaInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   materials?: Prisma.MaterialUpdateManyWithoutDisciplineNestedInput
   competences?: Prisma.CompetenceUpdateManyWithoutDisciplinesNestedInput
@@ -855,7 +811,6 @@ export type DisciplineUpdateWithoutAreaInput = {
 export type DisciplineUncheckedUpdateWithoutAreaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
   materials?: Prisma.MaterialUncheckedUpdateManyWithoutDisciplineNestedInput
   competences?: Prisma.CompetenceUncheckedUpdateManyWithoutDisciplinesNestedInput
@@ -866,7 +821,6 @@ export type DisciplineUncheckedUpdateWithoutAreaInput = {
 export type DisciplineUncheckedUpdateManyWithoutAreaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workLoad?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -931,7 +885,6 @@ export type DisciplineCountOutputTypeCountExamsArgs<ExtArgs extends runtime.Type
 export type DisciplineSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
-  createdAt?: boolean
   workLoad?: boolean
   areaId?: boolean
   area?: boolean | Prisma.AreaDefaultArgs<ExtArgs>
@@ -947,12 +900,11 @@ export type DisciplineSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type DisciplineSelectScalar = {
   id?: boolean
   name?: boolean
-  createdAt?: boolean
   workLoad?: boolean
   areaId?: boolean
 }
 
-export type DisciplineOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "createdAt" | "workLoad" | "areaId", ExtArgs["result"]["discipline"]>
+export type DisciplineOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "workLoad" | "areaId", ExtArgs["result"]["discipline"]>
 export type DisciplineInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   area?: boolean | Prisma.AreaDefaultArgs<ExtArgs>
   materials?: boolean | Prisma.Discipline$materialsArgs<ExtArgs>
@@ -974,7 +926,6 @@ export type $DisciplinePayload<ExtArgs extends runtime.Types.Extensions.Internal
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     name: string
-    createdAt: Date
     workLoad: number
     areaId: number
   }, ExtArgs["result"]["discipline"]>
@@ -1353,7 +1304,6 @@ export interface Prisma__DisciplineClient<T, Null = never, ExtArgs extends runti
 export interface DisciplineFieldRefs {
   readonly id: Prisma.FieldRef<"Discipline", 'Int'>
   readonly name: Prisma.FieldRef<"Discipline", 'String'>
-  readonly createdAt: Prisma.FieldRef<"Discipline", 'DateTime'>
   readonly workLoad: Prisma.FieldRef<"Discipline", 'Int'>
   readonly areaId: Prisma.FieldRef<"Discipline", 'Int'>
 }

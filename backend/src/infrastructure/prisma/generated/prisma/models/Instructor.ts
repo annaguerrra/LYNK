@@ -205,7 +205,7 @@ export type InstructorGroupByOutputType = {
   userType: $Enums.UserType
   specialty: $Enums.Specialties
   active: boolean
-  attachmentId: string
+  attachmentId: string | null
   _count: InstructorCountAggregateOutputType | null
   _avg: InstructorAvgAggregateOutputType | null
   _sum: InstructorSumAggregateOutputType | null
@@ -239,7 +239,7 @@ export type InstructorWhereInput = {
   userType?: Prisma.EnumUserTypeFilter<"Instructor"> | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFilter<"Instructor"> | $Enums.Specialties
   active?: Prisma.BoolFilter<"Instructor"> | boolean
-  attachmentId?: Prisma.StringFilter<"Instructor"> | string
+  attachmentId?: Prisma.StringNullableFilter<"Instructor"> | string | null
   logs?: Prisma.LogListRelationFilter
 }
 
@@ -251,7 +251,7 @@ export type InstructorOrderByWithRelationInput = {
   userType?: Prisma.SortOrder
   specialty?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  attachmentId?: Prisma.SortOrder
+  attachmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   logs?: Prisma.LogOrderByRelationAggregateInput
   _relevance?: Prisma.InstructorOrderByRelevanceInput
 }
@@ -267,7 +267,7 @@ export type InstructorWhereUniqueInput = Prisma.AtLeast<{
   userType?: Prisma.EnumUserTypeFilter<"Instructor"> | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFilter<"Instructor"> | $Enums.Specialties
   active?: Prisma.BoolFilter<"Instructor"> | boolean
-  attachmentId?: Prisma.StringFilter<"Instructor"> | string
+  attachmentId?: Prisma.StringNullableFilter<"Instructor"> | string | null
   logs?: Prisma.LogListRelationFilter
 }, "id">
 
@@ -279,7 +279,7 @@ export type InstructorOrderByWithAggregationInput = {
   userType?: Prisma.SortOrder
   specialty?: Prisma.SortOrder
   active?: Prisma.SortOrder
-  attachmentId?: Prisma.SortOrder
+  attachmentId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.InstructorCountOrderByAggregateInput
   _avg?: Prisma.InstructorAvgOrderByAggregateInput
   _max?: Prisma.InstructorMaxOrderByAggregateInput
@@ -298,7 +298,7 @@ export type InstructorScalarWhereWithAggregatesInput = {
   userType?: Prisma.EnumUserTypeWithAggregatesFilter<"Instructor"> | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesWithAggregatesFilter<"Instructor"> | $Enums.Specialties
   active?: Prisma.BoolWithAggregatesFilter<"Instructor"> | boolean
-  attachmentId?: Prisma.StringWithAggregatesFilter<"Instructor"> | string
+  attachmentId?: Prisma.StringNullableWithAggregatesFilter<"Instructor"> | string | null
 }
 
 export type InstructorCreateInput = {
@@ -308,7 +308,7 @@ export type InstructorCreateInput = {
   userType?: $Enums.UserType
   specialty: $Enums.Specialties
   active?: boolean
-  attachmentId: string
+  attachmentId?: string | null
   logs?: Prisma.LogCreateNestedManyWithoutInstructorInput
 }
 
@@ -320,7 +320,7 @@ export type InstructorUncheckedCreateInput = {
   userType?: $Enums.UserType
   specialty: $Enums.Specialties
   active?: boolean
-  attachmentId: string
+  attachmentId?: string | null
   logs?: Prisma.LogUncheckedCreateNestedManyWithoutInstructorInput
 }
 
@@ -331,7 +331,7 @@ export type InstructorUpdateInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.LogUpdateManyWithoutInstructorNestedInput
 }
 
@@ -343,7 +343,7 @@ export type InstructorUncheckedUpdateInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   logs?: Prisma.LogUncheckedUpdateManyWithoutInstructorNestedInput
 }
 
@@ -355,7 +355,7 @@ export type InstructorCreateManyInput = {
   userType?: $Enums.UserType
   specialty: $Enums.Specialties
   active?: boolean
-  attachmentId: string
+  attachmentId?: string | null
 }
 
 export type InstructorUpdateManyMutationInput = {
@@ -365,7 +365,7 @@ export type InstructorUpdateManyMutationInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type InstructorUncheckedUpdateManyInput = {
@@ -376,7 +376,7 @@ export type InstructorUncheckedUpdateManyInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type InstructorOrderByRelevanceInput = {
@@ -454,7 +454,7 @@ export type InstructorCreateWithoutLogsInput = {
   userType?: $Enums.UserType
   specialty: $Enums.Specialties
   active?: boolean
-  attachmentId: string
+  attachmentId?: string | null
 }
 
 export type InstructorUncheckedCreateWithoutLogsInput = {
@@ -465,7 +465,7 @@ export type InstructorUncheckedCreateWithoutLogsInput = {
   userType?: $Enums.UserType
   specialty: $Enums.Specialties
   active?: boolean
-  attachmentId: string
+  attachmentId?: string | null
 }
 
 export type InstructorCreateOrConnectWithoutLogsInput = {
@@ -491,7 +491,7 @@ export type InstructorUpdateWithoutLogsInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type InstructorUncheckedUpdateWithoutLogsInput = {
@@ -502,7 +502,7 @@ export type InstructorUncheckedUpdateWithoutLogsInput = {
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  attachmentId?: Prisma.StringFieldUpdateOperationsInput | string
+  attachmentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -581,7 +581,7 @@ export type $InstructorPayload<ExtArgs extends runtime.Types.Extensions.Internal
     userType: $Enums.UserType
     specialty: $Enums.Specialties
     active: boolean
-    attachmentId: string
+    attachmentId: string | null
   }, ExtArgs["result"]["instructor"]>
   composites: {}
 }

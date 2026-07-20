@@ -1316,7 +1316,6 @@ export type CompetenceScalarFieldEnum = (typeof CompetenceScalarFieldEnum)[keyof
 export const DisciplineScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  createdAt: 'createdAt',
   workLoad: 'workLoad',
   areaId: 'areaId'
 } as const
@@ -1397,6 +1396,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 export const AdminOrderByRelevanceFieldEnum = {
@@ -1483,14 +1490,6 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
-
-
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
-} as const
-
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 export const ExamAttachmentOrderByRelevanceFieldEnum = {

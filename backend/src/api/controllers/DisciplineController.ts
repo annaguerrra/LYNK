@@ -1,7 +1,7 @@
 import { assignCompetencyDTO, DisciplineDTO } from "#application/dtos/disciplineDTO.js"
 import { getBucket } from "#infrastructure/database/database.js"
 import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js"
-import { DisciplineService } from "#infrastructure/services/Discipline/discipline.service.js"
+import { DisciplineService } from "#infrastructure/services/Discipline/DisciplineService.js"
 import { UserService } from "#infrastructure/services/User/UserService.js"
 import {Request, response, Response } from "express"
 

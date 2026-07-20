@@ -7,13 +7,15 @@ import { UserService } from "#infrastructure/services/User/UserService.js"
 import { AttachmentService } from "../Attachment/AttachmentService.js";
 
 export class DisciplineService implements IDisciplineService{
-    constructor(private userService: UserService) {}
+    constructor(
+        private userService: UserService,
+        private attachmentService: AttachmentService
+    ) {}
     async create(payload: DisciplineDTO, userID: number): Promise<Discipline> {
-        const attachment = new AttachmentService(getBucket())
-        const userService = new UserService(attachment)
-        const admin = await userService.isAdmin(userID)
+        const admin = await this.userService.isAdmin(userID)
+        const { name, workload, areaID } = payload
 
-        const area = await prisma.area.findUnique({ where:{ id: payload.areaID }});
+        const area = await prisma.area.findUnique({ where:{ id: areaID }});
 
         if(!area){
             throw new Error("Area not Found");
@@ -21,8 +23,8 @@ export class DisciplineService implements IDisciplineService{
 
         const target = await prisma.discipline.create({
             data:{
-                name: payload.name,
-                workLoad: payload.workload,
+                name: name,
+                workLoad: workload,
                 areaId: area.id               
             }
         });
@@ -45,13 +47,12 @@ export class DisciplineService implements IDisciplineService{
         return target;
     }
     async assignCompetence(payload: assignCompetencyDTO, userId: number): Promise<Discipline> {
-        const attachment = new AttachmentService(getBucket())
-        const userService = new UserService(attachment)
-        const admin = await userService.isAdmin(userId)
+        const admin = await this.userService.isAdmin(userId)
+        const { disciplineID, competencyID } = payload
 
         const competence = await prisma.competence.findUnique({ 
             where:{ 
-                id: payload.competencyID
+                id: competencyID
             }
         });
 
@@ -61,7 +62,7 @@ export class DisciplineService implements IDisciplineService{
 
         const oldData = await prisma.discipline.findUnique({ 
             where:{ 
-                id: payload.disciplineID
+                id: disciplineID
             }
         });
 
@@ -71,7 +72,7 @@ export class DisciplineService implements IDisciplineService{
 
         const updatedData = await prisma.discipline.update({
             where:{
-                id: payload.disciplineID
+                id: disciplineID
             },
             data:{
                 competences:{
@@ -268,9 +269,7 @@ export class DisciplineService implements IDisciplineService{
         return target;
     }
     async delete(disciplineID: number, userId: number): Promise<boolean> {
-        const attachment = new AttachmentService(getBucket())
-        const userService = new UserService(attachment)
-        const admin = await userService.isAdmin(userId)
+        const admin = await this.userService.isAdmin(userId)
 
         const target = await prisma.discipline.findUnique({ where: { id: disciplineID }});
 
@@ -301,9 +300,8 @@ export class DisciplineService implements IDisciplineService{
         }
     }
     async edit(payload: DisciplineDTO, disciplineID: number, userID: number): Promise<editDisciplineDTO> {
-        const attachment = new AttachmentService(getBucket())
-        const userService = new UserService(attachment)
-        const admin = await userService.isAdmin(userID)
+        const admin = await this.userService.isAdmin(userID)
+        const { name, workload } = payload
 
         const target = await prisma.discipline.findUnique({ where: { id: disciplineID }});
         if(!target){
@@ -316,8 +314,8 @@ export class DisciplineService implements IDisciplineService{
                     id: disciplineID
                 },
                 data:{
-                    name: payload.name,
-                    workLoad: payload.workload
+                    name: name,
+                    workLoad: workload
                 }
             });
 
