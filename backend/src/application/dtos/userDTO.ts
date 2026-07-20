@@ -14,6 +14,11 @@ export interface registerInstructorDTO {
     specialty: Specialties
 }
 
+export interface loginDTO {
+    username: string
+    password: string
+}
+
 export interface registerAdminDTO {
     username: string
     password: string
