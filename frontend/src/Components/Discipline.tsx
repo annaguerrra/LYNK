@@ -20,7 +20,8 @@ export function DisciplineComp({Discipline, Area}) {
         },
         {
             name: "Excluir disciplina",
-            onClick: () => setExcludeModal(true)
+            onClick: () => setExcludeModal(true),
+            color: "red"
         },
     ];
 

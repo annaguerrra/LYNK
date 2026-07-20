@@ -1,4 +1,5 @@
 import "./Styles/Content.css"
+import "./Styles/Class.css"
 import { useState } from "react";
 import { ButtonBack } from "../Components/ButtonBack";
 import { Header } from "../Components/Header";
@@ -12,6 +13,8 @@ import { ButtonCancel } from "../Components/ButtonCancel";
 import { ButtonClose } from "../Components/ButtonClose";
 import { ButtonExclude } from "../Components/ButtonExclude";
 import { useNavigate } from "react-router-dom";
+import { RowItem } from "../Components/RowItem";
+import LessonSelect from "../Components/LessonSelect";
 
 export function Content() {
     const navigate = useNavigate()
@@ -86,19 +89,34 @@ export function Content() {
                         <h2>Selecione o arquivo</h2> 
                         <input type="file" />
                     </div>
-                    {/* <div className="textBox">
-                        <h2>Selecione as competências</h2>
-                        <select name="" id="">
-                            <option value="Tecnologia" selected></option>
-                        </select>
-                    </div>
-                    <div className="scrollBox">
-                        <h1>.</h1>
-                        <h1>.</h1>
-                        <h1>.</h1>
-                        <h1>.</h1>
+                    <div className="textBox">
+                        <h2>Selecione o arquivo</h2> 
+                        
+                        <div className='attachments' >
+                            <LessonSelect/>
+                            <RowItem 
+                                type='competence'
+                                actions={
+                                    <>
+                                    <ButtonClose size={18} onClose={() => { }} />
+                                    </>
+                                } >
+                                <div>Fazer sei la o que, comepencia de não sei o que mais </div>
+                                
+                            </RowItem>
+                            <RowItem
+                                type='competence'
+                                actions={
+                                    <>
+                                    <ButtonClose size={18} onClose={() => { }} />
+                                    </>
+                                } >
+                                <div>Teste de nome para o componente usado para representar uma competencia</div>
+                                
+                            </RowItem>
                             
-                    </div> */}
+                        </div>
+                    </div>
 
                     <Button ButtonTitle={"Enviar"} onClose={() => setNewTest(false)}></Button>
                 </div>

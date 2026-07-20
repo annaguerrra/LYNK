@@ -65,12 +65,12 @@ export function Discipline () {
         {
             name: "Excluir usuário",
             onClick: () => { setExcludeUserModal(true), setUsersModal(false) },
-            color: "red",
+            color: "red"
         },
         {
             name: "Resetar senha",
             onClick: () => { setResetPasswordModal(true), setUsersModal(false) },
-            color: "red",
+            color: "red"
         },
     ];
 
@@ -168,6 +168,7 @@ export function Discipline () {
                         <h2>Senha do usuário</h2>
                         <input type="password"/>
                     </div>
+                    
 
                     <Button ButtonTitle={"Enviar"} onClose={() => setNewUserModal(false)}></Button>
                 </div>
@@ -181,12 +182,20 @@ export function Discipline () {
                         <h1>Gerenciar usuários</h1>
                         <ButtonClose size={40} onClose={() => setUsersModal(false)}></ButtonClose>
                     </div>
-                    <RowItem color='var(--green)'>
-                        <div className="itemText">
-                            <p>Manufatura_20252</p>
-                        </div>
-                        <MoreOpt data={userOpt} size={25}></MoreOpt>
-                    </RowItem>
+                    <div className="itemsBox">
+                        <RowItem color='var(--green)'>
+                            <div className="itemText">
+                                <p>Manufatura_20252</p>
+                            </div>
+                            <MoreOpt data={userOpt} size={25}></MoreOpt>
+                        </RowItem>
+                        <RowItem color='var(--green)'>
+                            <div className="itemText">
+                                <p>Manufatura_20252</p>
+                            </div>
+                            <MoreOpt data={userOpt} size={25}></MoreOpt>
+                        </RowItem>
+                    </div>
                     <div></div>
                 </div>
             </div>
@@ -286,12 +295,15 @@ export function Discipline () {
                         <h1>Gerenciar áreas</h1>
                         <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose>
                     </div>
-                    <RowItem color='var(--green)'>
-                        <div className="itemText">
-                            <p>Administração</p>
-                        </div>
-                        <MoreOpt data={areasOpt} size={25}></MoreOpt>
-                    </RowItem>
+                    <div className="itemsBox">
+
+                        <RowItem color='var(--green)'>
+                            <div className="itemText">
+                                <p>Administração</p>
+                            </div>
+                            <MoreOpt data={areasOpt} size={25}></MoreOpt>
+                        </RowItem>
+                    </div>
                     <div></div>
                 </div>
             </div>

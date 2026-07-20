@@ -53,6 +53,15 @@
   align-items: self-start;
 }
 
+.itemsBox {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  gap: 1vh;
+}
+
 .scrollBox {
   width: 90%;
   height: 10vh;
