@@ -22,6 +22,7 @@ export default function LessonSelect() {
     const [query, setQuery] = useState("");
     const [open, setOpen] = useState(false);
 
+    //Variable used to search for the competences
     const filteredLessons = useMemo(() => {
         return lessons.filter((lesson) =>
             lesson.name.toLowerCase().includes(query.toLowerCase())
@@ -30,6 +31,7 @@ export default function LessonSelect() {
 
     return (
         <div className="lessonSelect">
+            {/* Input used to search for the necessary info */}
             <div className="inputContainer">
                 <input
                     type="text"
@@ -49,7 +51,8 @@ export default function LessonSelect() {
                     +
                 </button>
             </div>
-
+                
+            {/* Modal to show the research results */}
             {open && (
                 <div className="dropdown">
                     {filteredLessons.length === 0 ? (

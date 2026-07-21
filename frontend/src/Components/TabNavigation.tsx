@@ -11,6 +11,7 @@ type TabNavigationProps = {
     onChange: (tab: string) => void;
 };
 
+//Component to show all the tabs
 export function TabNavigation({
     tabs,
     selected,
@@ -18,12 +19,14 @@ export function TabNavigation({
 }: TabNavigationProps) {
     return (
         <div className="a-tab-navigation__wrapper">
+            {/* List with all the tab options */}
             <ul className="a-tab-navigation">
                 {tabs.map((tab) => (
                     <li
                         key={tab.id}
                         className="a-tab-navigation__item"
                     >
+                        {/* Button to select a specific tab */}
                         <button
                             className={`a-tab-navigation__tab ${
                                 selected === tab.id ? "-selected" : ""

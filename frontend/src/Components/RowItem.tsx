@@ -1,6 +1,7 @@
 import './Styles/RowItem.css';
 import React from 'react';
 
+//Interface with everything that a item could have
 interface RowItemProps {
   type?: string;
   color?: string;
@@ -24,6 +25,7 @@ export function RowItem({
 
   return (
     <div className="rowContainer">
+      {/* Setting the item color to the received color */}
       <div
         className={`tagRow ${type}`}
         style={{ backgroundColor: color }}

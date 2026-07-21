@@ -2,6 +2,7 @@ import "./Styles/moreOpt.css";
 import { useState } from "react";
 import { useFloating, flip, shift, offset, autoUpdate } from "@floating-ui/react";
 
+//Interfaces used to show the button and the options it will have
 interface Option {
     name: string;
     onClick: () => void;
@@ -15,6 +16,7 @@ interface MoreOptProps {
 
 export function MoreOpt({ data, size }: MoreOptProps) {
     const [open, setOpen] = useState(false);
+    //Variable used to help the library know how to manage the options modal
     const { refs, floatingStyles } = useFloating({
         placement: "bottom-end",
 
@@ -32,8 +34,9 @@ export function MoreOpt({ data, size }: MoreOptProps) {
             <div ref={refs.setReference} className="moreOpt" onClick={() => setOpen(!open)}>
                 <img src="/moreOpt.svg" alt="" className="optImg" style={{width: `${size}px`}} />
             </div>
-
-           {open && (
+            
+            {/* Modal with the option buttons*/}
+            {open && (
                 <div ref={refs.setFloating} style={floatingStyles} className="moreOptModal">
                     {data.map((option) => (
                         <button
