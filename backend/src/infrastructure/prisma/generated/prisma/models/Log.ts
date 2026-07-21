@@ -44,6 +44,7 @@ export type LogMinAggregateOutputType = {
   id: number | null
   entityType: $Enums.EntityType | null
   entityId: number | null
+  entityName: string | null
   action: $Enums.Action | null
   updatedAt: Date | null
   instructorId: number | null
@@ -54,6 +55,7 @@ export type LogMaxAggregateOutputType = {
   id: number | null
   entityType: $Enums.EntityType | null
   entityId: number | null
+  entityName: string | null
   action: $Enums.Action | null
   updatedAt: Date | null
   instructorId: number | null
@@ -64,6 +66,7 @@ export type LogCountAggregateOutputType = {
   id: number
   entityType: number
   entityId: number
+  entityName: number
   action: number
   updatedAt: number
   oldData: number
@@ -92,6 +95,7 @@ export type LogMinAggregateInputType = {
   id?: true
   entityType?: true
   entityId?: true
+  entityName?: true
   action?: true
   updatedAt?: true
   instructorId?: true
@@ -102,6 +106,7 @@ export type LogMaxAggregateInputType = {
   id?: true
   entityType?: true
   entityId?: true
+  entityName?: true
   action?: true
   updatedAt?: true
   instructorId?: true
@@ -112,6 +117,7 @@ export type LogCountAggregateInputType = {
   id?: true
   entityType?: true
   entityId?: true
+  entityName?: true
   action?: true
   updatedAt?: true
   oldData?: true
@@ -211,6 +217,7 @@ export type LogGroupByOutputType = {
   id: number
   entityType: $Enums.EntityType
   entityId: number
+  entityName: string
   action: $Enums.Action
   updatedAt: Date
   oldData: runtime.JsonValue
@@ -246,6 +253,7 @@ export type LogWhereInput = {
   id?: Prisma.IntFilter<"Log"> | number
   entityType?: Prisma.EnumEntityTypeFilter<"Log"> | $Enums.EntityType
   entityId?: Prisma.IntFilter<"Log"> | number
+  entityName?: Prisma.StringFilter<"Log"> | string
   action?: Prisma.EnumActionFilter<"Log"> | $Enums.Action
   updatedAt?: Prisma.DateTimeFilter<"Log"> | Date | string
   oldData?: Prisma.JsonFilter<"Log">
@@ -260,6 +268,7 @@ export type LogOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   entityType?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
+  entityName?: Prisma.SortOrder
   action?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   oldData?: Prisma.SortOrder
@@ -268,6 +277,7 @@ export type LogOrderByWithRelationInput = {
   adminId?: Prisma.SortOrderInput | Prisma.SortOrder
   instructor?: Prisma.InstructorOrderByWithRelationInput
   admin?: Prisma.AdminOrderByWithRelationInput
+  _relevance?: Prisma.LogOrderByRelevanceInput
 }
 
 export type LogWhereUniqueInput = Prisma.AtLeast<{
@@ -277,6 +287,7 @@ export type LogWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.LogWhereInput | Prisma.LogWhereInput[]
   entityType?: Prisma.EnumEntityTypeFilter<"Log"> | $Enums.EntityType
   entityId?: Prisma.IntFilter<"Log"> | number
+  entityName?: Prisma.StringFilter<"Log"> | string
   action?: Prisma.EnumActionFilter<"Log"> | $Enums.Action
   updatedAt?: Prisma.DateTimeFilter<"Log"> | Date | string
   oldData?: Prisma.JsonFilter<"Log">
@@ -291,6 +302,7 @@ export type LogOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   entityType?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
+  entityName?: Prisma.SortOrder
   action?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   oldData?: Prisma.SortOrder
@@ -311,6 +323,7 @@ export type LogScalarWhereWithAggregatesInput = {
   id?: Prisma.IntWithAggregatesFilter<"Log"> | number
   entityType?: Prisma.EnumEntityTypeWithAggregatesFilter<"Log"> | $Enums.EntityType
   entityId?: Prisma.IntWithAggregatesFilter<"Log"> | number
+  entityName?: Prisma.StringWithAggregatesFilter<"Log"> | string
   action?: Prisma.EnumActionWithAggregatesFilter<"Log"> | $Enums.Action
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Log"> | Date | string
   oldData?: Prisma.JsonWithAggregatesFilter<"Log">
@@ -322,6 +335,7 @@ export type LogScalarWhereWithAggregatesInput = {
 export type LogCreateInput = {
   entityType: $Enums.EntityType
   entityId: number
+  entityName: string
   action: $Enums.Action
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -334,6 +348,7 @@ export type LogUncheckedCreateInput = {
   id?: number
   entityType: $Enums.EntityType
   entityId: number
+  entityName: string
   action: $Enums.Action
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -345,6 +360,7 @@ export type LogUncheckedCreateInput = {
 export type LogUpdateInput = {
   entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
   entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  entityName?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -357,6 +373,7 @@ export type LogUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
   entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  entityName?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -369,6 +386,7 @@ export type LogCreateManyInput = {
   id?: number
   entityType: $Enums.EntityType
   entityId: number
+  entityName: string
   action: $Enums.Action
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -380,6 +398,7 @@ export type LogCreateManyInput = {
 export type LogUpdateManyMutationInput = {
   entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
   entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  entityName?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -390,6 +409,7 @@ export type LogUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
   entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  entityName?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -408,10 +428,17 @@ export type LogOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type LogOrderByRelevanceInput = {
+  fields: Prisma.LogOrderByRelevanceFieldEnum | Prisma.LogOrderByRelevanceFieldEnum[]
+  sort: Prisma.SortOrder
+  search: string
+}
+
 export type LogCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   entityType?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
+  entityName?: Prisma.SortOrder
   action?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   oldData?: Prisma.SortOrder
@@ -431,6 +458,7 @@ export type LogMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   entityType?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
+  entityName?: Prisma.SortOrder
   action?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
@@ -441,6 +469,7 @@ export type LogMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   entityType?: Prisma.SortOrder
   entityId?: Prisma.SortOrder
+  entityName?: Prisma.SortOrder
   action?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
@@ -557,6 +586,7 @@ export type NullableIntFieldUpdateOperationsInput = {
 export type LogCreateWithoutAdminInput = {
   entityType: $Enums.EntityType
   entityId: number
+  entityName: string
   action: $Enums.Action
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -568,6 +598,7 @@ export type LogUncheckedCreateWithoutAdminInput = {
   id?: number
   entityType: $Enums.EntityType
   entityId: number
+  entityName: string
   action: $Enums.Action
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -608,6 +639,7 @@ export type LogScalarWhereInput = {
   id?: Prisma.IntFilter<"Log"> | number
   entityType?: Prisma.EnumEntityTypeFilter<"Log"> | $Enums.EntityType
   entityId?: Prisma.IntFilter<"Log"> | number
+  entityName?: Prisma.StringFilter<"Log"> | string
   action?: Prisma.EnumActionFilter<"Log"> | $Enums.Action
   updatedAt?: Prisma.DateTimeFilter<"Log"> | Date | string
   oldData?: Prisma.JsonFilter<"Log">
@@ -619,6 +651,7 @@ export type LogScalarWhereInput = {
 export type LogCreateWithoutInstructorInput = {
   entityType: $Enums.EntityType
   entityId: number
+  entityName: string
   action: $Enums.Action
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -630,6 +663,7 @@ export type LogUncheckedCreateWithoutInstructorInput = {
   id?: number
   entityType: $Enums.EntityType
   entityId: number
+  entityName: string
   action: $Enums.Action
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -667,6 +701,7 @@ export type LogCreateManyAdminInput = {
   id?: number
   entityType: $Enums.EntityType
   entityId: number
+  entityName: string
   action: $Enums.Action
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -677,6 +712,7 @@ export type LogCreateManyAdminInput = {
 export type LogUpdateWithoutAdminInput = {
   entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
   entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  entityName?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -688,6 +724,7 @@ export type LogUncheckedUpdateWithoutAdminInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
   entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  entityName?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -699,6 +736,7 @@ export type LogUncheckedUpdateManyWithoutAdminInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
   entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  entityName?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -710,6 +748,7 @@ export type LogCreateManyInstructorInput = {
   id?: number
   entityType: $Enums.EntityType
   entityId: number
+  entityName: string
   action: $Enums.Action
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -720,6 +759,7 @@ export type LogCreateManyInstructorInput = {
 export type LogUpdateWithoutInstructorInput = {
   entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
   entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  entityName?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -731,6 +771,7 @@ export type LogUncheckedUpdateWithoutInstructorInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
   entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  entityName?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -742,6 +783,7 @@ export type LogUncheckedUpdateManyWithoutInstructorInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   entityType?: Prisma.EnumEntityTypeFieldUpdateOperationsInput | $Enums.EntityType
   entityId?: Prisma.IntFieldUpdateOperationsInput | number
+  entityName?: Prisma.StringFieldUpdateOperationsInput | string
   action?: Prisma.EnumActionFieldUpdateOperationsInput | $Enums.Action
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -755,6 +797,7 @@ export type LogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   id?: boolean
   entityType?: boolean
   entityId?: boolean
+  entityName?: boolean
   action?: boolean
   updatedAt?: boolean
   oldData?: boolean
@@ -771,6 +814,7 @@ export type LogSelectScalar = {
   id?: boolean
   entityType?: boolean
   entityId?: boolean
+  entityName?: boolean
   action?: boolean
   updatedAt?: boolean
   oldData?: boolean
@@ -779,7 +823,7 @@ export type LogSelectScalar = {
   adminId?: boolean
 }
 
-export type LogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "entityType" | "entityId" | "action" | "updatedAt" | "oldData" | "newData" | "instructorId" | "adminId", ExtArgs["result"]["log"]>
+export type LogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "entityType" | "entityId" | "entityName" | "action" | "updatedAt" | "oldData" | "newData" | "instructorId" | "adminId", ExtArgs["result"]["log"]>
 export type LogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   instructor?: boolean | Prisma.Log$instructorArgs<ExtArgs>
   admin?: boolean | Prisma.Log$adminArgs<ExtArgs>
@@ -795,6 +839,7 @@ export type $LogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     id: number
     entityType: $Enums.EntityType
     entityId: number
+    entityName: string
     action: $Enums.Action
     updatedAt: Date
     oldData: runtime.JsonValue
@@ -1175,6 +1220,7 @@ export interface LogFieldRefs {
   readonly id: Prisma.FieldRef<"Log", 'Int'>
   readonly entityType: Prisma.FieldRef<"Log", 'EntityType'>
   readonly entityId: Prisma.FieldRef<"Log", 'Int'>
+  readonly entityName: Prisma.FieldRef<"Log", 'String'>
   readonly action: Prisma.FieldRef<"Log", 'Action'>
   readonly updatedAt: Prisma.FieldRef<"Log", 'DateTime'>
   readonly oldData: Prisma.FieldRef<"Log", 'Json'>

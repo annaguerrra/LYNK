@@ -17,7 +17,6 @@ router
     .get('class/:id/competences', classController.viewCompetences.bind(classController))
     .get('class/:id/content', classController.viewContent.bind(classController))
     .get('class/:id/content/download', classController.downloadContent.bind(classController))
-    //getcontent?
     .put('class/edit/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdate, classController.update.bind(classController))
     .put('class/assigncompetence', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateCompetency, classController.assignCompetency.bind(classController))
     .delete('class/delete/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), classController.delete.bind(classController))

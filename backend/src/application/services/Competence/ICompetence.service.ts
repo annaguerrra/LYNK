@@ -6,5 +6,6 @@ export interface ICompetenceService {
     showCompetences(): Promise<Competence[]>
     getCompetenceByName(name: string): Promise<Area | null>
     updateCompetence(id: number, data: updateCompetenceDTO, userId: number): Promise<Area>
+    updateNumOfClasses(id: number): Promise<Competence>
     deleteCompetence(id: number, userId: number): Promise<boolean>
 }
