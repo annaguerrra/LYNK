@@ -84,11 +84,17 @@ export class AreaService implements IAreaService{
         const target = await prisma.area.findUnique({
             where: {
                 id: id
+            },
+            include: {
+                disciplines: true
             }
         })
 
         if (!target)
-            throw new Error("Class not found")
+            throw new Error("Area not found")
+
+        if (target.disciplines.length != 0)
+            throw new Error("It's not possible to delete the area with disciplines still attached!")
 
         await prisma.area.delete({
             where: {
