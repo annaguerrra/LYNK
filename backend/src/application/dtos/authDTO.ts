@@ -1,6 +1,8 @@
+import { UserType } from "#infrastructure/prisma/generated/prisma/enums.js";
+
 export interface JwtTokenDTO{
-    userId: String
-    usertype: "student" | "instructor" | "admin"
+    userId: number
+    usertype: UserType
 }
 
 declare global{

@@ -1,11 +1,18 @@
 import { loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { IUserService } from "#application/services/User/IUser.service.js";
 import { Student, Instructor, Admin } from "#infrastructure/prisma/generated/prisma/client.js";
+import { Error } from "mongoose";
 import { prisma } from "../../lib/prisma.js";
 import { AttachmentService } from "../Attachment/AttachmentService.js";
+import { HashService } from "../Authetication/Hash.service.js";
+import { JwtTokenService } from "../Authetication/JwtToken.service.js";
 
 export class UserService implements IUserService {
-    constructor(private attachmentService: AttachmentService) {}
+    constructor(
+        private attachmentService: AttachmentService,
+        private hashService: HashService,
+        private jwtTokenService: JwtTokenService
+    ) {}
 
     async isAdmin(userId: number): Promise<boolean> {
         const admin = await prisma.admin.findUnique({
@@ -97,7 +104,7 @@ export class UserService implements IUserService {
     }
 
     async login(data: loginPayloadDTO): Promise<loginResponseDTO> {
-        const { username, password } = data;
+        const { username } = data;
 
         const [student, instructor, admin] = await Promise.all([
             prisma.student.findUnique({
@@ -125,12 +132,60 @@ export class UserService implements IUserService {
             user = {
                 id: student.id,
                 username: student.username,
+                password: student.password,
                 userType: student.userType,
                 active: student.active
-
-                
+               
             }
         }
+        else if(instructor){
+            user = {
+                id: instructor.id,
+                username: instructor.username,
+                password: instructor.password,
+                userType: instructor.userType,
+                specialty: instructor.specialty,
+                active: instructor.active
+            }
+        }
+
+        else if(admin){
+            user = {
+                id: admin.id,
+                username: admin.username,
+                password: admin.password,
+                userType: admin.userType,
+                specialty: admin.specialty,
+                active: admin.active
+            }
+        }
+        else {
+            throw new Error("Invalid Username or Password");
+        }
+
+        if(!user.active) {
+            throw new Error("User Inactive.");
+        }
+
+        const comparison = await this.hashService.compare(data.password, user.password)
+
+        if(!comparison) {
+            throw new Error("Invalid Username or Password");
+        }
+
+        const token = this.jwtTokenService.generate({
+            userId: user.id, 
+            usertype: user.userType
+        });
+
+        return {
+            token,
+            user:{
+                id: user.id,
+                username: user.username,
+                userType: user.userType
+            }
+        };
     }
 
     async showStudents(): Promise<Student[]> {

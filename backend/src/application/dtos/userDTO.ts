@@ -33,7 +33,7 @@ export interface loginResponseDTO {
     token: string
     user:{
         id: number;
-        name: string;
+        username: string;
         userType: UserType
     }
 }
