@@ -1354,6 +1354,7 @@ export const LogScalarFieldEnum = {
   id: 'id',
   entityType: 'entityType',
   entityId: 'entityId',
+  entityName: 'entityName',
   action: 'action',
   updatedAt: 'updatedAt',
   oldData: 'oldData',
@@ -1490,6 +1491,13 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const LogOrderByRelevanceFieldEnum = {
+  entityName: 'entityName'
+} as const
+
+export type LogOrderByRelevanceFieldEnum = (typeof LogOrderByRelevanceFieldEnum)[keyof typeof LogOrderByRelevanceFieldEnum]
 
 
 export const ExamAttachmentOrderByRelevanceFieldEnum = {

@@ -258,18 +258,18 @@ export type AdminOrderByWithRelationInput = {
 
 export type AdminWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  username?: string
   AND?: Prisma.AdminWhereInput | Prisma.AdminWhereInput[]
   OR?: Prisma.AdminWhereInput[]
   NOT?: Prisma.AdminWhereInput | Prisma.AdminWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"Admin"> | Date | string
-  username?: Prisma.StringFilter<"Admin"> | string
   password?: Prisma.StringFilter<"Admin"> | string
   userType?: Prisma.EnumUserTypeFilter<"Admin"> | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFilter<"Admin"> | $Enums.Specialties
   active?: Prisma.BoolFilter<"Admin"> | boolean
   attachmentId?: Prisma.StringNullableFilter<"Admin"> | string | null
   logs?: Prisma.LogListRelationFilter
-}, "id">
+}, "id" | "username">
 
 export type AdminOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

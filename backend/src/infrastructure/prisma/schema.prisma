@@ -143,7 +143,8 @@ model Exam {
 model Log {
   id Int @default(autoincrement()) @id
   entityType EntityType
-  entityId Int 
+  entityId Int
+  entityName String
   action Action
   updatedAt DateTime @default(now())
   oldData Json
