@@ -99,10 +99,35 @@ export class UserService implements IUserService {
         const [student, instructor, admin] = await Promise.all([
             prisma.student.findUnique({
                 where: {
-                    username: email
+                    username: username
+                }
+            }),
+
+            prisma.instructor.findUnique({
+                where:{
+                    username: username
+                }
+            }),
+
+            prisma.admin.findUnique({
+                where: {
+                    username: username
                 }
             })
-        ])
+        ]);
+
+        let user;
+
+        if(student){
+            user = {
+                id: student.id,
+                username: student.username,
+                userType: student.userType,
+                active: student.active
+                
+                
+            }
+        }
     }
 
     async showStudents(): Promise<Student[]> {

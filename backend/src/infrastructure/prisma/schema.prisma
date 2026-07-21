@@ -46,7 +46,7 @@ enum EntityType {
 model Admin {
   id Int @default(autoincrement()) @id
   createdAt DateTime @default(now())
-  username String
+  username String @unique
   password String
   userType UserType @default(ADMIN)
   specialty Specialties
@@ -59,7 +59,7 @@ model Admin {
 model Instructor {
   id Int @default(autoincrement()) @id
   createdAt DateTime @default(now())
-  username String
+  username String @unique
   password String
   userType UserType @default(INSTRUCTOR)
   specialty Specialties
@@ -72,7 +72,7 @@ model Instructor {
 model Student {
   id Int @default(autoincrement()) @id
   createdAt DateTime @default(now())
-  username String
+  username String @unique
   password String
   userType UserType @default(STUDENT)
   active Boolean @default(true)
