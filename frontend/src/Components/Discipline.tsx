@@ -10,9 +10,11 @@ import { ButtonCancel } from "./ButtonCancel";
 
 export function DisciplineComp({Discipline, Area}) {
     const navigate = useNavigate();
+    //Variables to open the modals
     const [editModal, setEditModal] = useState(false);
     const [excludeModal, setExcludeModal] = useState(false);
 
+    //Options for the options buttons to open the right modal
     const options = [
         {
             name: "Editar disciplina",
@@ -28,6 +30,7 @@ export function DisciplineComp({Discipline, Area}) {
 
     return (
         <> 
+        {/* Main box for the hole discipline to render with the right options */}
         <div className="disciplineBox">
             <div className="boxColor" onClick={() => navigate('/Content')}></div>
             <div className="whiteBox">
@@ -38,6 +41,8 @@ export function DisciplineComp({Discipline, Area}) {
                 <MoreOpt data={options} size={30}></MoreOpt>
             </div>
         </div>
+
+        {/* Modal to edit the discipline */}
         {editModal && (
              <div className="modalOverlay" onClick={() => setEditModal(false)}>
                 <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
@@ -61,6 +66,7 @@ export function DisciplineComp({Discipline, Area}) {
             </div>
         )}
 
+        {/* Modal to exclude the discipline */}
         {excludeModal && (
              <div className="modalExcludeOverlay" onClick={() => setExcludeModal(false)}>
                 <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >

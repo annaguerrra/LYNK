@@ -48,7 +48,7 @@ export default function ChoosePicture({
 
     function handleEditAgain() {
 
-        // guarda o estado atual caso o usuário cancele
+        //Keeps the actual state in case the user cancels
         setPreviousAvatar(avatar);
 
         setIsEditing(true);
@@ -60,7 +60,7 @@ export default function ChoosePicture({
         setIsEditing(false);
     }
 
-
+    //Opening the cutter for the image
     function handleCrop() {
 
         const cropper = cropperRef.current?.cropper;
@@ -137,7 +137,7 @@ export default function ChoosePicture({
 
                         <div className="cropContainer">
 
-
+                            {/* Squared image cutter working */}
                             <Cropper
 
                                 ref={cropperRef}
@@ -160,7 +160,7 @@ export default function ChoosePicture({
 
                     )}
 
-
+                    {/* Preview of the round profile image */}
                     {avatar && !isEditing && (
                         <div className="previewContainer">
                             <img
@@ -197,7 +197,6 @@ export default function ChoosePicture({
 
 
                     {avatar && !isEditing && (
-
                         <>
                             <button className="secondaryButton" onClick={handleEditAgain} > Editar novamente </button>
 

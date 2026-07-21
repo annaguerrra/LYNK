@@ -7,32 +7,35 @@ import { Button } from "./Button";
 import ChoosePicture from "./ChoosePicture";
 
 export function Header({ user = null }) {
+    //Variables to open the edit/logout modals and navigate throught pages
     const [openBox, setOpenBox] = useState(false);
     const [pictureModal, setPictureModal] = useState(false);
     const navigate = useNavigate();
 
     return (
         <>
+            {/* Header full container */}
             <div className="header">
+                {/* Bosch colorful bar */}
                 <div className="supergraphic">
                     <img src="../../public/supergraphic.svg" alt="supergraphic bosch" />
                 </div>
+                {/* Bosch logo */} 
                 <div className="bar">
                     <img src="../../public/BoschLogo.png"
                         alt="bosch logo"
                         onClick={() => navigate("/disciplines")}
                         style={{ cursor: "pointer"}}    
                     ></img>
+                    {/* User profile */}
                     <div className="userContainer">
                         <button className="user" onClick={() => setOpenBox(!openBox)}>
-                            {/* <div className="boxicon">
-                                <i className="icon icon-user" style={{ color: "white" }}></i>
-                            </div> */}
                             <img className="userPicture" src="../../public/UserDefault/user-purple.png"></img>
 
                             <span>Instrutor</span>
                         </button>
 
+                        {/* Modal to edit profile or logout */}
                         {openBox &&
                             <div className="userBox">
                                 <button onClick={() => setPictureModal(true)} className="textIcon">
@@ -49,7 +52,8 @@ export function Header({ user = null }) {
                     </div>
                 </div>
             </div>
-
+            
+            {/* Modal to cut the image for profile */}
             <ChoosePicture isOpen={pictureModal} onClose={() => setPictureModal(false) } onSave={() => setPictureModal(false)}/>
         </>
     )
