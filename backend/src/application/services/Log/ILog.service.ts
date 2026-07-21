@@ -4,6 +4,6 @@ import { Action, EntityType, Log } from "#infrastructure/prisma/generated/prisma
 export interface ILogService{
     getAllLogs(): Promise<showLogDTO[]>
     getLogById(id: number): Promise<Log>
-    getLogByEntityTipe(entityType: EntityType): Promise<showLogDTO>
-    getLogByAction(action: Action): Promise<showLogDTO>
+    getLogsByEntityTipe(entityType: EntityType): Promise<showLogDTO[]>
+    getLogsByAction(action: Action): Promise<showLogDTO[]>
 }
