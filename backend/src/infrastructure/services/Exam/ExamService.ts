@@ -13,11 +13,15 @@ export class ExamService implements IExamService {
     ) {}
     
     async registerExam(data: registerExamDTO, userId: number): Promise<Exam> {
+        // variables used to create exam
         const { name, files, disciplineId, competencesId } = data
+        // consults if user creating the exam is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        // variable used to store created attachments
         const uploadedIds: string[] = []
 
         try {
+            // creates files and add them to the uploadedFiles list
             const attachmentIds = await Promise.all(
                 files.map(async file => {
                     const id = await this.attachmentService.upload(file)
@@ -26,6 +30,7 @@ export class ExamService implements IExamService {
                 })
             )
             
+            // variable used to create exam
             const createdExam = await prisma.exam.create({
                 data: {
                     name: name,
@@ -51,6 +56,7 @@ export class ExamService implements IExamService {
                     newData: {
                         ...createdExam
                     },
+                    // uses isAdmin variable to determin if log registers an admin ou an instructor
                     ...(isAdmin && { adminId: userId }),
                     ...(!isAdmin && { instructorId: userId })
                 }
@@ -59,6 +65,8 @@ export class ExamService implements IExamService {
             return createdExam
 
         } catch (e) {
+            // if fails to create exam deletes all files at uploadedFiles list
+            // used to ensure that files won't be orfan
             await Promise.allSettled(
                 uploadedIds.map(id => this.attachmentService.delete(id))
             )
@@ -68,11 +76,15 @@ export class ExamService implements IExamService {
     }
 
     async attachtFile(data: attachtFileDTO, userId: number): Promise<Exam> {
+        // consults if user updating the exam is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        // variables used to attach files to an exam
         const { examId, files } = data
+        // variable used to store created attachments
         const uploadedIds: string[] = []
 
         try {
+            // creates files and add them to the uploadedFiles list
             const attachmentIds = await Promise.all(
                 files.map(async file => {
                     const id = await this.attachmentService.upload(file)
@@ -81,6 +93,7 @@ export class ExamService implements IExamService {
                 })
             )
 
+            // variable used to search if the exam is valid
             const target = await prisma.exam.findUnique({
                 where: {
                     id: examId
@@ -90,6 +103,7 @@ export class ExamService implements IExamService {
             if (!target)
                 throw new Error("Exam not found")
 
+            // connect files to exam
             const updatedExam = await prisma.exam.update({
                 where: {
                     id: examId
@@ -115,6 +129,7 @@ export class ExamService implements IExamService {
                     newData: {
                         ...updatedExam
                     },
+                    // uses isAdmin variable to determin if log register an admin ou an instructor
                     ...(isAdmin && { adminId: userId }),
                     ...(!isAdmin && { instructorId: userId })
                 }
@@ -123,6 +138,8 @@ export class ExamService implements IExamService {
             return updatedExam
 
         } catch (e) {
+            // if fails to create exam deletes all files at uploadedFiles list
+            // used to ensure that files won't be orfan
             await Promise.allSettled(
                 uploadedIds.map(id => this.attachmentService.delete(id))
             )
@@ -145,9 +162,12 @@ export class ExamService implements IExamService {
     }
 
     async updateExam(id: number, data: updateExamDTO, userId: number): Promise<Exam> {
+        // variables used to update exam
         const { name, disciplineId, competencesId } = data
+        // consults if user updating the exam is admin
         const isAdmin = await this.userService.isAdmin(userId)
 
+        // variable used to search if the exam is valid
         const target = await prisma.exam.findUnique({
             where: {
                 id: id
@@ -182,6 +202,7 @@ export class ExamService implements IExamService {
                 newData: {
                     ...updatedExam
                 },
+                // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId })
             }
@@ -191,6 +212,7 @@ export class ExamService implements IExamService {
     }
 
     async removeExam(id: number, userId: number): Promise<Exam> {
+        // consults if user deleting the exam is admin
         const isAdmin = await this.userService.isAdmin(userId)
         const target = await prisma.exam.findUnique({
             where: {
@@ -205,6 +227,7 @@ export class ExamService implements IExamService {
             throw new Error("Exam not found")
         }
 
+        // deletes all files attach to this exam
         await Promise.all(
             target.attachments.map(a => this.attachmentService.delete(a.attachmentId))
         )
@@ -225,6 +248,7 @@ export class ExamService implements IExamService {
                     ...target
                 },
                 newData: {},
+                // uses isAdmin variable to determin if log register an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId })
             }
@@ -234,16 +258,19 @@ export class ExamService implements IExamService {
     }
 
     async downloadExam(examId: number, examAttachmentId: number): Promise<DownloadedFile> {
+        // search attchment to download
         const examAttachment = await prisma.examAttachment.findUnique({
             where: {
                 id: examAttachmentId
             }
         })
 
+        // used to search if the exam and the attachment are valid
         if(!examAttachment || examAttachment.examId !== examId){
             throw new Error("File not found")
         }
 
+        // calls download service
         return this.attachmentService.download(examAttachment.attachmentId)
     }
 

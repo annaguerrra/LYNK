@@ -8,7 +8,9 @@ export class AreaService implements IAreaService{
     constructor(private userService: UserService) {}
 
     async registerArea(data: registerAreaDTO, userId: number): Promise<Area> {
+        // variables used to create area
         const { name, color } = data
+        // consults if user creating the area is admin
         const isAdmin = await this.userService.isAdmin(userId)
         
         const createdArea =  await prisma.area.create({
@@ -25,6 +27,7 @@ export class AreaService implements IAreaService{
                 newData: {
                     ...createdArea
                 },
+                // uses isAdmin variable to determin if log register an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId })
             }
@@ -38,8 +41,12 @@ export class AreaService implements IAreaService{
     }
     
     async updateArea(id: number, data: updateAreaDTO, userId: number): Promise<Area> {
+        // variables used to update area
         const { name, color } = data
-        const isAdmin = await this.userService.isAdmin(userId) 
+        // consults if user updating the area is admin
+        const isAdmin = await this.userService.isAdmin(userId)
+
+        // variable used to search if the area is valid
         const target = await prisma.area.findUnique({
             where: {
                 id: id
@@ -49,6 +56,7 @@ export class AreaService implements IAreaService{
         if (!target)
             throw new Error("Class not found")
 
+        // variable used to update area
         const updatedArea = await prisma.area.update({
             where: {
                 id: id
@@ -65,12 +73,14 @@ export class AreaService implements IAreaService{
                 entityType: "Area",
                 entityName: target.name,
                 action: "UPDATED",
+                // uses target to register data before update
                 oldData: {
                     ...target
                 },
                 newData: {
                     ...updatedArea 
                 },
+                // uses isAdmin variable to determine if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId })
             }
@@ -81,11 +91,15 @@ export class AreaService implements IAreaService{
     }
 
     async deleteArea(id: number, userId: number): Promise<boolean> {
-        const isAdmin = await this.userService.isAdmin(userId) 
+        // consults if user deleting the area is admin
+        const isAdmin = await this.userService.isAdmin(userId)
+        
+        // variable used to search if the area is valid
         const target = await prisma.area.findUnique({
             where: {
                 id: id
             },
+            // includes disciplines to object to valide delete rules
             include: {
                 disciplines: true
             }
@@ -111,6 +125,7 @@ export class AreaService implements IAreaService{
                 entityName: target.name,
                 oldData: {...target},
                 newData: {},
+                // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId })
             }

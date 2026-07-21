@@ -18,11 +18,13 @@ export class LogService implements ILogService{
             }
         })
 
+        // selects log atributes to showLogDTO 
         return logs.map(log => ({
             entityType: log.entityType,
             entityName: log.entityName,
             action: log.action,
             updatedAt: log.updatedAt,
+            // fills userId based on user type
             userId: log.adminId ?? log.instructorId!
         }))
     }
@@ -41,6 +43,7 @@ export class LogService implements ILogService{
     }
 
     async getLogsByEntityTipe(entityType: EntityType): Promise<showLogDTO[]> {
+        // selects logs based on entityType
         const logs = await prisma.log.findMany({
             where: {
                 entityType: entityType
@@ -60,11 +63,13 @@ export class LogService implements ILogService{
             entityName: log.entityName,
             action: log.action,
             updatedAt: log.updatedAt,
+            // fills userId based on user type
             userId: log.adminId ?? log.instructorId!
         }))
     }
     
     async getLogsByAction(action: Action): Promise<showLogDTO[]> {
+        // selects logs based on action
         const logs = await prisma.log.findMany({
             where: {
                 action: action
@@ -84,6 +89,7 @@ export class LogService implements ILogService{
             entityName: log.entityName,
             action: log.action,
             updatedAt: log.updatedAt,
+            // fills userId based on user type
             userId: log.adminId ?? log.instructorId!
         }))
     }

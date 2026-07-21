@@ -8,8 +8,12 @@ export class CompetenceService implements ICompetenceService {
     constructor(private userService: UserService) {}
 
     async registerCompetence(data: registerCompetenceDTO, userId: number): Promise<Competence> {
+        // variables used to create competence
         const { name } = data
+        // consults if user creating the competence is admin
         const isAdmin = await this.userService.isAdmin(userId)
+
+        // variables used to create competence
         const createdCompetence = await prisma.competence.create({
             data: { name }
         })
@@ -25,6 +29,7 @@ export class CompetenceService implements ICompetenceService {
                 newData: {
                     ...createdCompetence
                 },
+                // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId })
             }
@@ -46,9 +51,12 @@ export class CompetenceService implements ICompetenceService {
     }
 
     async updateCompetence(id: number, data: updateCompetenceDTO, userId: number): Promise<Competence> {
+        // variables used to update competence
         const { name } = data
+        // consults if user updating the competence is admin
         const isAdmin = await this.userService.isAdmin(userId)
 
+        // variable used to search if the competence is valid
         const target = await prisma.competence.findUnique({
             where: {
                 id: id
@@ -58,6 +66,7 @@ export class CompetenceService implements ICompetenceService {
         if(!target)
             throw new Error("Competence not found")
 
+        // updates necessary data at competence
         const updatedCompetence = await prisma.competence.update({
             where: {
                 id: id
@@ -79,6 +88,7 @@ export class CompetenceService implements ICompetenceService {
                 newData: {
                     ...updatedCompetence
                 },
+                // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId })
             }
@@ -88,6 +98,8 @@ export class CompetenceService implements ICompetenceService {
         }
     }
     
+    // service used to update num of classes attached to a competence
+    // will be used inside other services so it's not necessary to log update or check user access
     async updateNumOfClasses(id: number): Promise<Competence>{
         const target = await prisma.competence.findUnique({
             where: {
@@ -98,6 +110,7 @@ export class CompetenceService implements ICompetenceService {
         if (!target)
             throw new Error("Competence not found!")
         
+        // stores num of classes where competenceId is in class competence list
         const numOfClasses = await prisma.class.count({
             where: {
                 competences: {
@@ -108,6 +121,7 @@ export class CompetenceService implements ICompetenceService {
             }
         })
 
+        // updated only numOfClasses inside competence
         return await prisma.competence.update({
             where: {
                 id: id
@@ -119,7 +133,9 @@ export class CompetenceService implements ICompetenceService {
     }
 
     async deleteCompetence(id: number, userId: number): Promise<boolean> {
+        // consults if user deleting the competence is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        // variable used to search if the competence is valid
         const target = await prisma.competence.findUnique({
             where: {
                 id: id
@@ -145,6 +161,7 @@ export class CompetenceService implements ICompetenceService {
                     ...target
                 },
                 newData: {},
+                // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId })
             }

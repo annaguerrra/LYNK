@@ -7,6 +7,7 @@ export class AttachmentService implements IAttachmentService{
 
     async upload(file: UploadedFile): Promise<string> {
         
+        // variable used to build file at mongodb
         const uploadStream = this.bucket.openUploadStream(
             file.originalName,
             {
@@ -23,12 +24,15 @@ export class AttachmentService implements IAttachmentService{
             uploadStream.on("error", reject);
         });
         
+        // returns file id
         return uploadStream.id.toString();
     }
     
     async download(id: string): Promise<DownloadedFile> {
+        // variable used to convert string to objectId for mongo
         const objectId = new ObjectId(id)
         
+        // search file at mongodb
         const file = await this.bucket.find({
             _id: objectId
         }).next()
@@ -37,6 +41,7 @@ export class AttachmentService implements IAttachmentService{
             throw new Error("File not found")
         }
         
+        // returns data to be downloaded
         return {
             stream: this.bucket.openDownloadStream(objectId),
             fileName: file.filename,
@@ -45,6 +50,7 @@ export class AttachmentService implements IAttachmentService{
     }
     
     async delete(id: string): Promise<void> {
+        // converts string to objectId and deletes correspondent file at mongo
        await this.bucket.delete(new ObjectId(id))
     }
 }
