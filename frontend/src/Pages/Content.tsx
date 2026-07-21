@@ -18,8 +18,7 @@ import LessonSelect from "../Components/LessonSelect";
 
 export function Content() {
     const navigate = useNavigate()
-    const [selectedTab, setSelectedTab] = useState("exams");
-    const [markdown, setMarkdown] = useState("##Olaaa");
+    const [selectedTab, setSelectedTab] = useState("classes");
     const [newTest, setNewTest] = useState(false);
     const [editTest, setEditTest] = useState(false);
     const [newCompetence, setNewCompetence] = useState(false);
@@ -42,13 +41,19 @@ export function Content() {
         },
     ];
 
+    const tabs = [
+    { id: "classes", label: "Aulas" },
+    { id: "competences", label: "Competências" },
+    { id: "exams", label: "Avaliações" },
+];
+
     return (
         <>
             <Header />
             <div className="page">
                 <div className="headerContent">
                     <div className="startBox">
-                        <ButtonBack />
+                        <ButtonBack onClick={() => navigate("/disciplines")} />
                         <span style={{ fontWeight: "bold", fontSize: "30px" }}>Introdução a Python</span>
                     </div>
                     <MoreOpt data={options} size={30}></MoreOpt>
@@ -56,8 +61,7 @@ export function Content() {
                 <div className="content">
                     <TabNavigation
                         selected={selectedTab}
-                        onChange={setSelectedTab}
-                    />
+                        onChange={setSelectedTab} tabs={tabs}                    />
 
                     {selectedTab === "classes" && <ClassesView />}
                     {selectedTab === "competences" && <CompetencesView />}

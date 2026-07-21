@@ -10,7 +10,6 @@ import { ButtonCancel } from "../Components/ButtonCancel";
 import { useState } from "react";
 import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
-import { ErrorPage } from "./ErrorPage";
 
 export function Discipline () {
     const navigate = useNavigate();

@@ -32,3 +32,8 @@
   content: "\e1cc";
   font-size: inherit;
 }
+
+.icon-info::before {
+  content: "\e8ab";
+  font-size: inherit;
+}
