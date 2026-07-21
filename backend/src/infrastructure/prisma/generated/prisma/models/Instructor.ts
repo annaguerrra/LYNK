@@ -258,18 +258,18 @@ export type InstructorOrderByWithRelationInput = {
 
 export type InstructorWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  username?: string
   AND?: Prisma.InstructorWhereInput | Prisma.InstructorWhereInput[]
   OR?: Prisma.InstructorWhereInput[]
   NOT?: Prisma.InstructorWhereInput | Prisma.InstructorWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"Instructor"> | Date | string
-  username?: Prisma.StringFilter<"Instructor"> | string
   password?: Prisma.StringFilter<"Instructor"> | string
   userType?: Prisma.EnumUserTypeFilter<"Instructor"> | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFilter<"Instructor"> | $Enums.Specialties
   active?: Prisma.BoolFilter<"Instructor"> | boolean
   attachmentId?: Prisma.StringNullableFilter<"Instructor"> | string | null
   logs?: Prisma.LogListRelationFilter
-}, "id">
+}, "id" | "username">
 
 export type InstructorOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

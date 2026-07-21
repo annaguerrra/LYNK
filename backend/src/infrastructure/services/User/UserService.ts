@@ -124,7 +124,7 @@ export class UserService implements IUserService {
                 username: student.username,
                 userType: student.userType,
                 active: student.active
-                
+
                 
             }
         }

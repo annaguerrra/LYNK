@@ -238,15 +238,15 @@ export type StudentOrderByWithRelationInput = {
 
 export type StudentWhereUniqueInput = Prisma.AtLeast<{
   id?: number
+  username?: string
   AND?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
   OR?: Prisma.StudentWhereInput[]
   NOT?: Prisma.StudentWhereInput | Prisma.StudentWhereInput[]
   createdAt?: Prisma.DateTimeFilter<"Student"> | Date | string
-  username?: Prisma.StringFilter<"Student"> | string
   password?: Prisma.StringFilter<"Student"> | string
   userType?: Prisma.EnumUserTypeFilter<"Student"> | $Enums.UserType
   active?: Prisma.BoolFilter<"Student"> | boolean
-}, "id">
+}, "id" | "username">
 
 export type StudentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
