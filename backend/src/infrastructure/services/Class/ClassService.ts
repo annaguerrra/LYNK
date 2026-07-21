@@ -36,6 +36,7 @@ export class ClassService implements IClassService{
                 action:"CREATED",
                 entityType: "Class",
                 entityId: createdClass.id,
+                entityName: createdClass.name,
                 oldData:{},
                 updatedAt: new Date(),
                 newData:{
@@ -131,6 +132,7 @@ export class ClassService implements IClassService{
                 action: "UPDATED",
                 entityId: payload.classId,
                 entityType: "Class",
+                entityName: target.name,
                 newData:{
                     ...updatedClass
                 },
@@ -265,6 +267,7 @@ export class ClassService implements IClassService{
                 action:"DELETED",
                 entityType: "Class",
                 entityId: target.id,
+                entityName: target.name,
                 oldData:{},
                 updatedAt: new Date(),
                 newData:{},
@@ -309,6 +312,7 @@ export class ClassService implements IClassService{
             data:{
                 entityId: target.id,
                 entityType:"Class",
+                entityName: target.name,
                 action: "UPDATED",
                 
                 oldData:{

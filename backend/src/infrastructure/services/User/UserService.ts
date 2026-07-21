@@ -33,6 +33,7 @@ export class UserService implements IUserService {
                 action: "CREATED",
                 entityType: "Student",
                 entityId: createdUser.id,
+                entityName: createdUser.username,
                 oldData: {},
                 newData: {
                     ...createdUser
@@ -57,6 +58,7 @@ export class UserService implements IUserService {
                 action: "CREATED",
                 entityType: "Instructor",
                 entityId: createdUser.id,
+                entityName: createdUser.username,
                 oldData: {},
                 newData: {
                     ...createdUser
@@ -81,6 +83,7 @@ export class UserService implements IUserService {
                 action: "CREATED",
                 entityType: "Admin",
                 entityId: createdUser.id,
+                entityName: createdUser.username,
                 oldData: {},
                 newData: {
                     ...createdUser
@@ -212,6 +215,7 @@ export class UserService implements IUserService {
                 action: "UPDATED",
                 entityType: "Student",
                 entityId: target.id,
+                entityName: target.username,
                 oldData: {
                     ...target
                 },
@@ -262,6 +266,7 @@ export class UserService implements IUserService {
                     action: "UPDATED",
                     entityType: "Instructor",
                     entityId: target.id,
+                    entityName: target.username,
                     oldData: {
                         ...target
                     },
@@ -317,6 +322,7 @@ export class UserService implements IUserService {
                     action: "UPDATED",
                     entityType: "Admin",
                     entityId: target.id,
+                    entityName: target.username,
                     oldData: {
                         ...target
                     },
@@ -358,6 +364,7 @@ export class UserService implements IUserService {
                 action: "DELETED",
                 entityType: "Student",
                 entityId: target.id,
+                entityName: target.username,
                 oldData: {
                     ...target
                 },
@@ -391,6 +398,7 @@ export class UserService implements IUserService {
                 action: "DELETED",
                 entityType: "Instructor",
                 entityId: target.id,
+                entityName: target.username,
                 oldData: {
                     ...target
                 },
@@ -424,6 +432,7 @@ export class UserService implements IUserService {
                 action: "DELETED",
                 entityType: "Admin",
                 entityId: target.id,
+                entityName: target.username,
                 oldData: {
                     ...target
                 },

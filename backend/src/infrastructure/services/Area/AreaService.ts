@@ -20,6 +20,7 @@ export class AreaService implements IAreaService{
                 action: "CREATED",
                 entityType: "Area",
                 entityId: createdArea.id,
+                entityName: createdArea.name,
                 oldData: {},
                 newData: {
                     ...createdArea
@@ -61,6 +62,7 @@ export class AreaService implements IAreaService{
             data: {
                 entityId: target.id,
                 entityType: "Area",
+                entityName: target.name,
                 action: "UPDATED",
                 oldData: {
                     ...target
@@ -99,6 +101,7 @@ export class AreaService implements IAreaService{
                 action: "DELETED",
                 entityType: "Area",
                 entityId: target.id,
+                entityName: target.name,
                 oldData: {...target},
                 newData: {},
                 ...(isAdmin && { adminId: userId }),

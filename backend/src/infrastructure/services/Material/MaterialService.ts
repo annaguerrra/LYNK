@@ -52,6 +52,7 @@ export class MaterialService implements IMaterialService {
                     action: "CREATED",
                     entityType: "Material",
                     entityId: createdMaterial.id,
+                    entityName: createdMaterial.name,
                     oldData: {},
                     newData: {
                         ...createdMaterial
@@ -139,6 +140,7 @@ export class MaterialService implements IMaterialService {
                     action: "DELETED",
                     entityType: "Material",
                     entityId: target.id,
+                    entityName: target.name,
                     oldData: {
                         ...target
                     },
@@ -191,6 +193,7 @@ export class MaterialService implements IMaterialService {
                 action: "DELETED",
                 entityType: "Material",
                 entityId: target.id,
+                entityName: target.name,
                 oldData: {
                     ...target
                 },
@@ -244,6 +247,7 @@ export class MaterialService implements IMaterialService {
                     action: "UPDATED",
                     entityType: "Material",
                     entityId: target.id,
+                    entityName: target.name,
                     oldData: {
                         ...target
                     },

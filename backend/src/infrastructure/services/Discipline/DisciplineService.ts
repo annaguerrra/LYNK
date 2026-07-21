@@ -1,15 +1,12 @@
 import { DisciplineDTO, assignCompetencyDTO, findAllDTO, viewMaterialsDTO, viewCompetencesDTO, editDisciplineDTO, findOneDTO, viewClassesDTO } from "#application/dtos/disciplineDTO.js";
 import { IDisciplineService } from "#application/services/Discipline/IDiscipline.service.js";
-import { getBucket } from "#infrastructure/database/database.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
 import { UserService } from "#infrastructure/services/User/UserService.js"
-import { AttachmentService } from "../Attachment/AttachmentService.js";
 
 export class DisciplineService implements IDisciplineService{
     constructor(
-        private userService: UserService,
-        private attachmentService: AttachmentService
+        private userService: UserService
     ) {}
     async create(payload: DisciplineDTO, userID: number): Promise<Discipline> {
         const admin = await this.userService.isAdmin(userID)
@@ -33,6 +30,7 @@ export class DisciplineService implements IDisciplineService{
             data:{
                 action: "CREATED",
                 entityId: target.id,
+                entityName: target.name,
                 entityType: "Discipline",
                 newData: {
                     ...target
@@ -88,6 +86,7 @@ export class DisciplineService implements IDisciplineService{
                 action:"UPDATED",
                 entityId: updatedData.id,
                 entityType: "Discipline",
+                entityName: oldData.name,
                 oldData: {
                     ...oldData
                 },
@@ -273,6 +272,9 @@ export class DisciplineService implements IDisciplineService{
 
         const target = await prisma.discipline.findUnique({ where: { id: disciplineID }});
 
+        if(!target)
+            throw new Error("Discipline not found!")
+
         try{
             await prisma.discipline.delete({
                 where:{
@@ -285,6 +287,7 @@ export class DisciplineService implements IDisciplineService{
                     action:"DELETED",
                     entityType: "Discipline",
                     entityId: disciplineID,
+                    entityName: target.name,
                     oldData:{
                         ...target
                     },
@@ -324,6 +327,7 @@ export class DisciplineService implements IDisciplineService{
                     action:"UPDATED",
                     entityType: "Discipline",
                     entityId: disciplineID,
+                    entityName: target.name,
                     oldData:{
                         ...target
                     },

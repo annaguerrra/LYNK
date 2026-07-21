@@ -46,6 +46,7 @@ export class ExamService implements IExamService {
                     action: "CREATED",
                     entityType: "Exam",
                     entityId: createdExam.id,
+                    entityName: createdExam.name,
                     oldData: {},
                     newData: {
                         ...createdExam
@@ -107,6 +108,7 @@ export class ExamService implements IExamService {
                     action: "UPDATED",
                     entityType: "Exam",
                     entityId: target.id,
+                    entityName: target.name,
                     oldData: {
                         ...target
                     },
@@ -172,6 +174,7 @@ export class ExamService implements IExamService {
             data: {
                 entityId: target.id,
                 entityType: "Exam",
+                entityName: target.name,
                 action: "UPDATED",
                 oldData: {
                     ...target
@@ -217,6 +220,7 @@ export class ExamService implements IExamService {
                 action: "DELETED",
                 entityType: "Exam",
                 entityId: target.id,
+                entityName: target.name,
                 oldData: {
                     ...target
                 },

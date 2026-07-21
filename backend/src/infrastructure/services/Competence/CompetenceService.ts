@@ -19,6 +19,7 @@ export class CompetenceService implements ICompetenceService {
                 action: "CREATED",
                 entityType: "Compentence",
                 entityId: createdCompetence.id,
+                entityName: createdCompetence.name,
                 oldData: {},
                 updatedAt: new Date(),
                 newData: {
@@ -70,6 +71,7 @@ export class CompetenceService implements ICompetenceService {
             data: {
                 entityId: target.id,
                 entityType: "Compentence",
+                entityName: target.name,
                 action: "UPDATED",
                 oldData: {
                     ...target
@@ -138,6 +140,7 @@ export class CompetenceService implements ICompetenceService {
                 action: "DELETED",
                 entityType: "Compentence",
                 entityId: target.id,
+                entityName: target.name,
                 oldData: {
                     ...target
                 },
