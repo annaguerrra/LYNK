@@ -85,6 +85,36 @@ export class CompetenceService implements ICompetenceService {
             ...updatedCompetence
         }
     }
+    
+    async updateNumOfClasses(id: number): Promise<Competence>{
+        const target = await prisma.competence.findUnique({
+            where: {
+                id: id
+            }
+        })
+
+        if (!target)
+            throw new Error("Competence not found!")
+        
+        const numOfClasses = await prisma.class.count({
+            where: {
+                competences: {
+                    some: {
+                        id
+                    }
+                }
+            }
+        })
+
+        return await prisma.competence.update({
+            where: {
+                id: id
+            },
+            data: {
+               numOfClasses: numOfClasses 
+            }
+        })
+    }
 
     async deleteCompetence(id: number, userId: number): Promise<boolean> {
         const isAdmin = await this.userService.isAdmin(userId)
@@ -96,7 +126,7 @@ export class CompetenceService implements ICompetenceService {
 
         if(!target)
             throw new Error("Competence not found")
-
+        
         await prisma.competence.delete({
             where: {
                 id: id
@@ -119,5 +149,6 @@ export class CompetenceService implements ICompetenceService {
 
         return true
     }
+
 
 }

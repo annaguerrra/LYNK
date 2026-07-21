@@ -5,9 +5,13 @@ import { viewMaterialsDTO } from "#application/dtos/materialDTO.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { UserService } from "../User/UserService.js";
 import { PdfService } from "../Pdf/PdfService.js";
+import { CompetenceService } from "../Competence/CompetenceService.js";
 
 export class ClassService implements IClassService{
-    constructor(private userService: UserService) {}
+    constructor(
+        private userService: UserService,
+        private competenceService: CompetenceService
+    ) {}
     
     async create(payload: ClassDTO, userId: number): Promise<Class> {
         const {name, content, disciplineId} = payload;
@@ -138,6 +142,8 @@ export class ClassService implements IClassService{
             }
         });
 
+        await this.competenceService.updateNumOfClasses(competencyId)
+
         return {
             ...updatedClass
         }
@@ -244,6 +250,9 @@ export class ClassService implements IClassService{
         const target = await prisma.class.delete({
             where:{
                 id: id
+            },
+            include: {
+                competences: true
             }
         });
 
@@ -263,6 +272,12 @@ export class ClassService implements IClassService{
                 ...(!isAdmin && { instructorId: userId })
             }
         });
+
+        await Promise.all(
+            target.competences.map(competence =>
+                this.competenceService.updateNumOfClasses(competence.id)
+            )
+        )
 
        return true;
     }

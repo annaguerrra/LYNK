@@ -93,16 +93,6 @@ export class ClassController {
         }
     }
 
-    async getContent(req: Request, res: Response){
-        const { classId } = req.params
-        try {
-            await this.classService.getContent(Number(classId))
-            return res.status(200).send({ response: "Success!"})
-        } catch (e) {
-            return res.status(500).send({ response: e })
-        }
-    }
-
     async update(req: Request, res: Response){
         const data: ClassDTO = req.body
         const { id } = req.params
