@@ -2,7 +2,7 @@ import { registerAdminDTO, registerInstructorDTO, registerStudentDTO, updateAdmi
 import { UserType } from "#infrastructure/prisma/generated/prisma/enums.js";
 import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js";
 import { UserService } from "#infrastructure/services/User/UserService.js";
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 import { getBucket } from '#infrastructure/database/database.js';
 
 export default class UserController {
@@ -163,6 +163,21 @@ export default class UserController {
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
+        }
+    }
+
+    async  login(req: Request, res: Response) {
+        const { username, password} = req.body
+
+        try{
+            await this.userService.login({
+                username: username,
+                password: password
+            });
+
+            return res.status(200).send({response: "Login Successfully"});
+        } catch(e) {
+            return res.status(404).send({ response: "Failed to Login"});
         }
     }
 }

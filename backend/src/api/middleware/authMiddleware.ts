@@ -8,7 +8,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction, 
         res.status(401).send("HTTP 401 Unauthorized");
     }
     
-    const [type, token] = String(authAutho?.split(" "));
+    const [, token] = String(authAutho?.split(" "));
     
     const payload = jwt.verify(token);
 
