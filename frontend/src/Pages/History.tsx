@@ -4,6 +4,7 @@ import { Header } from "../Components/Header";
 import { TabNavigation } from "../Components/TabNavigation";
 import { useState } from "react";
 import { ButtonIcon } from "../Components/ButtonIcon";
+import { DisciplinesView } from "./HistoryViews/DisciplinesView";
 
 export function History() {
     const navigate = useNavigate()
@@ -27,12 +28,19 @@ export function History() {
                         <ButtonBack onClick={() => navigate("/disciplines")} />
                         <span style={{ fontWeight: "bold", fontSize: "30px" }}>Histórico</span>
                     </div>
-                    <ButtonIcon size={30} icon={"icon-info"} onClick={() => { setInfoOpen(!infoOpen) }} />
-                    {infoOpen &&
-                        <div className="infoBox">
-                            <span>teste</span>
-                        </div>
-                    }
+                    <div className="infoContainer">
+                        <ButtonIcon
+                            size={30}
+                            icon={"icon-info"}
+                            onClick={() => setInfoOpen(!infoOpen)}
+                        />
+
+                        {infoOpen && (
+                            <div className="infoBox">
+                                teste
+                            </div>
+                        )}
+                    </div>
                 </div>
                 <div className="content">
                     <TabNavigation
@@ -40,9 +48,7 @@ export function History() {
                         onChange={setSelectedTab}
                         tabs={tabs} />
 
-                    {/* {selectedTab === "classes" && <ClassesView />}
-                    {selectedTab === "competences" && <CompetencesView />}
-                    {selectedTab === "exams" && <ExamsView />} */}
+                    {selectedTab === "disciplines" && <DisciplinesView />}
 
 
                 </div>

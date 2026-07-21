@@ -7,7 +7,6 @@ import { Content } from './Pages/Content'
 import { ModalProvider } from './Providers/modalContext'
 import { ErrorPage } from './Pages/ErrorPage'
 import { History } from './Pages/History'
-import { Profile } from './Pages/Profile'
 
 function App() {
 

@@ -1,18 +1,23 @@
+.infoContainer {
+    position: relative;
+    border: 1px solid black;
+    width: max-content;
+}
+
 .infoBox {
     position: absolute;
-    top: 100%;
+
+    top: calc(100% + 8px);
     right: 0;
 
-    margin-top: 8px;
+    width: 250px;
     padding: 12px;
 
-    width: 250px;
-
-    background: #fff;
-    border: 1px solid #ddd;
+    background: white;
+    border: 1px solid #1d1d1d;
     border-radius: 8px;
 
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, .15);
 
     z-index: 1000;
 }
