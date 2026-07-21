@@ -8,11 +8,11 @@ export class AreaService implements IAreaService{
     constructor(private userService: UserService) {}
 
     async registerArea(data: registerAreaDTO, userId: number): Promise<Area> {
-        const { name } = data
+        const { name, color } = data
         const isAdmin = await this.userService.isAdmin(userId)
         
         const createdArea =  await prisma.area.create({
-            data: { name }
+            data: { name, color }
         })
 
         await prisma.log.create({
@@ -38,7 +38,7 @@ export class AreaService implements IAreaService{
     }
     
     async updateArea(id: number, data: updateAreaDTO, userId: number): Promise<Area> {
-        const { name } = data
+        const { name, color } = data
         const isAdmin = await this.userService.isAdmin(userId) 
         const target = await prisma.area.findUnique({
             where: {
@@ -54,7 +54,8 @@ export class AreaService implements IAreaService{
                 id: id
             },
             data: {
-                name: name
+                name: name,
+                color: color
             }
         })
 

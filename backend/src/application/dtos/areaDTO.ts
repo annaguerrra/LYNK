@@ -1,7 +1,9 @@
 export interface registerAreaDTO {
-    name: string
+    name: string,
+    color: string
 }
 
 export interface updateAreaDTO {
-    name: string
+    name: string,
+    color: string
 }

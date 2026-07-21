@@ -115,6 +115,8 @@ model Discipline {
 model Area {
   id Int @default(autoincrement()) @id
   name String
+  color String
+  //tem que fazer migrate
 
   disciplines Discipline[]
 }
