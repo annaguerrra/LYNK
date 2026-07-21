@@ -41,8 +41,8 @@ export default function ChoosePicture({
 
         setImage(URL.createObjectURL(file));
 
+        setPreviousAvatar(avatar);
         setAvatar(undefined);
-        setPreviousAvatar(undefined);
         setIsEditing(true);
     }
 
@@ -103,6 +103,16 @@ export default function ChoosePicture({
         onClose();
     }
 
+    function onCloseModal() {
+
+        if (!previousAvatar) {
+            setAvatar(previousAvatar)
+        }
+
+        setIsEditing(false);
+        onClose()
+    }
+
 
 
     return (
@@ -116,7 +126,7 @@ export default function ChoosePicture({
 
                     <ButtonClose
                         size={25}
-                        onClose={onClose}
+                        onClose={onCloseModal}
                     />
 
                 </div>
