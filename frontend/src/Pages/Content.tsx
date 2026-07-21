@@ -98,28 +98,53 @@ export function Content() {
                         
                         <div className='attachments' >
                             <LessonSelect/>
-                            <RowItem 
-                                type='competence'
-                                actions={
-                                    <>
-                                    <ButtonClose size={18} onClose={() => { }} />
-                                    </>
-                                } >
-                                <div>Fazer sei la o que, comepencia de não sei o que mais </div>
-                                
-                            </RowItem>
-                            <RowItem
-                                type='competence'
-                                actions={
-                                    <>
-                                    <ButtonClose size={18} onClose={() => { }} />
-                                    </>
-                                } >
-                                <div>Teste de nome para o componente usado para representar uma competencia</div>
-                                
-                            </RowItem>
-                            
+                            <br />
+                            <div className="scrollBox">
+
+                                <RowItem 
+                                    type='competence'
+                                    actions={
+                                        <>
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                        </>
+                                    } >
+                                    <div>Fazer sei la o que, comepencia de não sei o que mais </div>
+                                    
+                                </RowItem>
+                                <RowItem
+                                    type='competence'
+                                    actions={
+                                        <>
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                        </>
+                                    } >
+                                    <div>Teste de nome para o componente usado para representar uma competencia</div>
+                                    
+                                </RowItem>
+
+                                <RowItem
+                                    type='competence'
+                                    actions={
+                                        <>
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                        </>
+                                    } >
+                                    <div>Teste de nome para o componente usado para representar uma competencia</div>
+                                    
+                                </RowItem>
+                                <RowItem
+                                    type='competence'
+                                    actions={
+                                        <>
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                        </>
+                                    } >
+                                    <div>Teste de nome para o componente usado para representar uma competencia</div>
+                                    
+                                </RowItem>
+                            </div>
                         </div>
+
                     </div>
 
                     <Button ButtonTitle={"Enviar"} onClose={() => setNewTest(false)}></Button>

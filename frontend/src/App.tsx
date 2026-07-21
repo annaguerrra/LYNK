@@ -19,7 +19,6 @@ function App() {
             <Route path="/" element={<Login />} />
             <Route path="/Disciplines" element={<Discipline />} />
             <Route path="/Content" element={<Content />} />
-            <Route path="/Profile" element={<Profile />} />
             <Route path="/Class" element={<Class />} />
             <Route path="/History" element={<History />} />
             <Route path="*" element={<ErrorPage />} />

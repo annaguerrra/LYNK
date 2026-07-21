@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3vw;
+  gap: 2vw;
   background-color: #ffffff;
   width: 35vw; 
   height: auto;
@@ -24,29 +24,29 @@
 
 
 .modalContainer input {
-  width: 30.5vw;
+  width: 30vw;
   height: auto;
-  padding: 0.7vw;
+  padding: 0.5vw;
   background-color: var(--lightGray);
-  font-size: large;
+  font-size: 16px;
   border: none;
 }
 
 .modalContainer select {
-  width: 32vw;
+  width: 100%;
   height: auto;
-  padding: 0.7vw;
+  padding: 0.5vw;
   background-color: var(--lightGray);
   font-size: large;
   border: none;
 }
 
-.modalContainer p {
-  font-size: 20px;
+.modalContainer h2 {
+  font-size: 22px;
 }
 
 .textBox {
-  width: auto;
+  width: 31vw;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -63,12 +63,19 @@
 }
 
 .scrollBox {
-  width: 90%;
-  height: 10vh;
+  width: 31vw;
+  max-height: 15vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: self-start;
   overflow-y: scroll;
+  gap: .5rem;
+}
+
+.scrollBox > * {
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .titleContainer {
@@ -124,3 +131,4 @@
   justify-content: space-around;
   margin-bottom: 1vw;
 }
+
