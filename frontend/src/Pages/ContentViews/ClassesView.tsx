@@ -8,9 +8,11 @@ import "../Styles/Views.css"
 import { useState } from "react"
 
 export function ClassesView() {
+    //Variables to navigate and open modals
     const navigate = useNavigate();
     const [excludeClassModal, setExcludeClassModal] = useState(false);
 
+    //Options for the option buttons
     const options = [
         {
             name: "Editar aula",
@@ -25,6 +27,7 @@ export function ClassesView() {
 
     return (
         <>
+            {/* Items shown on the specified tab */}
             <div className="view-page">
                 <RowItem
                     onClick={() => navigate("/class")}
@@ -61,6 +64,7 @@ export function ClassesView() {
                 </RowItem>
             </div>
 
+            {/* Modal to exclude a class */}
             {excludeClassModal && (
                     <div className="modalExcludeOverlay" onClick={() => setExcludeClassModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >

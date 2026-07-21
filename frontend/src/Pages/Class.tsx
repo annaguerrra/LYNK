@@ -37,11 +37,10 @@ import { InputFile } from '../Components/InputFile'
 import LessonSelect from '../Components/LessonSelect'
 
 export function Class() {
-
+    //Variables to navigate and open modals
     const [editMode, setEditMode] = useState(false)
     const [titleClass, setTitleClass] = useState("Aula 05")
     const navigate = useNavigate();
-
     const [content, setContent] = useState(`# Introdução ao Python
 
 Python é uma linguagem de programação simples, poderosa e muito utilizada.
@@ -89,8 +88,7 @@ Olá, Ana!
 \`\`\`
 `);
 
-
-
+    
     const editorPlugins = [
         headingsPlugin(),
         listsPlugin(),

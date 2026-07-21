@@ -12,6 +12,7 @@ import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
 
 export function Discipline () {
+    //Variables to navigate and open modals
     const navigate = useNavigate();
     const cores = {
         Roxo: "var(--purple)",

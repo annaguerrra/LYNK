@@ -2,6 +2,7 @@ import './Styles/Login.css'
 import { Button } from '../Components/Button'
 import { useNavigate } from 'react-router-dom'
 export function Login() {
+    //Variables to navigate and open modals
     const navigate = useNavigate()
     
 

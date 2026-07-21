@@ -4,6 +4,7 @@ import { Header } from "../Components/Header"
 import { useLocation } from "react-router-dom";
 
 export function ErrorPage() {
+    //Variables to navigate and open modals
     const { state } = useLocation();
     
     return (

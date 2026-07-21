@@ -5,6 +5,7 @@ import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
 
 export function ExamsView() {
+    //Variables to navigate and open modals
     const navigate = useNavigate();
 
     return (

@@ -10,11 +10,13 @@ import "../Styles/Views.css"
 import { useState } from "react"
 
 export function CompetencesView() {
+    //Variables to navigate and open modals
     const navigate = useNavigate();
     const [openCompetenceModal, setOpenCompetenceModal] = useState(false);
     const [editCompetenceModal, setEditCompetenceModal] = useState(false);
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
 
+    //Options for the option buttons
     const options = [
         {
             name: "Editar competência",
@@ -30,6 +32,7 @@ export function CompetencesView() {
 
     return (
         <>
+            {/* Items shown on the specified tab */}
             <div className="view-page">
                 <RowItem
                     onClick={() => setOpenCompetenceModal(true)}
@@ -63,7 +66,8 @@ export function CompetencesView() {
 
                 </RowItem>
             </div>
-
+                
+            {/* Modal to open the details about a competence */}
             {openCompetenceModal && (
                     <div className="modalOverlay" onClick={() => setOpenCompetenceModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
@@ -104,8 +108,9 @@ export function CompetencesView() {
                     </div>
                 </div>
             )}
-
-           {editCompetenceModal && (
+            
+            {/* Modal to edit a competence */}
+            {editCompetenceModal && (
                     <div className="modalOverlay" onClick={() => setEditCompetenceModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         <div className="titleContainer">
@@ -122,6 +127,7 @@ export function CompetencesView() {
                 </div>
             )}
 
+            {/* Modal to exclude a competence */}
             {excludeCompetenceModal && (
                     <div className="modalExcludeOverlay" onClick={() => setExcludeCompetenceModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >

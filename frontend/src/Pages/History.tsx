@@ -7,6 +7,7 @@ import { ButtonIcon } from "../Components/ButtonIcon";
 import { DisciplinesView } from "./HistoryViews/DisciplinesView";
 
 export function History() {
+    //Variables to navigate and open modals
     const navigate = useNavigate()
     const [selectedTab, setSelectedTab] = useState("classes");
     const [infoOpen, setInfoOpen] = useState(false)

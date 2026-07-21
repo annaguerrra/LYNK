@@ -17,6 +17,7 @@ import { RowItem } from "../Components/RowItem";
 import LessonSelect from "../Components/LessonSelect";
 
 export function Content() {
+    //Variables to navigate and open modals
     const navigate = useNavigate()
     const [selectedTab, setSelectedTab] = useState("classes");
     const [newTest, setNewTest] = useState(false);
