@@ -1,7 +1,5 @@
 .infoContainer {
     position: relative;
-    border: 1px solid black;
-    width: max-content;
 }
 
 .infoBox {
@@ -10,14 +8,43 @@
     top: calc(100% + 8px);
     right: 0;
 
-    width: 250px;
+    width: 500px;
     padding: 12px;
 
     background: white;
-    border: 1px solid #1d1d1d;
-    border-radius: 8px;
 
-    box-shadow: 0 8px 24px rgba(0, 0, 0, .15);
-
+    box-shadow: 0 4px 12px rgba(0,0,0,.10);
     z-index: 1000;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: black;
+}
+
+.dot.blue {
+    background-color: var(--blue);
+}
+
+.dot.green {
+    background-color: var(--green);
+}
+
+.dot.red {
+    background-color: var(--red);
+}
+
+.legend {
+    display: flex;
+    flex-direction: column;
+    margin: .7rem 0;
+    gap: .2rem;
+}
+
+.legend .legend-row {
+    display: inline-flex;
+    gap: .5rem;
+    align-items: center;
 }

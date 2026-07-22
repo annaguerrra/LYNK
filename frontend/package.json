@@ -14,6 +14,7 @@
     "@mdxeditor/editor": "^4.0.4",
     "axios": "^1.13.6",
     "cropperjs": "^1.6.2",
+    "floating-ui": "^5.2.8",
     "react": "^19.2.0",
     "react-cropper": "^2.3.3",
     "react-dom": "^19.2.0",

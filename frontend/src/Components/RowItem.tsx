@@ -8,6 +8,8 @@ interface RowItemProps {
   size?: string;
   children: React.ReactNode;
   actions?: React.ReactNode;
+  user?: boolean;
+  userAction?: React.ReactNode;
   onClick?: () => void;
   button?: boolean;
 }
@@ -17,7 +19,8 @@ export function RowItem({
   color = '',
   size = '',
   children,
-  actions = <></>,
+  actions = undefined,
+  userAction = undefined,
   onClick = () => {},
   button = false,
 }: RowItemProps) {
@@ -38,6 +41,12 @@ export function RowItem({
       >
         {children}
       </Component>
+
+      {userAction && (
+        <div className="buttonsRow user">
+          {userAction}
+        </div>
+      )}
 
       {actions && (
         <div className="buttonsRow">

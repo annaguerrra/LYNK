@@ -2,8 +2,6 @@ import { useState } from "react";
 import "./Styles/header.css"
 import "../Pages/Styles/Modals.css"
 import { useNavigate } from "react-router-dom";
-import { ButtonClose } from "./ButtonClose";
-import { Button } from "./Button";
 import ChoosePicture from "./ChoosePicture";
 
 export function Header({ user = null }) {
@@ -40,9 +38,9 @@ export function Header({ user = null }) {
                             <div className="userBox">
                                 <button onClick={() => setPictureModal(true)} className="textIcon">
                                     <i className="icon icon-user"></i>
-                                    <span>Perfil</span>
+                                    <span>Trocar foto</span>
                                 </button>
-                                <button className="textIcon" style={{ color: "var(--red)" }}>
+                                <button className="textIcon" style={{ color: "var(--red)" }} onClick={() => navigate("/")}>
                                     <i className="icon icon-logout"></i>
                                     <span>Logout</span>
                                 </button>

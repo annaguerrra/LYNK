@@ -51,14 +51,27 @@
     gap: 2rem;
 }
 
-
-
 .buttonsRow {
     display: inline-flex;
     gap: 1.5rem;
     padding: .4rem .7rem;
     align-items: center;
 }
+
+.buttonsRow.user {
+    font-size: 15px;
+    color: var(--darkGray);
+    gap: .8rem;
+    padding-right: 2.5rem;
+}
+
+.buttonsRow.user img {
+    width: 25px;
+    height: 25px;
+    border-radius: 15px;
+}
+
+
 
 
 
