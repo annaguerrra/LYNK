@@ -375,4 +375,30 @@ export class DisciplineService implements IDisciplineService{
         }
     }
 
+    async updateWorkLoad(id: number): Promise<Discipline> {
+        const target = await prisma.discipline.findUnique({
+            where: {
+                id: id
+            }
+        })
+
+        if(!target)
+            throw new Error("Discipline not found!")
+
+        const numOfClasses = await prisma.class.count({
+            where: {
+                disciplineId: id
+            }
+        })
+
+        return await prisma.discipline.update({
+            where: {
+                id: id
+            },
+            data: {
+                workLoad: numOfClasses * 4
+            }
+        })
+    }
+
 }

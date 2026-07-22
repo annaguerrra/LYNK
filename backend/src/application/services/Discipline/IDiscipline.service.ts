@@ -15,4 +15,6 @@ export interface IDisciplineService{
         delete(disciplineID: number, userId: number): Promise<boolean>;
         // put
         edit(payload: DisciplineDTO, disciplineID: number, userID: number):  Promise<editDisciplineDTO>;
+        updateWorkLoad(id: number): Promise<Discipline>
+        //falta aplicar - quinta de manhã no senai
 }
