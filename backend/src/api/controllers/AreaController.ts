@@ -2,16 +2,24 @@ import { registerAreaDTO, updateAreaDTO } from "#application/dtos/areaDTO.js";
 import { getBucket } from "#infrastructure/database/database.js";
 import { AreaService } from "#infrastructure/services/Area/AreaService.js";
 import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js";
+import { HashService } from "#infrastructure/services/Authetication/Hash.service.js";
+import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { UserService } from "#infrastructure/services/User/UserService.js";
 import { Request, Response } from "express";
 
 export default class AreaController {
-    private attachmentService = new AttachmentService(getBucket());
-    private userService = new UserService(this.attachmentService);
+    private hashService = new HashService()
+    private jwtService = new JwtTokenService()
+    private attachmentService = new AttachmentService(getBucket())
+    private userService = new UserService(this.attachmentService, this.hashService, this.jwtService)
     private areaService = new AreaService(this.userService)
 
+    // POST
+    // creates area
     async register(req: Request, res: Response){
         const data: registerAreaDTO = req.body
+        // variable used to get userId from request
+        // will be used in service to register who was responsible for the action
         const userId = req.user.userId
 
         try {
@@ -22,6 +30,8 @@ export default class AreaController {
         }
     }
 
+    // GET
+    // show all areas
     async showAreas(req: Request, res: Response){
         try {
             await this.areaService.showAreas()
@@ -31,9 +41,13 @@ export default class AreaController {
         }
     }
 
+    // PUT
+    // updates area
     async updateArea(req: Request, res: Response){
         const { id } = req.params
         const data: updateAreaDTO = req.body
+        // variable used to get userId from request
+        // will be used in service to register who was responsible for the action
         const userId = req.user.userId
 
         try {
@@ -44,8 +58,12 @@ export default class AreaController {
         }
     }
 
+    // DELETE
+    // deletes area
     async deleteArea(req: Request, res: Response){
         const { id } = req.params
+        // variable used to get userId from request
+        // will be used in service to register who was responsible for the action
         const userId = req.user.userId
 
         try {
