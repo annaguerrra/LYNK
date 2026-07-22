@@ -8,7 +8,9 @@ export interface JwtTokenDTO{
 declare global{
     namespace Express{
         interface Request{
-            user?: JwtTokenDTO;
+            user: JwtTokenDTO;
         }
     }
 }
+
+export {}

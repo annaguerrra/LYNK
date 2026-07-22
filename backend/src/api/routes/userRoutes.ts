@@ -21,7 +21,7 @@ const userController = new UserController();
 
 router
     .post('/user/create', validateRegister, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.register.bind(userController))
-    .post('/login', userController.login.bind(userController)),
+    .post('/login', userController.login.bind(userController))
 
     .get('/user/showStud', userController.showStudents.bind(userController))
     .get('/user/showInst', userController.showInstructors.bind(userController))
