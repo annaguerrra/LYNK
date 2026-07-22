@@ -41,6 +41,7 @@ export function Class() {
     const [editMode, setEditMode] = useState(false)
     const [titleClass, setTitleClass] = useState("Aula 05")
     const navigate = useNavigate();
+    //Generic content for the markdown
     const [content, setContent] = useState(`# Introdução ao Python
 
 Python é uma linguagem de programação simples, poderosa e muito utilizada.
@@ -88,7 +89,7 @@ Olá, Ana!
 \`\`\`
 `);
 
-    
+    //Options to edit the markdown
     const editorPlugins = [
         headingsPlugin(),
         listsPlugin(),
@@ -103,6 +104,7 @@ Olá, Ana!
         codeMirrorPlugin({
             codeBlockLanguages: {
                 csharp: 'C#',
+                python: 'Python',
                 javascript: 'JavaScript',
                 typescript: 'TypeScript',
                 html: 'HTML',
@@ -115,16 +117,19 @@ Olá, Ana!
 
     return (
         <>
-            <Header></Header>
+            {/* Header */}
+            <Header/>
 
+            {/* Whole page */}
             <div className="page-class">
-
                 <div className="headerContent">
                     <ButtonBack onClick={() => navigate("/content")} />
                 </div>
-
+                
+                {/* Class content (markdown, files and competences) */}
                 <div className='content-class'>
 
+                    {/* Open the markdown editor */}
                     {!editMode && (
                         <div className='markdownBox'>
                             <div className='toolbar view'>
@@ -196,6 +201,7 @@ Olá, Ana!
                             </div>
                         </div>
                     }
+                    {/* Box with files and competences to attach */}
                     <div className="attachmentsBox">
                         <div className='attachmentsContent'>
                             <span className='subtitle'>Anexos</span>
@@ -218,6 +224,8 @@ Olá, Ana!
                             <div className='space'></div>
                             <span className='subtitle'>Competências</span>
                             <div className='attachments' >
+                                
+                                {/* Component used to search a competence */}
                                 <LessonSelect/>
                                 <RowItem 
                                     type='competence'

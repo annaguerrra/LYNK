@@ -46,14 +46,17 @@ export function DisciplineComp({Discipline, Area}) {
         {editModal && (
              <div className="modalOverlay" onClick={() => setEditModal(false)}>
                 <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                    {/* Title and close button box */}
                     <div className="titleContainer">
                         <h1>Editar disciplina</h1>
                         <ButtonClose size={40} onClose={() => setEditModal(false)}></ButtonClose>
                     </div>
+                    {/* Input for the discipline name */}
                     <div className="textBox">
                         <h2>Nome da disciplina</h2>
                         <input type="text" />
                     </div>
+                    {/* Select for the area */}
                     <div className="textBox">
                         <h2>Selecione a área de conhecimento</h2>
                         <select name="" id="">

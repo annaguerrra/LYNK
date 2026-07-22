@@ -10,6 +10,7 @@ export function ExamsView() {
 
     return (
         <>
+            {/* Items shown on the specified tab */}
             <div className="view-page">
                 <RowItem
                     color="var(--green)"

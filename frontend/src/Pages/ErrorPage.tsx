@@ -9,9 +9,12 @@ export function ErrorPage() {
     
     return (
         <>
-        <Header></Header>
+        <Header/>
+        
+        {/* Whole page */}
         <div className="page">
             <div className="errorContainer">
+                {/* Diplay for the error */}
                 <h1>{state?.errorText || "Ocorreu um erro :("}</h1>
                 <img src="./error-question.png" alt="" className="errorImg"/>
             </div>

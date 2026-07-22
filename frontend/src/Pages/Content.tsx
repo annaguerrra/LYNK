@@ -27,6 +27,7 @@ export function Content() {
     const [excludeTestModal, setExcludeTestModal] = useState(false);
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
 
+    //Options for the option buttons
     const options = [
         {
             name: "Nova avaliação",
@@ -42,6 +43,7 @@ export function Content() {
         },
     ];
 
+    //Tab options
     const tabs = [
     { id: "classes", label: "Aulas" },
     { id: "competences", label: "Competências" },
@@ -51,7 +53,11 @@ export function Content() {
     return (
         <>
             <Header />
+            
+            {/* Whole page */}
             <div className="page">
+
+                {/* Button to go back and more interative options */}
                 <div className="headerContent">
                     <div className="startBox">
                         <ButtonBack onClick={() => navigate("/disciplines")} />
@@ -60,6 +66,7 @@ export function Content() {
                     <MoreOpt data={options} size={30}></MoreOpt>
                 </div>
                 <div className="content">
+                    {/* Change the content based on the selected tab */}
                     <TabNavigation
                         selected={selectedTab}
                         onChange={setSelectedTab} tabs={tabs}                    />
@@ -73,31 +80,104 @@ export function Content() {
             </div>
 
 {/* -------------------------------------------------------- TEST MODALS -------------------------------------------------------- */}
+            {/* Modal to create a test */}
             {newTest && (
                 <div className="modalOverlay" onClick={() => setNewTest(false)}>
                 <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                    {/* Title and close button box */}
                     <div className="titleContainer">
                         <h1>Registrar avaliação</h1>
                         <ButtonClose size={40} onClose={() => setNewTest(false)}></ButtonClose>
                     </div>
+                    {/* Input for test name */}
                     <div className="textBox">
                         <h2>Nome da avaliação</h2>
                         <input type="text"/>
                     </div>
+                    {/* Input to select the discipline */}
                     <div className="textBox">
                         <h2>Selecione a disciplina</h2>
                         <select name="" id="">
                             <option value="Tecnologia" selected></option>
                         </select>
                     </div>
+                    {/* Input to select the test file */}
                     <div className="textBox">
                         <h2>Selecione o arquivo</h2> 
                         <input type="file" />
                     </div>
+                    {/* Search for competence and its display */}
                     <div className="textBox">
-                        <h2>Selecione o arquivo</h2> 
+                        <h2>Selecione as competências</h2> 
                         
                         <div className='attachments' >
+                            {/* Component used to search a competence */}
+                            <LessonSelect/>
+                            <br />
+                            <div className="scrollBox">
+
+                                <RowItem 
+                                    type='competence'
+                                    actions={
+                                        <>
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                        </>
+                                    } >
+                                    <div>Fazer sei la o que, comepencia de não sei o que mais </div>
+                                    
+                                </RowItem>
+                                <RowItem
+                                    type='competence'
+                                    actions={
+                                        <>
+                                        <ButtonClose size={18} onClose={() => { }} />
+                                        </>
+                                    } >
+                                    <div>Teste de nome para o componente usado para representar uma competencia</div>
+                                    
+                                </RowItem>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <Button ButtonTitle={"Enviar"} onClose={() => setNewTest(false)}></Button>
+                </div>
+                </div>
+            )}
+
+            {/* Modal to edit the test */}
+            {editTest && (
+                <div className="modalOverlay" onClick={() => setEditTest(false)}>
+                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                    {/* Title and close button box */}
+                    <div className="titleContainer">
+                        <h1>Editar avaliação</h1>
+                        <ButtonClose size={40} onClose={() => setEditTest(false)}></ButtonClose>
+                    </div>
+                    {/* Input for test name */}
+                    <div className="textBox">
+                        <h2>Nome da avaliação</h2>
+                        <input type="text" placeholder="Digite o nome da disciplina"/>
+                    </div>
+                    {/* Input to select the discipline */}
+                    <div className="textBox">
+                        <h2>Selecione a disciplina</h2>
+                        <select name="" id="">
+                            <option value="Tecnologia" selected></option>
+                        </select>
+                    </div>
+                    {/* Input to select the test file */}
+                    <div className="textBox">
+                        <h2>Selecione o arquivo</h2> 
+                        <input type="file" />
+                    </div>
+                    {/* Search for competence and its display */}
+                    <div className="textBox">
+                        <h2>Selecione as competências</h2> 
+                        
+                        <div className='attachments' >
+                            {/* Component used to search a competence */}
                             <LessonSelect/>
                             <br />
                             <div className="scrollBox">
@@ -147,52 +227,14 @@ export function Content() {
                         </div>
 
                     </div>
-
-                    <Button ButtonTitle={"Enviar"} onClose={() => setNewTest(false)}></Button>
-                </div>
-                </div>
-            )}
-
-            {editTest && (
-                <div className="modalOverlay" onClick={() => setEditTest(false)}>
-                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                    <div className="titleContainer">
-                        <h1>Registrar avaliação</h1>
-                        <ButtonClose size={40} onClose={() => setEditTest(false)}></ButtonClose>
-                    </div>
-                    <div className="textBox">
-                        <h2>Nome da avaliação</h2>
-                        <input type="text" placeholder="Digite o nome da disciplina"/>
-                    </div>
-                    <div className="textBox">
-                        <h2>Selecione a disciplina</h2>
-                        <select name="" id="">
-                            <option value="Tecnologia" selected></option>
-                        </select>
-                    </div>
-                    <div className="textBox">
-                        <h2>Selecione o arquivo</h2> 
-                        <input type="file" />
-                    </div>
-                    {/* <div className="textBox">
-                        <h2>Selecione as competências</h2>
-                        <select name="" id="">
-                            <option value="Tecnologia" selected></option>
-                        </select>
-                    </div>
-                    <div className="scrollBox">
-                        <h1>.</h1>
-                        <h1>.</h1>
-                        <h1>.</h1>
-                        <h1>.</h1>
-                            
-                    </div> */}
+                    
 
                     <Button ButtonTitle={"Enviar"} onClose={() => setEditTest(false)}></Button>
                 </div>
                 </div>
             )}
 
+            {/* Modal to exclude the test */}
             {excludeTestModal && (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeTestModal(false)}>
                 <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
@@ -207,14 +249,17 @@ export function Content() {
                 </div>
             </div>
             )}
+
 {/* -------------------------------------------------------- COMPETENCE MODALS -------------------------------------------------------- */}
             {newCompetence && (
                     <div className="modalOverlay" onClick={() => setNewCompetence(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Registrar competência</h1>
                             <ButtonClose size={40} onClose={() => setNewCompetence(false)}></ButtonClose>
                         </div>
+                        {/* Input for the competence name */}
                         <div className="textBox">
                             <h2>Nome da competência</h2>
                             <input type="text"/>
@@ -228,10 +273,12 @@ export function Content() {
             {editCompetence && (
                     <div className="modalOverlay" onClick={() => setEditCompetence(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Editar competência</h1>
                             <ButtonClose size={40} onClose={() => setEditCompetence(false)}></ButtonClose>
                         </div>
+                        {/* Input for the competence name */}
                         <div className="textBox">
                             <h2>Nome da competência</h2>
                             <input type="text"/>
