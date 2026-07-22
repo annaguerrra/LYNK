@@ -1325,7 +1325,8 @@ export type DisciplineScalarFieldEnum = (typeof DisciplineScalarFieldEnum)[keyof
 
 export const AreaScalarFieldEnum = {
   id: 'id',
-  name: 'name'
+  name: 'name',
+  color: 'color'
 } as const
 
 export type AreaScalarFieldEnum = (typeof AreaScalarFieldEnum)[keyof typeof AreaScalarFieldEnum]
@@ -1456,7 +1457,8 @@ export type DisciplineOrderByRelevanceFieldEnum = (typeof DisciplineOrderByRelev
 
 
 export const AreaOrderByRelevanceFieldEnum = {
-  name: 'name'
+  name: 'name',
+  color: 'color'
 } as const
 
 export type AreaOrderByRelevanceFieldEnum = (typeof AreaOrderByRelevanceFieldEnum)[keyof typeof AreaOrderByRelevanceFieldEnum]

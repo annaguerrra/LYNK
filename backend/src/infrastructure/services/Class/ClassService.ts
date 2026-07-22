@@ -14,7 +14,9 @@ export class ClassService implements IClassService{
     ) {}
     
     async create(payload: ClassDTO, userId: number): Promise<Class> {
+        // variables used to create class
         const {name, content, disciplineId} = payload;
+        // consults if user creating the class is admin
         const isAdmin = await this.userService.isAdmin(userId)
 
         const createdClass = await prisma.class.create({
@@ -43,6 +45,7 @@ export class ClassService implements IClassService{
                     name,
                     content
                 },
+                // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId })
             }
@@ -76,6 +79,7 @@ export class ClassService implements IClassService{
             throw new Error("Class not Found!");
         }
         
+        // finds class log and updates it's last update date
         const log = await prisma.log.findFirst({
             where:{
                 entityId: id,
