@@ -1,14 +1,14 @@
 import { DownloadedFile, UploadedFile } from "#application/dtos/attachmentDTO.js";
 import { IAttachmentService } from "#application/services/Attachment/IAttachment.service.js";
-import { GridFSBucket, ObjectId } from "mongodb";
+import { getBucket } from "#infrastructure/database/database.js";
+import { ObjectId } from "mongodb";
 
 export class AttachmentService implements IAttachmentService{
-    constructor(private bucket: GridFSBucket) {}
 
     async upload(file: UploadedFile): Promise<string> {
-        
         // variable used to build file at mongodb
-        const uploadStream = this.bucket.openUploadStream(
+        const bucket = getBucket()
+        const uploadStream = bucket.openUploadStream(
             file.originalName,
             {
                 metadata: {
@@ -30,10 +30,11 @@ export class AttachmentService implements IAttachmentService{
     
     async download(id: string): Promise<DownloadedFile> {
         // variable used to convert string to objectId for mongo
+        const bucket = getBucket()
         const objectId = new ObjectId(id)
         
         // search file at mongodb
-        const file = await this.bucket.find({
+        const file = await bucket.find({
             _id: objectId
         }).next()
         
@@ -43,7 +44,7 @@ export class AttachmentService implements IAttachmentService{
         
         // returns data to be downloaded
         return {
-            stream: this.bucket.openDownloadStream(objectId),
+            stream: bucket.openDownloadStream(objectId),
             fileName: file.filename,
             mimeType: file.metadata?.mimeType
         } 
@@ -51,6 +52,7 @@ export class AttachmentService implements IAttachmentService{
     
     async delete(id: string): Promise<void> {
         // converts string to objectId and deletes correspondent file at mongo
-       await this.bucket.delete(new ObjectId(id))
+        const bucket = getBucket()
+        await bucket.delete(new ObjectId(id))
     }
 }

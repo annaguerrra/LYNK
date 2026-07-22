@@ -8,7 +8,7 @@ import { UserService } from "#infrastructure/services/User/UserService.js"
 import { Request, Response } from "express";
 
 export default class MaterialController{
-    private attachmentService = new AttachmentService(getBucket())
+    private attachmentService = new AttachmentService()
     private hashService = new HashService()
     private jwtTokenService = new JwtTokenService()
     private userService = new UserService(this.attachmentService, this.hashService, this.jwtTokenService)

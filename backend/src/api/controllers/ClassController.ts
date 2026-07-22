@@ -11,7 +11,7 @@ import { Request, response, Response } from "express";
 export class ClassController {
     private hashService = new HashService()
     private jwtService = new JwtTokenService()
-    private attachmentService = new AttachmentService(getBucket())
+    private attachmentService = new AttachmentService()
     private userService = new UserService(this.attachmentService, this.hashService, this.jwtService)
     private competenceService = new CompetenceService(this.userService)
     private classService = new ClassService(this.userService, this.competenceService)

@@ -10,7 +10,7 @@ import { Request, Response } from "express";
 export default class AreaController {
     private hashService = new HashService()
     private jwtService = new JwtTokenService()
-    private attachmentService = new AttachmentService(getBucket())
+    private attachmentService = new AttachmentService()
     private userService = new UserService(this.attachmentService, this.hashService, this.jwtService)
     private areaService = new AreaService(this.userService)
 

@@ -10,7 +10,7 @@ import { Request, Response } from "express";
 export default class CompetenceController{
     private hashService = new HashService()
     private jwtService = new JwtTokenService()
-    private attachmentService = new AttachmentService(getBucket())
+    private attachmentService = new AttachmentService()
     private userService = new UserService(this.attachmentService, this.hashService, this.jwtService)
     private competenceService = new CompetenceService(this.userService)
 

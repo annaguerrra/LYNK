@@ -1,22 +1,12 @@
 import UserController from "#api/controllers/UserController.js" 
-import { authMiddleware } from '#api/middleware/authMiddleware.js';
 import { authorize } from "#api/middleware/authorize.js";
 import { validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent } from "#api/middleware/userMiddleware.js";
-import { getBucket } from '#infrastructure/database/database.js';
-import { AttachmentService } from '#infrastructure/services/Attachment/AttachmentService.js';
-import { HashService } from "#infrastructure/services/Authetication/Hash.service.js";
-import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
-import { UserService } from '#infrastructure/services/User/UserService.js';
 import { UserType } from "#infrastructure/src/generated/prisma/enums.js";
 import { Router } from 'express';
 import express from 'express';
 
 const router: Router = express.Router();
 
-const attachmentService = new AttachmentService(getBucket());
-const hashService = new HashService();
-const jwtTokenService = new JwtTokenService();
-const userService = new UserService(attachmentService, hashService, jwtTokenService);
 const userController = new UserController();
 
 router

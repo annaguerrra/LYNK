@@ -8,7 +8,7 @@ import { HashService } from "#infrastructure/services/Authetication/Hash.service
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 
 export default class UserController {
-    private attachmentService = new AttachmentService(getBucket())
+    private attachmentService = new AttachmentService()
     private hashService = new HashService()
     private jwtTokenService = new JwtTokenService()
     private userService = new UserService(this.attachmentService, this.hashService, this.jwtTokenService)

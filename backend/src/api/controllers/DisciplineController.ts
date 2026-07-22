@@ -10,7 +10,7 @@ import {Request, response, Response } from "express"
 export class DisciplineController{
     private hashService = new HashService()
     private jwtService = new JwtTokenService()
-    private attachmentService = new AttachmentService(getBucket())
+    private attachmentService = new AttachmentService()
     private userService = new UserService(this.attachmentService, this.hashService, this.jwtService)
     private disciplineService = new DisciplineService(this.userService)
 
