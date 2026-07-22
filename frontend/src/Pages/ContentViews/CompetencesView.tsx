@@ -51,7 +51,7 @@ export function CompetencesView() {
                 </RowItem>
 
                 <RowItem
-                    onClick={() => navigate("/class")}
+                    onClick={() => setOpenCompetenceModal(true)}
                     color="var(--acqua)"
                     size="--medium"
                     button={true}

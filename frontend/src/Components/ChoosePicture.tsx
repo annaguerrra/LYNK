@@ -153,14 +153,14 @@ export default function ChoosePicture({
                                 ref={cropperRef}
                                 src={image}
                                 aspectRatio={1}
-                                viewMode={1}
-                                dragMode="move"
+                                viewMode={0}
+                                dragMode="crop"
                                 guides={true}
                                 center={true}
                                 background={false}
-                                autoCropArea={1}
-                                cropBoxResizable={false}
-                                cropBoxMovable={false}
+                                autoCropArea={3}
+                                cropBoxResizable={true}
+                                cropBoxMovable={true}
                                 zoomable={true}
                                 responsive={true}
                             />

@@ -55,6 +55,10 @@ export function Discipline () {
             name: "Gerenciar áreas",
             onClick: () => setAreasModal(true)
         },
+        {
+            name: "Histórico de Ações",
+            onClick: () => navigate("/History")
+        },
     ];
 
     const userOpt = [

@@ -76,7 +76,7 @@
 
 .cropContainer {
     width: 300px;
-    height: 300px;
+    height: max-content;
     overflow: hidden;
 }
 
