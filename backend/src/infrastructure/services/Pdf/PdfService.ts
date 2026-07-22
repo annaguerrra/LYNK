@@ -13,20 +13,21 @@ export class PdfService implements IPdfService{
         doc 
             .rect(0, 0, pageWidth, 8)
             .fill("#E20015");
-        
+
+        // BOSCH logo and slogan
         doc
             .fill("#111111")
             .font("Helvetica-Bold")
             .fontSize(18)
             .text("BOSCH", 50, 26);
         
-        
         doc
             .fillColor("#333333")
             .font("Helvetica")
             .fontSize(7)
             .text("Tecnologia para a vida", 50, 46);
-        
+
+        // draws a divider line
         doc
             .moveTo(50, 70)
             .lineTo(pageWidth - 50, 70)
@@ -37,6 +38,7 @@ export class PdfService implements IPdfService{
         doc.y = 95;
     }
     
+    // each method below will create and render a md structre
     private renderTitle(doc: PDFKit.PDFDocument, title: string): void {
         doc
             .fillColor("#111111")
@@ -49,6 +51,7 @@ export class PdfService implements IPdfService{
         doc.moveDown(1.5);
     }
 
+    // During the the md conversion, if a quote is identified this method will be called, and the styles below will be applied
     private renderBlockquote(doc: PDFKit.PDFDocument, text: string) : void {
         doc
             .fillColor("#555555")
@@ -62,6 +65,7 @@ export class PdfService implements IPdfService{
         doc.moveDown(0.8);
     }
 
+    // During the the md conversion, if a code block is identified this method will be called, and the style below will be applied
     private renderCode(doc: PDFKit.PDFDocument, code: string): void {
         // actual cursor position
         const startX = doc.x
@@ -91,6 +95,7 @@ export class PdfService implements IPdfService{
         doc.y = startY + height + 18;
     }
 
+    // During the the md conversion, if a list is identified this method will be called, and the style below will be applied
     private renderList( doc: PDFKit.PDFDocument, items: Tokens.ListItem[]) : void {
         for( const item of items){ 
             doc
@@ -108,6 +113,7 @@ export class PdfService implements IPdfService{
         doc.moveDown(0.5);
     }
 
+    // During the the md conversion, if a paragraph is identified this method will be called, and the style below will be applied
     private renderParagraph( doc: PDFKit.PDFDocument, text: string) : void {
         doc
             .fillColor("#222222")
@@ -121,6 +127,7 @@ export class PdfService implements IPdfService{
         doc.moveDown(0.8);
     }
 
+    // During the the md conversion, if a heading is identified this method will be called, and the style below will be applied
     private renderHeading(  doc: PDFKit.PDFDocument, text: string, depth: number) : void {
         // depth represents the title level
         const fontSize = depth === 1 ? 20 : depth == 2 ? 17 : 14
@@ -135,7 +142,7 @@ export class PdfService implements IPdfService{
             doc.moveDown(0.4);
 
     }
-
+    // token represents a single unit of a structured md object. This method identifies the object and renders it.
     private renderToken(doc: PDFKit.PDFDocument, token: Tokens.Generic) : void {
         switch(token.type) {
             case "heading": {
@@ -182,16 +189,16 @@ export class PdfService implements IPdfService{
 
     }
 
+    // reads the md and transforms the token, which is the identified structure of the md
     private renderMarkdown(doc: PDFKit.PDFDocument, markdown: string): void {
-        // reads the md and transforms the token, which is the identified section of the md
         const tokens = marked.lexer(markdown);
 
         for(const token of tokens){
-            render
+            this.renderToken(doc, token);
         }
     }
 
-
+    // compiles all the md structures and converts into a pdf document
     async generatePdf(markdownInfo: viewContentDTO): Promise<Buffer> {
         
         return new Promise((resolve, reject) =>{
@@ -216,6 +223,10 @@ export class PdfService implements IPdfService{
             doc.on("error", (error) => {
                 reject(error);
             });
+
+            this.renderHeader(doc);
+            this.renderTitle(doc, markdownInfo.name);
+            this.renderMarkdown(doc, markdownInfo.content);
 
             doc.end();
         });

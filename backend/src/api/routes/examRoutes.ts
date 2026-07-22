@@ -11,6 +11,7 @@ const examController = new ExamController()
 
 router
     .post('exam/create', validateRegister, authorize(UserType.ADMIN, UserType.INSTRUCTOR), examController.register.bind(examController))
+    .get('exams/download/:id/:examAttachmentId', examController.download.bind(examController))
     .get('exams', authorize(UserType.ADMIN, UserType.INSTRUCTOR), examController.showExams.bind(examController))
     .get('exam/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), examController.getExam.bind(examController))
     .put('exam/edit/:id', validateUpdate, authorize(UserType.ADMIN, UserType.INSTRUCTOR), examController.update.bind(examController))

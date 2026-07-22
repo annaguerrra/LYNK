@@ -4,11 +4,17 @@ import { AttachmentService } from "#infrastructure/services/Attachment/Attachmen
 import { UserService } from "#infrastructure/services/User/UserService.js";
 import { Request, response, Response } from "express";
 import { getBucket } from '#infrastructure/database/database.js';
+import { HashService } from "#infrastructure/services/Authetication/Hash.service.js";
+import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 
 export default class UserController {
     private attachmentService = new AttachmentService(getBucket())
-    private userService = new UserService(this.attachmentService)
+    private hashService = new HashService()
+    private jwtTokenService = new JwtTokenService()
+    private userService = new UserService(this.attachmentService, this.hashService, this.jwtTokenService)
 
+    // POST
+    // gets the userid from request and based on userType calls the respective service
     async register(req: Request, res: Response){
         const data: (registerStudentDTO | registerInstructorDTO | registerAdminDTO) = req.body
         const userId = req.user.userId
@@ -33,7 +39,25 @@ export default class UserController {
             return res.status(500).send({ response: e })
         }
     }
+    // POST
+    // receives the login data through request. Attempts to call the login service while passing the provided data
+    async login(req: Request, res: Response) {
+        const { username, password} = req.body
 
+        try{
+            await this.userService.login({
+                username: username,
+                password: password
+            });
+
+            return res.status(200).send({response: "Login Successfully"});
+        } catch(e) {
+            return res.status(404).send({ response: "Failed to Login"});
+        }
+    }
+
+    // GET 
+    // get all the users registered in a specific user table
     async showStudents(req: Request, res: Response){
         try {
             await this.userService.showStudents()
@@ -61,6 +85,8 @@ export default class UserController {
         }
     }
 
+    // GET
+    // get all information of a specific user. The userId comes from request
     async showStudent(req: Request, res: Response){
         const { id } = req.params
         try {
@@ -91,6 +117,9 @@ export default class UserController {
         }
     }
 
+    // PUT
+    // updates one or more fields for a specific user. The authenticated userid its from the request,
+    // while the userId provided in params identifies the user whose profile page is being updated
     async updateStudent(req: Request, res: Response){
         const { id } = req.params
         const userId = req.user.userId
@@ -130,6 +159,8 @@ export default class UserController {
         }
     }
 
+    // DELETE
+    // delete all related information of a user. The userId is provided as a parameter to the service and is also obtained by request to execute log record
     async deleteStudent(req: Request, res: Response){
         const { id } = req.params
         const userId = req.user.userId
@@ -163,21 +194,6 @@ export default class UserController {
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
-        }
-    }
-
-    async  login(req: Request, res: Response) {
-        const { username, password} = req.body
-
-        try{
-            await this.userService.login({
-                username: username,
-                password: password
-            });
-
-            return res.status(200).send({response: "Login Successfully"});
-        } catch(e) {
-            return res.status(404).send({ response: "Failed to Login"});
         }
     }
 }

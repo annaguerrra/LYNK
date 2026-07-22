@@ -14,6 +14,7 @@ export class UserService implements IUserService {
         private jwtTokenService: JwtTokenService
     ) {}
 
+    // identifies wheter the user is an admin or not by searching its id on admin table
     async isAdmin(userId: number): Promise<boolean> {
         const admin = await prisma.admin.findUnique({
             where: {
@@ -27,6 +28,7 @@ export class UserService implements IUserService {
         return true
     }
 
+    // creates a new student and register it in log table
     async registerStudent(data: registerStudentDTO, userId: number): Promise<Student> {
         const { username, password, userType } = data
         const isAdmin = await this.isAdmin(userId) 
@@ -53,6 +55,7 @@ export class UserService implements IUserService {
         return createdUser
     }
 
+    // creates a new instructor and registers in the log table
     async registerInstructor(data: registerInstructorDTO, userId: number): Promise<Instructor> {
         const { username, password, userType, specialty } = data
 
@@ -78,6 +81,7 @@ export class UserService implements IUserService {
 
     }
 
+    // creates a new admin and registers in the log table
     async registerAdmin(data: registerAdminDTO, userId: number): Promise<Admin> {
         const { username, password, userType, specialty } = data
 
@@ -103,6 +107,7 @@ export class UserService implements IUserService {
 
     }
 
+    // login service. It does multiple searchs at same time, it tries to find the userId in user, admin and instructor
     async login(data: loginPayloadDTO): Promise<loginResponseDTO> {
         const { username } = data;
 
@@ -128,6 +133,7 @@ export class UserService implements IUserService {
 
         let user;
 
+        // validates the search by verifying if the result aint null in each user table, then it gets all the necessary information
         if(student){
             user = {
                 id: student.id,
@@ -167,12 +173,14 @@ export class UserService implements IUserService {
             throw new Error("User Inactive.");
         }
 
+        // calls the hash service to compare the inputed data and the storaged data.
         const comparison = await this.hashService.compare(data.password, user.password)
 
         if(!comparison) {
             throw new Error("Invalid Username or Password");
         }
 
+        // if thw passwords match, a jwt token will be generated
         const token = this.jwtTokenService.generate({
             userId: user.id, 
             usertype: user.userType
@@ -188,6 +196,7 @@ export class UserService implements IUserService {
         };
     }
 
+    // returns all the students/ instructors / admin registered on the database
     async showStudents(): Promise<Student[]> {
         return await prisma.student.findMany()
     }
@@ -200,6 +209,7 @@ export class UserService implements IUserService {
         return await prisma.admin.findMany()
     }
 
+    // returns a specific student / instructor / admin with the provided id
     async showStudent(id: number): Promise<showStudentDTO | null> {
         return await prisma.student.findFirst({
             where: {
@@ -242,6 +252,7 @@ export class UserService implements IUserService {
         })
     }
 
+    // updates the user information by searching its id, updating the prisma information and creating a new log
     async updateStudent(id: number, data: updateStudentDTO, userId: number): Promise<Student> {
         const { username, password } = data
         const isAdmin = await this.isAdmin(userId) 
@@ -395,7 +406,8 @@ export class UserService implements IUserService {
             throw e
         }
     }
-
+    
+    // deletes the user information based on the provided id, this action is registered in the log table
     async deleteStudent(id: number, userId: number): Promise<boolean> {
         const isAdmin = await this.isAdmin(userId)
         

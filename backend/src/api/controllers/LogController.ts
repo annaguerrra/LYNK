@@ -4,6 +4,8 @@ import { Request, response, Response } from "express";
 export default class LogController{
     private logService = new LogService()
 
+    // GET
+    // gets all the logs registered in the database without any filter
     async getAll(req: Request, res: Response){
         try {
             await this.logService.getAllLogs()
@@ -13,6 +15,7 @@ export default class LogController{
         }
     }
 
+    // gets a specific log by id through the params
     async getById(req: Request, res: Response){
         const { id } = req.params
         try {
@@ -23,6 +26,7 @@ export default class LogController{
         }
     }
 
+    // gets a specific log by its type from body
     async getByEntityType(req: Request, res: Response){
         const { entityType } = req.body
         try {
@@ -33,6 +37,7 @@ export default class LogController{
         }
     }
 
+    // gets a specific log by its action from body
     async getByAction(req: Request, res: Response){
         const { action } = req.body
         try {
