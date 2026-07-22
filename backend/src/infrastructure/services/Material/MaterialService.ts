@@ -168,7 +168,7 @@ export class MaterialService implements IMaterialService {
             return updatedMaterial
 
         } catch (e) {
-            // if fails to create exam deletes all files at uploadedFiles list
+            // if fails to create material deletes all files at uploadedFiles list
             // used to ensure that files won't be orfan
             await Promise.allSettled(
                 uploadedIds.map(id => this.attachmentService.delete(id))
@@ -179,6 +179,7 @@ export class MaterialService implements IMaterialService {
     }
 
     async deleteMaterial(id: number, userId: number): Promise<boolean> {
+        // consults if user deleting the material is admin
         const isAdmin = await this.userService.isAdmin(userId)
 
         const target = await prisma.material.findUnique({
@@ -193,6 +194,7 @@ export class MaterialService implements IMaterialService {
         if (!target)
             throw new Error("Material not found")
 
+        // deletes all attachments in the material
         await Promise.all(
             target.attachments.map(a => this.attachmentService.delete(a.attachmentId))
         )
@@ -213,6 +215,7 @@ export class MaterialService implements IMaterialService {
                     ...target
                 },
                 newData: {},
+                // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId })
             }
@@ -222,11 +225,15 @@ export class MaterialService implements IMaterialService {
     }
 
     async attachtFile(data: attachtFileDTO, userId: number): Promise<Material> {
+        // consults if user updating the material is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        // variables used to attacht file
         const { materialId, files } = data
+        // variable used to store created attachments
         const uploadedIds: string[] = []
 
         try {
+            // creates files and add them to the uploadedFiles list
             const attachmentIds = await Promise.all(
                 files.map(async file => {
                     const id = await this.attachmentService.upload(file)
@@ -244,6 +251,7 @@ export class MaterialService implements IMaterialService {
             if (!target)
                 throw new Error("Material not found")
 
+            // connects created files to material
             const updatedMaterial = await prisma.material.update({
                 where: {
                     id: materialId
@@ -269,6 +277,7 @@ export class MaterialService implements IMaterialService {
                     newData: {
                         ...updatedMaterial
                     },
+                    // uses isAdmin variable to determin if log registers an admin ou an instructor
                     ...(isAdmin && { adminId: userId }),
                     ...(!isAdmin && { instructorId: userId })
                 }
@@ -277,6 +286,8 @@ export class MaterialService implements IMaterialService {
             return updatedMaterial
 
         } catch (e) {
+            // if fails to create exam deletes all files at uploadedFiles list
+            // used to ensure that files won't be orfan
             await Promise.allSettled(
                 uploadedIds.map(id => this.attachmentService.delete(id))
             )
@@ -286,16 +297,19 @@ export class MaterialService implements IMaterialService {
     }
 
     async downloadMaterial(materialId: number, materialAttachmentId: number): Promise<DownloadedFile> {
+        // finds attachments related to material
         const materialAttachment = await prisma.materialAttachment.findUnique({
             where: {
                 id: materialAttachmentId
             }
         })
 
+        // verifies there are attachments in the material
         if(!materialAttachment || materialAttachment.materialId !== materialId){
             throw new Error("File not found")
         }
 
+        // calls download service
         return this.attachmentService.download(materialAttachment.attachmentId)
     }
 

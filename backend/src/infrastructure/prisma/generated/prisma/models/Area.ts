@@ -37,16 +37,19 @@ export type AreaSumAggregateOutputType = {
 export type AreaMinAggregateOutputType = {
   id: number | null
   name: string | null
+  color: string | null
 }
 
 export type AreaMaxAggregateOutputType = {
   id: number | null
   name: string | null
+  color: string | null
 }
 
 export type AreaCountAggregateOutputType = {
   id: number
   name: number
+  color: number
   _all: number
 }
 
@@ -62,16 +65,19 @@ export type AreaSumAggregateInputType = {
 export type AreaMinAggregateInputType = {
   id?: true
   name?: true
+  color?: true
 }
 
 export type AreaMaxAggregateInputType = {
   id?: true
   name?: true
+  color?: true
 }
 
 export type AreaCountAggregateInputType = {
   id?: true
   name?: true
+  color?: true
   _all?: true
 }
 
@@ -164,6 +170,7 @@ export type AreaGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type AreaGroupByOutputType = {
   id: number
   name: string
+  color: string
   _count: AreaCountAggregateOutputType | null
   _avg: AreaAvgAggregateOutputType | null
   _sum: AreaSumAggregateOutputType | null
@@ -192,12 +199,14 @@ export type AreaWhereInput = {
   NOT?: Prisma.AreaWhereInput | Prisma.AreaWhereInput[]
   id?: Prisma.IntFilter<"Area"> | number
   name?: Prisma.StringFilter<"Area"> | string
+  color?: Prisma.StringFilter<"Area"> | string
   disciplines?: Prisma.DisciplineListRelationFilter
 }
 
 export type AreaOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  color?: Prisma.SortOrder
   disciplines?: Prisma.DisciplineOrderByRelationAggregateInput
   _relevance?: Prisma.AreaOrderByRelevanceInput
 }
@@ -208,12 +217,14 @@ export type AreaWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.AreaWhereInput[]
   NOT?: Prisma.AreaWhereInput | Prisma.AreaWhereInput[]
   name?: Prisma.StringFilter<"Area"> | string
+  color?: Prisma.StringFilter<"Area"> | string
   disciplines?: Prisma.DisciplineListRelationFilter
 }, "id">
 
 export type AreaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  color?: Prisma.SortOrder
   _count?: Prisma.AreaCountOrderByAggregateInput
   _avg?: Prisma.AreaAvgOrderByAggregateInput
   _max?: Prisma.AreaMaxOrderByAggregateInput
@@ -227,42 +238,50 @@ export type AreaScalarWhereWithAggregatesInput = {
   NOT?: Prisma.AreaScalarWhereWithAggregatesInput | Prisma.AreaScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Area"> | number
   name?: Prisma.StringWithAggregatesFilter<"Area"> | string
+  color?: Prisma.StringWithAggregatesFilter<"Area"> | string
 }
 
 export type AreaCreateInput = {
   name: string
+  color: string
   disciplines?: Prisma.DisciplineCreateNestedManyWithoutAreaInput
 }
 
 export type AreaUncheckedCreateInput = {
   id?: number
   name: string
+  color: string
   disciplines?: Prisma.DisciplineUncheckedCreateNestedManyWithoutAreaInput
 }
 
 export type AreaUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
   disciplines?: Prisma.DisciplineUpdateManyWithoutAreaNestedInput
 }
 
 export type AreaUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
   disciplines?: Prisma.DisciplineUncheckedUpdateManyWithoutAreaNestedInput
 }
 
 export type AreaCreateManyInput = {
   id?: number
   name: string
+  color: string
 }
 
 export type AreaUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AreaUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AreaScalarRelationFilter = {
@@ -279,6 +298,7 @@ export type AreaOrderByRelevanceInput = {
 export type AreaCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  color?: Prisma.SortOrder
 }
 
 export type AreaAvgOrderByAggregateInput = {
@@ -288,11 +308,13 @@ export type AreaAvgOrderByAggregateInput = {
 export type AreaMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  color?: Prisma.SortOrder
 }
 
 export type AreaMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
+  color?: Prisma.SortOrder
 }
 
 export type AreaSumOrderByAggregateInput = {
@@ -315,11 +337,13 @@ export type AreaUpdateOneRequiredWithoutDisciplinesNestedInput = {
 
 export type AreaCreateWithoutDisciplinesInput = {
   name: string
+  color: string
 }
 
 export type AreaUncheckedCreateWithoutDisciplinesInput = {
   id?: number
   name: string
+  color: string
 }
 
 export type AreaCreateOrConnectWithoutDisciplinesInput = {
@@ -340,11 +364,13 @@ export type AreaUpdateToOneWithWhereWithoutDisciplinesInput = {
 
 export type AreaUpdateWithoutDisciplinesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type AreaUncheckedUpdateWithoutDisciplinesInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   name?: Prisma.StringFieldUpdateOperationsInput | string
+  color?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -381,6 +407,7 @@ export type AreaCountOutputTypeCountDisciplinesArgs<ExtArgs extends runtime.Type
 export type AreaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   name?: boolean
+  color?: boolean
   disciplines?: boolean | Prisma.Area$disciplinesArgs<ExtArgs>
   _count?: boolean | Prisma.AreaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["area"]>
@@ -390,9 +417,10 @@ export type AreaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type AreaSelectScalar = {
   id?: boolean
   name?: boolean
+  color?: boolean
 }
 
-export type AreaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name", ExtArgs["result"]["area"]>
+export type AreaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "color", ExtArgs["result"]["area"]>
 export type AreaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   disciplines?: boolean | Prisma.Area$disciplinesArgs<ExtArgs>
   _count?: boolean | Prisma.AreaCountOutputTypeDefaultArgs<ExtArgs>
@@ -406,6 +434,7 @@ export type $AreaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     name: string
+    color: string
   }, ExtArgs["result"]["area"]>
   composites: {}
 }
@@ -778,6 +807,7 @@ export interface Prisma__AreaClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface AreaFieldRefs {
   readonly id: Prisma.FieldRef<"Area", 'Int'>
   readonly name: Prisma.FieldRef<"Area", 'String'>
+  readonly color: Prisma.FieldRef<"Area", 'String'>
 }
     
 
