@@ -4,7 +4,6 @@ import { Login } from './Pages/Login'
 import { Discipline } from './Pages/Discipline'
 import { Class } from './Pages/Class'
 import { Content } from './Pages/Content'
-import { ModalProvider } from './Providers/modalContext'
 import { ErrorPage } from './Pages/ErrorPage'
 import { History } from './Pages/History'
 
@@ -12,7 +11,6 @@ function App() {
 
   return (
     <>
-      <ModalProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Login />} />
@@ -24,7 +22,6 @@ function App() {
             <Route path="/erro" element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>
-      </ModalProvider>
     </>
   )
 }
