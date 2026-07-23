@@ -6,11 +6,13 @@ import { prisma } from "#infrastructure/lib/prisma.js";
 import { UserService } from "../User/UserService.js";
 import { PdfService } from "../Pdf/PdfService.js";
 import { CompetenceService } from "../Competence/CompetenceService.js";
+import { DisciplineService } from "../Discipline/DisciplineService.js";
 
 export class ClassService implements IClassService{
     constructor(
         private userService: UserService,
-        private competenceService: CompetenceService
+        private competenceService: CompetenceService,
+        private disciplineService: DisciplineService
     ) {}
     
     async create(payload: ClassDTO, userId: number): Promise<Class> {
@@ -32,6 +34,8 @@ export class ClassService implements IClassService{
                 }
             }
         });
+
+        await this.disciplineService.updateWorkLoad(disciplineId)
 
         await prisma.log.create({
             data:{
@@ -259,7 +263,7 @@ export class ClassService implements IClassService{
     async delete(id: number, userId: number): Promise<boolean> {
         // consults if user deleting the material is admin
         const isAdmin = await this.userService.isAdmin(userId)
-        const target = await prisma.class.delete({
+        const target = await prisma.class.findUnique({
             where:{
                 id: id
             },
@@ -272,7 +276,18 @@ export class ClassService implements IClassService{
         throw new Error("Class not Found!");
        }
 
-       await prisma.log.create({
+       await prisma.class.delete({
+            where:{
+                id: id
+            },
+            include: {
+                competences: true
+            }
+        });
+
+        await this.disciplineService.updateWorkLoad(target.disciplineId)
+
+        await prisma.log.create({
             data:{
                 action:"DELETED",
                 entityType: "Class",
@@ -343,6 +358,8 @@ export class ClassService implements IClassService{
                 ...(!isAdmin && { instructorId: userId })
             }
         });
+
+        await this.disciplineService.updateWorkLoad(updatedClass.disciplineId)
 
         // updates log last update
         const lastUpdate = log.updatedAt;
