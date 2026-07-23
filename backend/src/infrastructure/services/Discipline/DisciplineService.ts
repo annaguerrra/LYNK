@@ -112,6 +112,45 @@ export class DisciplineService implements IDisciplineService{
         return updatedData;
     }
 
+    // async duplicate(id: number): Promise<Discipline> {
+    //     const target = await prisma.discipline.findUnique({
+    //         where: {
+    //             id: id
+    //         },
+    //         include: {
+    //             materials: true,
+    //             competences: true,
+    //             classes: true,
+    //             exams: true
+    //         }
+    //     })
+
+    //     if(!target)
+    //         throw new Error("Discipline not found!")
+
+    //     const createdDiscipline = await prisma.discipline.create({
+    //         data: {
+    //             name: target.name,
+    //             workLoad: target.workLoad,
+    //             areaId: target.areaId,
+    //             materials: {
+    //                 create: target.materials.map(material => ({
+    //                     name: material.name,
+    //                     disciplineId: id,
+    //                     classId: material.classId
+    //                 }))
+    //             },
+    //             competences: {
+    //                 create: target.competences.map(competence => ({
+    //                     name: competence.name,
+    //                     createdAt: Date.now(),
+    //                     numOfClasses: competence.createdAt
+    //                 }))
+    //             }
+    //         }
+    //     })
+    // }
+
     async findAll(): Promise<findAllDTO[]> {
         // finds all disciplines and areas and competences connected to them
         const target = await prisma.discipline.findMany({

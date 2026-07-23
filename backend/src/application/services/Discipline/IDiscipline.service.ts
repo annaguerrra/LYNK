@@ -5,6 +5,7 @@ export interface IDisciplineService{
      // post
         create(payload: DisciplineDTO, userID: number): Promise<Discipline>;
         assignCompetence(payload: assignCompetencyDTO, userId:number): Promise<Discipline>;
+        duplicate(id: number): Promise<Discipline>
         // get
         findAll(): Promise<findAllDTO[]>;
         findOne(id: number): Promise<findOneDTO>;
@@ -16,5 +17,4 @@ export interface IDisciplineService{
         // put
         edit(payload: DisciplineDTO, disciplineID: number, userID: number):  Promise<editDisciplineDTO>;
         updateWorkLoad(id: number): Promise<Discipline>
-        //falta aplicar - quinta de manhã no senai
 }
