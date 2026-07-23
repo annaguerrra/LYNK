@@ -10,11 +10,13 @@ const router: Router = express.Router()
 const competenceController = new CompetenceController()
 
 router
+    // route to create competecy
     .post('/competency/create', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, competenceController.register.bind(competenceController))
+    // route to show all competencies
     .get('/competencies', competenceController.show.bind(competenceController))
-    // byname?
+    // route to edit a competency
     .put('/competency/edit/id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdate, competenceController.update.bind(competenceController))
+    // route to delete a competency
     .delete('/competency/delete/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), competenceController.delete.bind(competenceController))
 
 export default router
-// perguntar do byname

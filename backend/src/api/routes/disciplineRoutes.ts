@@ -10,12 +10,19 @@ const router: Router = express.Router()
 const disciplineController = new DisciplineController()
 
 router
+    // route to create discipline
    .post('/discipline/create', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, disciplineController.create.bind(disciplineController))
+    // route to show all disciplines
    .get('/disciplines', disciplineController.findAll.bind(disciplineController))
+    // route to show a discipline
    .get('/discipline/:id', disciplineController.findOne.bind(disciplineController))
+    // route to show all materials in a discipline
    .get('/discipline/:id/materials', disciplineController.viewMaterial.bind(disciplineController))
+    // route to show all competences in a discipline
    .get('/discipline/:id/competences', disciplineController.viewCompetences.bind(disciplineController))
+    // route to edit a discipline
    .put('/discipline/edit/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdate, disciplineController.edit.bind(disciplineController))
+    // route to assign competence to a discipline
    .put('/discipline/assigncompetence', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateCompetence, disciplineController.assignCompetence.bind(disciplineController))
    .delete('/discipline/delete/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), disciplineController.delete.bind(disciplineController))
 

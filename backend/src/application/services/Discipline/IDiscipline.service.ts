@@ -2,7 +2,7 @@ import { assignCompetencyDTO, DisciplineDTO, editDisciplineDTO, findAllDTO, find
 import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export interface IDisciplineService{
-     // post
+        // post
         create(payload: DisciplineDTO, userID: number): Promise<Discipline>;
         assignCompetence(payload: assignCompetencyDTO, userId:number): Promise<Discipline>;
         // get
@@ -16,5 +16,4 @@ export interface IDisciplineService{
         // put
         edit(payload: DisciplineDTO, disciplineID: number, userID: number):  Promise<editDisciplineDTO>;
         updateWorkLoad(id: number): Promise<Discipline>
-        //falta aplicar - quinta de manhã no senai
 }

@@ -1,3 +1,4 @@
+// used to create a discipline
 export interface DisciplineDTO{
     name: string
     workload: number
@@ -5,11 +6,13 @@ export interface DisciplineDTO{
     userID: number
 }
 
+// used to assign a competency to a discipline
 export interface assignCompetencyDTO{
     disciplineID: number
     competencyID: number
 }
 
+// response to findAll service
 export interface findAllDTO{
     name: string
     area:{
@@ -21,6 +24,7 @@ export interface findAllDTO{
     lastUpdate: Date | null;
 }
 
+// response to findOne service
 export interface findOneDTO{
     name: string;
     id: number;
@@ -34,6 +38,7 @@ export interface findOneDTO{
     lastUpdate?: Date;
 }
 
+// response to viewMaterials service 
 export interface viewMaterialsDTO{
     name: string;
     materials: {
@@ -41,6 +46,7 @@ export interface viewMaterialsDTO{
     }[];
 }
 
+// response to viewCompentences service 
 export interface viewCompetencesDTO{
     name: string;
     competences:{
@@ -49,6 +55,7 @@ export interface viewCompetencesDTO{
     }[];
 }
 
+// response to viewClasses service 
 export interface viewClassesDTO{
     name: string
     classes:{
@@ -56,6 +63,7 @@ export interface viewClassesDTO{
     }[];
 }
 
+// response to editDiscipline service 
 export interface editDisciplineDTO{
     name: string
     workload: number
