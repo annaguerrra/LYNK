@@ -11,7 +11,7 @@
 
 export const UserType = {
   ADMIN: 'ADMIN',
-  INSTRUTOR: 'INSTRUTOR',
+  INSTRUCTOR: 'INSTRUCTOR',
   STUDENT: 'STUDENT'
 } as const
 
@@ -20,7 +20,7 @@ export type UserType = (typeof UserType)[keyof typeof UserType]
 
 export const Specialties = {
   Digital: 'Digital',
-  Elotronics: 'Elotronics'
+  Eletronics: 'Eletronics'
 } as const
 
 export type Specialties = (typeof Specialties)[keyof typeof Specialties]

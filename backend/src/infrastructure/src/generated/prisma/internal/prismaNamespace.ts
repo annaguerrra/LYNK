@@ -390,7 +390,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 
 export const ModelName = {
-  Instrutor: 'Instrutor',
+  Instructor: 'Instructor',
   Student: 'Student',
   Class: 'Class',
   Compentence: 'Compentence',
@@ -414,73 +414,73 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "instrutor" | "student" | "class" | "compentence" | "discipline" | "area" | "material" | "exam" | "log"
+    modelProps: "instructor" | "student" | "class" | "compentence" | "discipline" | "area" | "material" | "exam" | "log"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
-    Instrutor: {
-      payload: Prisma.$InstrutorPayload<ExtArgs>
-      fields: Prisma.InstrutorFieldRefs
+    Instructor: {
+      payload: Prisma.$InstructorPayload<ExtArgs>
+      fields: Prisma.InstructorFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.InstrutorFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstrutorPayload> | null
+          args: Prisma.InstructorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstructorPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.InstrutorFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstrutorPayload>
+          args: Prisma.InstructorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstructorPayload>
         }
         findFirst: {
-          args: Prisma.InstrutorFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstrutorPayload> | null
+          args: Prisma.InstructorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstructorPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.InstrutorFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstrutorPayload>
+          args: Prisma.InstructorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstructorPayload>
         }
         findMany: {
-          args: Prisma.InstrutorFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstrutorPayload>[]
+          args: Prisma.InstructorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstructorPayload>[]
         }
         create: {
-          args: Prisma.InstrutorCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstrutorPayload>
+          args: Prisma.InstructorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstructorPayload>
         }
         createMany: {
-          args: Prisma.InstrutorCreateManyArgs<ExtArgs>
+          args: Prisma.InstructorCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         delete: {
-          args: Prisma.InstrutorDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstrutorPayload>
+          args: Prisma.InstructorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstructorPayload>
         }
         update: {
-          args: Prisma.InstrutorUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstrutorPayload>
+          args: Prisma.InstructorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstructorPayload>
         }
         deleteMany: {
-          args: Prisma.InstrutorDeleteManyArgs<ExtArgs>
+          args: Prisma.InstructorDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.InstrutorUpdateManyArgs<ExtArgs>
+          args: Prisma.InstructorUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         upsert: {
-          args: Prisma.InstrutorUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstrutorPayload>
+          args: Prisma.InstructorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InstructorPayload>
         }
         aggregate: {
-          args: Prisma.InstrutorAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateInstrutor>
+          args: Prisma.InstructorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInstructor>
         }
         groupBy: {
-          args: Prisma.InstrutorGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.InstrutorGroupByOutputType>[]
+          args: Prisma.InstructorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InstructorGroupByOutputType>[]
         }
         count: {
-          args: Prisma.InstrutorCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.InstrutorCountAggregateOutputType> | number
+          args: Prisma.InstructorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InstructorCountAggregateOutputType> | number
         }
       }
     }
@@ -1051,7 +1051,7 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const InstrutorScalarFieldEnum = {
+export const InstructorScalarFieldEnum = {
   id: 'id',
   name: 'name',
   createdAt: 'createdAt',
@@ -1063,7 +1063,7 @@ export const InstrutorScalarFieldEnum = {
   attachmentId: 'attachmentId'
 } as const
 
-export type InstrutorScalarFieldEnum = (typeof InstrutorScalarFieldEnum)[keyof typeof InstrutorScalarFieldEnum]
+export type InstructorScalarFieldEnum = (typeof InstructorScalarFieldEnum)[keyof typeof InstructorScalarFieldEnum]
 
 
 export const StudentScalarFieldEnum = {
@@ -1074,7 +1074,7 @@ export const StudentScalarFieldEnum = {
   password: 'password',
   userType: 'userType',
   course: 'course',
-  instrutorId: 'instrutorId',
+  instructorId: 'instructorId',
   attachmentId: 'attachmentId'
 } as const
 
@@ -1148,7 +1148,7 @@ export const LogScalarFieldEnum = {
   action: 'action',
   oldData: 'oldData',
   newData: 'newData',
-  instrutorId: 'instrutorId'
+  instructorId: 'instructorId'
 } as const
 
 export type LogScalarFieldEnum = (typeof LogScalarFieldEnum)[keyof typeof LogScalarFieldEnum]
@@ -1169,14 +1169,14 @@ export const JsonNullValueInput = {
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
-export const InstrutorOrderByRelevanceFieldEnum = {
+export const InstructorOrderByRelevanceFieldEnum = {
   name: 'name',
   username: 'username',
   password: 'password',
   attachmentId: 'attachmentId'
 } as const
 
-export type InstrutorOrderByRelevanceFieldEnum = (typeof InstrutorOrderByRelevanceFieldEnum)[keyof typeof InstrutorOrderByRelevanceFieldEnum]
+export type InstructorOrderByRelevanceFieldEnum = (typeof InstructorOrderByRelevanceFieldEnum)[keyof typeof InstructorOrderByRelevanceFieldEnum]
 
 
 export const StudentOrderByRelevanceFieldEnum = {
@@ -1416,7 +1416,7 @@ export interface PrismaClientOptions {
   omit?: GlobalOmitConfig
 }
 export type GlobalOmitConfig = {
-  instrutor?: Prisma.InstrutorOmit
+  instructor?: Prisma.InstructorOmit
   student?: Prisma.StudentOmit
   class?: Prisma.ClassOmit
   compentence?: Prisma.CompentenceOmit

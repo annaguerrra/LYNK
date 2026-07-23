@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -16,116 +16,163 @@ datasource db {
 
 enum UserType {
   ADMIN
-  INSTRUTOR
+  INSTRUCTOR
   STUDENT
 }
 
 enum Specialties {
   Digital
-  Elotronics
+  Eletronics
 }
 
-model Instrutor {
+enum Action {
+  CREATED
+  DELETED
+  UPDATED
+}
+
+enum EntityType {
+  Class
+  Compentence
+  Material
+  Instructor
+  Discipline
+  Area
+  Student
+  Exam
+  Admin
+}
+
+model Admin {
   id Int @default(autoincrement()) @id
-  name String
-  createdAt DateTime
-  username String
+  createdAt DateTime @default(now())
+  username String @unique
   password String
-  userType UserType @default(INSTRUTOR)
+  userType UserType @default(ADMIN)
   specialty Specialties
-  active Boolean
+  active Boolean @default(false)
+  attachmentId String?
 
   logs Log[]
-  students Student[]
-  attachmentId String
+}
+
+model Instructor {
+  id Int @default(autoincrement()) @id
+  createdAt DateTime @default(now())
+  username String @unique
+  password String
+  userType UserType @default(INSTRUCTOR)
+  specialty Specialties
+  active Boolean @default(false)
+  attachmentId String?
+
+  logs Log[]
 }
 
 model Student {
   id Int @default(autoincrement()) @id
-  name String
-  createdAt DateTime
-  username String
+  createdAt DateTime @default(now())
+  username String @unique
   password String
-  userType UserType @default(INSTRUTOR)
-  course String
-
-  areas Area[]
-  instrutorId Int
-  instrutor Instrutor @relation(fields: [instrutorId], references: [id])
-  attachmentId String
+  userType UserType @default(STUDENT)
+  active Boolean @default(true)
 }
 
 model Class {
   id Int @default(autoincrement()) @id
   name String
-  content String
-  createdAt DateTime
-
+  content String @db.Text
+  createdAt DateTime @default(now())
   disciplineId Int
-  discipline Discipline @relation(fields: [disciplineId], references: [id])
-  compentences Compentence[]
+  discipline Discipline @relation(fields: [disciplineId], references: [id], onDelete: Cascade)
+  competences Competence[] //n-n
   materials Material[]
 }
 
-model Compentence {
+model Competence {
   id Int @default(autoincrement()) @id
   name String
-  numOfHours Int
-  createdAt DateTime
+  numOfClasses Int @default(0)
+  createdAt DateTime @default(now())
 
-  classes Class[]
-  exams Exam[]
-  disciplines Discipline[]
+  classes Class[] //n-n
+  exams Exam[] //n-n
+  disciplines Discipline[] //n-n
 }
 
 model Discipline {
   id Int @default(autoincrement()) @id
   name String
-  createdAt DateTime
-
+  workLoad Int
   areaId Int
   area Area @relation(fields: [areaId], references: [id])
   materials Material[]
-  competences Compentence[]
-  classes Class[]
-  attachmentId String
+  competences Competence[] //n-n
+  classes Class[] //n-n
+  exams Exam[] //n-n
 }
 
 model Area {
   id Int @default(autoincrement()) @id
   name String
+  color String
+  //tem que fazer migrate
 
   disciplines Discipline[]
-  students Student[]
-  attachmentId String
 }
 
 model Material {
   id Int @default(autoincrement()) @id
   name String
+  attachments MaterialAttachment[]
 
   disciplineId Int
-  discipline Discipline @relation(fields: [disciplineId], references: [id])
+  discipline Discipline @relation(fields: [disciplineId], references: [id], onDelete: Cascade)
   classId Int
-  class Class @relation(fields: [classId], references: [id])
-  attachmentId String
+  class Class @relation(fields: [classId], references: [id], onDelete: Cascade)
 }
 
 model Exam {
   id Int @default(autoincrement()) @id
   name String
+  attachments ExamAttachment[]
 
-  compentences Compentence[]
-  attachmentId String
+  disciplineId Int
+  discipline Discipline @relation(fields: [disciplineId], references: [id])
+  competences Competence[]
 }
 
 model Log {
   id Int @default(autoincrement()) @id
-  updatedAt DateTime
-  action String
+  entityType EntityType
+  entityId Int
+  entityName String
+  action Action
+  updatedAt DateTime @default(now())
   oldData Json
   newData Json
+  instructorId Int?
+  adminId Int?
+  instructor Instructor? @relation(fields: [instructorId], references: [id])
+  admin Admin? @relation(fields: [adminId], references: [id])
+}
 
-  instrutorId Int
-  instrutor Instrutor @relation(fields: [instrutorId], references: [id])
+model ExamAttachment {
+  id Int @id @default(autoincrement())
+  examId Int
+  attachmentId String
+
+  exam Exam @relation(fields: [examId], references: [id], onDelete: Cascade)
+
+  @@index([examId])
+}
+
+model MaterialAttachment {
+  id Int @id @default(autoincrement())
+  materialId Int
+  attachmentId String
+
+  material Material @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  
+  @@index([materialId])
 }

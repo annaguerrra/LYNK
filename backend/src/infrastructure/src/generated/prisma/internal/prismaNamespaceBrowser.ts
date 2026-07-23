@@ -49,7 +49,7 @@ export const AnyNull = runtime.objectEnumValues.instances.AnyNull
 
 
 export const ModelName = {
-  Instrutor: 'Instrutor',
+  Instructor: 'Instructor',
   Student: 'Student',
   Class: 'Class',
   Compentence: 'Compentence',
@@ -76,7 +76,7 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const InstrutorScalarFieldEnum = {
+export const InstructorScalarFieldEnum = {
   id: 'id',
   name: 'name',
   createdAt: 'createdAt',
@@ -88,7 +88,7 @@ export const InstrutorScalarFieldEnum = {
   attachmentId: 'attachmentId'
 } as const
 
-export type InstrutorScalarFieldEnum = (typeof InstrutorScalarFieldEnum)[keyof typeof InstrutorScalarFieldEnum]
+export type InstructorScalarFieldEnum = (typeof InstructorScalarFieldEnum)[keyof typeof InstructorScalarFieldEnum]
 
 
 export const StudentScalarFieldEnum = {
@@ -99,7 +99,7 @@ export const StudentScalarFieldEnum = {
   password: 'password',
   userType: 'userType',
   course: 'course',
-  instrutorId: 'instrutorId',
+  instructorId: 'instructorId',
   attachmentId: 'attachmentId'
 } as const
 
@@ -173,7 +173,7 @@ export const LogScalarFieldEnum = {
   action: 'action',
   oldData: 'oldData',
   newData: 'newData',
-  instrutorId: 'instrutorId'
+  instructorId: 'instructorId'
 } as const
 
 export type LogScalarFieldEnum = (typeof LogScalarFieldEnum)[keyof typeof LogScalarFieldEnum]
@@ -194,14 +194,14 @@ export const JsonNullValueInput = {
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
-export const InstrutorOrderByRelevanceFieldEnum = {
+export const InstructorOrderByRelevanceFieldEnum = {
   name: 'name',
   username: 'username',
   password: 'password',
   attachmentId: 'attachmentId'
 } as const
 
-export type InstrutorOrderByRelevanceFieldEnum = (typeof InstrutorOrderByRelevanceFieldEnum)[keyof typeof InstrutorOrderByRelevanceFieldEnum]
+export type InstructorOrderByRelevanceFieldEnum = (typeof InstructorOrderByRelevanceFieldEnum)[keyof typeof InstructorOrderByRelevanceFieldEnum]
 
 
 export const StudentOrderByRelevanceFieldEnum = {

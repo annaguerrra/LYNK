@@ -29,8 +29,8 @@ export * from "./enums.js"
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Instrutors
- * const instrutors = await prisma.instrutor.findMany()
+ * // Fetch zero or more Instructors
+ * const instructors = await prisma.instructor.findMany()
  * ```
  * 
  * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
@@ -42,13 +42,13 @@ export { Prisma }
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node")
-path.join(process.cwd(), "src/generated/prisma/query_engine-windows.dll.node")
+path.join(process.cwd(), "src/infrastructure/src/generated/prisma/query_engine-windows.dll.node")
 
 /**
- * Model Instrutor
+ * Model Instructor
  * 
  */
-export type Instrutor = Prisma.InstrutorModel
+export type Instructor = Prisma.InstructorModel
 /**
  * Model Student
  * 
