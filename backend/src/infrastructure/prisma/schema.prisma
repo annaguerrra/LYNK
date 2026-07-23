@@ -1,0 +1,131 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserType {
+  ADMIN
+  INSTRUTOR
+  STUDENT
+}
+
+enum Specialties {
+  Digital
+  Elotronics
+}
+
+model Instrutor {
+  id Int @default(autoincrement()) @id
+  name String
+  createdAt DateTime
+  username String
+  password String
+  userType UserType @default(INSTRUTOR)
+  specialty Specialties
+  active Boolean
+
+  logs Log[]
+  students Student[]
+  attachmentId String
+}
+
+model Student {
+  id Int @default(autoincrement()) @id
+  name String
+  createdAt DateTime
+  username String
+  password String
+  userType UserType @default(INSTRUTOR)
+  course String
+
+  areas Area[]
+  instrutorId Int
+  instrutor Instrutor @relation(fields: [instrutorId], references: [id])
+  attachmentId String
+}
+
+model Class {
+  id Int @default(autoincrement()) @id
+  name String
+  content String
+  createdAt DateTime
+
+  disciplineId Int
+  discipline Discipline @relation(fields: [disciplineId], references: [id])
+  compentences Compentence[]
+  materials Material[]
+}
+
+model Compentence {
+  id Int @default(autoincrement()) @id
+  name String
+  numOfHours Int
+  createdAt DateTime
+
+  classes Class[]
+  exams Exam[]
+  disciplines Discipline[]
+}
+
+model Discipline {
+  id Int @default(autoincrement()) @id
+  name String
+  createdAt DateTime
+
+  areaId Int
+  area Area @relation(fields: [areaId], references: [id])
+  materials Material[]
+  competences Compentence[]
+  classes Class[]
+  attachmentId String
+}
+
+model Area {
+  id Int @default(autoincrement()) @id
+  name String
+
+  disciplines Discipline[]
+  students Student[]
+  attachmentId String
+}
+
+model Material {
+  id Int @default(autoincrement()) @id
+  name String
+
+  disciplineId Int
+  discipline Discipline @relation(fields: [disciplineId], references: [id])
+  classId Int
+  class Class @relation(fields: [classId], references: [id])
+  attachmentId String
+}
+
+model Exam {
+  id Int @default(autoincrement()) @id
+  name String
+
+  compentences Compentence[]
+  attachmentId String
+}
+
+model Log {
+  id Int @default(autoincrement()) @id
+  updatedAt DateTime
+  action String
+  oldData Json
+  newData Json
+
+  instrutorId Int
+  instrutor Instrutor @relation(fields: [instrutorId], references: [id])
+}
