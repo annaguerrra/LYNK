@@ -112,44 +112,96 @@ export class DisciplineService implements IDisciplineService{
         return updatedData;
     }
 
-    // async duplicate(id: number): Promise<Discipline> {
-    //     const target = await prisma.discipline.findUnique({
-    //         where: {
-    //             id: id
-    //         },
-    //         include: {
-    //             materials: true,
-    //             competences: true,
-    //             classes: true,
-    //             exams: true
-    //         }
-    //     })
+    async duplicate(id: number, userId: number): Promise<Discipline> {
+        // consults if user updating the discipline is admin
+        const isAdmin = await this.userService.isAdmin(userId)
+        // finds discipline to be duplicated in including all relations
+        const target = await prisma.discipline.findUnique({
+            where: {
+                id: id
+            },
+            include: {
+                materials: true,
+                competences: true,
+                classes: true,
+                exams: {
+                    include: {
+                        attachments: true
+                    }
+                }
+            }
+        })
 
-    //     if(!target)
-    //         throw new Error("Discipline not found!")
+        if(!target)
+            throw new Error("Discipline not found!")
 
-    //     const createdDiscipline = await prisma.discipline.create({
-    //         data: {
-    //             name: target.name,
-    //             workLoad: target.workLoad,
-    //             areaId: target.areaId,
-    //             materials: {
-    //                 create: target.materials.map(material => ({
-    //                     name: material.name,
-    //                     disciplineId: id,
-    //                     classId: material.classId
-    //                 }))
-    //             },
-    //             competences: {
-    //                 create: target.competences.map(competence => ({
-    //                     name: competence.name,
-    //                     createdAt: Date.now(),
-    //                     numOfClasses: competence.createdAt
-    //                 }))
-    //             }
-    //         }
-    //     })
-    // }
+        try {
+            // creates a new discipline using target data
+            // uses new discipline id to build relations
+            const createdDiscipline = await prisma.discipline.create({
+                data: {
+                    name: target.name,
+                    workLoad: target.workLoad,
+                    areaId: target.areaId,
+                    materials: {
+                        create: target.materials.map(material => ({
+                            name: material.name,
+                            disciplineId: id,
+                            classId: material.classId
+                        }))
+                    },
+                    competences: {
+                        create: target.competences.map(competence => ({
+                            name: competence.name,
+                            numOfClasses: competence.numOfClasses
+                        }))
+                    },
+                    classes: {
+                        create: target.classes.map(item => ({
+                            name: item.name,
+                            disciplineId: id,
+                            content: item.content
+                        }))
+                    },
+                    exams: {
+                        create: target.exams.map(exam => ({
+                            name: exam.name,
+                            disciplineId: id,
+                            // only duplicates attachments reference to the new disciplne
+                            // the files at mongodb are not duplicated
+                            attachments: {
+                                create: exam.attachments.map(attachment => ({
+                                    attachmentId: attachment.attachmentId
+                                }))
+                            }
+                        }))
+                    }
+                }
+            })
+    
+            await prisma.log.create({
+                data: {
+                    action: "CREATED",
+                    entityType: "Discipline",
+                    entityId: createdDiscipline.id,
+                    entityName: createdDiscipline.name,
+                    oldData: {},
+                    updatedAt: new Date(),
+                    newData: {
+                        ...createdDiscipline
+                    },
+                    // uses isAdmin variable to determin if log registers an admin ou an instructor
+                    ...(isAdmin && { adminId: userId }),
+                    ...(!isAdmin && { instructorId: userId })
+                }
+            })
+    
+            return createdDiscipline
+
+        } catch(e) {
+            throw e
+        }
+    }
 
     async findAll(): Promise<findAllDTO[]> {
         // finds all disciplines and areas and competences connected to them

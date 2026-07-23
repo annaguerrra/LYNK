@@ -11,6 +11,7 @@ const disciplineController = new DisciplineController()
 
 router
    .post('/discipline/create', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, disciplineController.create.bind(disciplineController))
+   .post('/discipline/:id/duplicate', authorize(UserType.ADMIN, UserType.INSTRUCTOR), disciplineController.duplicateDiscipline.bind(disciplineController))
    .get('/disciplines', disciplineController.findAll.bind(disciplineController))
    .get('/discipline/:id', disciplineController.findOne.bind(disciplineController))
    .get('/discipline/:id/materials', disciplineController.viewMaterial.bind(disciplineController))

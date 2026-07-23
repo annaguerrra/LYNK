@@ -2,10 +2,10 @@ import { assignCompetencyDTO, DisciplineDTO, editDisciplineDTO, findAllDTO, find
 import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export interface IDisciplineService{
-     // post
+        // post
         create(payload: DisciplineDTO, userID: number): Promise<Discipline>;
         assignCompetence(payload: assignCompetencyDTO, userId:number): Promise<Discipline>;
-        duplicate(id: number): Promise<Discipline>
+        duplicate(id: number, userId: number): Promise<Discipline>
         // get
         findAll(): Promise<findAllDTO[]>;
         findOne(id: number): Promise<findOneDTO>;

@@ -29,6 +29,22 @@ export class DisciplineController{
             return res.status(500).send({response: e});
         }
     }
+    
+    // POST
+    // duplicates a discipline
+    async duplicateDiscipline(req: Request, res: Response){
+        const { id } = req.params
+        // variable used to get userId from request
+        // will be used in service to register who was responsible for the action
+        const userid = req.user.userId
+
+        try {
+            await this.disciplineService.duplicate(Number(id), userid)
+            return res.status(200).send({response: "Discipline duplicated!"})
+        } catch (e) {
+            return res.status(500).send({response: e})
+        }
+    }
 
     // PUT
     // assign competence to a discipline
