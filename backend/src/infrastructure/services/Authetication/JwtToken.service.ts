@@ -9,8 +9,9 @@ export class JwtTokenService implements IJwtTokenService {
     constructor(){
         const secret = process.env.JWT_SECRET;
 
-        if(!secret) throw new Error("JWT Error");
-        
+        if(!secret) {
+            throw new Error("JWT Error");
+        }
         this.secret = secret;
         this.expiresIn = "4h"
     }

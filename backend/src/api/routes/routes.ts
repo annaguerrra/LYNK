@@ -13,7 +13,7 @@ import userRoutes from './userRoutes.js'
 export default function (app: Express) {
     app
         .use(express.json())
-
+        
         .use('/lynk', areaRoutes)
         .use('/lynk', classRoutes)
         .use('/lynk', competenceRoutes)
