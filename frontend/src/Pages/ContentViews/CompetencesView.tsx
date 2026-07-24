@@ -54,29 +54,14 @@ export function CompetencesView({ competences }) {
                         button={true}
                         actions={
                             <>
-                                <MoreOpt size={22} data={options} />
+                                {isAdmin || isInstructor &&
+                                    <MoreOpt size={22} data={options} />
+                                }
                             </>
                         }>
                         <span>{competence.name}</span>
                     </RowItem>
-                ))}
-                <RowItem
-                    onClick={() => setOpenCompetenceModal(true)}
-                    color="var(--acqua)"
-                    size="--medium"
-                    button={true}
-                    actions={
-                        <>
-                        {isAdmin || isInstructor &&
-                            <MoreOpt size={22} data={options} />
-                        }
-                        </>
-                    }>
-
-                    <span>Instalar as bibliotecas necessárias para o projeto</span>
-                    
-
-                </RowItem>
+                ))}              
             </div>
 
             {/* Modal to open the details about a competence
