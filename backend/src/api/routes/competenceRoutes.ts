@@ -12,9 +12,7 @@ const competenceController = new CompetenceController()
 router
     .post('/competency/create', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, competenceController.register.bind(competenceController))
     .get('/competencies', competenceController.show.bind(competenceController))
-    // byname?
-    .put('/competency/edit/id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdate, competenceController.update.bind(competenceController))
+    .put('/competency/edit/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdate, competenceController.update.bind(competenceController))
     .delete('/competency/delete/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), competenceController.delete.bind(competenceController))
 
 export default router
-// perguntar do byname
