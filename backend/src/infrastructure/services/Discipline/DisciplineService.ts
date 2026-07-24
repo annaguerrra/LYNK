@@ -3,10 +3,18 @@ import { IDisciplineService } from "#application/services/Discipline/IDiscipline
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
 import { UserService } from "#infrastructure/services/User/UserService.js"
+import { ClassService } from "../Class/ClassService.js";
+import { CompetenceService } from "../Competence/CompetenceService.js";
+import { ExamService } from "../Exam/ExamService.js";
+import { MaterialService } from "../Material/MaterialService.js";
 
 export class DisciplineService implements IDisciplineService{
     constructor(
-        private userService: UserService
+        private userService: UserService,
+        private classService: ClassService,
+        private examService: ExamService,
+        private competenceService: CompetenceService,
+        private materialService: MaterialService
     ) {}
 
     async create(payload: DisciplineDTO, userID: number): Promise<Discipline> {
@@ -110,6 +118,97 @@ export class DisciplineService implements IDisciplineService{
         })
 
         return updatedData;
+    }
+
+    async duplicate(id: number, userId: number): Promise<Discipline> {
+        // consults if user updating the discipline is admin
+        const isAdmin = await this.userService.isAdmin(userId)
+        // finds discipline to be duplicated in including all relations
+        const target = await prisma.discipline.findUnique({
+            where: {
+                id: id
+            },
+            include: {
+                materials: true,
+                competences: true,
+                classes: true,
+                exams: {
+                    include: {
+                        attachments: true
+                    }
+                }
+            }
+        })
+
+        if(!target)
+            throw new Error("Discipline not found!")
+
+        try {
+            // creates a new discipline using target data
+            // uses new discipline id to build relations
+            const createdDiscipline = await prisma.discipline.create({
+                data: {
+                    name: target.name,
+                    workLoad: target.workLoad,
+                    areaId: target.areaId,
+                    materials: {
+                        create: target.materials.map(material => ({
+                            name: material.name,
+                            disciplineId: id,
+                            classId: material.classId
+                        }))
+                    },
+                    competences: {
+                        create: target.competences.map(competence => ({
+                            name: competence.name,
+                            numOfClasses: competence.numOfClasses
+                        }))
+                    },
+                    classes: {
+                        create: target.classes.map(item => ({
+                            name: item.name,
+                            disciplineId: id,
+                            content: item.content
+                        }))
+                    },
+                    exams: {
+                        create: target.exams.map(exam => ({
+                            name: exam.name,
+                            disciplineId: id,
+                            // only duplicates attachments reference to the new disciplne
+                            // the files at mongodb are not duplicated
+                            attachments: {
+                                create: exam.attachments.map(attachment => ({
+                                    attachmentId: attachment.attachmentId
+                                }))
+                            }
+                        }))
+                    }
+                }
+            })
+    
+            await prisma.log.create({
+                data: {
+                    action: "CREATED",
+                    entityType: "Discipline",
+                    entityId: createdDiscipline.id,
+                    entityName: createdDiscipline.name,
+                    oldData: {},
+                    updatedAt: new Date(),
+                    newData: {
+                        ...createdDiscipline
+                    },
+                    // uses isAdmin variable to determin if log registers an admin ou an instructor
+                    ...(isAdmin && { adminId: userId }),
+                    ...(!isAdmin && { instructorId: userId })
+                }
+            })
+    
+            return createdDiscipline
+
+        } catch(e) {
+            throw e
+        }
     }
 
     async findAll(): Promise<findAllDTO[]> {
@@ -293,7 +392,17 @@ export class DisciplineService implements IDisciplineService{
         // consults if user deleting the discipline is admin
         const admin = await this.userService.isAdmin(userId)
 
-        const target = await prisma.discipline.findUnique({ where: { id: disciplineID }});
+        const target = await prisma.discipline.findUnique({ 
+            where: { 
+                id: disciplineID 
+            },
+            include: {
+                classes: true,
+                exams: true,
+                competences: true,
+                materials: true
+            }
+        });
 
         if(!target)
             throw new Error("Discipline not found!")
@@ -304,6 +413,11 @@ export class DisciplineService implements IDisciplineService{
                     id: disciplineID
                 }
             });
+
+            await this.classService.deleteMany(target.classes.map(item => item.id))
+            await this.examService.deleteMany(target.exams.map(exam => exam.id))
+            await this.competenceService.deleteMany(target.competences.map(competence => competence.id))
+            await this.materialService.deleteMany(target.materials.map(material => material.id))
 
             await prisma.log.create({
                 data:{
@@ -325,6 +439,22 @@ export class DisciplineService implements IDisciplineService{
         } catch(error){
             throw new Error("Discipline not Found");
         }
+    }
+
+    async deleteMany(disciplinesId: number[]): Promise<boolean> {
+        try {
+            await prisma.discipline.deleteMany({
+                where: {
+                    id: {
+                        in: disciplinesId
+                    }
+                }
+            })
+
+        } catch (e) {
+            throw e
+        }
+        return true
     }
 
     async edit(payload: DisciplineDTO, disciplineID: number, userID: number): Promise<editDisciplineDTO> {

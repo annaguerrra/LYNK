@@ -7,12 +7,14 @@ import { UserService } from "../User/UserService.js";
 import { PdfService } from "../Pdf/PdfService.js";
 import { CompetenceService } from "../Competence/CompetenceService.js";
 import { DisciplineService } from "../Discipline/DisciplineService.js";
+import { MaterialService } from "../Material/MaterialService.js";
 
 export class ClassService implements IClassService{
     constructor(
         private userService: UserService,
         private competenceService: CompetenceService,
-        private disciplineService: DisciplineService
+        private disciplineService: DisciplineService,
+        private materialService: MaterialService
     ) {}
     
     async create(payload: ClassDTO, userId: number): Promise<Class> {
@@ -268,7 +270,8 @@ export class ClassService implements IClassService{
                 id: id
             },
             include: {
-                competences: true
+                competences: true,
+                materials: true
             }
         });
 
@@ -281,11 +284,13 @@ export class ClassService implements IClassService{
                 id: id
             },
             include: {
-                competences: true
+                competences: true,
+                materials: true
             }
         });
 
         await this.disciplineService.updateWorkLoad(target.disciplineId)
+        await this.materialService.deleteMany(target.materials.map(material => material.id))
 
         await prisma.log.create({
             data:{
@@ -310,6 +315,22 @@ export class ClassService implements IClassService{
         )
 
        return true;
+    }
+
+    async deleteMany(classesId: number[]): Promise<boolean> {
+        try {
+            await prisma.class.deleteMany({
+                where: {
+                    id: {
+                        in: classesId
+                    }
+                }
+            })
+
+        } catch (e) {
+            throw e
+        }
+        return true
     }
     
     async edit(payload: ClassDTO, id: number, userId: number): Promise<editClass> {

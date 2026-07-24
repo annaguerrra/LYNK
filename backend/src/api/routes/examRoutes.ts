@@ -12,9 +12,13 @@ const examController = new ExamController()
 router
     // creates an exam
     .post('/exam/create', validateRegister, authorize(UserType.ADMIN, UserType.INSTRUCTOR), examController.register.bind(examController))
+<<<<<<< HEAD
     // allows downloading an exam
     .get('/exams/download/:id/:examAttachmentId', examController.download.bind(examController))
     // returns all exams without any filter
+=======
+    .get('/exam/download/:id/:examAttachmentId', examController.download.bind(examController))
+>>>>>>> back
     .get('/exams', authorize(UserType.ADMIN, UserType.INSTRUCTOR), examController.showExams.bind(examController))
     // returns a specific exam by id
     .get('/exam/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), examController.getExam.bind(examController))

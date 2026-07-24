@@ -257,6 +257,22 @@ export class ExamService implements IExamService {
         return removedExam
     }
 
+    async deleteMany(examId: number[]): Promise<boolean> {
+        try {
+            await prisma.area.deleteMany({
+                where: {
+                    id: {
+                        in: examId
+                    }
+                }
+            })
+
+        } catch (e) {
+            throw e
+        }
+        return true
+    }
+
     async downloadExam(examId: number, examAttachmentId: number): Promise<DownloadedFile> {
         // search attchment to download
         const examAttachment = await prisma.examAttachment.findUnique({

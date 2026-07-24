@@ -54,8 +54,8 @@ export class ClassController {
     // finds all classes
     async findAll(req: Request, res: Response){
         try {
-            await this.classService.findAll()
-            return res.status(200).send({ response: "Success!"})
+            const classes = await this.classService.findAll()
+            return res.status(200).send({ response: classes })
         } catch (e) {
             return res.status(404).send({ response: "Class not found!" })
         }
@@ -66,8 +66,8 @@ export class ClassController {
     async findOne(req: Request, res: Response){
         const { id } = req.params
         try {
-            await this.classService.findOne(Number(id))
-            return res.status(200).send({ response: "Success!"})
+            const item = await this.classService.findOne(Number(id))
+            return res.status(200).send({ response: item })
         } catch (e) {
             return res.status(404).send({ response: "Class not found!" })
         }
@@ -78,8 +78,8 @@ export class ClassController {
     async viewMaterials(req: Request, res: Response){
         const { classId } = req.params
         try {
-            await this.classService.viewMaterials(Number(classId))
-            return res.status(200).send({ response: "Success!"})
+            const materials = await this.classService.viewMaterials(Number(classId))
+            return res.status(200).send({ response: materials })
         } catch (e) {
             return res.status(500).send({ response: e })
         }
@@ -90,8 +90,8 @@ export class ClassController {
     async viewCompetences(req: Request, res: Response){
         const { classId } = req.params
         try {
-            await this.classService.viewCompetences(Number(classId))
-            return res.status(200).send({ response: "Success!"})
+            const competences = await this.classService.viewCompetences(Number(classId))
+            return res.status(200).send({ response: competences })
         } catch (e) {
             return res.status(500).send({ response: e })
         }
@@ -102,8 +102,8 @@ export class ClassController {
     async viewContent(req: Request, res: Response){
         const { classId } = req.params
         try {
-            await this.classService.viewContent(Number(classId))
-            return res.status(200).send({ response: "Success!"})
+            const content = await this.classService.viewContent(Number(classId))
+            return res.status(200).send({ response: content })
         } catch (e) {
             return res.status(500).send({ response: e })
         }
@@ -114,8 +114,8 @@ export class ClassController {
     async downloadContent(req: Request, res: Response){
         const { classId } = req.params
         try {
-            await this.classService.downloadContent(Number(classId))
-            return res.status(200).send({ response: "Success!"})
+            const downloadedContent = await this.classService.downloadContent(Number(classId))
+            return res.status(200).send({ response: downloadedContent })
         } catch (e) {
             return res.status(500).send({ response: e })
         }

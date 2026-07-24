@@ -9,5 +9,6 @@ export interface IExamService {
     getExamById(id: number): Promise<Exam>
     updateExam(id: number, data: updateExamDTO, userId: number): Promise<Exam>
     removeExam(id: number, userId: number): Promise<Exam>
+    deleteMany(examsId: number[]): Promise<boolean>
     downloadExam(examId: number, examAttachmentId: number): Promise<DownloadedFile>
 }

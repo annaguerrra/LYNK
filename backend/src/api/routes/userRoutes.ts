@@ -1,6 +1,8 @@
 import UserController from "#api/controllers/UserController.js" 
+import { authMiddleware } from "#api/middleware/authMiddleware.js";
 import { authorize } from "#api/middleware/authorize.js";
 import { validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent } from "#api/middleware/userMiddleware.js";
+import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { UserType } from "#infrastructure/src/generated/prisma/enums.js";
 import { Router } from 'express';
 import express from 'express';
@@ -8,11 +10,10 @@ import express from 'express';
 const router: Router = express.Router();
 
 const userController = new UserController();
+const jwt = new JwtTokenService()
 
 router
-    // creates an user
-    .post('/user/create', validateRegister, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.register.bind(userController))
-    // login an existent user
+    .post('/user/create', validateRegister, authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.register.bind(userController))
     .post('/login', userController.login.bind(userController))
 
     // returns all the students registered without any filter
@@ -35,8 +36,8 @@ router
     .put('/user/updateInst/:id', validateUpdateInstructor, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateInstructor.bind(userController))
     // allows update informations of a specific admin by id
     .put('/user/updateAdmin/:id', validateUpdateAdmin, authorize(UserType.ADMIN), userController.updateAdmin.bind(userController))
-    
-    // deletes an user by id
+    .put('/user/change-password', validateRegister, authMiddleware, userController.changePassword.bind(userController))
+
     .delete('/user/deleteStud/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
     // deletes an instructor by id
     .delete('/user/deleteInst/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteInstructor.bind(userController))

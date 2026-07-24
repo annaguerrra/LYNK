@@ -51,6 +51,8 @@ model Admin {
   userType UserType @default(ADMIN)
   specialty Specialties
   active Boolean @default(false)
+  updatedPasswordAt DateTime
+  firstAccess Boolean @default(true)
   attachmentId String?
 
   logs Log[]
@@ -64,6 +66,8 @@ model Instructor {
   userType UserType @default(INSTRUCTOR)
   specialty Specialties
   active Boolean @default(false)
+  updatedPasswordAt DateTime
+  firstAccess Boolean @default(true)
   attachmentId String?
 
   logs Log[]
@@ -76,6 +80,8 @@ model Student {
   password String
   userType UserType @default(STUDENT)
   active Boolean @default(true)
+  updatedPasswordAt DateTime
+  firstAccess Boolean @default(true)
 }
 
 model Class {
@@ -85,7 +91,7 @@ model Class {
   createdAt DateTime @default(now())
   disciplineId Int
   discipline Discipline @relation(fields: [disciplineId], references: [id], onDelete: Cascade)
-  competences Competence[] //n-n
+  competences Competence[]
   materials Material[]
 }
 
@@ -116,7 +122,6 @@ model Area {
   id Int @default(autoincrement()) @id
   name String
   color String
-  //tem que fazer migrate
 
   disciplines Discipline[]
 }

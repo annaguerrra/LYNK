@@ -12,11 +12,11 @@ const disciplineController = new DisciplineController()
 router
     // route to create discipline
    .post('/discipline/create', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, disciplineController.create.bind(disciplineController))
-    // route to show all disciplines
+   .post('/discipline/:id/duplicate', authorize(UserType.ADMIN, UserType.INSTRUCTOR), disciplineController.duplicateDiscipline.bind(disciplineController))
    .get('/disciplines', disciplineController.findAll.bind(disciplineController))
     // route to show a discipline
    .get('/discipline/:id', disciplineController.findOne.bind(disciplineController))
-    // route to show all materials in a discipline
+   .get('/discipline/:id/classes', disciplineController.viewClasses.bind(disciplineController))
    .get('/discipline/:id/materials', disciplineController.viewMaterial.bind(disciplineController))
     // route to show all competences in a discipline
    .get('/discipline/:id/competences', disciplineController.viewCompetences.bind(disciplineController))

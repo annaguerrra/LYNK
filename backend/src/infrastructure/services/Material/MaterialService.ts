@@ -224,6 +224,22 @@ export class MaterialService implements IMaterialService {
         return true
     }
 
+    async deleteMany(materialId: number[]): Promise<boolean> {
+        try {
+            await prisma.area.deleteMany({
+                where: {
+                    id: {
+                        in: materialId
+                    }
+                }
+            })
+
+        } catch (e) {
+            throw e
+        }
+        return true
+    }
+
     async attachtFile(data: attachtFileDTO, userId: number): Promise<Material> {
         // consults if user updating the material is admin
         const isAdmin = await this.userService.isAdmin(userId)

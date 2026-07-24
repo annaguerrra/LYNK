@@ -1,11 +1,12 @@
-import { loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
+import { changePasswordDTO, loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { IUserService } from "#application/services/User/IUser.service.js";
-import { Student, Instructor, Admin } from "#infrastructure/prisma/generated/prisma/client.js";
+import { Student, Instructor, Admin, UserType } from "#infrastructure/prisma/generated/prisma/client.js";
 import { Error } from "mongoose";
 import { prisma } from "../../lib/prisma.js";
 import { AttachmentService } from "../Attachment/AttachmentService.js";
 import { HashService } from "../Authetication/Hash.service.js";
 import { JwtTokenService } from "../Authetication/JwtToken.service.js";
+import { use } from "marked";
 
 export class UserService implements IUserService {
     constructor(
@@ -13,7 +14,7 @@ export class UserService implements IUserService {
         private hashService: HashService,
         private jwtTokenService: JwtTokenService
     ) {}
-
+    
     // identifies wheter the user is an admin or not by searching its id on admin table
     async isAdmin(userId: number): Promise<boolean> {
         const admin = await prisma.admin.findUnique({
@@ -21,22 +22,24 @@ export class UserService implements IUserService {
                 id: userId
             }
         })
-
+        
         if(!admin)
             return false
-
+        
         return true
     }
-
+    
     // creates a new student and register it in log table
     async registerStudent(data: registerStudentDTO, userId: number): Promise<Student> {
         const { username, password, userType } = data
         const isAdmin = await this.isAdmin(userId) 
 
-        const createdUser = await prisma.student.create({
-            data: { username, password, userType } 
-        })
+        const hashedPassword = await this.hashService.hash(data.password);
 
+        const createdUser = await prisma.student.create({
+            data: { username, password: hashedPassword, userType } 
+        })
+        
         await prisma.log.create({
             data: {
                 action: "CREATED",
@@ -51,18 +54,20 @@ export class UserService implements IUserService {
                 ...(!isAdmin && { instructorId: userId })
             }
         })
-
+        
         return createdUser
     }
-
+    
     // creates a new instructor and registers in the log table
     async registerInstructor(data: registerInstructorDTO, userId: number): Promise<Instructor> {
         const { username, password, userType, specialty } = data
+        
+        const hashedPassword = await this.hashService.hash(data.password);
 
         const createdUser = await prisma.instructor.create({
-            data: { username, password, userType, specialty }
+            data: { username, password: hashedPassword, userType, specialty } 
         })
-
+        
         await prisma.log.create({
             data: {
                 action: "CREATED",
@@ -76,19 +81,21 @@ export class UserService implements IUserService {
                 adminId: userId                    
             }
         })
-
+        
         return createdUser
-
+        
     }
-
+    
     // creates a new admin and registers in the log table
     async registerAdmin(data: registerAdminDTO, userId: number): Promise<Admin> {
         const { username, password, userType, specialty } = data
+        
+        const hashedPassword = await this.hashService.hash(data.password);
 
         const createdUser = await prisma.admin.create({
-            data: { username, password, userType, specialty }
+            data: { username, password: hashedPassword, userType, specialty } 
         })
-
+        
         await prisma.log.create({
             data: {
                 action: "CREATED",
@@ -102,46 +109,49 @@ export class UserService implements IUserService {
                 adminId: userId
             }
         })
-
+        
         return createdUser
-
+        
     }
-
+    
     // login service. It does multiple searchs at same time, it tries to find the userId in user, admin and instructor
     async login(data: loginPayloadDTO): Promise<loginResponseDTO> {
         const { username } = data;
-
+        
+        // Searches for the user in all user tables
         const [student, instructor, admin] = await Promise.all([
             prisma.student.findUnique({
                 where: {
                     username: username
                 }
             }),
-
+            
             prisma.instructor.findUnique({
                 where:{
                     username: username
                 }
             }),
-
+            
             prisma.admin.findUnique({
                 where: {
                     username: username
                 }
             })
         ]);
-
+        
         let user;
-
-        // validates the search by verifying if the result aint null in each user table, then it gets all the necessary information
+        
+        // normalizes the found user into the same structure
         if(student){
             user = {
                 id: student.id,
                 username: student.username,
                 password: student.password,
                 userType: student.userType,
-                active: student.active
-               
+                active: student.active,
+                firstAccess: student.firstAccess,
+                updatedPasswordAt: student.updatePasswordAt
+                
             }
         }
         else if(instructor){
@@ -151,10 +161,12 @@ export class UserService implements IUserService {
                 password: instructor.password,
                 userType: instructor.userType,
                 specialty: instructor.specialty,
-                active: instructor.active
+                active: instructor.active,
+                firstAccess: instructor.firstAccess,
+                updatedPasswordAt: instructor.updatePasswordAt
             }
         }
-
+        
         else if(admin){
             user = {
                 id: admin.id,
@@ -162,32 +174,43 @@ export class UserService implements IUserService {
                 password: admin.password,
                 userType: admin.userType,
                 specialty: admin.specialty,
-                active: admin.active
+                active: admin.active,
+                firstAccess: admin.firstAccess,
+                updatedPasswordAt: admin.updatePasswordAt
             }
         }
         else {
             throw new Error("Invalid Username or Password");
         }
 
-        if(!user.active) {
+        if(!user.active && !user.firstAccess) {
             throw new Error("User Inactive.");
         }
 
-        // calls the hash service to compare the inputed data and the storaged data.
+        // // checks whether the user must change their password
+        const expirationDate = new Date();
+        expirationDate.setFullYear(expirationDate.getFullYear() - 1);
+        
+        const mustChangePassword = user.firstAccess || user.updatedPasswordAt < expirationDate;
+        
+        
+        // compares the provided password with the stored hashed password
+
         const comparison = await this.hashService.compare(data.password, user.password)
 
         if(!comparison) {
             throw new Error("Invalid Username or Password");
         }
-
-        // if thw passwords match, a jwt token will be generated
+        
+        // if the passwords match, a JWT token is generated
         const token = this.jwtTokenService.generate({
             userId: user.id, 
             usertype: user.userType
-        });
-
+        });    
+        
         return {
             token,
+            mustChangePassword: mustChangePassword,
             user:{
                 id: user.id,
                 username: user.username,
@@ -195,7 +218,150 @@ export class UserService implements IUserService {
             }
         };
     }
+    
+    async changePassword(data: changePasswordDTO, userId: number, userType: UserType): Promise<boolean> {
+        let user;
 
+        switch (userType) {
+            case UserType.STUDENT: {
+                const student = await prisma.student.findUnique({
+                    where: { id: userId }
+                });
+
+                if (student) {
+                    user = {
+                        id: student.id,
+                        password: student.password,
+                        userType: student.userType
+                    };
+                }
+                break;
+            }
+            case UserType.INSTRUCTOR: {
+                const instructor = await prisma.instructor.findUnique({
+                    where: { id: userId }
+                });
+
+                if (instructor) {
+                    user = {
+                        id: instructor.id,
+                        password: instructor.password,
+                        userType: instructor.userType
+                    };
+                }
+                break;
+            }
+            case UserType.ADMIN: {
+                const admin = await prisma.admin.findUnique({
+                    where: { id: userId }
+                });
+
+                if (admin) {
+                    user = {
+                        id: admin.id,
+                        password: admin.password,
+                        userType: admin.userType
+                    };
+                }
+                break;
+            }
+            default: 
+                throw new Error("User Not Found!");
+        }         
+
+        if(!user){
+            throw new Error("User Not Found!"); 
+        }
+        
+        const comparison = await this.hashService.compare(data.newPassword, user.password);
+
+        if(comparison){
+            throw new Error("Passwords do not match. Please, try again")
+        }
+        
+        if(user.password === data.newPassword){
+            throw new Error("Your new password cannot be the same as your old password. Try again")
+        }
+
+        const hashedPassword = await this.hashService.hash(data.newPassword);
+        
+        if(user.userType === UserType.STUDENT) {
+            await prisma.student.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    password: hashedPassword,
+                    active: true
+                }
+            });
+
+            await prisma.log.create({
+            data: {
+                action: "UPDATED",
+                entityId: user.id,
+                entityName: user.userType,
+                entityType: "Instructor",
+                newData: hashedPassword, 
+                oldData: data.oldPassword,
+                adminId: user.id,
+                updatedAt: new Date()
+                }
+            });
+
+        } 
+        else if(user.userType === UserType.INSTRUCTOR) {
+            await prisma.instructor.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    password: hashedPassword,
+                    active: true
+                }
+            });
+
+            await prisma.log.create({
+            data: {
+                action: "UPDATED",
+                entityId: user.id,
+                entityName: user.userType,
+                entityType: "Instructor",
+                newData: hashedPassword, 
+                oldData: data.oldPassword,
+                adminId: user.id,
+                updatedAt: new Date()
+                }
+            });
+
+        } else {
+            await prisma.admin.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    password: hashedPassword,
+                    active: true
+                }
+            });
+
+            await prisma.log.create({
+            data: {
+                action: "UPDATED",
+                entityId: user.id,
+                entityName: user.userType,
+                entityType: "Admin",
+                newData: hashedPassword, 
+                oldData: data.oldPassword,
+                adminId: user.id,
+                updatedAt: new Date()
+                }
+            });
+        }
+
+        return true;
+    }
+    
     // returns all the students/ instructors / admin registered on the database
     async showStudents(): Promise<Student[]> {
         return await prisma.student.findMany()
