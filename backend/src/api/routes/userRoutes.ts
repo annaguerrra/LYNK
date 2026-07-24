@@ -27,7 +27,8 @@ router
     .put('/user/updateStud/:id', validateUpdateStudent, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateStudent.bind(userController))
     .put('/user/updateInst/:id', validateUpdateInstructor, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateInstructor.bind(userController))
     .put('/user/updateAdmin/:id', validateUpdateAdmin, authorize(UserType.ADMIN), userController.updateAdmin.bind(userController))
-    
+    .put('/user/change-password', validateRegister, authMiddleware, userController.changePassword.bind(userController))
+
     .delete('/user/deleteStud/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
     .delete('/user/deleteInst/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteInstructor.bind(userController))
     .delete('/user/deleteAdmin/:id', authorize(UserType.ADMIN), userController.deleteAdmin.bind(userController));

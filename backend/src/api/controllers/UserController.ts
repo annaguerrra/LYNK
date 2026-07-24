@@ -1,4 +1,4 @@
-import { registerAdminDTO, registerInstructorDTO, registerStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
+import { changePasswordDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { UserType } from "#infrastructure/prisma/generated/prisma/enums.js";
 import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js";
 import { UserService } from "#infrastructure/services/User/UserService.js";
@@ -39,6 +39,7 @@ export default class UserController {
             return res.status(500).send({ response: e })
         }
     }
+
     // POST
     // receives the login data through request. Attempts to call the login service while passing the provided data
     async login(req: Request, res: Response) {
@@ -115,6 +116,23 @@ export default class UserController {
             return res.status(200).send({ response: admin })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
+        }
+    }
+
+    // PUT
+    // changes user's password. Used when the user makes the first access, expired password or when the user forgets the password. 
+    // UserId and usertype are from jwt token (middleware) and the new password from body request
+    async changePassword(req: Request, res: Response) {
+        const data: changePasswordDTO = req.body;
+        const userId = req.user.userId
+        const userType = req.user.usertype
+
+        try{
+            await this.userService.changePassword(data, userId, userType);
+            return res.status(200).send({response: "Password updated"});
+        } catch(e) {
+            console.log(e);
+            return res.status(500).send({ response: "Internal Server Error"});
         }
     }
 

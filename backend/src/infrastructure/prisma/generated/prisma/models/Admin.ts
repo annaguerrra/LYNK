@@ -341,7 +341,7 @@ export type AdminUncheckedCreateInput = {
 export type AdminUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   username?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string 
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   specialty?: Prisma.EnumSpecialtiesFieldUpdateOperationsInput | $Enums.Specialties
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean

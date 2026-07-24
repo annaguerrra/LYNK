@@ -216,7 +216,7 @@ export class UserService implements IUserService {
         };
     }
     
-    async changePassword(data: changePasswordDTO, userId: number, userType: UserType): Promise<changePasswordDTO> {
+    async changePassword(data: changePasswordDTO, userId: number, userType: UserType): Promise<boolean> {
         let user;
 
         switch (userType) {
@@ -280,10 +280,82 @@ export class UserService implements IUserService {
             throw new Error("Your new password cannot be the same as your old password. Try again")
         }
 
-        const hashedPassword = this.hashService.hash(data.newPassword);
+        const hashedPassword = await this.hashService.hash(data.newPassword);
         
+        if(user.userType === UserType.STUDENT) {
+            await prisma.student.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    password: hashedPassword
+                }
+            });
+
+            await prisma.log.create({
+            data: {
+                action: "UPDATED",
+                entityId: user.id,
+                entityName: user.userType,
+                entityType: "Instructor",
+                newData: hashedPassword, 
+                oldData: data.oldPassword,
+                adminId: user.id,
+                updatedAt: new Date()
+                }
+            });
+
+        } 
+        else if(user.userType === UserType.INSTRUCTOR) {
+            await prisma.instructor.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    password: hashedPassword
+                }
+            });
+
+            await prisma.log.create({
+            data: {
+                action: "UPDATED",
+                entityId: user.id,
+                entityName: user.userType,
+                entityType: "Instructor",
+                newData: hashedPassword, 
+                oldData: data.oldPassword,
+                adminId: user.id,
+                updatedAt: new Date()
+                }
+            });
+
+        } else {
+            await prisma.admin.update({
+                where: {
+                    id: user.id
+                },
+                data: {
+                    password: hashedPassword
+                }
+            });
+
+            await prisma.log.create({
+            data: {
+                action: "UPDATED",
+                entityId: user.id,
+                entityName: user.userType,
+                entityType: "Admin",
+                newData: hashedPassword, 
+                oldData: data.oldPassword,
+                adminId: user.id,
+                updatedAt: new Date()
+                }
+            });
+        }
+
         
 
+        return true;
     }
     // returns all the students/ instructors / admin registered on the database
     async showStudents(): Promise<Student[]> {

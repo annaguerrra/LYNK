@@ -6,7 +6,7 @@ export interface IUserService {
     registerInstructor(data: registerInstructorDTO, userId: number): Promise<Instructor>
     registerAdmin(data: registerAdminDTO, userId: number): Promise<Admin>
     login(data: loginPayloadDTO): Promise<loginResponseDTO>
-    changePassword( data: changePasswordDTO, userId: number, userType: UserType ): Promise<changePasswordDTO>
+    changePassword( data: changePasswordDTO, userId: number, userType: UserType ): Promise<boolean>
     showStudents(): Promise<Student[]>
     showInstructors(): Promise<Instructor[]>
     showAdmins(): Promise<Admin[]>
