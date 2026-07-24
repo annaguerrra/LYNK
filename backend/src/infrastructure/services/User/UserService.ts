@@ -118,6 +118,7 @@ export class UserService implements IUserService {
     async login(data: loginPayloadDTO): Promise<loginResponseDTO> {
         const { username } = data;
         
+        // Searches for the user in all user tables
         const [student, instructor, admin] = await Promise.all([
             prisma.student.findUnique({
                 where: {
@@ -140,7 +141,7 @@ export class UserService implements IUserService {
         
         let user;
         
-        // validates the search by verifying if the result aint null in each user table, then it gets all the necessary information
+        // normalizes the found user into the same structure
         if(student){
             user = {
                 id: student.id,
@@ -181,29 +182,31 @@ export class UserService implements IUserService {
         else {
             throw new Error("Invalid Username or Password");
         }
-        // Checks whether this is the user's first access and whether the password has expired. This defines if the user has to change their password
+
+        if(!user.active && !user.firstAccess) {
+            throw new Error("User Inactive.");
+        }
+
+        // // checks whether the user must change their password
         const expirationDate = new Date();
         expirationDate.setFullYear(expirationDate.getFullYear() - 1);
         
-        const mustChangePassword =
-        user.firstAccess || user.updatedPasswordAt < expirationDate;
+        const mustChangePassword = user.firstAccess || user.updatedPasswordAt < expirationDate;
         
-        if(!user.active) {
-            throw new Error("User Inactive.");
-        }
         
-        // calls the hash service to compare the inputed data and the storaged data.
+        // compares the provided password with the stored hashed password
+
         const comparison = await this.hashService.compare(data.password, user.password)
 
         if(!comparison) {
             throw new Error("Invalid Username or Password");
         }
         
-        // if thw passwords match, a jwt token will be generated
+        // if the passwords match, a JWT token is generated
         const token = this.jwtTokenService.generate({
             userId: user.id, 
             usertype: user.userType
-        });
+        });    
         
         return {
             token,
@@ -288,7 +291,8 @@ export class UserService implements IUserService {
                     id: user.id
                 },
                 data: {
-                    password: hashedPassword
+                    password: hashedPassword,
+                    active: true
                 }
             });
 
@@ -312,7 +316,8 @@ export class UserService implements IUserService {
                     id: user.id
                 },
                 data: {
-                    password: hashedPassword
+                    password: hashedPassword,
+                    active: true
                 }
             });
 
@@ -335,7 +340,8 @@ export class UserService implements IUserService {
                     id: user.id
                 },
                 data: {
-                    password: hashedPassword
+                    password: hashedPassword,
+                    active: true
                 }
             });
 
@@ -353,10 +359,9 @@ export class UserService implements IUserService {
             });
         }
 
-        
-
         return true;
     }
+    
     // returns all the students/ instructors / admin registered on the database
     async showStudents(): Promise<Student[]> {
         return await prisma.student.findMany()
