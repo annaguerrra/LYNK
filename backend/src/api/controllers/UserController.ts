@@ -1,4 +1,4 @@
-import { registerAdminDTO, registerInstructorDTO, registerStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
+import { changePasswordDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { UserType } from "#infrastructure/prisma/generated/prisma/enums.js";
 import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js";
 import { UserService } from "#infrastructure/services/User/UserService.js";
@@ -39,6 +39,7 @@ export default class UserController {
             return res.status(500).send({ response: e })
         }
     }
+
     // POST
     // receives the login data through request. Attempts to call the login service while passing the provided data
     async login(req: Request, res: Response) {
@@ -52,6 +53,7 @@ export default class UserController {
 
             return res.status(200).send({response: "Login Successfully"});
         } catch(e) {
+            console.log(e)
             return res.status(404).send({ response: "Failed to Login"});
         }
     }
@@ -60,8 +62,8 @@ export default class UserController {
     // get all the users registered in a specific user table
     async showStudents(req: Request, res: Response){
         try {
-            await this.userService.showStudents()
-            return res.status(200).send({ response: "Success!"})
+            const students = await this.userService.showStudents()
+            return res.status(200).send({ response: students })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }
@@ -69,8 +71,8 @@ export default class UserController {
 
     async showInstructors(req: Request, res: Response){
         try {
-            await this.userService.showInstructors()
-            return res.status(200).send({ response: "Success!"})
+            const instructors = await this.userService.showInstructors()
+            return res.status(200).send({ response: instructors })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }
@@ -78,8 +80,8 @@ export default class UserController {
 
     async showAdmins(req: Request, res: Response){
         try {
-            await this.userService.showAdmins()
-            return res.status(200).send({ response: "Success!"})
+            const admins = await this.userService.showAdmins()
+            return res.status(200).send({ response: admins })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }
@@ -90,8 +92,8 @@ export default class UserController {
     async showStudent(req: Request, res: Response){
         const { id } = req.params
         try {
-            await this.userService.showStudent(Number(id))
-            return res.status(200).send({ response: "Success!"})
+            const student = await this.userService.showStudent(Number(id))
+            return res.status(200).send({ response: student })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }
@@ -100,8 +102,8 @@ export default class UserController {
     async showInstructor(req: Request, res: Response){
         const { id } = req.params
         try {
-            await this.userService.showInstructor(Number(id))
-            return res.status(200).send({ response: "Success!"})
+            const instructor = await this.userService.showInstructor(Number(id))
+            return res.status(200).send({ response: instructor })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }
@@ -110,10 +112,27 @@ export default class UserController {
     async showAdmin(req: Request, res: Response){
         const { id } = req.params
         try {
-            await this.userService.showAdmin(Number(id))
-            return res.status(200).send({ response: "Success!"})
+            const admin = await this.userService.showAdmin(Number(id))
+            return res.status(200).send({ response: admin })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
+        }
+    }
+
+    // PUT
+    // changes user's password. Used when the user makes the first access, expired password or when the user forgets the password. 
+    // UserId and usertype are from jwt token (middleware) and the new password from body request
+    async changePassword(req: Request, res: Response) {
+        const data: changePasswordDTO = req.body;
+        const userId = req.user.userId
+        const userType = req.user.usertype
+
+        try{
+            await this.userService.changePassword(data, userId, userType);
+            return res.status(200).send({response: "Password updated"});
+        } catch(e) {
+            console.log(e);
+            return res.status(500).send({ response: "Internal Server Error"});
         }
     }
 

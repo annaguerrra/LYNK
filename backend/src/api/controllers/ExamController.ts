@@ -45,8 +45,8 @@ export default class ExamController{
     // get all the exams registered
     async showExams(req: Request, res: Response){
         try {
-            await this.examService.showExams()
-            return res.status(200).send({ response: "Success!"})
+            const exams = await this.examService.showExams()
+            return res.status(200).send({ response: exams })
         } catch (e) {
             return res.status(404).send({ response: "Exam not found!" })
         }
@@ -57,8 +57,8 @@ export default class ExamController{
     async getExam(req: Request, res: Response){
         const { id } = req.params
         try {
-            await this.examService.getExamById(Number(id))
-            return res.status(200).send({ response: "Success!"})
+            const exam = await this.examService.getExamById(Number(id))
+            return res.status(200).send({ response: exam })
         } catch (e) {
             return res.status(404).send({ response: "Exam not found" })
         }
@@ -70,8 +70,8 @@ export default class ExamController{
         const { id } = req.params
         const { examAttachmentId } = req.params
         try {
-            await this.examService.downloadExam(Number(id), Number(examAttachmentId))
-            return res.status(200).send({ response: "Success!"})
+            const downloadedExam = await this.examService.downloadExam(Number(id), Number(examAttachmentId))
+            return res.status(200).send({ response: downloadedExam })
         } catch (e) {
             return res.status(404).send({ response: "Exam not found!" })
         }

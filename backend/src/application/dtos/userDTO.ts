@@ -36,14 +36,24 @@ export interface loginPayloadDTO {
 // response to login
 export interface loginResponseDTO {
     token: string
+    mustChangePassword: boolean
     user:{
         id: number;
         username: string;
-        userType: UserType
+        userType: UserType;
     }
 }
 
+<<<<<<< HEAD
 // response to showStudent service
+=======
+export interface changePasswordDTO {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string
+}
+
+>>>>>>> back
 export interface showStudentDTO {
     username: string
     userType: UserType

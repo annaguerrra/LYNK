@@ -133,4 +133,20 @@ export class AreaService implements IAreaService{
 
         return true
     }
+
+    async deleteMany(areasId: number[]): Promise<boolean> {
+        try {
+            await prisma.area.deleteMany({
+                where: {
+                    id: {
+                        in: areasId
+                    }
+                }
+            })
+
+        } catch (e) {
+            throw e
+        }
+        return true
+    }
 }

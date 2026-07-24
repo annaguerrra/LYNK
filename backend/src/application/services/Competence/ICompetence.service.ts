@@ -8,4 +8,5 @@ export interface ICompetenceService {
     updateCompetence(id: number, data: updateCompetenceDTO, userId: number): Promise<Competence>
     updateNumOfClasses(id: number): Promise<Competence>
     deleteCompetence(id: number, userId: number): Promise<boolean>
+    deleteMany(competencesId: number[]): Promise<boolean>
 }

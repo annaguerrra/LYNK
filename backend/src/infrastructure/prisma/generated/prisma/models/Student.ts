@@ -41,6 +41,7 @@ export type StudentMinAggregateOutputType = {
   password: string | null
   userType: $Enums.UserType | null
   active: boolean | null
+  firstAccess: boolean | null
 }
 
 export type StudentMaxAggregateOutputType = {
@@ -50,6 +51,7 @@ export type StudentMaxAggregateOutputType = {
   password: string | null
   userType: $Enums.UserType | null
   active: boolean | null
+  firstAccess: boolean | null
 }
 
 export type StudentCountAggregateOutputType = {
@@ -59,6 +61,7 @@ export type StudentCountAggregateOutputType = {
   password: number
   userType: number
   active: number
+  firstAccess: number
   _all: number
 }
 
@@ -78,6 +81,7 @@ export type StudentMinAggregateInputType = {
   password?: true
   userType?: true
   active?: true
+  firstAccess?: true
 }
 
 export type StudentMaxAggregateInputType = {
@@ -87,6 +91,7 @@ export type StudentMaxAggregateInputType = {
   password?: true
   userType?: true
   active?: true
+  firstAccess?: true
 }
 
 export type StudentCountAggregateInputType = {
@@ -96,6 +101,7 @@ export type StudentCountAggregateInputType = {
   password?: true
   userType?: true
   active?: true
+  firstAccess?: true
   _all?: true
 }
 
@@ -192,6 +198,7 @@ export type StudentGroupByOutputType = {
   password: string
   userType: $Enums.UserType
   active: boolean
+  firstAccess: boolean
   _count: StudentCountAggregateOutputType | null
   _avg: StudentAvgAggregateOutputType | null
   _sum: StudentSumAggregateOutputType | null
@@ -224,6 +231,7 @@ export type StudentWhereInput = {
   password?: Prisma.StringFilter<"Student"> | string
   userType?: Prisma.EnumUserTypeFilter<"Student"> | $Enums.UserType
   active?: Prisma.BoolFilter<"Student"> | boolean
+  firstAccess?: Prisma.BoolFilter<"Student"> | boolean
 }
 
 export type StudentOrderByWithRelationInput = {
@@ -233,6 +241,7 @@ export type StudentOrderByWithRelationInput = {
   password?: Prisma.SortOrder
   userType?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  firstAccess?: Prisma.SortOrder
   _relevance?: Prisma.StudentOrderByRelevanceInput
 }
 
@@ -246,6 +255,7 @@ export type StudentWhereUniqueInput = Prisma.AtLeast<{
   password?: Prisma.StringFilter<"Student"> | string
   userType?: Prisma.EnumUserTypeFilter<"Student"> | $Enums.UserType
   active?: Prisma.BoolFilter<"Student"> | boolean
+  firstAccess?: Prisma.BoolFilter<"Student"> | boolean
 }, "id" | "username">
 
 export type StudentOrderByWithAggregationInput = {
@@ -255,6 +265,7 @@ export type StudentOrderByWithAggregationInput = {
   password?: Prisma.SortOrder
   userType?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  firstAccess?: Prisma.SortOrder
   _count?: Prisma.StudentCountOrderByAggregateInput
   _avg?: Prisma.StudentAvgOrderByAggregateInput
   _max?: Prisma.StudentMaxOrderByAggregateInput
@@ -272,6 +283,7 @@ export type StudentScalarWhereWithAggregatesInput = {
   password?: Prisma.StringWithAggregatesFilter<"Student"> | string
   userType?: Prisma.EnumUserTypeWithAggregatesFilter<"Student"> | $Enums.UserType
   active?: Prisma.BoolWithAggregatesFilter<"Student"> | boolean
+  firstAccess?: Prisma.BoolWithAggregatesFilter<"Student"> | boolean
 }
 
 export type StudentCreateInput = {
@@ -280,6 +292,7 @@ export type StudentCreateInput = {
   password: string
   userType?: $Enums.UserType
   active?: boolean
+  firstAccess?: boolean
 }
 
 export type StudentUncheckedCreateInput = {
@@ -289,6 +302,7 @@ export type StudentUncheckedCreateInput = {
   password: string
   userType?: $Enums.UserType
   active?: boolean
+  firstAccess?: boolean
 }
 
 export type StudentUpdateInput = {
@@ -297,6 +311,7 @@ export type StudentUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type StudentUncheckedUpdateInput = {
@@ -306,6 +321,7 @@ export type StudentUncheckedUpdateInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type StudentCreateManyInput = {
@@ -315,6 +331,7 @@ export type StudentCreateManyInput = {
   password: string
   userType?: $Enums.UserType
   active?: boolean
+  firstAccess?: boolean
 }
 
 export type StudentUpdateManyMutationInput = {
@@ -323,6 +340,7 @@ export type StudentUpdateManyMutationInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type StudentUncheckedUpdateManyInput = {
@@ -332,6 +350,7 @@ export type StudentUncheckedUpdateManyInput = {
   password?: Prisma.StringFieldUpdateOperationsInput | string
   userType?: Prisma.EnumUserTypeFieldUpdateOperationsInput | $Enums.UserType
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  firstAccess?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type StudentOrderByRelevanceInput = {
@@ -347,6 +366,7 @@ export type StudentCountOrderByAggregateInput = {
   password?: Prisma.SortOrder
   userType?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  firstAccess?: Prisma.SortOrder
 }
 
 export type StudentAvgOrderByAggregateInput = {
@@ -360,6 +380,7 @@ export type StudentMaxOrderByAggregateInput = {
   password?: Prisma.SortOrder
   userType?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  firstAccess?: Prisma.SortOrder
 }
 
 export type StudentMinOrderByAggregateInput = {
@@ -369,6 +390,7 @@ export type StudentMinOrderByAggregateInput = {
   password?: Prisma.SortOrder
   userType?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  firstAccess?: Prisma.SortOrder
 }
 
 export type StudentSumOrderByAggregateInput = {
@@ -384,6 +406,7 @@ export type StudentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   password?: boolean
   userType?: boolean
   active?: boolean
+  firstAccess?: boolean
 }, ExtArgs["result"]["student"]>
 
 
@@ -395,9 +418,10 @@ export type StudentSelectScalar = {
   password?: boolean
   userType?: boolean
   active?: boolean
+  firstAccess?: boolean
 }
 
-export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "username" | "password" | "userType" | "active", ExtArgs["result"]["student"]>
+export type StudentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "createdAt" | "username" | "password" | "userType" | "active" | "firstAccess", ExtArgs["result"]["student"]>
 
 export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Student"
@@ -409,6 +433,7 @@ export type $StudentPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     password: string
     userType: $Enums.UserType
     active: boolean
+    firstAccess: boolean
   }, ExtArgs["result"]["student"]>
   composites: {}
 }
@@ -784,6 +809,7 @@ export interface StudentFieldRefs {
   readonly password: Prisma.FieldRef<"Student", 'String'>
   readonly userType: Prisma.FieldRef<"Student", 'UserType'>
   readonly active: Prisma.FieldRef<"Student", 'Boolean'>
+  readonly firstAccess: Prisma.FieldRef<"Student", 'Boolean'>
 }
     
 

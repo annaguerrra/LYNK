@@ -7,6 +7,7 @@ export interface IMaterialService {
     getMaterialById(id: number): Promise<showMaterialDTO | null>
     updateMaterial(id: number, data: updateMaterialDTO, userId: number): Promise<Material>
     deleteMaterial(id: number, userId: number): Promise<boolean>
+    deleteMany(materialsId: number[]): Promise<boolean>
     attachtFile(data: attachtFileDTO, userId: number): Promise<Material>
     downloadMaterial(materialId: number, materialAttachmentId: number): Promise<DownloadedFile>
 }
