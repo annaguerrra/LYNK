@@ -14,6 +14,7 @@ export interface IDisciplineService{
         viewCompetences(disciplineID: number): Promise<viewCompetencesDTO[]>;
         // delete
         delete(disciplineID: number, userId: number): Promise<boolean>;
+        deleteMany(disciplinesId: number[]): Promise<boolean>
         // put
         edit(payload: DisciplineDTO, disciplineID: number, userID: number):  Promise<editDisciplineDTO>;
         updateWorkLoad(id: number): Promise<Discipline>

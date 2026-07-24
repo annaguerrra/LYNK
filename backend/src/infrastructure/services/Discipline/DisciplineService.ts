@@ -3,10 +3,18 @@ import { IDisciplineService } from "#application/services/Discipline/IDiscipline
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
 import { UserService } from "#infrastructure/services/User/UserService.js"
+import { ClassService } from "../Class/ClassService.js";
+import { CompetenceService } from "../Competence/CompetenceService.js";
+import { ExamService } from "../Exam/ExamService.js";
+import { MaterialService } from "../Material/MaterialService.js";
 
 export class DisciplineService implements IDisciplineService{
     constructor(
-        private userService: UserService
+        private userService: UserService,
+        private classService: ClassService,
+        private examService: ExamService,
+        private competenceService: CompetenceService,
+        private materialService: MaterialService
     ) {}
 
     async create(payload: DisciplineDTO, userID: number): Promise<Discipline> {
@@ -384,7 +392,17 @@ export class DisciplineService implements IDisciplineService{
         // consults if user deleting the discipline is admin
         const admin = await this.userService.isAdmin(userId)
 
-        const target = await prisma.discipline.findUnique({ where: { id: disciplineID }});
+        const target = await prisma.discipline.findUnique({ 
+            where: { 
+                id: disciplineID 
+            },
+            include: {
+                classes: true,
+                exams: true,
+                competences: true,
+                materials: true
+            }
+        });
 
         if(!target)
             throw new Error("Discipline not found!")
@@ -395,6 +413,11 @@ export class DisciplineService implements IDisciplineService{
                     id: disciplineID
                 }
             });
+
+            await this.classService.deleteMany(target.classes.map(item => item.id))
+            await this.examService.deleteMany(target.exams.map(exam => exam.id))
+            await this.competenceService.deleteMany(target.competences.map(competence => competence.id))
+            await this.materialService.deleteMany(target.materials.map(material => material.id))
 
             await prisma.log.create({
                 data:{
@@ -416,6 +439,22 @@ export class DisciplineService implements IDisciplineService{
         } catch(error){
             throw new Error("Discipline not Found");
         }
+    }
+
+    async deleteMany(disciplinesId: number[]): Promise<boolean> {
+        try {
+            await prisma.discipline.deleteMany({
+                where: {
+                    id: {
+                        in: disciplinesId
+                    }
+                }
+            })
+
+        } catch (e) {
+            throw e
+        }
+        return true
     }
 
     async edit(payload: DisciplineDTO, disciplineID: number, userID: number): Promise<editDisciplineDTO> {

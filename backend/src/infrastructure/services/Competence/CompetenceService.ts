@@ -170,5 +170,19 @@ export class CompetenceService implements ICompetenceService {
         return true
     }
 
+    async deleteMany(competencesId: number[]): Promise<boolean> {
+        try {
+            await prisma.competence.deleteMany({
+                where: {
+                    id: {
+                        in: competencesId
+                    }
+                }
+            })
 
+        } catch (e) {
+            throw e
+        }
+        return true
+    }
 }
