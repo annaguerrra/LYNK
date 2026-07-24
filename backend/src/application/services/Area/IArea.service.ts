@@ -6,4 +6,5 @@ export interface IAreaService {
     showAreas(): Promise<Area[]>
     updateArea(id: number, data: updateAreaDTO, userId: number): Promise<Area>
     deleteArea(id: number, userId: number): Promise<boolean>
+    deleteMany(areasId: number[]): Promise<boolean>
 }

@@ -17,6 +17,7 @@ export interface IClassService{
     getContent(classId: number): Promise<getContentDTO>
     // delete
     delete(id: number, userId: number): Promise<boolean>;
+    deleteMany(classesId: number[]): Promise<boolean>
     // put
     edit(payload: ClassDTO, id: number, userId: number):  Promise<editClass>;
 }

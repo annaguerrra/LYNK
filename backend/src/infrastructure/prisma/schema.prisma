@@ -91,7 +91,7 @@ model Class {
   createdAt DateTime @default(now())
   disciplineId Int
   discipline Discipline @relation(fields: [disciplineId], references: [id], onDelete: Cascade)
-  competences Competence[] //n-n
+  competences Competence[]
   materials Material[]
 }
 
@@ -122,7 +122,6 @@ model Area {
   id Int @default(autoincrement()) @id
   name String
   color String
-  //tem que fazer migrate
 
   disciplines Discipline[]
 }
