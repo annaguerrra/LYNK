@@ -44,16 +44,12 @@ export interface loginResponseDTO {
     }
 }
 
-<<<<<<< HEAD
-// response to showStudent service
-=======
 export interface changePasswordDTO {
     oldPassword: string;
     newPassword: string;
     confirmPassword: string
 }
 
->>>>>>> back
 export interface showStudentDTO {
     username: string
     userType: UserType

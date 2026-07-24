@@ -13,13 +13,7 @@ const userController = new UserController();
 const jwt = new JwtTokenService()
 
 router
-<<<<<<< HEAD
-    // creates an user
-    .post('/user/create', validateRegister, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.register.bind(userController))
-    // login an existent user
-=======
     .post('/user/create', validateRegister, authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.register.bind(userController))
->>>>>>> back
     .post('/login', userController.login.bind(userController))
 
     // returns all the students registered without any filter
@@ -42,13 +36,8 @@ router
     .put('/user/updateInst/:id', validateUpdateInstructor, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateInstructor.bind(userController))
     // allows update informations of a specific admin by id
     .put('/user/updateAdmin/:id', validateUpdateAdmin, authorize(UserType.ADMIN), userController.updateAdmin.bind(userController))
-<<<<<<< HEAD
-    
-    // deletes an user by id
-=======
     .put('/user/change-password', validateRegister, authMiddleware, userController.changePassword.bind(userController))
 
->>>>>>> back
     .delete('/user/deleteStud/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
     // deletes an instructor by id
     .delete('/user/deleteInst/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteInstructor.bind(userController))
