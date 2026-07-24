@@ -51,6 +51,8 @@ model Admin {
   userType UserType @default(ADMIN)
   specialty Specialties
   active Boolean @default(false)
+  updatedPasswordAt DateTime
+  firstAccess Boolean @default(true)
   attachmentId String?
 
   logs Log[]
@@ -64,6 +66,8 @@ model Instructor {
   userType UserType @default(INSTRUCTOR)
   specialty Specialties
   active Boolean @default(false)
+  updatedPasswordAt DateTime
+  firstAccess Boolean @default(true)
   attachmentId String?
 
   logs Log[]
@@ -76,6 +80,8 @@ model Student {
   password String
   userType UserType @default(STUDENT)
   active Boolean @default(true)
+  updatedPasswordAt DateTime
+  firstAccess Boolean @default(true)
 }
 
 model Class {

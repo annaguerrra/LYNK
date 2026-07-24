@@ -31,11 +31,18 @@ export interface loginPayloadDTO {
 
 export interface loginResponseDTO {
     token: string
+    mustChangePassword: boolean
     user:{
         id: number;
         username: string;
-        userType: UserType
+        userType: UserType;
     }
+}
+
+export interface changePasswordDTO {
+    oldPassword: string;
+    newPassword: string;
+    confirmPassword: string
 }
 
 export interface showStudentDTO {
