@@ -14,6 +14,7 @@ router
    .post('/discipline/:id/duplicate', authorize(UserType.ADMIN, UserType.INSTRUCTOR), disciplineController.duplicateDiscipline.bind(disciplineController))
    .get('/disciplines', disciplineController.findAll.bind(disciplineController))
    .get('/discipline/:id', disciplineController.findOne.bind(disciplineController))
+   .get('/discipline/:id/classes', disciplineController.viewClasses.bind(disciplineController))
    .get('/discipline/:id/materials', disciplineController.viewMaterial.bind(disciplineController))
    .get('/discipline/:id/competences', disciplineController.viewCompetences.bind(disciplineController))
    .put('/discipline/edit/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdate, disciplineController.edit.bind(disciplineController))

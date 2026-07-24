@@ -12,6 +12,7 @@ export interface IDisciplineService{
         viewClasses(id: number): Promise<viewClassesDTO[]>
         viewMaterials(disciplineID: number): Promise<viewMaterialsDTO[]>
         viewCompetences(disciplineID: number): Promise<viewCompetencesDTO[]>;
+        
         // delete
         delete(disciplineID: number, userId: number): Promise<boolean>;
         deleteMany(disciplinesId: number[]): Promise<boolean>
