@@ -35,12 +35,19 @@ import { ButtonIcon } from '../Components/ButtonIcon'
 import { useNavigate } from 'react-router-dom'
 import { InputFile } from '../Components/InputFile'
 import LessonSelect from '../Components/LessonSelect'
+import { useAuth } from '../Auth/AuthContext'
 
 export function Class() {
     //Variables to navigate and open modals
     const [editMode, setEditMode] = useState(false)
     const [titleClass, setTitleClass] = useState("Aula 05")
     const navigate = useNavigate();
+
+    //Variables to control the users and its interactions
+    const { user } = useAuth();
+    const isAdmin = user?.role === "ADMIN";
+    const isInstructor = user?.role === "INSTRUCTOR"; 
+    
     //Generic content for the markdown
     const [content, setContent] = useState(`# Introdução ao Python
 
@@ -134,7 +141,9 @@ Olá, Ana!
                         <div className='markdownBox'>
                             <div className='toolbar view'>
                                 <span>{titleClass}</span>
-                                <button className='buttonEdit' onClick={() => setEditMode(true)}>Editar</button>
+                                {isAdmin || isInstructor &&
+                                    <button className='buttonEdit' onClick={() => setEditMode(true)}>Editar</button>
+                                }
                             </div>
                             <MDXEditor
                                 key={content}
@@ -211,14 +220,18 @@ Olá, Ana!
                                     actions={
                                         <>
                                             <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                            <ButtonClose size={18} onClose={() => { }} />
+                                            {isAdmin || isInstructor && editMode &&
+                                                <ButtonClose size={18} onClose={() => { }} />
+                                            }
                                         </>
                                     }>
 
                                     <div>Material_aaa00 drgrdgrd rdg rdg rdg rdgrdg dr gdr grdgr  dgdrgdrg r</div>
                                 </RowItem>
 
-                                <InputFile />
+                                {isAdmin || isInstructor && editMode &&
+                                    <InputFile />
+                                }
 
                             </div>
                             <div className='space'></div>
@@ -226,12 +239,16 @@ Olá, Ana!
                             <div className='attachments' >
                                 
                                 {/* Component used to search a competence */}
-                                <LessonSelect/>
+                                {isAdmin || isInstructor && editMode &&
+                                    <LessonSelect/>
+                                }
                                 <RowItem 
                                     type='competence'
                                     actions={
                                         <>
-                                        <ButtonClose size={18} onClose={() => { }} />
+                                        {isAdmin || isInstructor && editMode &&
+                                            <ButtonClose size={18} onClose={() => { }} />
+                                        }
                                         </>
                                     } >
                                     <div>Fazer sei la o que, comepencia de não sei o que mais </div>
@@ -241,7 +258,9 @@ Olá, Ana!
                                     type='competence'
                                     actions={
                                         <>
-                                        <ButtonClose size={18} onClose={() => { }} />
+                                        {isAdmin || isInstructor && editMode &&
+                                            <ButtonClose size={18} onClose={() => { }} />
+                                        }
                                         </>
                                     } >
                                     <div>Teste de nome para o componente usado para representar uma competencia</div>

@@ -1,17 +1,23 @@
+import "../Styles/Views.css"
 import { useNavigate } from "react-router-dom"
 import { ButtonIcon } from "../../Components/ButtonIcon"
 import { MoreOpt } from "../../Components/MoreOpt"
 import { RowItem } from "../../Components/RowItem"
 import { ButtonExclude } from "../../Components/ButtonExclude"
 import { ButtonCancel } from "../../Components/ButtonCancel"
-import "../Styles/Views.css"
 import { useState } from "react"
+import { useAuth } from "../../Auth/AuthContext"
 
 export function ClassesView() {
     //Variables to navigate and open modals
     const navigate = useNavigate();
     const [excludeClassModal, setExcludeClassModal] = useState(false);
 
+    //Variables to control the users and its interactions
+    const { user } = useAuth();
+    const isAdmin = user?.role === "ADMIN";
+    const isInstructor = user?.role === "INSTRUCTOR";
+    
     //Options for the option buttons
     const options = [
         {
@@ -37,7 +43,9 @@ export function ClassesView() {
                     actions={
                         <>
                             <ButtonIcon icon="icon-download" size={28} onClick={() => navigate("/")} />
-                            <MoreOpt size={22} data={options} />
+                            {isAdmin || isInstructor &&
+                                <MoreOpt size={22} data={options} />
+                            }
                         </>
                     }>
 
@@ -46,22 +54,6 @@ export function ClassesView() {
 
                 </RowItem>
 
-                <RowItem
-                    onClick={() => navigate("/class")}
-                    color="var(--purple)"
-                    size="--medium"
-                    button={true}
-                    actions={
-                        <>
-                            <ButtonIcon icon="icon-download" size={28} onClick={() => navigate("/")} />
-                            <MoreOpt size={22} data={options} />
-                        </>
-                    }>
-
-                    <span>Aula 02 - Instalando bibliotecas</span>
-                    
-
-                </RowItem>
             </div>
 
             {/* Modal to exclude a class */}

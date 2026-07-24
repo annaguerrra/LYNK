@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
 import api from "../Services/api";
+import { useAuth } from "../Auth/AuthContext";
 
 export function Discipline() {
     //Variables to navigate and open modals
@@ -35,6 +36,11 @@ export function Discipline() {
     const [editAreaModal, setEditAreaModal] = useState(false);
     const [excludeAreaModal, setExcludeAreaModal] = useState(false);
     const [resetPasswordModal, setResetPasswordModal] = useState(false);
+
+    //Variables to control the users and its interactions
+    const { user } = useAuth();
+    const isAdmin = user?.role === "ADMIN";
+    const isInstructor = user?.role === "INSTRUCTOR";
 
     //Options for the option buttons
     const options = [
@@ -137,7 +143,9 @@ export function Discipline() {
                                 <option value="Organização">Organização</option>
                             </select>
                         </form>
-                        <MoreOpt data={options} size={40}></MoreOpt>
+                        {isAdmin || isInstructor &&
+                            <MoreOpt data={options} size={40}></MoreOpt>
+                        }
                     </div>
                 </div>
                 {/* Box for all the disciplines display */}
@@ -181,7 +189,7 @@ export function Discipline() {
             {/* -------------------------------------------------------- USERS MODALS -------------------------------------------------------- */}
 
             {/* Modal to create a user */}
-            {newUserModal && (
+            {newUserModal && isAdmin && (
                 <div className="modalOverlay" onClick={() => setNewUserModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
@@ -216,7 +224,7 @@ export function Discipline() {
             )}
 
             {/* Modal to manage users */}
-            {usersModal && (
+            {usersModal && isAdmin && (
                 <div className="modalOverlay" onClick={() => setUsersModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
@@ -245,7 +253,7 @@ export function Discipline() {
             )}
 
             {/* Modal to edit a user */}
-            {editStudentModal && (
+            {editStudentModal && isAdmin && (
                 <div className="modalOverlay" onClick={() => setEditStudentModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
@@ -279,7 +287,7 @@ export function Discipline() {
             )}
 
             {/* Modal to exclude the user */}
-            {excludeUserModal && (
+            {excludeUserModal && isAdmin&& (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeUserModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
@@ -295,7 +303,7 @@ export function Discipline() {
             )}
 
             {/* Modal to rest a user password */}
-            {resetPasswordModal && (
+            {resetPasswordModal && isAdmin && (
                 <div className="modalExcludeOverlay" onClick={() => setResetPasswordModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>

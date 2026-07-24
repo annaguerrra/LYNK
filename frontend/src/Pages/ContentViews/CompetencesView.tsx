@@ -1,13 +1,13 @@
+import "../Styles/Views.css"
 import { useNavigate } from "react-router-dom"
-import { ButtonIcon } from "../../Components/ButtonIcon"
 import { MoreOpt } from "../../Components/MoreOpt"
 import { RowItem } from "../../Components/RowItem"
 import { ButtonExclude } from "../../Components/ButtonExclude"
 import { ButtonCancel } from "../../Components/ButtonCancel"
 import { ButtonClose } from "../../Components/ButtonClose"
 import { Button } from "../../Components/Button"
-import "../Styles/Views.css"
 import { useState } from "react"
+import { useAuth } from "../../Auth/AuthContext"
 
 export function CompetencesView() {
     //Variables to navigate and open modals
@@ -15,6 +15,11 @@ export function CompetencesView() {
     const [openCompetenceModal, setOpenCompetenceModal] = useState(false);
     const [editCompetenceModal, setEditCompetenceModal] = useState(false);
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
+
+    //Variables to control the users and its interactions
+    const { user } = useAuth();
+    const isAdmin = user?.role === "ADMIN";
+    const isInstructor = user?.role === "INSTRUCTOR";
 
     //Options for the option buttons
     const options = [
@@ -41,27 +46,13 @@ export function CompetencesView() {
                     button={true}
                     actions={
                         <>
+                        {isAdmin || isInstructor &&
                             <MoreOpt size={22} data={options} />
+                        }
                         </>
                     }>
 
                     <span>Instalar as bibliotecas necessárias para o projeto</span>
-                    
-
-                </RowItem>
-
-                <RowItem
-                    onClick={() => setOpenCompetenceModal(true)}
-                    color="var(--acqua)"
-                    size="--medium"
-                    button={true}
-                    actions={
-                        <>
-                            <MoreOpt size={22} data={options} />
-                        </>
-                    }>
-
-                    <span>Criação de funções Python adequadas</span>
                     
 
                 </RowItem>

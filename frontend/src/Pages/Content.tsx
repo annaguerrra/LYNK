@@ -15,6 +15,7 @@ import { ButtonExclude } from "../Components/ButtonExclude";
 import { useNavigate } from "react-router-dom";
 import { RowItem } from "../Components/RowItem";
 import LessonSelect from "../Components/LessonSelect";
+import { useAuth } from "../Auth/AuthContext";
 
 export function Content() {
     //Variables to navigate and open modals
@@ -26,6 +27,11 @@ export function Content() {
     const [editCompetence, setEditCompetence] = useState(false);
     const [excludeTestModal, setExcludeTestModal] = useState(false);
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
+    
+    //Variables to control the users and its interactions
+    const { user } = useAuth();
+    const isAdmin = user?.role === "ADMIN";
+    const isInstructor = user?.role === "INSTRUCTOR";
 
     //Options for the option buttons
     const options = [
@@ -63,7 +69,9 @@ export function Content() {
                         <ButtonBack onClick={() => navigate("/disciplines")} />
                         <span style={{ fontWeight: "bold", fontSize: "30px" }}>Introdução a Python</span>
                     </div>
-                    <MoreOpt data={options} size={30}></MoreOpt>
+                    {isAdmin || isInstructor &&
+                        <MoreOpt data={options} size={30}></MoreOpt>
+                    }
                 </div>
                 <div className="content">
                     {/* Change the content based on the selected tab */}

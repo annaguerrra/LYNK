@@ -18,24 +18,16 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/Disciplines" element={
-              <PrivateRoute>
                 <Discipline />
-              </PrivateRoute>
             } />
             <Route path="/Content" element={
-              <PrivateRoute>
                 <Content />
-              </PrivateRoute>
             } />
             <Route path="/Class" element={
-              <PrivateRoute>
                 <Class />
-              </PrivateRoute>
             } />
             <Route path="/History" element={
-              <PrivateRoute>
                 <History />
-              </PrivateRoute>
             } />
             <Route path="*" element={<ErrorPage />} />
             <Route path="/erro" element={<ErrorPage />} />
@@ -47,3 +39,24 @@ function App() {
 }
 
 export default App
+
+// <Route path="/Disciplines" element={
+//   <PrivateRoute>
+//     <Discipline />
+//   </PrivateRoute>
+// } />
+// <Route path="/Content" element={
+//   <PrivateRoute>
+//     <Content />
+//   </PrivateRoute>
+// } />
+// <Route path="/Class" element={
+//   <PrivateRoute>
+//     <Class />
+//   </PrivateRoute>
+// } />
+// <Route path="/History" element={
+//   <PrivateRoute>
+//     <History />
+//   </PrivateRoute>
+// } />
