@@ -5,7 +5,7 @@ import { HashService } from "#infrastructure/services/Authetication/Hash.service
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { MaterialService } from "#infrastructure/services/Material/MaterialService.js"
 import { UserService } from "#infrastructure/services/User/UserService.js"
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 
 export default class MaterialController{
     private attachmentService = new AttachmentService()
@@ -81,5 +81,17 @@ export default class MaterialController{
             return res.status(404).send({ response: "Material not found" })
         }
     }
-   
+
+    // GET
+    // gets one attachment in material to download
+    async download(req: Request, res: Response){
+        const { id } = req.params
+        const materialAttachmentId = req.body
+        try {
+            await this.materialService.downloadMaterial(Number(id), materialAttachmentId)
+            return res.status(200).send({ response: "Success!"})
+        } catch (e) {
+            return res.status(404).send({ response: "Material not found" })
+        }
+    }
 }

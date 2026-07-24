@@ -14,6 +14,8 @@ router
     .post('/material/create', validateRegister, authorize(UserType.ADMIN, UserType.INSTRUCTOR), materialController.register.bind(materialController))
     // returns a specific material by id
     .get('/material/:id', materialController.getMaterial.bind(materialController))
+    // downloads an attachment in material
+    .get('/material/:id/download', materialController.download.bind(materialController))
     // allows update information of a material, by id
     .put('/material/edit/:id', validateUpdate, authorize(UserType.ADMIN, UserType.INSTRUCTOR), materialController.update.bind(materialController))
     // upload a material
