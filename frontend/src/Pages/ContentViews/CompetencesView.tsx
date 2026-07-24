@@ -22,19 +22,6 @@ export function CompetencesView({ competences }) {
     const isAdmin = user?.role === "ADMIN";
     const isInstructor = user?.role === "INSTRUCTOR";
 
-    //Options for the option buttons
-    const options = [
-        {
-            name: "Editar competência",
-            onClick: () => setEditCompetenceModal(true)
-        },
-        {
-            name: "Excluir competência",
-            onClick: () => setExcludeCompetenceModal(true),
-            color: "red"
-        }
-    ]
-
     if (!competences.length) {
         return <div>Nenhuma competência encontrada.</div>;
     }
@@ -55,13 +42,29 @@ export function CompetencesView({ competences }) {
                         actions={
                             <>
                                 {isAdmin || isInstructor &&
-                                    <MoreOpt size={22} data={options} />
+                                    <MoreOpt size={22} data={
+                                        [
+                                            {
+                                                name: "Editar competência",
+                                                onClick: () => {
+                                                    setEditCompetenceModal(true), setSelectedCompetence(competence)
+                                                }
+                                            },                                           
+                                            {
+                                                name: "Excluir competência",
+                                                onClick: () => {
+                                                    setExcludeCompetenceModal(true), setSelectedCompetence(competence)
+                                                },
+                                                color: "red"
+                                            }
+                                        ]
+                                    } />
                                 }
                             </>
                         }>
                         <span>{competence.name}</span>
                     </RowItem>
-                ))}              
+                ))}
             </div>
 
             {/* Modal to open the details about a competence
