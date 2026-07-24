@@ -7,11 +7,12 @@ import { Button } from "../Components/Button";
 import { ButtonClose } from "../Components/ButtonClose";
 import { ButtonExclude } from "../Components/ButtonExclude";
 import { ButtonCancel } from "../Components/ButtonCancel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
+import api from "../Services/api";
 
-export function Discipline () {
+export function Discipline() {
     //Variables to navigate and open modals
     const navigate = useNavigate();
     const cores = {
@@ -19,9 +20,11 @@ export function Discipline () {
         Verde: "var(--green)",
         "Verde-água": "var(--acqua)",
     };
-    
+
+    const [disciplines, setDisciplines] = useState([])
+
     const [cor, setCor] = useState("Roxo");
-    
+
     const [newDisciplineModal, setNewDisciplineModal] = useState(false);
     const [usersModal, setUsersModal] = useState(false);
     const [newAreaModal, setNewAreaModal] = useState(false);
@@ -90,10 +93,24 @@ export function Discipline () {
         },
     ];
 
+    async function loadDisciplines() {
+        try {
+            const response = await api.get("/disciplines");
+            setDisciplines(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        loadDisciplines();
+    }, []);
+
+
 
     return (
-        <>  
-            <Header/>
+        <>
+            <Header />
 
             {/* Whole page */}
             <div className="page">
@@ -132,269 +149,269 @@ export function Discipline () {
                 </div>
             </div>
 
-{/* -------------------------------------------------------- DISCIPLINES MODALS -------------------------------------------------------- */}
+            {/* -------------------------------------------------------- DISCIPLINES MODALS -------------------------------------------------------- */}
 
-        {/* Modal to create a new discipline */}
-        {newDisciplineModal && (
-            <div className="modalOverlay" onClick={() => setNewDisciplineModal(false)}>
-                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                    
-                    {/* Title and close button box */}
-                    <div className="titleContainer">
-                        <h1>Registrar disciplina</h1>
-                        <ButtonClose size={40} onClose={() => setNewDisciplineModal(false)}></ButtonClose>
-                    </div>
-                    {/* Input for discipline name */}
-                    <div className="textBox">
-                        <h2>Nome da disciplina</h2>
-                        <input type="text"/>
-                    </div>
-                    {/* Select for the area */}
-                    <div className="textBox">
-                        <h2>Selecione a área de conhecimento</h2>
-                        <select name="" id="">
-                            <option value="Tecnologia" selected>Tecnologia</option>
-                        </select>
-                    </div>
+            {/* Modal to create a new discipline */}
+            {newDisciplineModal && (
+                <div className="modalOverlay" onClick={() => setNewDisciplineModal(false)}>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
 
-                    <Button ButtonTitle={"Enviar"} onClose={() => navigate("/erro", {state: { errorText: "Deu erro" }})}></Button>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Registrar disciplina</h1>
+                            <ButtonClose size={40} onClose={() => setNewDisciplineModal(false)}></ButtonClose>
+                        </div>
+                        {/* Input for discipline name */}
+                        <div className="textBox">
+                            <h2>Nome da disciplina</h2>
+                            <input type="text" />
+                        </div>
+                        {/* Select for the area */}
+                        <div className="textBox">
+                            <h2>Selecione a área de conhecimento</h2>
+                            <select name="" id="">
+                                <option value="Tecnologia" selected>Tecnologia</option>
+                            </select>
+                        </div>
+
+                        <Button ButtonTitle={"Enviar"} onClose={() => navigate("/erro", { state: { errorText: "Deu erro" } })}></Button>
+                    </div>
                 </div>
-            </div>
-        )}
-{/* -------------------------------------------------------- USERS MODALS -------------------------------------------------------- */}
-        
-        {/* Modal to create a user */}
-        {newUserModal && (
+            )}
+            {/* -------------------------------------------------------- USERS MODALS -------------------------------------------------------- */}
+
+            {/* Modal to create a user */}
+            {newUserModal && (
                 <div className="modalOverlay" onClick={() => setNewUserModal(false)}>
-                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                    {/* Title and close button box */}
-                    <div className="titleContainer">
-                        <h1>Registrar usuário</h1>
-                        <ButtonClose size={40} onClose={() => setNewUserModal(false)}></ButtonClose>
-                    </div>
-                    {/* Select for user type */}
-                    <div className="textBox">
-                        <h2>Selecione o tipo de usuário</h2>
-                        <select name="" id="" className="selectFilter">
-                            <option value="Administrador">Administrador</option>
-                            <option value="Instrutor">Instrutor</option>
-                            <option value="Aluno" selected>Aluno</option>
-                        </select>
-                    </div>
-                    {/* Input for username */}
-                    <div className="textBox">
-                        <h2>Nome do usuário</h2>
-                        <input type="text"/>
-                    </div>
-                    {/* Input for user password */}
-                    <div className="textBox">
-                        <h2>Senha do usuário</h2>
-                        <input type="password"/>
-                    </div>
-                    
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Registrar usuário</h1>
+                            <ButtonClose size={40} onClose={() => setNewUserModal(false)}></ButtonClose>
+                        </div>
+                        {/* Select for user type */}
+                        <div className="textBox">
+                            <h2>Selecione o tipo de usuário</h2>
+                            <select name="" id="" className="selectFilter">
+                                <option value="Administrador">Administrador</option>
+                                <option value="Instrutor">Instrutor</option>
+                                <option value="Aluno" selected>Aluno</option>
+                            </select>
+                        </div>
+                        {/* Input for username */}
+                        <div className="textBox">
+                            <h2>Nome do usuário</h2>
+                            <input type="text" />
+                        </div>
+                        {/* Input for user password */}
+                        <div className="textBox">
+                            <h2>Senha do usuário</h2>
+                            <input type="password" />
+                        </div>
 
-                    <Button ButtonTitle={"Enviar"} onClose={() => setNewUserModal(false)}></Button>
+
+                        <Button ButtonTitle={"Enviar"} onClose={() => setNewUserModal(false)}></Button>
+                    </div>
                 </div>
-            </div>
-        )}
+            )}
 
-        {/* Modal to manage users */}
-        {usersModal && (
+            {/* Modal to manage users */}
+            {usersModal && (
                 <div className="modalOverlay" onClick={() => setUsersModal(false)}>
-                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                    {/* Title and close button box */}
-                    <div className="titleContainer">
-                        <h1>Gerenciar usuários</h1>
-                        <ButtonClose size={40} onClose={() => setUsersModal(false)}></ButtonClose>
-                    </div>
-                    {/* Users display */}
-                    <div className="itemsBox">
-                        <RowItem color='var(--green)'>
-                            <div className="itemText">
-                                <p>Manufatura_20252</p>
-                            </div>
-                            <MoreOpt data={userOpt} size={25}></MoreOpt>
-                        </RowItem>
-                        <RowItem color='var(--green)'>
-                            <div className="itemText">
-                                <p>Manufatura_20252</p>
-                            </div>
-                            <MoreOpt data={userOpt} size={25}></MoreOpt>
-                        </RowItem>
-                    </div>
-                    <div></div>
-                </div>
-            </div>
-        )}
-
-        {/* Modal to edit a user */}
-        {editStudentModal && (
-            <div className="modalOverlay" onClick={() => setEditStudentModal(false)}>
-                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                    {/* Title and close button box */}
-                    <div className="titleContainer">
-                        <h1>Editar usuário</h1>
-                        <ButtonClose size={40} onClose={() => setEditStudentModal(false)}></ButtonClose>
-                    </div>
-                    {/* Select the user type */}
-                    <div className="textBox">
-                        <h2>Selecione o tipo de usuário</h2>
-                        <select name="" id="" className="selectFilter">
-                            <option value="Administrador">Administrador</option>
-                            <option value="Instrutor">Instrutor</option>
-                            <option value="Aluno" selected>Aluno</option>
-                        </select>
-                    </div>
-                    {/* Input for the username */}
-                    <div className="textBox">
-                        <h2>Nome do usuário</h2>
-                        <input type="text"/>
-                    </div>
-                    {/* Input for the user password */}
-                    <div className="textBox">
-                        <h2>Senha do usuário</h2>
-                        <input type="password"/>
-                    </div>
-
-                    <Button ButtonTitle={"Enviar"} onClose={() => setEditStudentModal(false)}></Button>
-                </div>
-            </div>
-        )}
-
-        {/* Modal to exclude the user */}
-        {excludeUserModal && (
-            <div className="modalExcludeOverlay" onClick={() => setExcludeUserModal(false)}>
-                <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
-                <div className="redString"></div>
-                    <p>Deseja excluir o usuário?</p>
-
-                    <div className="buttonsBox">
-                        <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeUserModal(false)}></ButtonExclude>
-                        <br />
-                        <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeUserModal(false)}></ButtonCancel>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Gerenciar usuários</h1>
+                            <ButtonClose size={40} onClose={() => setUsersModal(false)}></ButtonClose>
+                        </div>
+                        {/* Users display */}
+                        <div className="itemsBox">
+                            <RowItem color='var(--green)'>
+                                <div className="itemText">
+                                    <p>Manufatura_20252</p>
+                                </div>
+                                <MoreOpt data={userOpt} size={25}></MoreOpt>
+                            </RowItem>
+                            <RowItem color='var(--green)'>
+                                <div className="itemText">
+                                    <p>Manufatura_20252</p>
+                                </div>
+                                <MoreOpt data={userOpt} size={25}></MoreOpt>
+                            </RowItem>
+                        </div>
+                        <div></div>
                     </div>
                 </div>
-            </div>
-        )}
+            )}
 
-        {/* Modal to rest a user password */}
-        {resetPasswordModal && (
+            {/* Modal to edit a user */}
+            {editStudentModal && (
+                <div className="modalOverlay" onClick={() => setEditStudentModal(false)}>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Editar usuário</h1>
+                            <ButtonClose size={40} onClose={() => setEditStudentModal(false)}></ButtonClose>
+                        </div>
+                        {/* Select the user type */}
+                        <div className="textBox">
+                            <h2>Selecione o tipo de usuário</h2>
+                            <select name="" id="" className="selectFilter">
+                                <option value="Administrador">Administrador</option>
+                                <option value="Instrutor">Instrutor</option>
+                                <option value="Aluno" selected>Aluno</option>
+                            </select>
+                        </div>
+                        {/* Input for the username */}
+                        <div className="textBox">
+                            <h2>Nome do usuário</h2>
+                            <input type="text" />
+                        </div>
+                        {/* Input for the user password */}
+                        <div className="textBox">
+                            <h2>Senha do usuário</h2>
+                            <input type="password" />
+                        </div>
+
+                        <Button ButtonTitle={"Enviar"} onClose={() => setEditStudentModal(false)}></Button>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal to exclude the user */}
+            {excludeUserModal && (
+                <div className="modalExcludeOverlay" onClick={() => setExcludeUserModal(false)}>
+                    <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
+                        <div className="redString"></div>
+                        <p>Deseja excluir o usuário?</p>
+
+                        <div className="buttonsBox">
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeUserModal(false)}></ButtonExclude>
+                            <br />
+                            <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeUserModal(false)}></ButtonCancel>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal to rest a user password */}
+            {resetPasswordModal && (
                 <div className="modalExcludeOverlay" onClick={() => setResetPasswordModal(false)}>
-                <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
-                <div className="redString"></div>
-                    <p>Deseja resetar a senha o usuário?</p>
+                    <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
+                        <div className="redString"></div>
+                        <p>Deseja resetar a senha o usuário?</p>
 
-                    <div className="buttonsBox">
-                        <ButtonExclude ButtonTitle={"Resetar"} onClose={() => setResetPasswordModal(false)}></ButtonExclude>
-                        <br />
-                        <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setResetPasswordModal(false)}></ButtonCancel>
+                        <div className="buttonsBox">
+                            <ButtonExclude ButtonTitle={"Resetar"} onClose={() => setResetPasswordModal(false)}></ButtonExclude>
+                            <br />
+                            <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setResetPasswordModal(false)}></ButtonCancel>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )}
+            )}
 
-{/* -------------------------------------------------------- AREAS MODALS -------------------------------------------------------- */}
+            {/* -------------------------------------------------------- AREAS MODALS -------------------------------------------------------- */}
 
-        {/* Modal to create a new area */}
-        {newAreaModal && (
+            {/* Modal to create a new area */}
+            {newAreaModal && (
                 <div className="modalOverlay" onClick={() => setNewAreaModal(false)}>
-                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                    {/* Title and close button box */}
-                    <div className="titleContainer">
-                        <h1>Registrar área</h1>
-                        <ButtonClose size={40} onClose={() => setNewAreaModal(false)}></ButtonClose>
-                    </div>
-                    {/* Input for the area name */}
-                    <div className="textBox">
-                        <h2>Nome da área</h2>
-                        <input type="text"/>
-                    </div>
-                    {/* Select for the area color */}
-                    <div className="textBox">
-                        <h2>Selecione a cor da área</h2>
-                        <select name="" id="" className="selectFilter" value={cor}
-                        onChange={(e) => setCor(e.target.value)}
-                        style={{ color: cores[cor] }}>
-                            <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
-                            <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
-                            <option value="Verde-água" style={{ color: "var(--acqua)"}}>Verde-água</option>
-                        </select>
-                    </div>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Registrar área</h1>
+                            <ButtonClose size={40} onClose={() => setNewAreaModal(false)}></ButtonClose>
+                        </div>
+                        {/* Input for the area name */}
+                        <div className="textBox">
+                            <h2>Nome da área</h2>
+                            <input type="text" />
+                        </div>
+                        {/* Select for the area color */}
+                        <div className="textBox">
+                            <h2>Selecione a cor da área</h2>
+                            <select name="" id="" className="selectFilter" value={cor}
+                                onChange={(e) => setCor(e.target.value)}
+                                style={{ color: cores[cor] }}>
+                                <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
+                                <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
+                                <option value="Verde-água" style={{ color: "var(--acqua)" }}>Verde-água</option>
+                            </select>
+                        </div>
 
-                    <Button ButtonTitle={"Enviar"} onClose={() => setNewAreaModal(false)}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => setNewAreaModal(false)}></Button>
+                    </div>
                 </div>
-            </div>
-        )}
+            )}
 
-        {/* Modal to manage areas */}
-        {areasModal && (
+            {/* Modal to manage areas */}
+            {areasModal && (
                 <div className="modalOverlay" onClick={() => setAreasModal(false)}>
-                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                    {/* Title and close button box */}
-                    <div className="titleContainer">
-                        <h1>Gerenciar áreas</h1>
-                        <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose>
-                    </div>
-                    <div className="itemsBox">
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Gerenciar áreas</h1>
+                            <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose>
+                        </div>
+                        <div className="itemsBox">
 
-                        <RowItem color='var(--green)'>
-                            <div className="itemText">
-                                <p>Administração</p>
-                            </div>
-                            <MoreOpt data={areasOpt} size={25}></MoreOpt>
-                        </RowItem>
+                            <RowItem color='var(--green)'>
+                                <div className="itemText">
+                                    <p>Administração</p>
+                                </div>
+                                <MoreOpt data={areasOpt} size={25}></MoreOpt>
+                            </RowItem>
+                        </div>
+                        <div></div>
                     </div>
-                    <div></div>
                 </div>
-            </div>
-        )}
+            )}
 
-        {/* Modal to edit a area */}
-        {editAreaModal && (
+            {/* Modal to edit a area */}
+            {editAreaModal && (
                 <div className="modalOverlay" onClick={() => setEditAreaModal(false)}>
-                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                    {/* Title and close button box */}
-                    <div className="titleContainer">
-                        <h1>Editar  área</h1>
-                        <ButtonClose size={40} onClose={() => setEditAreaModal(false)}></ButtonClose>
-                    </div>
-                    {/* Input for the area name */}
-                    <div className="textBox">
-                        <h2>Nome da área</h2>
-                        <input type="text"/>
-                    </div>
-                    {/* Select for the area color */}
-                    <div className="textBox">
-                        <h2>Selecione a cor da área</h2>
-                        <select name="" id="" className="selectFilter" value={cor}
-                        onChange={(e) => setCor(e.target.value)}
-                        style={{ color: cores[cor] }}>
-                            <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
-                            <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
-                            <option value="Verde-água" style={{ color: "var(--acqua)"}}>Verde-água</option>
-                        </select>
-                    </div>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Editar  área</h1>
+                            <ButtonClose size={40} onClose={() => setEditAreaModal(false)}></ButtonClose>
+                        </div>
+                        {/* Input for the area name */}
+                        <div className="textBox">
+                            <h2>Nome da área</h2>
+                            <input type="text" />
+                        </div>
+                        {/* Select for the area color */}
+                        <div className="textBox">
+                            <h2>Selecione a cor da área</h2>
+                            <select name="" id="" className="selectFilter" value={cor}
+                                onChange={(e) => setCor(e.target.value)}
+                                style={{ color: cores[cor] }}>
+                                <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
+                                <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
+                                <option value="Verde-água" style={{ color: "var(--acqua)" }}>Verde-água</option>
+                            </select>
+                        </div>
 
-                    <Button ButtonTitle={"Enviar"} onClose={() => setEditAreaModal(false)}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => setEditAreaModal(false)}></Button>
+                    </div>
                 </div>
-            </div>
-        )}
+            )}
 
-        {/* Modal to exclude the area */}
-        {excludeAreaModal && (
+            {/* Modal to exclude the area */}
+            {excludeAreaModal && (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeAreaModal(false)}>
-                <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
-                <div className="redString"></div>
-                    <p>Deseja excluir a área?</p>
-        
-                    <div className="buttonsBox">
-                        <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeAreaModal(false)}></ButtonExclude>
-                        <br />
-                        <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeAreaModal(false)}></ButtonCancel>
+                    <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
+                        <div className="redString"></div>
+                        <p>Deseja excluir a área?</p>
+
+                        <div className="buttonsBox">
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeAreaModal(false)}></ButtonExclude>
+                            <br />
+                            <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeAreaModal(false)}></ButtonCancel>
+                        </div>
                     </div>
                 </div>
-            </div>
-        )}
+            )}
 
 
         </>
