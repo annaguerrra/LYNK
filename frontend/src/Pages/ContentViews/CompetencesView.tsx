@@ -1,13 +1,13 @@
+import "../Styles/Views.css"
 import { useNavigate } from "react-router-dom"
-import { ButtonIcon } from "../../Components/ButtonIcon"
 import { MoreOpt } from "../../Components/MoreOpt"
 import { RowItem } from "../../Components/RowItem"
 import { ButtonExclude } from "../../Components/ButtonExclude"
 import { ButtonCancel } from "../../Components/ButtonCancel"
 import { ButtonClose } from "../../Components/ButtonClose"
 import { Button } from "../../Components/Button"
-import "../Styles/Views.css"
 import { useState } from "react"
+import { useAuth } from "../../Auth/AuthContext"
 
 export function CompetencesView({ competences }) {
     //Variables to navigate and open modals
@@ -17,6 +17,10 @@ export function CompetencesView({ competences }) {
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
 
     const [selectedCompetence, setSelectedCompetence] = useState(null);
+    //Variables to control the users and its interactions
+    const { user } = useAuth();
+    const isAdmin = user?.role === "ADMIN";
+    const isInstructor = user?.role === "INSTRUCTOR";
 
     //Options for the option buttons
     const options = [
@@ -56,6 +60,23 @@ export function CompetencesView({ competences }) {
                         <span>{competence.name}</span>
                     </RowItem>
                 ))}
+                <RowItem
+                    onClick={() => setOpenCompetenceModal(true)}
+                    color="var(--acqua)"
+                    size="--medium"
+                    button={true}
+                    actions={
+                        <>
+                        {isAdmin || isInstructor &&
+                            <MoreOpt size={22} data={options} />
+                        }
+                        </>
+                    }>
+
+                    <span>Instalar as bibliotecas necessárias para o projeto</span>
+                    
+
+                </RowItem>
             </div>
 
             {/* Modal to open the details about a competence

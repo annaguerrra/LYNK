@@ -7,6 +7,7 @@ import { Button } from "./Button";
 import { ButtonClose } from "./ButtonClose";
 import { ButtonExclude } from "./ButtonExclude";
 import { ButtonCancel } from "./ButtonCancel";
+import { useAuth } from "../Auth/AuthContext";
 
 export function DisciplineComp({Discipline}) {
     const navigate = useNavigate();
@@ -14,6 +15,11 @@ export function DisciplineComp({Discipline}) {
     const [editModal, setEditModal] = useState(false);
     const [excludeModal, setExcludeModal] = useState(false);
 
+    //Variables to control the users and its interactions
+    const { user } = useAuth();
+    const isAdmin = user?.role === "ADMIN";
+    const isInstructor = user?.role === "INSTRUCTOR";
+    
     //Options for the options buttons to open the right modal
     const options = [
         {
@@ -38,7 +44,9 @@ export function DisciplineComp({Discipline}) {
                     <h1>{Discipline.name}</h1>
                     <h2>{Discipline.area.name}</h2>
                 </div>
-                <MoreOpt data={options} size={30}></MoreOpt>
+                {isAdmin || isInstructor &&
+                    <MoreOpt data={options} size={30}></MoreOpt>
+                }
             </div>
         </div>
 
