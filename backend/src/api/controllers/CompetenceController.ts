@@ -30,11 +30,11 @@ export default class CompetenceController{
     }
 
     // GET
-    // gets a competence
+    // gets all competences
     async show(req: Request, res: Response){
         try {
-            await this.competenceService.showCompetences()
-            return res.status(200).send({ response: "Success!"})
+            const competences = await this.competenceService.showCompetences()
+            return res.status(200).send({ response: competences })
         } catch (e) {
             return res.status(404).send({ response: "Competence not found!" })
         }
@@ -45,8 +45,8 @@ export default class CompetenceController{
     async getCompetenceByName(req: Request, res: Response){
         const name: string = req.body
         try {
-            await this.competenceService.getCompetenceByName(name)
-            return res.status(200).send({ response: "Success!"})
+            const competence = await this.competenceService.getCompetenceByName(name)
+            return res.status(200).send({ response: competence })
         } catch (e) {
             return res.status(404).send({ response: "Competence not found!" })
         }

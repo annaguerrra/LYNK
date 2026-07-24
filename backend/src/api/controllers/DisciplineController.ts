@@ -66,8 +66,8 @@ export class DisciplineController{
     // gets all disciplines
     async findAll(req: Request, res: Response){
         try{
-            await this.disciplineService.findAll();
-            return res.status(200).send({response: "Success"});
+            const disciplines = await this.disciplineService.findAll();
+            return res.status(200).send({response: disciplines });
         } catch(e){
             return res.status(500).send({response: e});
         }
@@ -79,8 +79,8 @@ export class DisciplineController{
         const { id } = req.params
 
         try{
-            await this.disciplineService.findOne(Number(id));
-            return res.status(200).send({response: "Success"});
+            const discipline = await this.disciplineService.findOne(Number(id));
+            return res.status(200).send({response: discipline });
         } catch(e){
             return res.status(500).send({response: e});
         }
@@ -92,8 +92,8 @@ export class DisciplineController{
         const disciplineId = req.body
 
         try{
-            await this.disciplineService.viewClasses(disciplineId);
-            return res.status(200).send({response: "Success"});
+            const classes = await this.disciplineService.viewClasses(disciplineId);
+            return res.status(200).send({response: classes });
         } catch(e){
             return res.status(500).send({response: e});
         }
@@ -105,8 +105,8 @@ export class DisciplineController{
         const disciplineId = req.body
 
         try{
-            await this.disciplineService.viewMaterials(disciplineId);
-            return res.status(200).send({response: "Success"});
+            const materials = await this.disciplineService.viewMaterials(disciplineId);
+            return res.status(200).send({response: materials });
         } catch(e){
             return res.status(500).send({response: e});
         }
@@ -118,8 +118,8 @@ export class DisciplineController{
         const disciplineId = req.body
 
         try{
-            await this.disciplineService.viewCompetences(disciplineId);
-            return res.status(200).send({response: "Success"});
+            const competences = await this.disciplineService.viewCompetences(disciplineId);
+            return res.status(200).send({response: competences });
         } catch(e){
             return res.status(500).send({response: e});
         }
