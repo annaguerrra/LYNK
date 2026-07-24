@@ -8,7 +8,7 @@ import { ButtonClose } from "./ButtonClose";
 import { ButtonExclude } from "./ButtonExclude";
 import { ButtonCancel } from "./ButtonCancel";
 
-export function DisciplineComp({Discipline, Area}) {
+export function DisciplineComp({Discipline}) {
     const navigate = useNavigate();
     //Variables to open the modals
     const [editModal, setEditModal] = useState(false);
@@ -32,11 +32,11 @@ export function DisciplineComp({Discipline, Area}) {
         <> 
         {/* Main box for the hole discipline to render with the right options */}
         <div className="disciplineBox">
-            <div className="boxColor" onClick={() => navigate('/Content')}></div>
+            <div className="boxColor" style={{ backgroundColor: Discipline.area.color }} onClick={() => navigate('/Content')}></div>
             <div className="whiteBox">
-                <div onClick={() => navigate('/Content')} style={{height: '100%'}}>
-                    <h1>{Discipline}</h1>
-                    <h2>{Area}</h2>
+                <div onClick={() => navigate(`/Content/${Discipline.id}`)} style={{height: '100%'}}>
+                    <h1>{Discipline.name}</h1>
+                    <h2>{Discipline.area.name}</h2>
                 </div>
                 <MoreOpt data={options} size={30}></MoreOpt>
             </div>

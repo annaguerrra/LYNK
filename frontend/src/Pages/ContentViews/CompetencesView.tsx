@@ -9,18 +9,20 @@ import { Button } from "../../Components/Button"
 import "../Styles/Views.css"
 import { useState } from "react"
 
-export function CompetencesView() {
+export function CompetencesView({ competences }) {
     //Variables to navigate and open modals
     const navigate = useNavigate();
     const [openCompetenceModal, setOpenCompetenceModal] = useState(false);
     const [editCompetenceModal, setEditCompetenceModal] = useState(false);
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
 
+    const [selectedCompetence, setSelectedCompetence] = useState(null);
+
     //Options for the option buttons
     const options = [
         {
             name: "Editar competência",
-            onClick: () =>setEditCompetenceModal(true)
+            onClick: () => setEditCompetenceModal(true)
         },
         {
             name: "Excluir competência",
@@ -29,63 +31,57 @@ export function CompetencesView() {
         }
     ]
 
+    if (!competences.length) {
+        return <div>Nenhuma competência encontrada.</div>;
+    }
 
     return (
         <>
             {/* Items shown on the specified tab */}
             <div className="view-page">
-                <RowItem
-                    onClick={() => setOpenCompetenceModal(true)}
-                    color="var(--acqua)"
-                    size="--medium"
-                    button={true}
-                    actions={
-                        <>
-                            <MoreOpt size={22} data={options} />
-                        </>
-                    }>
-
-                    <span>Instalar as bibliotecas necessárias para o projeto</span>
-                    
-
-                </RowItem>
-
-                <RowItem
-                    onClick={() => setOpenCompetenceModal(true)}
-                    color="var(--acqua)"
-                    size="--medium"
-                    button={true}
-                    actions={
-                        <>
-                            <MoreOpt size={22} data={options} />
-                        </>
-                    }>
-
-                    <span>Criação de funções Python adequadas</span>
-                    
-
-                </RowItem>
+                {competences.map((competence) => (
+                    <RowItem
+                        onClick={() => {
+                            setSelectedCompetence(competence);
+                            setOpenCompetenceModal(true);
+                        }}
+                        color="var(--acqua)"
+                        size="--medium"
+                        button={true}
+                        actions={
+                            <>
+                                <MoreOpt size={22} data={options} />
+                            </>
+                        }>
+                        <span>{competence.name}</span>
+                    </RowItem>
+                ))}
             </div>
-                
-            {/* Modal to open the details about a competence */}
+
+            {/* Modal to open the details about a competence
             {openCompetenceModal && (
-                    <div className="modalOverlay" onClick={() => setOpenCompetenceModal(false)}>
+                <div className="modalOverlay" onClick={() => {
+                    setSelectedCompetence(null);
+                    setOpenCompetenceModal(true);
+                }}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         <div className="titleContainer">
                             <h1>Visualizar competência</h1>
-                            <ButtonClose size={40} onClose={() => setOpenCompetenceModal(false)}></ButtonClose>
+                            <ButtonClose size={40} onClose={() => {
+                                setSelectedCompetence(null);
+                                setOpenCompetenceModal(true);
+                            }}></ButtonClose>
                         </div>
                         <div className="itemsBox">
                             <h3>Competência</h3>
                             <RowItem
-                                onClick={() => navigate("/class")}
+                                onClick={() => {}}
                                 color="var(--acqua)"
                                 size="--medium"
                                 button={true}
                                 actions={<></>}>
 
-                                <span>Criação de funções Python adequadas</span>
-                                
+                                <span>{selectedCompetence.name}</span>
 
                             </RowItem>
                         </div>
@@ -93,25 +89,24 @@ export function CompetencesView() {
                         <div className="itemsBox">
                             <h3>Presente nas aulas</h3>
                             <RowItem
-                                onClick={() => navigate("/class")}
+                                onClick={() => {}}
                                 color="var(--purple)"
                                 size="--medium"
                                 button={true}
                                 actions={<></>}>
 
                                 <span>Aula 01- Instalando bibliotecas</span>
-                                
 
                             </RowItem>
                         </div>
                         <div></div>
                     </div>
                 </div>
-            )}
-            
+            )} */}
+
             {/* Modal to edit a competence */}
             {editCompetenceModal && (
-                    <div className="modalOverlay" onClick={() => setEditCompetenceModal(false)}>
+                <div className="modalOverlay" onClick={() => setEditCompetenceModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         <div className="titleContainer">
                             <h1>Editar competência</h1>
@@ -119,7 +114,7 @@ export function CompetencesView() {
                         </div>
                         <div className="textBox">
                             <h2>Nome da competência</h2>
-                            <input type="text"/>
+                            <input type="text" />
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => setEditCompetenceModal(false)}></Button>
@@ -129,11 +124,11 @@ export function CompetencesView() {
 
             {/* Modal to exclude a competence */}
             {excludeCompetenceModal && (
-                    <div className="modalExcludeOverlay" onClick={() => setExcludeCompetenceModal(false)}>
+                <div className="modalExcludeOverlay" onClick={() => setExcludeCompetenceModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
-                    <div className="redString"></div>
+                        <div className="redString"></div>
                         <p>Deseja excluir a competência?</p>
-    
+
                         <div className="buttonsBox">
                             <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeCompetenceModal(false)}></ButtonExclude>
                             <br />

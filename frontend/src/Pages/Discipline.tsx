@@ -142,10 +142,9 @@ export function Discipline() {
                 </div>
                 {/* Box for all the disciplines display */}
                 <div className="disciplinesContainer">
-                    <DisciplineComp Discipline={"Inglês"} Area={"Administração"}></DisciplineComp>
-                    <DisciplineComp Discipline={"Comunicação"} Area={"Administração"}></DisciplineComp>
-                    <DisciplineComp Discipline={"Slides"} Area={"Administração"}></DisciplineComp>
-                    <DisciplineComp Discipline={"Organização"} Area={"Administração"}></DisciplineComp>
+                    {disciplines.map((discipline) => (                       
+                        <DisciplineComp Discipline={discipline}></DisciplineComp>
+                    ))}                           
                 </div>
             </div>
 

@@ -22,7 +22,7 @@ function App() {
                 <Discipline />
               </PrivateRoute>
             } />
-            <Route path="/Content" element={
+            <Route path="/Content/:id" element={
               <PrivateRoute>
                 <Content />
               </PrivateRoute>
