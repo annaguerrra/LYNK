@@ -60,8 +60,8 @@ export default class UserController {
     // get all the users registered in a specific user table
     async showStudents(req: Request, res: Response){
         try {
-            await this.userService.showStudents()
-            return res.status(200).send({ response: "Success!"})
+            const students = await this.userService.showStudents()
+            return res.status(200).send({ response: students })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }
@@ -69,8 +69,8 @@ export default class UserController {
 
     async showInstructors(req: Request, res: Response){
         try {
-            await this.userService.showInstructors()
-            return res.status(200).send({ response: "Success!"})
+            const instructors = await this.userService.showInstructors()
+            return res.status(200).send({ response: instructors })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }
@@ -78,8 +78,8 @@ export default class UserController {
 
     async showAdmins(req: Request, res: Response){
         try {
-            await this.userService.showAdmins()
-            return res.status(200).send({ response: "Success!"})
+            const admins = await this.userService.showAdmins()
+            return res.status(200).send({ response: admins })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }
@@ -90,8 +90,8 @@ export default class UserController {
     async showStudent(req: Request, res: Response){
         const { id } = req.params
         try {
-            await this.userService.showStudent(Number(id))
-            return res.status(200).send({ response: "Success!"})
+            const student = await this.userService.showStudent(Number(id))
+            return res.status(200).send({ response: student })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }
@@ -100,8 +100,8 @@ export default class UserController {
     async showInstructor(req: Request, res: Response){
         const { id } = req.params
         try {
-            await this.userService.showInstructor(Number(id))
-            return res.status(200).send({ response: "Success!"})
+            const instructor = await this.userService.showInstructor(Number(id))
+            return res.status(200).send({ response: instructor })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }
@@ -110,8 +110,8 @@ export default class UserController {
     async showAdmin(req: Request, res: Response){
         const { id } = req.params
         try {
-            await this.userService.showAdmin(Number(id))
-            return res.status(200).send({ response: "Success!"})
+            const admin = await this.userService.showAdmin(Number(id))
+            return res.status(200).send({ response: admin })
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }

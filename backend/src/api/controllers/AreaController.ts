@@ -34,8 +34,8 @@ export default class AreaController {
     // show all areas
     async showAreas(req: Request, res: Response){
         try {
-            await this.areaService.showAreas()
-            return res.status(200).send({ response: "Success!"})
+            const areas = await this.areaService.showAreas()
+            return res.status(200).send({ response: areas })
         } catch (e) {
             return res.status(404).send({ response: "Area not found!" })
         }
