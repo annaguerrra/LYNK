@@ -6,6 +6,7 @@ import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken
 import { ClassService } from "#infrastructure/services/Class/ClassService.js";
 import { CompetenceService } from "#infrastructure/services/Competence/CompetenceService.js";
 import { DisciplineService } from "#infrastructure/services/Discipline/DisciplineService.js";
+import { MaterialService } from "#infrastructure/services/Material/MaterialService.js";
 import { UserService } from "#infrastructure/services/User/UserService.js";
 import { Request, response, Response } from "express";
 
@@ -16,7 +17,8 @@ export class ClassController {
     private userService = new UserService(this.attachmentService, this.hashService, this.jwtService)
     private competenceService = new CompetenceService(this.userService)
     private disciplineService = new DisciplineService(this.userService)
-    private classService = new ClassService(this.userService, this.competenceService, this.disciplineService)
+    private materialsService = new MaterialService(this.userService, this.attachmentService)
+    private classService = new ClassService(this.userService, this.competenceService, this.disciplineService, this.materialsService)
 
     // POST
     // creates class
