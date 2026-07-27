@@ -33,7 +33,7 @@ export function AuthProvider({
 }: {
     children: React.ReactNode;
 }) {
-    
+
     const [user, setUser] = useState<User | null>(() => {
         const token = localStorage.getItem("token");
 
@@ -49,13 +49,15 @@ export function AuthProvider({
             password
         });
 
-        const { token, mustChangePassword, user } = response.data;
+        const { token, mustChangePassword, user } = response.data.response;
+
+        console.log(response.data.response)
 
         localStorage.setItem("token", token);
 
         localStorage.setItem("user", JSON.stringify({
             username: user.username,
-            profilePic: user.photo,
+            // profilePic: user.photo,
             role: user.userType
         }));
 
@@ -71,14 +73,14 @@ export function AuthProvider({
     }
 
     async function changePassword(
-        username: string,
         oldPassword: string,
-        newPassword: string
+        newPassword: string,
+        confirmPassword: string
     ) {
         await api.post("/user/change-password", {
-            username,
             oldPassword,
             newPassword,
+            confirmPassword
         });
     }
 
