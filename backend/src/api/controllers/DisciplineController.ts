@@ -3,6 +3,7 @@ import { getBucket } from "#infrastructure/database/database.js"
 import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js"
 import { HashService } from "#infrastructure/services/Authetication/Hash.service.js"
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js"
+import { ClassService } from "#infrastructure/services/Class/ClassService.js"
 import { DisciplineService } from "#infrastructure/services/Discipline/DisciplineService.js"
 import { UserService } from "#infrastructure/services/User/UserService.js"
 import {Request, response, Response } from "express"
@@ -84,6 +85,20 @@ export class DisciplineController{
         } catch(e){
             return res.status(500).send({response: e});
         }
+    }
+
+    // GET
+    // gets all exams in discipline
+    async viewExams(req: Request, res: Response) {
+        const { disciplineId } = req.params
+
+        try {
+            const exams = await this.disciplineService.viewExams(Number(disciplineId));
+            return res.status(200).send({response: exams});
+        } catch(e){
+            return res.status(500).send({response: e});
+        }
+
     }
 
     // GET

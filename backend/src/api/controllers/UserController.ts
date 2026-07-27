@@ -46,12 +46,12 @@ export default class UserController {
         const { username, password} = req.body
 
         try{
-            await this.userService.login({
+            const loginResponse = await this.userService.login({
                 username: username,
                 password: password
             });
 
-            return res.status(200).send({response: "Login Successfully"});
+            return res.status(200).send({ response: loginResponse });
         } catch(e) {
             console.log(e)
             return res.status(404).send({ response: "Failed to Login"});

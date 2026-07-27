@@ -150,7 +150,7 @@ export class UserService implements IUserService {
                 userType: student.userType,
                 active: student.active,
                 firstAccess: student.firstAccess,
-                updatedPasswordAt: student.updatePasswordAt
+                updatedPasswordAt: student.updatedPasswordAt
                 
             }
         }
@@ -163,7 +163,7 @@ export class UserService implements IUserService {
                 specialty: instructor.specialty,
                 active: instructor.active,
                 firstAccess: instructor.firstAccess,
-                updatedPasswordAt: instructor.updatePasswordAt
+                updatedPasswordAt: instructor.updatedPasswordAt
             }
         }
         
@@ -176,7 +176,7 @@ export class UserService implements IUserService {
                 specialty: admin.specialty,
                 active: admin.active,
                 firstAccess: admin.firstAccess,
-                updatedPasswordAt: admin.updatePasswordAt
+                updatedPasswordAt: admin.updatedPasswordAt
             }
         }
         else {
