@@ -64,6 +64,19 @@ export class DisciplineController{
     }
 
     // GET
+    // gets the discipline's area color
+    async getColor(req: Request, res: Response){
+        const areaid = req.body
+
+        try{
+            await this.disciplineService.getColor(areaid);
+            return res.status(200).send({ response: "Success!"});
+        } catch(e) {
+            return res.status(500).send({ response: e});
+        }
+    }
+
+    // GET
     // gets all disciplines
     async findAll(req: Request, res: Response){
         try{

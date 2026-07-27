@@ -314,7 +314,28 @@ export class DisciplineService implements IDisciplineService{
             lastUpdate: lastUpdate,
         }
     }
-    
+
+    async getColor(id: number) : Promise<string> {
+        const target = await prisma.discipline.findFirst({
+            where: {
+                areaId: id
+            },
+            include: {
+                area: {
+                    select: {
+                        color: true
+                    }
+                }
+            }
+        });
+
+        if(!target) {
+            throw new Error("Area Not Found");
+        }
+
+        return target.area.color;
+    }
+
     async viewExams(id: number): Promise<viewExamsDTO[]> {
         const target = await prisma.discipline.findMany({
             where:{
