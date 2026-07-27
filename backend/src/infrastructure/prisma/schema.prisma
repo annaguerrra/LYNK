@@ -51,7 +51,7 @@ model Admin {
   userType UserType @default(ADMIN)
   specialty Specialties
   active Boolean @default(false)
-  updatedPasswordAt DateTime
+  updatedPasswordAt DateTime @default(now())
   firstAccess Boolean @default(true)
   attachmentId String?
 
@@ -66,7 +66,7 @@ model Instructor {
   userType UserType @default(INSTRUCTOR)
   specialty Specialties
   active Boolean @default(false)
-  updatedPasswordAt DateTime
+  updatedPasswordAt DateTime @default(now())
   firstAccess Boolean @default(true)
   attachmentId String?
 
@@ -80,7 +80,7 @@ model Student {
   password String
   userType UserType @default(STUDENT)
   active Boolean @default(true)
-  updatedPasswordAt DateTime
+  updatedPasswordAt DateTime @default(now())
   firstAccess Boolean @default(true)
 }
 

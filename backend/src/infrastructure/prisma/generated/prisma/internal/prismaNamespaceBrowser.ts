@@ -87,6 +87,7 @@ export const AdminScalarFieldEnum = {
   userType: 'userType',
   specialty: 'specialty',
   active: 'active',
+  updatedPasswordAt: 'updatedPasswordAt',
   firstAccess: 'firstAccess',
   attachmentId: 'attachmentId'
 } as const
@@ -102,6 +103,7 @@ export const InstructorScalarFieldEnum = {
   userType: 'userType',
   specialty: 'specialty',
   active: 'active',
+  updatedPasswordAt: 'updatedPasswordAt',
   firstAccess: 'firstAccess',
   attachmentId: 'attachmentId'
 } as const
@@ -116,6 +118,7 @@ export const StudentScalarFieldEnum = {
   password: 'password',
   userType: 'userType',
   active: 'active',
+  updatedPasswordAt: 'updatedPasswordAt',
   firstAccess: 'firstAccess'
 } as const
 
