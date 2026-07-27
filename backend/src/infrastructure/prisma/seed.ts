@@ -4,15 +4,33 @@ import "dotenv/config";
 import { error } from "node:console";
 
 // HOW TO RUN THE SEED
-// 1. npx migrate dev
-// 2. npx prisma generate
-// 3. npm run seed <---
-// 4. npm run dev 
+// 1. Run the database migrations:
+//    npx prisma migrate dev
+//
+// 2. Generate the Prisma Client:
+//    npx prisma generate
+//
+// 3. Run the seed:
+//    npm run seed
+//
+// 4. Start the application:
+//    npm run dev
 
-// if anything like that happens: Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\Aluno\Desktop\LYNK\backend\node_modules\@prisma\client\runtime\library
-// run: npm install @prisma/client@6.19.3
-// and then: npm install -D prisma@6.19.3
-// delete the node modules and run: npx prisma generate. After this, you can try running the seed again.
+// TROUBLESHOOTING
+// If this error happens:
+// Error [ERR_MODULE_NOT_FOUND]: Cannot find module '@prisma/client/runtime/library'
+//
+// It may be caused by different versions of prisma and @prisma/client.
+// To fix it, run:
+// npm install @prisma/client@6.19.3
+// npm install -D prisma@6.19.3
+//
+// Then delete node_modules and package-lock.json, reinstall the dependencies,
+// generate Prisma Client again, and run the seed:
+//
+// npm install
+// npx prisma generate
+// npm run seed
 
 async function main() {
     const hashService = new HashService()
@@ -46,7 +64,7 @@ async function main() {
 }
 // runs the seed
 main()
-// on error, forces the node to exit
+// handles errors and stops the process
 .catch((error) => {
     console.log(error);
     process.exit(1);
