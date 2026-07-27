@@ -67,8 +67,13 @@ export function Content() {
     }
 
     async function loadContent() {
-        const response = await api.get(`/discipline/${discipline_id}`);
-        setDiscipline(response.data)
+        try {
+            const response = await api.get(`/disipline/${discipline_id}`);
+            setDiscipline(response.data);
+        } catch (error) {
+            console.error(error);
+            navigate("/error")
+        }
     }
 
     useEffect(() => {
@@ -103,7 +108,7 @@ export function Content() {
                         selected={selectedTab}
                         onChange={setSelectedTab} tabs={tabs} />
 
-                    {selectedTab === "classes" && <ClassesView />}
+                    {selectedTab === "classes" && <ClassesView classes />}
                     {selectedTab === "competences" && <CompetencesView competences={discipline.competences ?? []} />}
                     {selectedTab === "exams" && <ExamsView />}
 
