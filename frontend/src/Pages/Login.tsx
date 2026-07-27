@@ -11,6 +11,7 @@ export function Login() {
     const [username, setUsername] = useState("")
     const [userPassword, setUserPassword] = useState("")
     const [newPassword, setNewPassword] = useState("");
+    const [renewPassword, setRenewPassword] = useState("");
     const [mustChangePassword, setMustChangePassword] = useState(false);
 
     const { login, changePassword } = useAuth();
@@ -65,16 +66,29 @@ export function Login() {
                     </div>
 
                     {mustChangePassword && (
-                        <div className="boxTexts">
-                            <h1>Nova senha</h1>
-                            <input
-                                className="loginInput"
-                                type="password"
-                                placeholder="Digite a nova senha"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                            />
-                        </div>
+                        <>
+                            <div className="boxTexts">
+                                <h1>Nova senha</h1>
+                                <input
+                                    className="loginInput"
+                                    type="password"
+                                    placeholder="Digite a nova senha"
+                                    value={newPassword}
+                                    onChange={(e) => setNewPassword(e.target.value)}
+                                />
+                            </div>
+
+                            <div className="boxTexts">
+                                <h1>Repita sua senha</h1>
+                                <input
+                                    className="loginInput"
+                                    type="password"
+                                    placeholder="Digite a nova senha"
+                                    value={renewPassword}
+                                    onChange={(e) => setRenewPassword(e.target.value)}
+                                />
+                            </div>
+                        </>
                     )}
                     <Button ButtonTitle={"Entrar"}  onClose={mustChangePassword ? handleChangePassword : handleLogin}></Button>
                 </div>
