@@ -1,13 +1,37 @@
+import { useEffect, useState } from "react";
 import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
+import api from "../../Services/api";
 
 export function HUsersView() {
+    //Variables to control the users and its interactions
+    const [husers, setHUser] = useState([])
+    
+    async function loadHUser() {
+        try {
+            const response = await api.get("/logs/competence");
+            setHUser(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        loadHUser();
+    }, []);
+
+    const actionColors = {
+        CREATE: "var(--green)",
+        PUT: "var(--blue)",
+        DELETE: "var(--red)",
+    };
 
     return (
         <>
             <div className="view-page">
+                {husers.map((huser) => (
                 <RowItem
-                    color="var(--purple)"
+                    color={actionColors[huser.action]}
                     size="--medium"
                     userAction={
                         <>
@@ -17,33 +41,14 @@ export function HUsersView() {
 
                             <span>instrutor_0023</span>
                             <span> | </span>
-                            <span>15/08/2026 - 08:38:32</span>
+                            <span>{huser.updatedAt}</span>
                         </>
                     }>
 
-                    <span>Aula 01 - Instalando bibliotecas</span>
+                    <span>{huser.entityName}</span>
 
                 </RowItem>
-
-                <RowItem
-                    color="var(--purple)"
-                    size="--medium"
-                    userAction={
-                        <>
-                            <img
-                                src="../../../public/UserDefault/user-purple.png">
-                            </img>
-
-                            <span>instrutor_0023</span>
-                            <span> | </span>
-                            <span>15/08/2026 - 08:38:32</span>
-                        </>
-                    }>
-
-                    <span>Aula 02 - Instalando bibliotecas</span>
-
-
-                </RowItem>
+                ))}
             </div>
 
 

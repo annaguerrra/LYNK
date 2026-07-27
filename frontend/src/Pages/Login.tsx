@@ -13,7 +13,7 @@ export function Login() {
     const [newPassword, setNewPassword] = useState("");
     const [mustChangePassword, setMustChangePassword] = useState(false);
 
-    const { login } = useAuth();
+    const { login, changePassword } = useAuth();
 
     async function handleLogin() {
         const changePassword = await login(username, userPassword);
@@ -24,6 +24,20 @@ export function Login() {
         }
 
         navigate("/Disciplines");
+    }
+
+    async function handleChangePassword() {
+        try {
+            await changePassword(
+                username,
+                userPassword,
+                newPassword
+            );
+
+            navigate("/Disciplines");
+        } catch (error) {
+            console.error(error);
+        }
     }
 
 

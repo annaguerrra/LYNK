@@ -4,7 +4,6 @@ import {
     useState
 } from "react";
 import api from "../Services/api";
-import { useNavigate } from "react-router-dom";
 
 type Role = "ADMIN" | "INSTRUCTOR" | "STUDENT";
 
@@ -19,6 +18,11 @@ interface User {
 interface AuthContextType {
     user: User | null;
     login: (username: string, password: string) => Promise<boolean>;
+    changePassword: (
+        username: string,
+        oldPassword: string,
+        newPassword: string
+    ) => Promise<void>;
     logout: () => void;
 }
 
@@ -66,17 +70,16 @@ export function AuthProvider({
         return mustChangePassword;
     }
 
-    async function changePassword() {
-        try {
-            await api.post("user/change-password", {
-                username,
-                oldPassword: userPassword,
-                newPassword,
-            });
-
-        } catch (error) {
-            console.error(error);
-        }
+    async function changePassword(
+        username: string,
+        oldPassword: string,
+        newPassword: string
+    ) {
+        await api.post("/user/change-password", {
+            username,
+            oldPassword,
+            newPassword,
+        });
     }
 
     function logout() {
@@ -90,6 +93,7 @@ export function AuthProvider({
             value={{
                 user,
                 login,
+                changePassword,
                 logout
             }}
         >

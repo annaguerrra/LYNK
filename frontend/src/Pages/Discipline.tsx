@@ -152,7 +152,7 @@ export function Discipline() {
                 <div className="disciplinesContainer">
                     {disciplines.map((discipline) => (                       
                         <DisciplineComp Discipline={discipline}></DisciplineComp>
-                    ))}                           
+                    ))}                     
                 </div>
             </div>
 
