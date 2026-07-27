@@ -7,4 +7,5 @@ export interface showLogDTO{
     action: Action
     updatedAt: Date
     userId: number
+    username: string
 }

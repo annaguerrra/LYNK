@@ -49,6 +49,7 @@ export type LogMinAggregateOutputType = {
   updatedAt: Date | null
   instructorId: number | null
   adminId: number | null
+  username: string | null
 }
 
 export type LogMaxAggregateOutputType = {
@@ -60,6 +61,7 @@ export type LogMaxAggregateOutputType = {
   updatedAt: Date | null
   instructorId: number | null
   adminId: number | null
+  username: string | null
 }
 
 export type LogCountAggregateOutputType = {
@@ -73,6 +75,7 @@ export type LogCountAggregateOutputType = {
   newData: number
   instructorId: number
   adminId: number
+  username: number
   _all: number
 }
 
@@ -100,6 +103,7 @@ export type LogMinAggregateInputType = {
   updatedAt?: true
   instructorId?: true
   adminId?: true
+  username?: true
 }
 
 export type LogMaxAggregateInputType = {
@@ -111,6 +115,7 @@ export type LogMaxAggregateInputType = {
   updatedAt?: true
   instructorId?: true
   adminId?: true
+  username?: true
 }
 
 export type LogCountAggregateInputType = {
@@ -124,6 +129,7 @@ export type LogCountAggregateInputType = {
   newData?: true
   instructorId?: true
   adminId?: true
+  username?: true
   _all?: true
 }
 
@@ -224,6 +230,7 @@ export type LogGroupByOutputType = {
   newData: runtime.JsonValue
   instructorId: number | null
   adminId: number | null
+  username: string
   _count: LogCountAggregateOutputType | null
   _avg: LogAvgAggregateOutputType | null
   _sum: LogSumAggregateOutputType | null
@@ -260,6 +267,7 @@ export type LogWhereInput = {
   newData?: Prisma.JsonFilter<"Log">
   instructorId?: Prisma.IntNullableFilter<"Log"> | number | null
   adminId?: Prisma.IntNullableFilter<"Log"> | number | null
+  username?: Prisma.StringFilter<"Log"> | string
   instructor?: Prisma.XOR<Prisma.InstructorNullableScalarRelationFilter, Prisma.InstructorWhereInput> | null
   admin?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
 }
@@ -275,6 +283,7 @@ export type LogOrderByWithRelationInput = {
   newData?: Prisma.SortOrder
   instructorId?: Prisma.SortOrderInput | Prisma.SortOrder
   adminId?: Prisma.SortOrderInput | Prisma.SortOrder
+  username?: Prisma.SortOrder
   instructor?: Prisma.InstructorOrderByWithRelationInput
   admin?: Prisma.AdminOrderByWithRelationInput
   _relevance?: Prisma.LogOrderByRelevanceInput
@@ -294,6 +303,7 @@ export type LogWhereUniqueInput = Prisma.AtLeast<{
   newData?: Prisma.JsonFilter<"Log">
   instructorId?: Prisma.IntNullableFilter<"Log"> | number | null
   adminId?: Prisma.IntNullableFilter<"Log"> | number | null
+  username?: Prisma.StringFilter<"Log"> | string
   instructor?: Prisma.XOR<Prisma.InstructorNullableScalarRelationFilter, Prisma.InstructorWhereInput> | null
   admin?: Prisma.XOR<Prisma.AdminNullableScalarRelationFilter, Prisma.AdminWhereInput> | null
 }, "id">
@@ -309,6 +319,7 @@ export type LogOrderByWithAggregationInput = {
   newData?: Prisma.SortOrder
   instructorId?: Prisma.SortOrderInput | Prisma.SortOrder
   adminId?: Prisma.SortOrderInput | Prisma.SortOrder
+  username?: Prisma.SortOrder
   _count?: Prisma.LogCountOrderByAggregateInput
   _avg?: Prisma.LogAvgOrderByAggregateInput
   _max?: Prisma.LogMaxOrderByAggregateInput
@@ -330,6 +341,7 @@ export type LogScalarWhereWithAggregatesInput = {
   newData?: Prisma.JsonWithAggregatesFilter<"Log">
   instructorId?: Prisma.IntNullableWithAggregatesFilter<"Log"> | number | null
   adminId?: Prisma.IntNullableWithAggregatesFilter<"Log"> | number | null
+  username?: Prisma.StringWithAggregatesFilter<"Log"> | string
 }
 
 export type LogCreateInput = {
@@ -340,6 +352,7 @@ export type LogCreateInput = {
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  username: string
   instructor?: Prisma.InstructorCreateNestedOneWithoutLogsInput
   admin?: Prisma.AdminCreateNestedOneWithoutLogsInput
 }
@@ -355,6 +368,7 @@ export type LogUncheckedCreateInput = {
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId?: number | null
   adminId?: number | null
+  username: string
 }
 
 export type LogUpdateInput = {
@@ -365,6 +379,7 @@ export type LogUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   instructor?: Prisma.InstructorUpdateOneWithoutLogsNestedInput
   admin?: Prisma.AdminUpdateOneWithoutLogsNestedInput
 }
@@ -380,6 +395,7 @@ export type LogUncheckedUpdateInput = {
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   adminId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type LogCreateManyInput = {
@@ -393,6 +409,7 @@ export type LogCreateManyInput = {
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId?: number | null
   adminId?: number | null
+  username: string
 }
 
 export type LogUpdateManyMutationInput = {
@@ -403,6 +420,7 @@ export type LogUpdateManyMutationInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  username?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type LogUncheckedUpdateManyInput = {
@@ -416,6 +434,7 @@ export type LogUncheckedUpdateManyInput = {
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   adminId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type LogListRelationFilter = {
@@ -445,6 +464,7 @@ export type LogCountOrderByAggregateInput = {
   newData?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   adminId?: Prisma.SortOrder
+  username?: Prisma.SortOrder
 }
 
 export type LogAvgOrderByAggregateInput = {
@@ -463,6 +483,7 @@ export type LogMaxOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   adminId?: Prisma.SortOrder
+  username?: Prisma.SortOrder
 }
 
 export type LogMinOrderByAggregateInput = {
@@ -474,6 +495,7 @@ export type LogMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
   instructorId?: Prisma.SortOrder
   adminId?: Prisma.SortOrder
+  username?: Prisma.SortOrder
 }
 
 export type LogSumOrderByAggregateInput = {
@@ -591,6 +613,7 @@ export type LogCreateWithoutAdminInput = {
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  username: string
   instructor?: Prisma.InstructorCreateNestedOneWithoutLogsInput
 }
 
@@ -604,6 +627,7 @@ export type LogUncheckedCreateWithoutAdminInput = {
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId?: number | null
+  username: string
 }
 
 export type LogCreateOrConnectWithoutAdminInput = {
@@ -646,6 +670,7 @@ export type LogScalarWhereInput = {
   newData?: Prisma.JsonFilter<"Log">
   instructorId?: Prisma.IntNullableFilter<"Log"> | number | null
   adminId?: Prisma.IntNullableFilter<"Log"> | number | null
+  username?: Prisma.StringFilter<"Log"> | string
 }
 
 export type LogCreateWithoutInstructorInput = {
@@ -656,6 +681,7 @@ export type LogCreateWithoutInstructorInput = {
   updatedAt?: Date | string
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  username: string
   admin?: Prisma.AdminCreateNestedOneWithoutLogsInput
 }
 
@@ -669,6 +695,7 @@ export type LogUncheckedCreateWithoutInstructorInput = {
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   adminId?: number | null
+  username: string
 }
 
 export type LogCreateOrConnectWithoutInstructorInput = {
@@ -707,6 +734,7 @@ export type LogCreateManyAdminInput = {
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId?: number | null
+  username: string
 }
 
 export type LogUpdateWithoutAdminInput = {
@@ -717,6 +745,7 @@ export type LogUpdateWithoutAdminInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   instructor?: Prisma.InstructorUpdateOneWithoutLogsNestedInput
 }
 
@@ -730,6 +759,7 @@ export type LogUncheckedUpdateWithoutAdminInput = {
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type LogUncheckedUpdateManyWithoutAdminInput = {
@@ -742,6 +772,7 @@ export type LogUncheckedUpdateManyWithoutAdminInput = {
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   instructorId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type LogCreateManyInstructorInput = {
@@ -754,6 +785,7 @@ export type LogCreateManyInstructorInput = {
   oldData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData: Prisma.JsonNullValueInput | runtime.InputJsonValue
   adminId?: number | null
+  username: string
 }
 
 export type LogUpdateWithoutInstructorInput = {
@@ -764,6 +796,7 @@ export type LogUpdateWithoutInstructorInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  username?: Prisma.StringFieldUpdateOperationsInput | string
   admin?: Prisma.AdminUpdateOneWithoutLogsNestedInput
 }
 
@@ -777,6 +810,7 @@ export type LogUncheckedUpdateWithoutInstructorInput = {
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   adminId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type LogUncheckedUpdateManyWithoutInstructorInput = {
@@ -789,6 +823,7 @@ export type LogUncheckedUpdateManyWithoutInstructorInput = {
   oldData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   newData?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   adminId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  username?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -804,6 +839,7 @@ export type LogSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   newData?: boolean
   instructorId?: boolean
   adminId?: boolean
+  username?: boolean
   instructor?: boolean | Prisma.Log$instructorArgs<ExtArgs>
   admin?: boolean | Prisma.Log$adminArgs<ExtArgs>
 }, ExtArgs["result"]["log"]>
@@ -821,9 +857,10 @@ export type LogSelectScalar = {
   newData?: boolean
   instructorId?: boolean
   adminId?: boolean
+  username?: boolean
 }
 
-export type LogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "entityType" | "entityId" | "entityName" | "action" | "updatedAt" | "oldData" | "newData" | "instructorId" | "adminId", ExtArgs["result"]["log"]>
+export type LogOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "entityType" | "entityId" | "entityName" | "action" | "updatedAt" | "oldData" | "newData" | "instructorId" | "adminId" | "username", ExtArgs["result"]["log"]>
 export type LogInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   instructor?: boolean | Prisma.Log$instructorArgs<ExtArgs>
   admin?: boolean | Prisma.Log$adminArgs<ExtArgs>
@@ -846,6 +883,7 @@ export type $LogPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
     newData: runtime.JsonValue
     instructorId: number | null
     adminId: number | null
+    username: string
   }, ExtArgs["result"]["log"]>
   composites: {}
 }
@@ -1227,6 +1265,7 @@ export interface LogFieldRefs {
   readonly newData: Prisma.FieldRef<"Log", 'Json'>
   readonly instructorId: Prisma.FieldRef<"Log", 'Int'>
   readonly adminId: Prisma.FieldRef<"Log", 'Int'>
+  readonly username: Prisma.FieldRef<"Log", 'String'>
 }
     
 
