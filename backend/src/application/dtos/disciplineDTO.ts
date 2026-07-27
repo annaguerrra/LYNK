@@ -63,6 +63,13 @@ export interface viewClassesDTO{
     }[];
 }
 
+export interface viewExamsDTO {
+    name: string
+    exams: {
+        name: string
+    }[];
+}
+
 // response to editDiscipline service 
 export interface editDisciplineDTO{
     name: string

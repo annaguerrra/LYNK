@@ -16,6 +16,7 @@ router
    .get('/disciplines', disciplineController.findAll.bind(disciplineController))
     // route to show a discipline
    .get('/discipline/:id', disciplineController.findOne.bind(disciplineController))
+   .get('disciplines/:id/exams', disciplineController.vi.bind(disciplineController))
    .get('/discipline/:id/classes', disciplineController.viewClasses.bind(disciplineController))
    .get('/discipline/:id/materials', disciplineController.viewMaterial.bind(disciplineController))
     // route to show all competences in a discipline
