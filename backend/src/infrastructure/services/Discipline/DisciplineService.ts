@@ -1,8 +1,9 @@
 import { DisciplineDTO, assignCompetencyDTO, findAllDTO, viewMaterialsDTO, viewCompetencesDTO, editDisciplineDTO, findOneDTO, viewClassesDTO } from "#application/dtos/disciplineDTO.js";
 import { IDisciplineService } from "#application/services/Discipline/IDiscipline.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
-import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
+import { Class, Discipline, Exam, Log, Material } from "#infrastructure/prisma/generated/prisma/client.js";
 import { UserService } from "#infrastructure/services/User/UserService.js"
+import { Compentence } from "#infrastructure/src/generated/prisma/browser.js";
 import { ClassService } from "../Class/ClassService.js";
 import { CompetenceService } from "../Competence/CompetenceService.js";
 import { ExamService } from "../Exam/ExamService.js";
@@ -152,33 +153,33 @@ export class DisciplineService implements IDisciplineService{
                     workLoad: target.workLoad,
                     areaId: target.areaId,
                     materials: {
-                        create: target.materials.map(material => ({
+                        create: target.materials.map((material: Material) => ({
                             name: material.name,
                             disciplineId: id,
                             classId: material.classId
                         }))
                     },
                     competences: {
-                        create: target.competences.map(competence => ({
+                        create: target.competences.map((competence: Compentence) => ({
                             name: competence.name,
                             numOfClasses: competence.numOfClasses
                         }))
                     },
                     classes: {
-                        create: target.classes.map(item => ({
+                        create: target.classes.map((item: Class) => ({
                             name: item.name,
                             disciplineId: id,
                             content: item.content
                         }))
                     },
                     exams: {
-                        create: target.exams.map(exam => ({
+                        create: target.exams.map((exam: Exam) => ({
                             name: exam.name,
                             disciplineId: id,
                             // only duplicates attachments reference to the new disciplne
                             // the files at mongodb are not duplicated
                             attachments: {
-                                create: exam.attachments.map(attachment => ({
+                                create: exam.attachments.map((attachment: any) => ({
                                     attachmentId: attachment.attachmentId
                                 }))
                             }
@@ -238,7 +239,7 @@ export class DisciplineService implements IDisciplineService{
         const log = await prisma.log.findMany({
             where:{
                 entityId: {
-                    in: target.map((item) => item.id)
+                    in: target.map((item: Discipline) => item.id)
                 },
                 entityType: "Discipline"
             }
@@ -249,9 +250,9 @@ export class DisciplineService implements IDisciplineService{
         }
 
         // uses variable log to track last updated to the discipline
-        return target.map((disc) => {
+        return target.map((disc: Discipline) => {
             const lastUpdate = log.find(
-                (log) => log.entityId === disc.id
+                (log: Log) => log.entityId === disc.id
             );
 
             return {
@@ -259,7 +260,7 @@ export class DisciplineService implements IDisciplineService{
                 area:{
                     name: disc.area.name
                 },
-                competences: disc.competences.map((competence) => {
+                competences: disc.competences.map((competence: Compentence) => {
                     return{
                         name: competence.name
                     }
