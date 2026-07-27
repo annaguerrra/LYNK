@@ -54,6 +54,7 @@ export function Class() {
     const [classItem, setClassItem] = useState(null);
 
     const [materials, setMaterials] = useState([])
+    const [competences, setCompetences] = useState([])
 
     //Generic content for the markdown
     const [content, setContent] = useState(`# Título da Aula
@@ -122,10 +123,34 @@ export function Class() {
         }
     }
 
+    async function loadMaterials() {
+        try {
+            const response = await api.get(`/class/${class_id}/materials`);
+            setMaterials(response.data);
+        } catch (error) {
+            console.error(error);
+            navigate("/error")
+        }
+    }
+
+    async function loadCompetences() {
+        try {
+            const response = await api.get(`/class/${class_id}/competences`);
+            setCompetences(response.data);
+        } catch (error) {
+            console.error(error);
+            navigate("/error")
+        }
+    }
+
+
+
     useEffect(() => {
 
         if (class_id) {
             loadClass();
+            loadMaterials();
+            loadCompetences();
 
             setTitleClass(classItem.name)
             setContent(classItem.content)
