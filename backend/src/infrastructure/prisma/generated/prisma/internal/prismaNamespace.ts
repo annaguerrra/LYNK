@@ -1367,7 +1367,8 @@ export const LogScalarFieldEnum = {
   oldData: 'oldData',
   newData: 'newData',
   instructorId: 'instructorId',
-  adminId: 'adminId'
+  adminId: 'adminId',
+  username: 'username'
 } as const
 
 export type LogScalarFieldEnum = (typeof LogScalarFieldEnum)[keyof typeof LogScalarFieldEnum]
@@ -1502,7 +1503,8 @@ export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
 export const LogOrderByRelevanceFieldEnum = {
-  entityName: 'entityName'
+  entityName: 'entityName',
+  username: 'username'
 } as const
 
 export type LogOrderByRelevanceFieldEnum = (typeof LogOrderByRelevanceFieldEnum)[keyof typeof LogOrderByRelevanceFieldEnum]

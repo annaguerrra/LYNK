@@ -20,4 +20,5 @@ export interface IUserService {
     deleteInstructor(id: number, userId: number): Promise<boolean>
     deleteAdmin(id: number, userId: number): Promise<boolean>
     isAdmin(userId: number): Promise<boolean>
+    getUsername(userId: number): Promise<string>
 }

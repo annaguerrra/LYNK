@@ -21,6 +21,7 @@ export class DisciplineService implements IDisciplineService{
     async create(payload: DisciplineDTO, userID: number): Promise<Discipline> {
         // consults if user creating the discipline is admin
         const admin = await this.userService.isAdmin(userID)
+        const username = await this.userService.getUsername(userID)
         // variables used to create discipline
         const { name, workload, areaID } = payload
 
@@ -51,7 +52,7 @@ export class DisciplineService implements IDisciplineService{
                 // uses isAdmin variable to determin if log register an admin ou an instructor
                 ...(admin && { adminId: userID }),
                 ...(!admin && { instructorId: userID }),
-                updatedAt: new Date()
+                username: username
             }
         });
 
@@ -61,6 +62,7 @@ export class DisciplineService implements IDisciplineService{
     async assignCompetence(payload: assignCompetencyDTO, userId: number): Promise<Discipline> {
         // consults if user updating the discipline is admin
         const admin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         // variables used to assign competence to discipline
         const { disciplineID, competencyID } = payload
 
@@ -114,7 +116,7 @@ export class DisciplineService implements IDisciplineService{
                 // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(admin && { adminId: userId }),
                 ...(!admin && { instructorId: userId }),
-                updatedAt: new Date()
+                username: username
             }
         })
 
@@ -124,6 +126,7 @@ export class DisciplineService implements IDisciplineService{
     async duplicate(id: number, userId: number): Promise<Discipline> {
         // consults if user updating the discipline is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         // finds discipline to be duplicated in including all relations
         const target = await prisma.discipline.findUnique({
             where: {
@@ -201,7 +204,8 @@ export class DisciplineService implements IDisciplineService{
                     },
                     // uses isAdmin variable to determin if log registers an admin ou an instructor
                     ...(isAdmin && { adminId: userId }),
-                    ...(!isAdmin && { instructorId: userId })
+                    ...(!isAdmin && { instructorId: userId }),
+                    username: username
                 }
             })
     
@@ -392,6 +396,7 @@ export class DisciplineService implements IDisciplineService{
     async delete(disciplineID: number, userId: number): Promise<boolean> {
         // consults if user deleting the discipline is admin
         const admin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
 
         const target = await prisma.discipline.findUnique({ 
             where: { 
@@ -434,6 +439,7 @@ export class DisciplineService implements IDisciplineService{
                     // uses isAdmin variable to determin if log registers an admin ou an instructor
                     ...(admin && { adminId: userId }),
                     ...(!admin && { instructorId: userId }),
+                    username: username
                 }
             });
             return true;
@@ -461,6 +467,7 @@ export class DisciplineService implements IDisciplineService{
     async edit(payload: DisciplineDTO, disciplineID: number, userID: number): Promise<editDisciplineDTO> {
         // consults if user updating the discipline is admin
         const admin = await this.userService.isAdmin(userID)
+        const username = await this.userService.getUsername(userID)
         // variables used to update discipline
         const { name, workload } = payload
 
@@ -494,6 +501,7 @@ export class DisciplineService implements IDisciplineService{
                     // uses isAdmin variable to determin if log register an admin ou an instructor
                     ...(admin && { adminId: userID }),
                     ...(!admin && { instructorId: userID }),
+                    username: username
                 }
             });
             return {

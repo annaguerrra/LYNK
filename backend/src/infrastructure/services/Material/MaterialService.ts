@@ -15,6 +15,7 @@ export class MaterialService implements IMaterialService {
     async registerMaterial(data: registerMaterialDTO, userId: number): Promise<Material> {
         // consults if user creating the exam is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         // variables used to create material
         const { name, files, disciplineId, classId } = data
         // variable used to store created attachments
@@ -63,7 +64,8 @@ export class MaterialService implements IMaterialService {
                     },
                     // uses isAdmin variable to determin if log register an admin ou an instructor
                     ...(isAdmin && { adminId: userId }),
-                    ...(!isAdmin && { instructorId: userId })
+                    ...(!isAdmin && { instructorId: userId }),
+                    username: username
                 }
             })
 
@@ -99,6 +101,7 @@ export class MaterialService implements IMaterialService {
     async updateMaterial(id: number, data: updateMaterialDTO, userId: number): Promise<Material> {
         // consults if user updating the material is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         // variables used to update material
         const { name, files, disciplineId, classId } = data
         // variable used to store created attachments
@@ -161,7 +164,8 @@ export class MaterialService implements IMaterialService {
                     },
                     // uses isAdmin variable to determin if log registers an admin ou an instructor
                     ...(isAdmin && { adminId: userId }),
-                    ...(!isAdmin && { instructorId: userId })  
+                    ...(!isAdmin && { instructorId: userId }),
+                    username: username
                 }
             })
 
@@ -181,6 +185,7 @@ export class MaterialService implements IMaterialService {
     async deleteMaterial(id: number, userId: number): Promise<boolean> {
         // consults if user deleting the material is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
 
         const target = await prisma.material.findUnique({
             where: {
@@ -217,7 +222,8 @@ export class MaterialService implements IMaterialService {
                 newData: {},
                 // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         })
 
@@ -243,6 +249,7 @@ export class MaterialService implements IMaterialService {
     async attachtFile(data: attachtFileDTO, userId: number): Promise<Material> {
         // consults if user updating the material is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         // variables used to attacht file
         const { materialId, files } = data
         // variable used to store created attachments
@@ -295,7 +302,8 @@ export class MaterialService implements IMaterialService {
                     },
                     // uses isAdmin variable to determin if log registers an admin ou an instructor
                     ...(isAdmin && { adminId: userId }),
-                    ...(!isAdmin && { instructorId: userId })
+                    ...(!isAdmin && { instructorId: userId }),
+                    username: username
                 }
             })
 

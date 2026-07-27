@@ -28,11 +28,28 @@ export class UserService implements IUserService {
         
         return true
     }
+
+    async getUsername(userId: number): Promise<string> {
+        const admin = await prisma.admin.findUnique({
+            where: {
+                id: userId
+            }
+        })
+
+        const instructor = await prisma.instructor.findUnique({
+            where: {
+                id: userId
+            }
+        })
+
+        return admin ? admin.username : instructor.username
+    }
     
     // creates a new student and register it in log table
     async registerStudent(data: registerStudentDTO, userId: number): Promise<Student> {
         const { username, password, userType } = data
-        const isAdmin = await this.isAdmin(userId) 
+        const isAdmin = await this.isAdmin(userId)
+        const ownerUsername = await this.getUsername(userId)
 
         const hashedPassword = await this.hashService.hash(data.password);
 
@@ -51,7 +68,8 @@ export class UserService implements IUserService {
                     ...createdUser
                 },
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: ownerUsername
             }
         })
         
@@ -61,6 +79,8 @@ export class UserService implements IUserService {
     // creates a new instructor and registers in the log table
     async registerInstructor(data: registerInstructorDTO, userId: number): Promise<Instructor> {
         const { username, password, userType, specialty } = data
+        const isAdmin = await this.isAdmin(userId)
+        const ownerUsername = await this.getUsername(userId)
         
         const hashedPassword = await this.hashService.hash(data.password);
 
@@ -78,7 +98,9 @@ export class UserService implements IUserService {
                 newData: {
                     ...createdUser
                 },
-                adminId: userId                    
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId }),
+                username: ownerUsername                
             }
         })
         
@@ -89,6 +111,8 @@ export class UserService implements IUserService {
     // creates a new admin and registers in the log table
     async registerAdmin(data: registerAdminDTO, userId: number): Promise<Admin> {
         const { username, password, userType, specialty } = data
+        const isAdmin = await this.isAdmin(userId)
+        const ownerUsername = await this.getUsername(userId)
         
         const hashedPassword = await this.hashService.hash(data.password);
 
@@ -106,7 +130,9 @@ export class UserService implements IUserService {
                 newData: {
                     ...createdUser
                 },
-                adminId: userId
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId }),
+                username: ownerUsername
             }
         })
         
@@ -220,6 +246,7 @@ export class UserService implements IUserService {
     }
     
     async changePassword(data: changePasswordDTO, userId: number, userType: UserType): Promise<boolean> {
+        const ownerUsername = await this.getUsername(userId)
         let user;
 
         switch (userType) {
@@ -305,9 +332,8 @@ export class UserService implements IUserService {
                 newData: hashedPassword, 
                 oldData: data.oldPassword,
                 adminId: user.id,
-                updatedAt: new Date()
-                }
-            });
+                username: ownerUsername
+            }})
 
         } 
         else if(user.userType === UserType.INSTRUCTOR) {
@@ -330,7 +356,7 @@ export class UserService implements IUserService {
                 newData: hashedPassword, 
                 oldData: data.oldPassword,
                 adminId: user.id,
-                updatedAt: new Date()
+                username: ownerUsername
                 }
             });
 
@@ -354,7 +380,7 @@ export class UserService implements IUserService {
                 newData: hashedPassword, 
                 oldData: data.oldPassword,
                 adminId: user.id,
-                updatedAt: new Date()
+                username: ownerUsername
                 }
             });
         }
@@ -421,7 +447,8 @@ export class UserService implements IUserService {
     // updates the user information by searching its id, updating the prisma information and creating a new log
     async updateStudent(id: number, data: updateStudentDTO, userId: number): Promise<Student> {
         const { username, password } = data
-        const isAdmin = await this.isAdmin(userId) 
+        const isAdmin = await this.isAdmin(userId)
+        const ownerUsername = await this.getUsername(userId)
        
         const target = await prisma.student.findUnique({
             where: {
@@ -455,7 +482,8 @@ export class UserService implements IUserService {
                     ...updatedUser
                 },
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: ownerUsername
             }
         })
 
@@ -466,6 +494,7 @@ export class UserService implements IUserService {
         const { username, password, specialty, active, file } = data
         const attachmentId = await this.attachmentService.upload(file)
         const isAdmin = await this.isAdmin(userId)
+        const ownerUsername = await this.getUsername(userId)
 
         const target = await prisma.instructor.findUnique({
             where: {
@@ -507,6 +536,7 @@ export class UserService implements IUserService {
                     },
                     ...(isAdmin && { adminId: userId }),
                     ...(!isAdmin && { instructorId: userId }),
+                    username: ownerUsername
                 }
             })
 
@@ -521,6 +551,7 @@ export class UserService implements IUserService {
 
     async updateAdmin(id: number, data: updateAdminDTO, userId: number): Promise<Admin> {
         const { username, password, specialty, active, file } = data
+        const ownerUsername = await this.getUsername(userId)
         const attachmentId = await this.attachmentService.upload(file)
 
         const target = await prisma.admin.findUnique({
@@ -561,7 +592,8 @@ export class UserService implements IUserService {
                     newData: {
                         ...updatedUser
                     },
-                    adminId: userId
+                    adminId: userId,
+                    username: ownerUsername
                 }
             })
 
@@ -576,6 +608,7 @@ export class UserService implements IUserService {
     // deletes the user information based on the provided id, this action is registered in the log table
     async deleteStudent(id: number, userId: number): Promise<boolean> {
         const isAdmin = await this.isAdmin(userId)
+        const ownerUsername = await this.getUsername(userId)
         
         const target = await prisma.student.findUnique({
             where: {
@@ -603,7 +636,8 @@ export class UserService implements IUserService {
                 },
                 newData: {},
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: ownerUsername
             }
         })
 
@@ -611,6 +645,7 @@ export class UserService implements IUserService {
     }
 
     async deleteInstructor(id: number, userId: number): Promise<boolean> {
+        const ownerUsername = await this.getUsername(userId)
         const target = await prisma.instructor.findUnique({
             where: {
                 id: id
@@ -636,7 +671,8 @@ export class UserService implements IUserService {
                     ...target
                 },
                 newData: {},
-                adminId: userId
+                adminId: userId,
+                username: ownerUsername
             }
         })
 
@@ -644,6 +680,7 @@ export class UserService implements IUserService {
     }
 
     async deleteAdmin(id: number, userId: number): Promise<boolean> {
+        const ownerUsername = await this.getUsername(userId)
         
         const target = await prisma.admin.findUnique({
             where: {
@@ -670,7 +707,8 @@ export class UserService implements IUserService {
                     ...target
                 },
                 newData: {},
-                adminId: userId
+                adminId: userId,
+                username: ownerUsername
             }
         })
 

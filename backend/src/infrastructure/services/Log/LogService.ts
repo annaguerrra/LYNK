@@ -14,18 +14,20 @@ export class LogService implements ILogService{
                 action: true,
                 updatedAt: true,
                 instructorId: true,
-                adminId: true
+                adminId: true,
+                username: true
             }
         })
 
         // selects log atributes to showLogDTO 
-        return logs.map(log => ({
+        return logs.map((log: Log) => ({
             entityType: log.entityType,
             entityName: log.entityName,
             action: log.action,
             updatedAt: log.updatedAt,
             // fills userId based on user type
-            userId: log.adminId ?? log.instructorId!
+            userId: log.adminId ?? log.instructorId!,
+            username: log.username
         }))
     }
 
@@ -54,17 +56,19 @@ export class LogService implements ILogService{
                 action: true,
                 updatedAt: true,
                 instructorId: true,
-                adminId: true
+                adminId: true,
+                username: true
             }
         })
 
-        return logs.map(log => ({
+        return logs.map((log: Log) => ({
             entityType: log.entityType,
             entityName: log.entityName,
             action: log.action,
             updatedAt: log.updatedAt,
             // fills userId based on user type
-            userId: log.adminId ?? log.instructorId!
+            userId: log.adminId ?? log.instructorId!,
+            username: log.username
         }))
     }
     
@@ -80,17 +84,19 @@ export class LogService implements ILogService{
                 action: true,
                 updatedAt: true,
                 instructorId: true,
-                adminId: true
+                adminId: true,
+                username: true
             }
         })
 
-        return logs.map(log => ({
+        return logs.map((log: Log) => ({
             entityType: log.entityType,
             entityName: log.entityName,
             action: log.action,
             updatedAt: log.updatedAt,
             // fills userId based on user type
-            userId: log.adminId ?? log.instructorId!
+            userId: log.adminId ?? log.instructorId!,
+            username: log.username
         }))
     }
 

@@ -160,6 +160,7 @@ model Log {
   adminId Int?
   instructor Instructor? @relation(fields: [instructorId], references: [id])
   admin Admin? @relation(fields: [adminId], references: [id])
+  username String
 }
 
 model ExamAttachment {
