@@ -21,7 +21,11 @@ import { error } from "node:console";
 // Error [ERR_MODULE_NOT_FOUND]: Cannot find module '@prisma/client/runtime/library'
 //
 // It may be caused by different versions of prisma and @prisma/client.
-// To fix it, run:
+// First, check the installed versions:
+// npm list prisma @prisma/client
+//
+// Both packages must have the same version.
+// If they are different, fix them by running:
 // npm install @prisma/client@6.19.3
 // npm install -D prisma@6.19.3
 //
