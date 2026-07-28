@@ -17,22 +17,28 @@ export function Login() {
 
     //Declaring all the alerts
     const notifySucess = () => toast.success("Usuário logado com sucesso!");
-    const notifyInvalid = () => toast.error("Usuário ou senha inválidos.");
     const notifyServer = () => toast.error("Erro interno. Tente novamente.");
-    const notifyDifferentPassword = () => toast.error("As senhas não coincidem.");
-    const notifySamePassword = () => toast.error("A nova senha não pode ser igual à senha atual.");
     const notifyNull = () => toast.warning("Campos vazios ou inválidos.");
+    // const notifyInvalid = () => toast.error("Usuário ou senha inválidos.");
+    // const notifyDifferentPassword = () => toast.error("As senhas não coincidem.");
+    // const notifySamePassword = () => toast.error("A nova senha não pode ser igual à senha atual.");
     
 
     const { login, changePassword } = useAuth();
 
     async function handleLogin() {
-        const changePassword = await login(username, userPassword);
+        if (username === "" || userPassword === ""){
+            notifyNull
+            return;
+        }
+        
+            const changePassword = await login(username, userPassword);
 
         if (changePassword) {
             setMustChangePassword(true);
             return;
         }
+        notifySucess
         navigate("/Disciplines");
     }
 
@@ -46,6 +52,7 @@ export function Login() {
 
             setMustChangePassword(false);
         } catch (error) {
+            notifyServer
             console.error(error);
         }
     }
