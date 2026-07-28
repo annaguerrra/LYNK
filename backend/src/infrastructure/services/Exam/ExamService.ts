@@ -17,6 +17,7 @@ export class ExamService implements IExamService {
         const { name, files, disciplineId, competencesId } = data
         // consults if user creating the exam is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         // variable used to store created attachments
         const uploadedIds: string[] = []
 
@@ -58,7 +59,8 @@ export class ExamService implements IExamService {
                     },
                     // uses isAdmin variable to determin if log registers an admin ou an instructor
                     ...(isAdmin && { adminId: userId }),
-                    ...(!isAdmin && { instructorId: userId })
+                    ...(!isAdmin && { instructorId: userId }),
+                    username: username
                 }
             })
 
@@ -78,6 +80,7 @@ export class ExamService implements IExamService {
     async attachtFile(data: attachtFileDTO, userId: number): Promise<Exam> {
         // consults if user updating the exam is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         // variables used to attach files to an exam
         const { examId, files } = data
         // variable used to store created attachments
@@ -131,7 +134,8 @@ export class ExamService implements IExamService {
                     },
                     // uses isAdmin variable to determin if log register an admin ou an instructor
                     ...(isAdmin && { adminId: userId }),
-                    ...(!isAdmin && { instructorId: userId })
+                    ...(!isAdmin && { instructorId: userId }),
+                    username: username
                 }
             })
 
@@ -166,6 +170,7 @@ export class ExamService implements IExamService {
         const { name, disciplineId, competencesId } = data
         // consults if user updating the exam is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
 
         // variable used to search if the exam is valid
         const target = await prisma.exam.findUnique({
@@ -204,7 +209,8 @@ export class ExamService implements IExamService {
                 },
                 // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         })
 
@@ -214,6 +220,7 @@ export class ExamService implements IExamService {
     async removeExam(id: number, userId: number): Promise<Exam> {
         // consults if user deleting the exam is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         const target = await prisma.exam.findUnique({
             where: {
                 id: id
@@ -250,7 +257,8 @@ export class ExamService implements IExamService {
                 newData: {},
                 // uses isAdmin variable to determin if log register an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         })
 

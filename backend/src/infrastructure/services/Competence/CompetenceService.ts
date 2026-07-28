@@ -12,6 +12,7 @@ export class CompetenceService implements ICompetenceService {
         const { name } = data
         // consults if user creating the competence is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
 
         // variables used to create competence
         const createdCompetence = await prisma.competence.create({
@@ -31,7 +32,8 @@ export class CompetenceService implements ICompetenceService {
                 },
                 // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         })
 
@@ -55,6 +57,7 @@ export class CompetenceService implements ICompetenceService {
         const { name } = data
         // consults if user updating the competence is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
 
         // variable used to search if the competence is valid
         const target = await prisma.competence.findUnique({
@@ -90,7 +93,8 @@ export class CompetenceService implements ICompetenceService {
                 },
                 // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         })
         return {
@@ -135,6 +139,7 @@ export class CompetenceService implements ICompetenceService {
     async deleteCompetence(id: number, userId: number): Promise<boolean> {
         // consults if user deleting the competence is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         // variable used to search if the competence is valid
         const target = await prisma.competence.findUnique({
             where: {
@@ -163,7 +168,8 @@ export class CompetenceService implements ICompetenceService {
                 newData: {},
                 // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         })
 

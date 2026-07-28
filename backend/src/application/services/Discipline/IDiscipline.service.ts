@@ -9,6 +9,7 @@ export interface IDisciplineService{
         // get
         findAll(): Promise<findAllDTO[]>;
         findOne(id: number): Promise<findOneDTO>;
+        getColor(id: number) : Promise<string>;
         viewClasses(id: number): Promise<viewClassesDTO[]>
         viewExams(id: number): Promise<viewExamsDTO[]>
         viewMaterials(disciplineID: number): Promise<viewMaterialsDTO[]>

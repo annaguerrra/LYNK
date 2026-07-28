@@ -6,7 +6,7 @@ import { prisma } from "../../lib/prisma.js";
 import { AttachmentService } from "../Attachment/AttachmentService.js";
 import { HashService } from "../Authetication/Hash.service.js";
 import { JwtTokenService } from "../Authetication/JwtToken.service.js";
-import { use } from "marked";
+import { error } from "node:console";
 
 export class UserService implements IUserService {
     constructor(
@@ -28,11 +28,27 @@ export class UserService implements IUserService {
         
         return true
     }
+
+    async getUsername(userId: number): Promise<string> {
+        const user =
+            await prisma.admin.findUnique({
+                where: { id: userId }
+            }) ??
+            await prisma.instructor.findUnique({
+                where: { id: userId }
+            });
+
+        if (!user)
+            throw new Error("User not found")
+
+        return user.username
+    }
     
     // creates a new student and register it in log table
     async registerStudent(data: registerStudentDTO, userId: number): Promise<Student> {
         const { username, password, userType } = data
-        const isAdmin = await this.isAdmin(userId) 
+        const isAdmin = await this.isAdmin(userId)
+        const ownerUsername = await this.getUsername(userId)
 
         const hashedPassword = await this.hashService.hash(data.password);
 
@@ -51,7 +67,8 @@ export class UserService implements IUserService {
                     ...createdUser
                 },
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: ownerUsername
             }
         })
         
@@ -61,6 +78,7 @@ export class UserService implements IUserService {
     // creates a new instructor and registers in the log table
     async registerInstructor(data: registerInstructorDTO, userId: number): Promise<Instructor> {
         const { username, password, userType, specialty } = data
+        const ownerUsername = await this.getUsername(userId)
         
         const hashedPassword = await this.hashService.hash(data.password);
 
@@ -78,7 +96,8 @@ export class UserService implements IUserService {
                 newData: {
                     ...createdUser
                 },
-                adminId: userId                    
+                adminId: userId,
+                username: ownerUsername                
             }
         })
         
@@ -89,6 +108,7 @@ export class UserService implements IUserService {
     // creates a new admin and registers in the log table
     async registerAdmin(data: registerAdminDTO, userId: number): Promise<Admin> {
         const { username, password, userType, specialty } = data
+        const ownerUsername = await this.getUsername(userId)
         
         const hashedPassword = await this.hashService.hash(data.password);
 
@@ -106,7 +126,8 @@ export class UserService implements IUserService {
                 newData: {
                     ...createdUser
                 },
-                adminId: userId
+                adminId: userId,
+                username: ownerUsername
             }
         })
         
@@ -220,145 +241,152 @@ export class UserService implements IUserService {
     }
     
     async changePassword(data: changePasswordDTO, userId: number, userType: UserType): Promise<boolean> {
+        // const ownerUsername = await this.getUsername(userId)
         let user;
 
-        switch (userType) {
-            case UserType.STUDENT: {
-                const student = await prisma.student.findUnique({
-                    where: { id: userId }
-                });
-
-                if (student) {
-                    user = {
-                        id: student.id,
-                        password: student.password,
-                        userType: student.userType
-                    };
+        const [student, instructor, admin] = await Promise.all([
+            prisma.student.findUnique({
+                where: {
+                    id: userId
                 }
-                break;
-            }
-            case UserType.INSTRUCTOR: {
-                const instructor = await prisma.instructor.findUnique({
-                    where: { id: userId }
-                });
-
-                if (instructor) {
-                    user = {
-                        id: instructor.id,
-                        password: instructor.password,
-                        userType: instructor.userType
-                    };
+            }),
+            
+            prisma.instructor.findUnique({
+                where:{
+                    id: userId
                 }
-                break;
-            }
-            case UserType.ADMIN: {
-                const admin = await prisma.admin.findUnique({
-                    where: { id: userId }
-                });
-
-                if (admin) {
-                    user = {
-                        id: admin.id,
-                        password: admin.password,
-                        userType: admin.userType
-                    };
+            }),
+            
+            prisma.admin.findUnique({
+                where: {
+                    id: userId
                 }
-                break;
+            })
+        ]);
+
+        if(student){
+            user = {
+                id: student.id,
+                username: student.username,
+                password: student.password,
+                userType: student.userType
+                
             }
-            default: 
-                throw new Error("User Not Found!");
-        }         
+        }
+        else if(instructor){
+            user = {
+                id: instructor.id,
+                username: instructor.username,
+                password: instructor.password,
+                userType: instructor.userType
+            }
+        }
+        
+        else if(admin){
+            user = {
+                id: admin.id,
+                username: admin.username,
+                password: admin.password,
+                userType: admin.userType
+            }
+        }
+        else {
+            console.log(error);
+            throw new Error("Invalid Username or Password");
+        }
 
         if(!user){
             throw new Error("User Not Found!"); 
         }
         
-        const comparison = await this.hashService.compare(data.newPassword, user.password);
+        const comparison = await this.hashService.compare(data.oldPassword, user.password);
 
         if(comparison){
-            throw new Error("Passwords do not match. Please, try again")
+            throw new Error("Your new password cannot be the same as your old password. Try again")
         }
         
-        if(user.password === data.newPassword){
-            throw new Error("Your new password cannot be the same as your old password. Try again")
+        if(data.oldPassword !== data.newPassword){
+            throw new Error("Passwords do not match. Please, try again")
         }
 
         const hashedPassword = await this.hashService.hash(data.newPassword);
         
-        if(user.userType === UserType.STUDENT) {
-            await prisma.student.update({
-                where: {
-                    id: user.id
-                },
+        try{
+            if(user.userType === UserType.STUDENT) {
+                await prisma.student.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        password: hashedPassword,
+                        active: true
+                    }
+                });
+
+                await prisma.log.create({
                 data: {
-                    password: hashedPassword,
-                    active: true
-                }
-            });
+                    action: "UPDATED",
+                    entityId: user.id,
+                    entityName: user.userType,
+                    entityType: "Instructor",
+                    newData: hashedPassword, 
+                    oldData: data.oldPassword,
+                    adminId: user.id,
+                    username: user.username
+                }})
 
-            await prisma.log.create({
-            data: {
-                action: "UPDATED",
-                entityId: user.id,
-                entityName: user.userType,
-                entityType: "Instructor",
-                newData: hashedPassword, 
-                oldData: data.oldPassword,
-                adminId: user.id,
-                updatedAt: new Date()
-                }
-            });
+            } 
+            else if(user.userType === UserType.INSTRUCTOR) {
+                await prisma.instructor.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        password: hashedPassword,
+                        active: true
+                    }
+                });
 
-        } 
-        else if(user.userType === UserType.INSTRUCTOR) {
-            await prisma.instructor.update({
-                where: {
-                    id: user.id
-                },
+                await prisma.log.create({
                 data: {
-                    password: hashedPassword,
-                    active: true
-                }
-            });
+                    action: "UPDATED",
+                    entityId: user.id,
+                    entityName: user.userType,
+                    entityType: "Instructor",
+                    newData: hashedPassword, 
+                    oldData: data.oldPassword,
+                    adminId: user.id,
+                    username: user.username
+                    }
+                });
 
-            await prisma.log.create({
-            data: {
-                action: "UPDATED",
-                entityId: user.id,
-                entityName: user.userType,
-                entityType: "Instructor",
-                newData: hashedPassword, 
-                oldData: data.oldPassword,
-                adminId: user.id,
-                updatedAt: new Date()
-                }
-            });
+            } else {
+                await prisma.admin.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        password: hashedPassword,
+                        active: true
+                    }
+                });
 
-        } else {
-            await prisma.admin.update({
-                where: {
-                    id: user.id
-                },
+                await prisma.log.create({
                 data: {
-                    password: hashedPassword,
-                    active: true
-                }
-            });
-
-            await prisma.log.create({
-            data: {
-                action: "UPDATED",
-                entityId: user.id,
-                entityName: user.userType,
-                entityType: "Admin",
-                newData: hashedPassword, 
-                oldData: data.oldPassword,
-                adminId: user.id,
-                updatedAt: new Date()
-                }
-            });
+                    action: "UPDATED",
+                    entityId: user.id,
+                    entityName: user.userType,
+                    entityType: "Admin",
+                    newData: hashedPassword, 
+                    oldData: data.oldPassword,
+                    adminId: user.id,
+                    username: user.username
+                    }
+                });
+            }
+        } catch(e) {
+            console.log(e);
         }
-
         return true;
     }
     
@@ -421,7 +449,8 @@ export class UserService implements IUserService {
     // updates the user information by searching its id, updating the prisma information and creating a new log
     async updateStudent(id: number, data: updateStudentDTO, userId: number): Promise<Student> {
         const { username, password } = data
-        const isAdmin = await this.isAdmin(userId) 
+        const isAdmin = await this.isAdmin(userId)
+        const ownerUsername = await this.getUsername(userId)
        
         const target = await prisma.student.findUnique({
             where: {
@@ -455,7 +484,8 @@ export class UserService implements IUserService {
                     ...updatedUser
                 },
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: ownerUsername
             }
         })
 
@@ -465,7 +495,7 @@ export class UserService implements IUserService {
     async updateInstructor(id: number, data: updateInstructorDTO, userId: number): Promise<Instructor> {
         const { username, password, specialty, active, file } = data
         const attachmentId = await this.attachmentService.upload(file)
-        const isAdmin = await this.isAdmin(userId)
+        const ownerUsername = await this.getUsername(userId)
 
         const target = await prisma.instructor.findUnique({
             where: {
@@ -505,8 +535,8 @@ export class UserService implements IUserService {
                     newData: {
                         ...updatedUser
                     },
-                    ...(isAdmin && { adminId: userId }),
-                    ...(!isAdmin && { instructorId: userId }),
+                    adminId: userId,
+                    username: ownerUsername
                 }
             })
 
@@ -521,6 +551,7 @@ export class UserService implements IUserService {
 
     async updateAdmin(id: number, data: updateAdminDTO, userId: number): Promise<Admin> {
         const { username, password, specialty, active, file } = data
+        const ownerUsername = await this.getUsername(userId)
         const attachmentId = await this.attachmentService.upload(file)
 
         const target = await prisma.admin.findUnique({
@@ -561,7 +592,8 @@ export class UserService implements IUserService {
                     newData: {
                         ...updatedUser
                     },
-                    adminId: userId
+                    adminId: userId,
+                    username: ownerUsername
                 }
             })
 
@@ -576,6 +608,7 @@ export class UserService implements IUserService {
     // deletes the user information based on the provided id, this action is registered in the log table
     async deleteStudent(id: number, userId: number): Promise<boolean> {
         const isAdmin = await this.isAdmin(userId)
+        const ownerUsername = await this.getUsername(userId)
         
         const target = await prisma.student.findUnique({
             where: {
@@ -603,7 +636,8 @@ export class UserService implements IUserService {
                 },
                 newData: {},
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: ownerUsername
             }
         })
 
@@ -611,6 +645,7 @@ export class UserService implements IUserService {
     }
 
     async deleteInstructor(id: number, userId: number): Promise<boolean> {
+        const ownerUsername = await this.getUsername(userId)
         const target = await prisma.instructor.findUnique({
             where: {
                 id: id
@@ -636,7 +671,8 @@ export class UserService implements IUserService {
                     ...target
                 },
                 newData: {},
-                adminId: userId
+                adminId: userId,
+                username: ownerUsername
             }
         })
 
@@ -644,6 +680,7 @@ export class UserService implements IUserService {
     }
 
     async deleteAdmin(id: number, userId: number): Promise<boolean> {
+        const ownerUsername = await this.getUsername(userId)
         
         const target = await prisma.admin.findUnique({
             where: {
@@ -670,7 +707,8 @@ export class UserService implements IUserService {
                     ...target
                 },
                 newData: {},
-                adminId: userId
+                adminId: userId,
+                username: ownerUsername
             }
         })
 
