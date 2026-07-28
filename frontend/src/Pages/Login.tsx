@@ -3,6 +3,7 @@ import { Button } from '../Components/Button'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../Auth/AuthContext'
 import { useState } from 'react'
+import { ToastContainer, toast } from 'react-toastify';
 
 export function Login() {
     //Variables to navigate and open modals
@@ -14,6 +15,15 @@ export function Login() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [mustChangePassword, setMustChangePassword] = useState(false);
 
+    //Declaring all the alerts
+    const notifySucess = () => toast.success("Usuário logado com sucesso!");
+    const notifyInvalid = () => toast.error("Usuário ou senha inválidos.");
+    const notifyServer = () => toast.error("Erro interno. Tente novamente.");
+    const notifyDifferentPassword = () => toast.error("As senhas não coincidem.");
+    const notifySamePassword = () => toast.error("A nova senha não pode ser igual à senha atual.");
+    const notifyNull = () => toast.warning("Campos vazios ou inválidos.");
+    
+
     const { login, changePassword } = useAuth();
 
     async function handleLogin() {
@@ -23,7 +33,6 @@ export function Login() {
             setMustChangePassword(true);
             return;
         }
-
         navigate("/Disciplines");
     }
 
@@ -35,7 +44,7 @@ export function Login() {
                 confirmPassword
             );
 
-            navigate("/Disciplines");
+            setMustChangePassword(false);
         } catch (error) {
             console.error(error);
         }
@@ -91,6 +100,18 @@ export function Login() {
                         </>
                     )}
                     <Button ButtonTitle={"Entrar"}  onClose={mustChangePassword ? handleChangePassword : handleLogin}></Button>
+                    <ToastContainer
+                        position="top-center"
+                        autoClose={2500}
+                        hideProgressBar={false}
+                        newestOnTop={true}
+                        closeOnClick={false}
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                        theme="colored"
+                    />
                 </div>
             </div>
         </>
