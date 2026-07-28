@@ -9,7 +9,7 @@ type Role = "ADMIN" | "INSTRUCTOR" | "STUDENT";
 
 interface User {
     username: string;
-    profilePic: string;
+    // profilePic: string;
     role: Role;
     token: string;
     mustChangePassword: boolean;
@@ -44,32 +44,38 @@ export function AuthProvider({
 
     async function login(username: string, password: string) {
 
-        const response = await api.post("/login", {
-            username,
-            password
-        });
+        try {
+            const response = await api.post("/login", {
+                username,
+                password
+            });
 
-        const { token, mustChangePassword, user } = response.data.response;
 
-        console.log(response.data.response)
+            const { token, mustChangePassword, user } = response.data.response;
 
-        localStorage.setItem("token", token);
+            console.log(response.data.response)
 
-        localStorage.setItem("user", JSON.stringify({
-            username: user.username,
-            // profilePic: user.photo,
-            role: user.userType
-        }));
+            localStorage.setItem("token", token);
 
-        setUser({
-            username: user.username,
-            profilePic: user.photo,
-            role: user.userType,
-            token: token,
-            mustChangePassword
-        });
+            localStorage.setItem("user", JSON.stringify({
+                username: user.username,
+                // profilePic: user.photo,
+                role: user.userType
+            }));
 
-        return mustChangePassword;
+            setUser({
+                username: user.username,
+                // profilePic: user.photo,
+                role: user.userType,
+                token: token,
+                mustChangePassword
+            });
+
+            return mustChangePassword;
+        }
+        catch (e) {
+            console.log(e)
+        }
     }
 
     async function changePassword(
@@ -77,7 +83,7 @@ export function AuthProvider({
         newPassword: string,
         confirmPassword: string
     ) {
-        await api.post("/user/change-password", {
+        await api.put("/user/change-password", {
             oldPassword,
             newPassword,
             confirmPassword
