@@ -1,12 +1,12 @@
-import LogController from '#api/controllers/LogController.js';
 import { authorize } from '#api/middleware/authorize.js';
+import { makeLogController } from '#infrastructure/Factories/LogFactory.js';
 import { UserType } from '#infrastructure/src/generated/prisma/enums.js';
 import { Router } from 'express';
 import express from 'express';
 
 const router: Router = express.Router()
 
-const logController = new LogController()
+const logController = makeLogController()
 
 router
     // returns all logs without any filter

@@ -1,24 +1,11 @@
 import { assignCompetencyDTO, ClassDTO } from "#application/dtos/classDTO.js";
-import { getBucket } from "#infrastructure/database/database.js";
-import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js";
-import { HashService } from "#infrastructure/services/Authetication/Hash.service.js";
-import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { ClassService } from "#infrastructure/services/Class/ClassService.js";
-import { CompetenceService } from "#infrastructure/services/Competence/CompetenceService.js";
-import { DisciplineService } from "#infrastructure/services/Discipline/DisciplineService.js";
-import { MaterialService } from "#infrastructure/services/Material/MaterialService.js";
-import { UserService } from "#infrastructure/services/User/UserService.js";
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 
 export class ClassController {
-    private hashService = new HashService()
-    private jwtService = new JwtTokenService()
-    private attachmentService = new AttachmentService()
-    private userService = new UserService(this.attachmentService, this.hashService, this.jwtService)
-    private competenceService = new CompetenceService(this.userService)
-    private disciplineService = new DisciplineService(this.userService)
-    private materialsService = new MaterialService(this.userService, this.attachmentService)
-    private classService = new ClassService(this.userService, this.competenceService, this.disciplineService, this.materialsService)
+    constructor(
+        private readonly classService: ClassService
+    ) {}
 
     // POST
     // creates class

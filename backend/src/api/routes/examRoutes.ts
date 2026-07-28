@@ -1,19 +1,19 @@
-import ExamController from '#api/controllers/ExamController.js';
 import { authorize } from '#api/middleware/authorize.js';
 import { validateAttach, validateRegister, validateUpdate } from '#api/middleware/examMiddleware.js';
+import { makeExamController } from '#infrastructure/Factories/ExamFactory.js';
 import { UserType } from '#infrastructure/src/generated/prisma/enums.js';
 import { Router } from 'express';
 import express from 'express';
 
 const router: Router = express.Router()
 
-const examController = new ExamController()
+const examController = makeExamController()
 
 router
     // creates an exam
     .post('/exam/create', validateRegister, authorize(UserType.ADMIN, UserType.INSTRUCTOR), examController.register.bind(examController))
     // allows downloading an exam
-    .get('/exams/download/:id/:examAttachmentId', examController.download.bind(examController))
+    .get('/exam/download/:id/:examAttachmentId', examController.download.bind(examController))
     // returns all exams without any filter
     .get('/exams', authorize(UserType.ADMIN, UserType.INSTRUCTOR), examController.showExams.bind(examController))
     // returns a specific exam by id

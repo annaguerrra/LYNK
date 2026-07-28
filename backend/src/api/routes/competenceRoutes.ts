@@ -1,13 +1,13 @@
-import CompetenceController from '#api/controllers/CompetenceController.js';
 import { authorize } from '#api/middleware/authorize.js';
 import { validateRegister, validateUpdate } from '#api/middleware/competenceMiddleware.js';
+import { makeCompetenceController } from '#infrastructure/Factories/CompetenceFactory.js';
 import { UserType } from '#infrastructure/src/generated/prisma/enums.js';
 import { Router } from 'express';
 import express from 'express';
 
 const router: Router = express.Router()
 
-const competenceController = new CompetenceController()
+const competenceController = makeCompetenceController()
 
 router
     // route to create competecy

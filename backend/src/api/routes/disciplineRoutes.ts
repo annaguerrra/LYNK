@@ -1,13 +1,13 @@
-import { DisciplineController } from '#api/controllers/DisciplineController.js';
 import { authorize } from '#api/middleware/authorize.js';
 import { validateCompetence, validateRegister, validateUpdate } from '#api/middleware/disciplineMiddleware.js';
+import { makeDisciplineController } from '#infrastructure/Factories/DisciplineFactory.js';
 import { UserType } from '#infrastructure/src/generated/prisma/enums.js';
 import { Router } from 'express';
 import express from 'express';
 
 const router: Router = express.Router()
 
-const disciplineController = new DisciplineController()
+const disciplineController = makeDisciplineController()
 
 router
     // route to create discipline
