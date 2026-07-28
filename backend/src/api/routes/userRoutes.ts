@@ -1,7 +1,7 @@
 import UserController from "#api/controllers/UserController.js" 
 import { authMiddleware } from "#api/middleware/authMiddleware.js";
 import { authorize } from "#api/middleware/authorize.js";
-import { validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent } from "#api/middleware/userMiddleware.js";
+import { validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent, validatePassword } from "#api/middleware/userMiddleware.js";
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { UserType } from "#infrastructure/src/generated/prisma/enums.js";
 import { Router } from 'express';
@@ -13,7 +13,7 @@ const userController = new UserController();
 const jwt = new JwtTokenService()
 
 router
-    .post("/user/create", authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, userController.register.bind(userController))
+    .post("/user/create", validatePassword, authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, userController.register.bind(userController))
     .post('/login', userController.login.bind(userController))
 
     // returns all the students registered without any filter
@@ -36,7 +36,7 @@ router
     .put('/user/updateInst/:id', validateUpdateInstructor, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateInstructor.bind(userController))
     // allows update informations of a specific admin by id
     .put('/user/updateAdmin/:id', validateUpdateAdmin, authorize(UserType.ADMIN), userController.updateAdmin.bind(userController))
-    .put('/user/change-password', validateRegister, authMiddleware, userController.changePassword.bind(userController))
+    .put('/user/change-password', validatePassword, authMiddleware, userController.changePassword.bind(userController))
 
     .delete('/user/deleteStud/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
     // deletes an instructor by id
