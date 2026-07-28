@@ -1,6 +1,6 @@
 import { assignCompetencyDTO, ClassDTO, getContentDTO, editClass, findAllDTO, viewCompetencesDTO, viewContentDTO } from "#application/dtos/classDTO.js";
 import { IClassService } from "#application/services/Class/IClass.service.js";
-import { Class } from "#infrastructure/prisma/generated/prisma/client.js";
+import { Class, Competence, Material } from "#infrastructure/prisma/generated/prisma/client.js";
 import { viewMaterialsDTO } from "#application/dtos/materialDTO.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { UserService } from "../User/UserService.js";
@@ -22,6 +22,7 @@ export class ClassService implements IClassService{
         const {name, content, disciplineId} = payload;
         // consults if user creating the class is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
 
         const createdClass = await prisma.class.create({
             data:{
@@ -53,7 +54,8 @@ export class ClassService implements IClassService{
                 },
                 // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         });
 
@@ -104,6 +106,7 @@ export class ClassService implements IClassService{
     async assignCompetency(payload: assignCompetencyDTO, userId: number): Promise<Class> {
         // consults if user updating the material is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         // variables used to update material
         const { classId, competencyId } = payload
         const competence = await prisma.competence.findFirst({
@@ -153,7 +156,8 @@ export class ClassService implements IClassService{
                     ...target
                 },
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         });
 
@@ -243,28 +247,10 @@ export class ClassService implements IClassService{
         return await pdf.generatePdf(target);
     }
 
-    // used for pdf service
-    async getContent(classId: number): Promise<getContentDTO> {
-        const target = await prisma.class.findUnique({
-            where:{ id: classId },
-            select:{
-                name: true,
-                content: true
-            }
-        });
-
-        if(!target){
-            throw new Error("Class not Found");
-        }
-
-        return {
-            ...target
-        }
-    }
-
     async delete(id: number, userId: number): Promise<boolean> {
         // consults if user deleting the material is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         const target = await prisma.class.findUnique({
             where:{
                 id: id
@@ -290,7 +276,7 @@ export class ClassService implements IClassService{
         });
 
         await this.disciplineService.updateWorkLoad(target.disciplineId)
-        await this.materialService.deleteMany(target.materials.map(material => material.id))
+        await this.materialService.deleteMany(target.materials.map((material: Material) => material.id))
 
         await prisma.log.create({
             data:{
@@ -303,13 +289,14 @@ export class ClassService implements IClassService{
                 newData:{},
                 // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         });
 
         // map all competences attach to this class and update their class number
         await Promise.all(
-            target.competences.map(competence =>
+            target.competences.map((competence: Competence) =>
                 this.competenceService.updateNumOfClasses(competence.id)
             )
         )
@@ -338,6 +325,7 @@ export class ClassService implements IClassService{
         const { name, content} = payload
         // consults if user updating the class is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         const target = await prisma.class.findUnique({
             where:{
                 id:id
@@ -376,7 +364,8 @@ export class ClassService implements IClassService{
                 },
                 // creates files and add them to the uploadedFiles list
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         });
 

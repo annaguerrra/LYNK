@@ -5,13 +5,16 @@ import { Area } from "#infrastructure/prisma/generated/prisma/client.js";
 import { UserService } from "../User/UserService.js";
 
 export class AreaService implements IAreaService{
-    constructor(private userService: UserService) {}
+    constructor(
+        private readonly userService: UserService
+    ) {}
 
     async registerArea(data: registerAreaDTO, userId: number): Promise<Area> {
         // variables used to create area
         const { name, color } = data
         // consults if user creating the area is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         
         const createdArea =  await prisma.area.create({
             data: { name, color }
@@ -29,7 +32,8 @@ export class AreaService implements IAreaService{
                 },
                 // uses isAdmin variable to determin if log register an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         })
 
@@ -45,6 +49,7 @@ export class AreaService implements IAreaService{
         const { name, color } = data
         // consults if user updating the area is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
 
         // variable used to search if the area is valid
         const target = await prisma.area.findUnique({
@@ -82,7 +87,8 @@ export class AreaService implements IAreaService{
                 },
                 // uses isAdmin variable to determine if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         })
 
@@ -93,6 +99,7 @@ export class AreaService implements IAreaService{
     async deleteArea(id: number, userId: number): Promise<boolean> {
         // consults if user deleting the area is admin
         const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
         
         // variable used to search if the area is valid
         const target = await prisma.area.findUnique({
@@ -127,7 +134,8 @@ export class AreaService implements IAreaService{
                 newData: {},
                 // uses isAdmin variable to determin if log registers an admin ou an instructor
                 ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId })
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
             }
         })
 
