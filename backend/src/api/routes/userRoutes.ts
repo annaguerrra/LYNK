@@ -1,5 +1,6 @@
 import { authMiddleware } from "#api/middleware/authMiddleware.js";
 import { authorize } from "#api/middleware/authorize.js";
+import { validatePasswordFormat } from "#api/middleware/passwordMiddleware.js";
 import { validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent } from "#api/middleware/userMiddleware.js";
 import { makeUserController } from "#infrastructure/Factories/UserFactory.js";
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
@@ -13,7 +14,7 @@ const userController = makeUserController();
 const jwt = new JwtTokenService()
 
 router
-    .post('/user/create', validateRegister, authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.register.bind(userController))
+    .post('/user/create', validateRegister, authMiddleware(jwt), validatePasswordFormat, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.register.bind(userController))
     .post('/login', userController.login.bind(userController))
 
     // returns all the students registered without any filter
@@ -36,7 +37,7 @@ router
     .put('/user/updateInst/:id', validateUpdateInstructor, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateInstructor.bind(userController))
     // allows update informations of a specific admin by id
     .put('/user/updateAdmin/:id', validateUpdateAdmin, authorize(UserType.ADMIN), userController.updateAdmin.bind(userController))
-    .put('/user/change-password', validateRegister, authMiddleware, userController.changePassword.bind(userController))
+    .put('/user/change-password', validateRegister, authMiddleware, validatePasswordFormat, userController.changePassword.bind(userController))
 
     .delete('/user/deleteStud/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
     // deletes an instructor by id
