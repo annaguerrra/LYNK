@@ -19,9 +19,9 @@ interface AuthContextType {
     user: User | null;
     login: (username: string, password: string) => Promise<boolean>;
     changePassword: (
-        username: string,
         oldPassword: string,
-        newPassword: string
+        newPassword: string,
+        confirmPassword: string
     ) => Promise<void>;
     logout: () => void;
 }

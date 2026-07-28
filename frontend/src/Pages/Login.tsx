@@ -11,7 +11,7 @@ export function Login() {
     const [username, setUsername] = useState("")
     const [userPassword, setUserPassword] = useState("")
     const [newPassword, setNewPassword] = useState("");
-    const [renewPassword, setRenewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [mustChangePassword, setMustChangePassword] = useState(false);
 
     const { login, changePassword } = useAuth();
@@ -30,9 +30,9 @@ export function Login() {
     async function handleChangePassword() {
         try {
             await changePassword(
-                username,
                 userPassword,
-                newPassword
+                newPassword,
+                confirmPassword
             );
 
             navigate("/Disciplines");
@@ -84,8 +84,8 @@ export function Login() {
                                     className="loginInput"
                                     type="password"
                                     placeholder="Digite a nova senha"
-                                    value={renewPassword}
-                                    onChange={(e) => setRenewPassword(e.target.value)}
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
                                 />
                             </div>
                         </>
