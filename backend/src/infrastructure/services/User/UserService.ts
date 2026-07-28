@@ -299,16 +299,13 @@ export class UserService implements IUserService {
             throw new Error("User Not Found!"); 
         }
         
+        // console.log(data.oldPassword, user.password)
         const comparison = await this.hashService.compare(data.oldPassword, user.password);
 
-        if(comparison){
-            throw new Error("Your new password cannot be the same as your old password. Try again")
+        if(!comparison){
+            throw new Error("The password do not match. Try again")
         }
         
-        if(data.oldPassword !== data.newPassword){
-            throw new Error("Passwords do not match. Please, try again")
-        }
-
         const hashedPassword = await this.hashService.hash(data.newPassword);
         
         try{
@@ -386,6 +383,7 @@ export class UserService implements IUserService {
             }
         } catch(e) {
             console.log(e);
+            console.log("ccc");
         }
         return true;
     }

@@ -19,7 +19,7 @@ export const validateRegister = (req: Request, res: Response, next: NextFunction
     }
 
     // verifies if the passowrd and repeatpassword inputs match
-    if(password != repeatpassword)
+    if(password !== repeatpassword)
         return res.status(400).send({ response: `Passwords don't match`})
     next()
 }
