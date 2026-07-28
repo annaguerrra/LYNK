@@ -316,7 +316,8 @@ export class UserService implements IUserService {
                     },
                     data: {
                         password: hashedPassword,
-                        active: true
+                        active: true,
+                        firstAccess: false
                     }
                 });
 
@@ -340,7 +341,8 @@ export class UserService implements IUserService {
                     },
                     data: {
                         password: hashedPassword,
-                        active: true
+                        active: true,
+                        firstAccess: false
                     }
                 });
 
@@ -364,7 +366,8 @@ export class UserService implements IUserService {
                     },
                     data: {
                         password: hashedPassword,
-                        active: true
+                        active: true,
+                        firstAccess: false
                     }
                 });
 
