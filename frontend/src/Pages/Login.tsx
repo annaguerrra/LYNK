@@ -32,14 +32,18 @@ export function Login() {
             return;
         }
         
-            const changePassword = await login(username, userPassword);
+        const changePassword = await login(username, userPassword);
+    
 
         if (changePassword) {
             setMustChangePassword(true);
             return;
         }
-        notifySucess
-        navigate("/Disciplines");
+        
+        if (localStorage.getItem){
+            notifySucess
+            navigate("/Disciplines");
+        }
     }
 
     async function handleChangePassword() {
