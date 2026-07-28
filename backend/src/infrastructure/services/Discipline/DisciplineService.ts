@@ -4,10 +4,6 @@ import { prisma } from "#infrastructure/lib/prisma.js";
 import { Class, Discipline, Exam, Log, Material } from "#infrastructure/prisma/generated/prisma/client.js";
 import { UserService } from "#infrastructure/services/User/UserService.js"
 import { Compentence } from "#infrastructure/src/generated/prisma/browser.js";
-import { ClassService } from "../Class/ClassService.js";
-import { CompetenceService } from "../Competence/CompetenceService.js";
-import { ExamService } from "../Exam/ExamService.js";
-import { MaterialService } from "../Material/MaterialService.js";
 
 export class DisciplineService implements IDisciplineService{
     constructor(
@@ -348,7 +344,9 @@ export class DisciplineService implements IDisciplineService{
             select:{
                 name: true,
                 exams: {
-                    name: true
+                    select: {
+                        name: true
+                    }
                 }
             }
         });

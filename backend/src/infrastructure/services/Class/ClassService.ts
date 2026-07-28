@@ -247,25 +247,6 @@ export class ClassService implements IClassService{
         return await pdf.generatePdf(target);
     }
 
-    // used for pdf service
-    async getContent(classId: number): Promise<getContentDTO> {
-        const target = await prisma.class.findUnique({
-            where:{ id: classId },
-            select:{
-                name: true,
-                content: true
-            }
-        });
-
-        if(!target){
-            throw new Error("Class not Found");
-        }
-
-        return {
-            ...target
-        }
-    }
-
     async delete(id: number, userId: number): Promise<boolean> {
         // consults if user deleting the material is admin
         const isAdmin = await this.userService.isAdmin(userId)

@@ -31,7 +31,7 @@ export class PdfService implements IPdfService{
         doc
             .moveTo(50, 70)
             .lineTo(pageWidth - 50, 70)
-            .strokeColor("dddddd")
+            .strokeColor("#dddddd")
             .stroke();
         
         // moves down the cursor next to the content, so it wont be too close to the header 
@@ -42,7 +42,7 @@ export class PdfService implements IPdfService{
     private renderTitle(doc: PDFKit.PDFDocument, title: string): void {
         doc
             .fillColor("#111111")
-            .font("Heveltica-Bold")
+            .font("Helvetica-Bold")
             .fontSize(24)
             .text(title, {
                 align: "left"
@@ -80,13 +80,13 @@ export class PdfService implements IPdfService{
         // code block dark background
         doc
             .roundedRect(startX, startY, width, height, 6)
-            .fill("0D1728");
+            .fill("#0D1728");
         
         doc
             .fillColor("#D6F5D6")
             .font("Courier")
             .fontSize(9)
-            .text(code, startX + 12, startY - 12, {
+            .text(code, startX + 12, startY + 12, {
                 width: width - 24,
                 lineGap: 3
             });
@@ -117,7 +117,7 @@ export class PdfService implements IPdfService{
     private renderParagraph( doc: PDFKit.PDFDocument, text: string) : void {
         doc
             .fillColor("#222222")
-            .font("Heveltica")
+            .font("Helvetica")
             .fontSize(11)
             .text(text, {
                 align: "left",
@@ -135,7 +135,7 @@ export class PdfService implements IPdfService{
         doc
             .moveDown(0.8)
             .fillColor("#111111")
-            .font("Heveltica-Bold")
+            .font("Helvetica-Bold")
             .fontSize(fontSize)
             .text(text)
         
@@ -179,6 +179,7 @@ export class PdfService implements IPdfService{
             }
             case "space": {
                 doc.moveDown(0.5);
+                break;
             }
 
             default: {
