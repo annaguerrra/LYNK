@@ -6,6 +6,7 @@ import { prisma } from "../../lib/prisma.js";
 import { AttachmentService } from "../Attachment/AttachmentService.js";
 import { HashService } from "../Authetication/Hash.service.js";
 import { JwtTokenService } from "../Authetication/JwtToken.service.js";
+import { error } from "node:console";
 
 export class UserService implements IUserService {
     constructor(
@@ -240,68 +241,72 @@ export class UserService implements IUserService {
     }
     
     async changePassword(data: changePasswordDTO, userId: number, userType: UserType): Promise<boolean> {
-        const ownerUsername = await this.getUsername(userId)
+        // const ownerUsername = await this.getUsername(userId)
         let user;
 
-        switch (userType) {
-            case UserType.STUDENT: {
-                const student = await prisma.student.findUnique({
-                    where: { id: userId }
-                });
-
-                if (student) {
-                    user = {
-                        id: student.id,
-                        password: student.password,
-                        userType: student.userType
-                    };
+        const [student, instructor, admin] = await Promise.all([
+            prisma.student.findUnique({
+                where: {
+                    id: userId
                 }
-                break;
-            }
-            case UserType.INSTRUCTOR: {
-                const instructor = await prisma.instructor.findUnique({
-                    where: { id: userId }
-                });
-
-                if (instructor) {
-                    user = {
-                        id: instructor.id,
-                        password: instructor.password,
-                        userType: instructor.userType
-                    };
+            }),
+            
+            prisma.instructor.findUnique({
+                where:{
+                    id: userId
                 }
-                break;
-            }
-            case UserType.ADMIN: {
-                const admin = await prisma.admin.findUnique({
-                    where: { id: userId }
-                });
-
-                if (admin) {
-                    user = {
-                        id: admin.id,
-                        password: admin.password,
-                        userType: admin.userType
-                    };
+            }),
+            
+            prisma.admin.findUnique({
+                where: {
+                    id: userId
                 }
-                break;
+            })
+        ]);
+
+        if(student){
+            user = {
+                id: student.id,
+                username: student.username,
+                password: student.password,
+                userType: student.userType
+                
             }
-            default: 
-                throw new Error("User Not Found!");
-        }         
+        }
+        else if(instructor){
+            user = {
+                id: instructor.id,
+                username: instructor.username,
+                password: instructor.password,
+                userType: instructor.userType
+            }
+        }
+        
+        else if(admin){
+            user = {
+                id: admin.id,
+                username: admin.username,
+                password: admin.password,
+                userType: admin.userType
+            }
+        }
+        else {
+            console.log(error);
+            throw new Error("Invalid Username or Password");
+        }
 
         if(!user){
             throw new Error("User Not Found!"); 
         }
         
-        const comparison = await this.hashService.compare(data.newPassword, user.password);
+        const comparison = await this.hashService.compare(data.oldPassword, user.password);
 
         if(comparison){
-            throw new Error("Passwords do not match. Please, try again")
+            throw new Error("Your new password cannot be the same as your old password. Try again")
         }
         
-        if(user.password === data.newPassword){
-            throw new Error("Your new password cannot be the same as your old password. Try again")
+        if(data.oldPassword !== data.newPassword){
+            throw new Error("Passwords do not match. Please, try again")
         }
 
         const hashedPassword = await this.hashService.hash(data.newPassword);
@@ -327,7 +332,7 @@ export class UserService implements IUserService {
                     newData: hashedPassword, 
                     oldData: data.oldPassword,
                     adminId: user.id,
-                    username: ownerUsername
+                    username: user.username
                 }})
 
             } 
@@ -351,7 +356,7 @@ export class UserService implements IUserService {
                     newData: hashedPassword, 
                     oldData: data.oldPassword,
                     adminId: user.id,
-                    username: ownerUsername
+                    username: user.username
                     }
                 });
 
@@ -375,7 +380,7 @@ export class UserService implements IUserService {
                     newData: hashedPassword, 
                     oldData: data.oldPassword,
                     adminId: user.id,
-                    username: ownerUsername
+                    username: user.username
                     }
                 });
             }
