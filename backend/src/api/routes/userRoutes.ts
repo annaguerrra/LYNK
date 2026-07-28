@@ -36,7 +36,7 @@ router
     .put('/user/updateInst/:id', validateUpdateInstructor, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateInstructor.bind(userController))
     // allows update informations of a specific admin by id
     .put('/user/updateAdmin/:id', validateUpdateAdmin, authorize(UserType.ADMIN), userController.updateAdmin.bind(userController))
-    .put('/user/change-password', validateRegister, authMiddleware, userController.changePassword.bind(userController))
+    .put('/user/change-password', validateRegister, authMiddleware(jwt), userController.changePassword.bind(userController))
 
     .delete('/user/deleteStud/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
     // deletes an instructor by id

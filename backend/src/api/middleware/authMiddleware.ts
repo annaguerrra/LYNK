@@ -4,7 +4,6 @@ import { Request, Response, NextFunction, response } from "express";
 export const authMiddleware = (jwt: JwtTokenService) => {
     return (req: Request, res: Response, next: NextFunction) => {
         const authAutho = req.headers.authorization;
-        console.log("Authorization header:",authAutho);
         
         if(!authAutho || !authAutho?.startsWith("Bearer ")){
             return res.status(401).send({
