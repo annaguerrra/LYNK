@@ -1,17 +1,12 @@
 import { changePasswordDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { UserType } from "#infrastructure/prisma/generated/prisma/enums.js";
-import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js";
 import { UserService } from "#infrastructure/services/User/UserService.js";
-import { Request, response, Response } from "express";
-import { getBucket } from '#infrastructure/database/database.js';
-import { HashService } from "#infrastructure/services/Authetication/Hash.service.js";
-import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
+import { Request, Response } from "express";
 
 export default class UserController {
-    private attachmentService = new AttachmentService()
-    private hashService = new HashService()
-    private jwtTokenService = new JwtTokenService()
-    private userService = new UserService(this.attachmentService, this.hashService, this.jwtTokenService)
+    constructor (
+        private readonly userService: UserService
+    ) {}
 
     // POST
     // gets the userid from request and based on userType calls the respective service

@@ -2,7 +2,9 @@ import { LogService } from "#infrastructure/services/Log/LogService.js";
 import { Request, response, Response } from "express";
 
 export default class LogController{
-    private logService = new LogService()
+    constructor (
+        private readonly logService: LogService
+    ) {}
 
     // GET
     // gets all the logs registered in the database without any filter

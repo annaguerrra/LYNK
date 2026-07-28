@@ -1,13 +1,13 @@
-import MaterialController from '#api/controllers/MaterialController.js';
 import { authorize } from '#api/middleware/authorize.js';
 import { validateAttach, validateRegister, validateUpdate } from '#api/middleware/materialMiddleware.js';
+import { makeMaterialController } from '#infrastructure/Factories/MaterialFactory.js';
 import { UserType } from '#infrastructure/src/generated/prisma/enums.js';
 import { Router } from 'express';
 import express from 'express';
 
 const router: Router = express.Router()
 
-const materialController = new MaterialController()
+const materialController = makeMaterialController()
 
 router
     // creates a material

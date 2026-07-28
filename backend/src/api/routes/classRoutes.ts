@@ -1,13 +1,13 @@
-import { ClassController } from '#api/controllers/ClassController.js';
 import { authorize } from '#api/middleware/authorize.js';
 import { validateCompetency, validateRegister, validateUpdate } from '#api/middleware/classMiddleware.js';
+import { makeClassController } from '#infrastructure/Factories/ClassFactory.js';
 import { UserType } from '#infrastructure/src/generated/prisma/enums.js';
 import { Router } from 'express';
 import express from 'express';
 
 const router: Router = express.Router()
 
-const classController = new ClassController()
+const classController = makeClassController()
 
 router
     // route to create area

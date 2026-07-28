@@ -1,18 +1,11 @@
 import { attachtFileDTO, registerMaterialDTO, updateMaterialDTO } from "#application/dtos/materialDTO.js";
-import { getBucket } from "#infrastructure/database/database.js"
-import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js"
-import { HashService } from "#infrastructure/services/Authetication/Hash.service.js";
-import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { MaterialService } from "#infrastructure/services/Material/MaterialService.js"
-import { UserService } from "#infrastructure/services/User/UserService.js"
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 
 export default class MaterialController{
-    private attachmentService = new AttachmentService()
-    private hashService = new HashService()
-    private jwtTokenService = new JwtTokenService()
-    private userService = new UserService(this.attachmentService, this.hashService, this.jwtTokenService)
-    private materialService = new MaterialService(this.userService, this.attachmentService)
+    constructor (
+        private readonly materialService: MaterialService
+    ) {}
 
     // POST
     // receives all material's related informantion from body, and to execute log record gets the userId from request.

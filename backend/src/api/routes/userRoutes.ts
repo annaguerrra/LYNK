@@ -1,7 +1,7 @@
-import UserController from "#api/controllers/UserController.js" 
 import { authMiddleware } from "#api/middleware/authMiddleware.js";
 import { authorize } from "#api/middleware/authorize.js";
 import { validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent } from "#api/middleware/userMiddleware.js";
+import { makeUserController } from "#infrastructure/Factories/UserFactory.js";
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { UserType } from "#infrastructure/src/generated/prisma/enums.js";
 import { Router } from 'express';
@@ -9,7 +9,7 @@ import express from 'express';
 
 const router: Router = express.Router();
 
-const userController = new UserController();
+const userController = makeUserController();
 const jwt = new JwtTokenService()
 
 router
