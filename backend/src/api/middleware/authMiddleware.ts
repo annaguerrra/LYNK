@@ -1,8 +1,7 @@
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { Request, Response, NextFunction, response } from "express";
 
-export const authMiddleware = (jwt: JwtTokenService) => {
-    return (req: Request, res: Response, next: NextFunction) => {
+export const authMiddleware = (jwt: JwtTokenService, req: Request, res: Response, next: NextFunction) => {
         const authAutho = req.headers.authorization;
         
         if(!authAutho || !authAutho?.startsWith("Bearer")){
@@ -38,4 +37,3 @@ export const authMiddleware = (jwt: JwtTokenService) => {
         }
         
     }
-}
