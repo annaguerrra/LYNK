@@ -38,8 +38,7 @@ export function Login() {
             setMustChangePassword(true);
             return;
         }
-        notifySucess
-        navigate("/Disciplines");
+        
     }
 
     async function handleChangePassword() {
