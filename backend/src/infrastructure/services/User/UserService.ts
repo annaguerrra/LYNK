@@ -6,7 +6,6 @@ import { prisma } from "../../lib/prisma.js";
 import { AttachmentService } from "../Attachment/AttachmentService.js";
 import { HashService } from "../Authetication/Hash.service.js";
 import { JwtTokenService } from "../Authetication/JwtToken.service.js";
-import { use } from "marked";
 
 export class UserService implements IUserService {
     constructor(
@@ -30,19 +29,18 @@ export class UserService implements IUserService {
     }
 
     async getUsername(userId: number): Promise<string> {
-        const admin = await prisma.admin.findUnique({
-            where: {
-                id: userId
-            }
-        })
+        const user =
+            await prisma.admin.findUnique({
+                where: { id: userId }
+            }) ??
+            await prisma.instructor.findUnique({
+                where: { id: userId }
+            });
 
-        const instructor = await prisma.instructor.findUnique({
-            where: {
-                id: userId
-            }
-        })
+        if (!user)
+            throw new Error("User not found")
 
-        return admin ? admin.username : instructor.username
+        return user.username
     }
     
     // creates a new student and register it in log table
@@ -79,7 +77,6 @@ export class UserService implements IUserService {
     // creates a new instructor and registers in the log table
     async registerInstructor(data: registerInstructorDTO, userId: number): Promise<Instructor> {
         const { username, password, userType, specialty } = data
-        const isAdmin = await this.isAdmin(userId)
         const ownerUsername = await this.getUsername(userId)
         
         const hashedPassword = await this.hashService.hash(data.password);
@@ -98,8 +95,7 @@ export class UserService implements IUserService {
                 newData: {
                     ...createdUser
                 },
-                ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId }),
+                adminId: userId,
                 username: ownerUsername                
             }
         })
@@ -111,7 +107,6 @@ export class UserService implements IUserService {
     // creates a new admin and registers in the log table
     async registerAdmin(data: registerAdminDTO, userId: number): Promise<Admin> {
         const { username, password, userType, specialty } = data
-        const isAdmin = await this.isAdmin(userId)
         const ownerUsername = await this.getUsername(userId)
         
         const hashedPassword = await this.hashService.hash(data.password);
@@ -130,8 +125,7 @@ export class UserService implements IUserService {
                 newData: {
                     ...createdUser
                 },
-                ...(isAdmin && { adminId: userId }),
-                ...(!isAdmin && { instructorId: userId }),
+                adminId: userId,
                 username: ownerUsername
             }
         })
@@ -493,7 +487,6 @@ export class UserService implements IUserService {
     async updateInstructor(id: number, data: updateInstructorDTO, userId: number): Promise<Instructor> {
         const { username, password, specialty, active, file } = data
         const attachmentId = await this.attachmentService.upload(file)
-        const isAdmin = await this.isAdmin(userId)
         const ownerUsername = await this.getUsername(userId)
 
         const target = await prisma.instructor.findUnique({
@@ -534,8 +527,7 @@ export class UserService implements IUserService {
                     newData: {
                         ...updatedUser
                     },
-                    ...(isAdmin && { adminId: userId }),
-                    ...(!isAdmin && { instructorId: userId }),
+                    adminId: userId,
                     username: ownerUsername
                 }
             })
