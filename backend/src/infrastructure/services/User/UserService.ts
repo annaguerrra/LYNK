@@ -306,79 +306,82 @@ export class UserService implements IUserService {
 
         const hashedPassword = await this.hashService.hash(data.newPassword);
         
-        if(user.userType === UserType.STUDENT) {
-            await prisma.student.update({
-                where: {
-                    id: user.id
-                },
+        try{
+            if(user.userType === UserType.STUDENT) {
+                await prisma.student.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        password: hashedPassword,
+                        active: true
+                    }
+                });
+
+                await prisma.log.create({
                 data: {
-                    password: hashedPassword,
-                    active: true
-                }
-            });
+                    action: "UPDATED",
+                    entityId: user.id,
+                    entityName: user.userType,
+                    entityType: "Instructor",
+                    newData: hashedPassword, 
+                    oldData: data.oldPassword,
+                    adminId: user.id,
+                    username: ownerUsername
+                }})
 
-            await prisma.log.create({
-            data: {
-                action: "UPDATED",
-                entityId: user.id,
-                entityName: user.userType,
-                entityType: "Instructor",
-                newData: hashedPassword, 
-                oldData: data.oldPassword,
-                adminId: user.id,
-                username: ownerUsername
-            }})
+            } 
+            else if(user.userType === UserType.INSTRUCTOR) {
+                await prisma.instructor.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        password: hashedPassword,
+                        active: true
+                    }
+                });
 
-        } 
-        else if(user.userType === UserType.INSTRUCTOR) {
-            await prisma.instructor.update({
-                where: {
-                    id: user.id
-                },
+                await prisma.log.create({
                 data: {
-                    password: hashedPassword,
-                    active: true
-                }
-            });
+                    action: "UPDATED",
+                    entityId: user.id,
+                    entityName: user.userType,
+                    entityType: "Instructor",
+                    newData: hashedPassword, 
+                    oldData: data.oldPassword,
+                    adminId: user.id,
+                    username: ownerUsername
+                    }
+                });
 
-            await prisma.log.create({
-            data: {
-                action: "UPDATED",
-                entityId: user.id,
-                entityName: user.userType,
-                entityType: "Instructor",
-                newData: hashedPassword, 
-                oldData: data.oldPassword,
-                adminId: user.id,
-                username: ownerUsername
-                }
-            });
+            } else {
+                await prisma.admin.update({
+                    where: {
+                        id: user.id
+                    },
+                    data: {
+                        password: hashedPassword,
+                        active: true
+                    }
+                });
 
-        } else {
-            await prisma.admin.update({
-                where: {
-                    id: user.id
-                },
+                await prisma.log.create({
                 data: {
-                    password: hashedPassword,
-                    active: true
-                }
-            });
-
-            await prisma.log.create({
-            data: {
-                action: "UPDATED",
-                entityId: user.id,
-                entityName: user.userType,
-                entityType: "Admin",
-                newData: hashedPassword, 
-                oldData: data.oldPassword,
-                adminId: user.id,
-                username: ownerUsername
-                }
-            });
+                    action: "UPDATED",
+                    entityId: user.id,
+                    entityName: user.userType,
+                    entityType: "Admin",
+                    newData: hashedPassword, 
+                    oldData: data.oldPassword,
+                    adminId: user.id,
+                    username: ownerUsername
+                    }
+                });
+            }
+        } catch(e) {
+            console.log(e);
         }
-
         return true;
     }
     

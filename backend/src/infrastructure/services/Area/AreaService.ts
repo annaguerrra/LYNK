@@ -5,7 +5,9 @@ import { Area } from "#infrastructure/prisma/generated/prisma/client.js";
 import { UserService } from "../User/UserService.js";
 
 export class AreaService implements IAreaService{
-    constructor(private userService: UserService) {}
+    constructor(
+        private readonly userService: UserService
+    ) {}
 
     async registerArea(data: registerAreaDTO, userId: number): Promise<Area> {
         // variables used to create area
