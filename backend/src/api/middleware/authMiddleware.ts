@@ -1,10 +1,12 @@
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { Request, Response, NextFunction, response } from "express";
 
-export const authMiddleware = (jwt: JwtTokenService, req: Request, res: Response, next: NextFunction) => {
+export const authMiddleware = (jwt: JwtTokenService) => {
+    return (req: Request, res: Response, next: NextFunction) => {
         const authAutho = req.headers.authorization;
+        console.log("Authorization header:",authAutho);
         
-        if(!authAutho || !authAutho?.startsWith("Bearer")){
+        if(!authAutho || !authAutho?.startsWith("Bearer ")){
             return res.status(401).send({
                 code: "NO_TOKEN",
                 response: "HTTP 401 Unauthorized"
@@ -37,3 +39,4 @@ export const authMiddleware = (jwt: JwtTokenService, req: Request, res: Response
         }
         
     }
+}

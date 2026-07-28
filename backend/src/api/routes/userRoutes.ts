@@ -13,7 +13,7 @@ const userController = new UserController();
 const jwt = new JwtTokenService()
 
 router
-    .post('/user/create', validateRegister, authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.register.bind(userController))
+    .post("/user/create", authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, userController.register.bind(userController))
     .post('/login', userController.login.bind(userController))
 
     // returns all the students registered without any filter
