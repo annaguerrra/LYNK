@@ -1,31 +1,15 @@
 import api from "./api";
 import type { 
-    registerStudentDTO, 
-    registerInstructorDTO, 
-    registerAdminDTO, 
+    registerUserDTO,
     showStudentDTO, 
-    showInstructorDTO, 
-    showAdminDTO, 
-    updateStudentDTO, 
-    updateInstructorDTO, 
-    updateAdminDTO 
+    showPrivilegedUserDTO,
+    updateStudentDTO,
+    updatePrivilegedUserDTO
 } from "../Types/user";
 
 
-// Create a new student
-export async function createStudent(data: registerStudentDTO) {
-    const response = await api.post("/user/create", data);
-    return response.data;
-}
-
-// Create a new instructor
-export async function createInstructor(data: registerInstructorDTO) {
-    const response = await api.post("/user/create", data);
-    return response.data;
-}
-
-// Create a new admin
-export async function createAdmin(data: registerAdminDTO) {
+// Create a new user
+export async function createUser(data: registerUserDTO) {
     const response = await api.post("/user/create", data);
     return response.data;
 }
@@ -37,13 +21,13 @@ export async function getStudents(): Promise<showStudentDTO[]> {
 }
 
 // Get all instructors
-export async function getInstructors(): Promise<showInstructorDTO[]> {
+export async function getInstructors(): Promise<showPrivilegedUserDTO[]> {
     const response = await api.get("/user/showInst");
     return response.data;
 }
 
 // Get all admins
-export async function getAdmins(): Promise<showAdminDTO[]> {
+export async function getAdmins(): Promise<showPrivilegedUserDTO[]> {
     const response = await api.get("/user/showAdmin");
     return response.data;
 }
@@ -55,13 +39,13 @@ export async function getStudentById(id: number): Promise<showStudentDTO> {
 }
 
 // Get an instructor by ID
-export async function getInstructorById(id: number): Promise<showInstructorDTO> {
+export async function getInstructorById(id: number): Promise<showPrivilegedUserDTO> {
     const response = await api.get(`/user/showInst/${id}`);
     return response.data;
 }
 
 // Get an admin by ID
-export async function getAdminById(id: number): Promise<showAdminDTO> {
+export async function getAdminById(id: number): Promise<showPrivilegedUserDTO> {
     const response = await api.get(`/user/showAdmin/${id}`);
     return response.data;
 }
@@ -78,7 +62,7 @@ export async function updateStudent(
 // Update an instructor
 export async function updateInstructor(
     id: number,
-    data: updateInstructorDTO
+    data: updatePrivilegedUserDTO
 ) {
     const response = await api.put(`/user/updateInst/${id}`, data);
     return response.data;
@@ -87,7 +71,7 @@ export async function updateInstructor(
 // Update an admin
 export async function updateAdmin(
     id: number,
-    data: updateAdminDTO
+    data: updatePrivilegedUserDTO
 ) {
     const response = await api.put(`/user/updateAdmin/${id}`, data);
     return response.data;

@@ -2,51 +2,12 @@ import type { UploadedFileDTO } from "./attachment.js"
 
 export type UserType = "ADMIN" | "INSTRUCTOR" | "STUDENT";
 
-// used to create a student
-export interface registerStudentDTO {
+// used to create an user
+export interface registerUserDTO {
     username: string
     password: string
     repeatPassword: string
     userType: UserType
-}
-
-// used to create an instructor
-export interface registerInstructorDTO {
-    username: string
-    password: string
-    repeatPassword: string
-    userType: UserType
-}
-
-// used to create an admin
-export interface registerAdminDTO {
-    username: string
-    password: string
-    repeatPassword: string
-    userType: UserType
-}
-
-// used to do login
-export interface loginPayloadDTO {
-    username: string
-    password: string
-}
-
-// response to login
-export interface loginResponseDTO {
-    token: string
-    mustChangePassword: boolean
-    user:{
-        id: number;
-        username: string;
-        userType: UserType;
-    }
-}
-
-export interface changePasswordDTO {
-    oldPassword: string;
-    newPassword: string;
-    confirmPassword: string
 }
 
 export interface showStudentDTO {
@@ -54,16 +15,8 @@ export interface showStudentDTO {
     userType: UserType
 }
 
-// response to showInstructor service
-export interface showInstructorDTO {
-    username: string
-    userType: UserType
-    active: boolean
-    attachmentId: string | null
-}
-
-// response to showAdmin service
-export interface showAdminDTO {
+// response to showInstructor or showAdmin service
+export interface showPrivilegedUserDTO {
     username: string
     userType: UserType
     active: boolean
@@ -76,16 +29,8 @@ export interface updateStudentDTO {
     password: string
 }
 
-// used to edit instructor
-export interface updateInstructorDTO {
-    username: string
-    password: string
-    active: boolean
-    file: UploadedFileDTO
-}
-
-// used to edit admin
-export interface updateAdminDTO {
+// used to edit instructor or admin
+export interface updatePrivilegedUserDTO {
     username: string
     password: string
     active: boolean
