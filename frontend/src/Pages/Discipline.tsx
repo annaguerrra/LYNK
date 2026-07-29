@@ -10,11 +10,10 @@ import { ButtonCancel } from "../Components/ButtonCancel";
 import { useEffect, useState } from "react";
 import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
-import api from "../Services/api";
 import { useAuth } from "../Contexts/AuthContext";
 import { createDiscipline, getDisciplines } from "../Services/disciplinesService";
-import type { DisciplinesDTO, DisciplineDTO, CreateDisciplineDTO } from "../Types/Discipline";
-import type { registerAreaDTO } from "../Types/area";
+import type { DisciplinesDTO, CreateDisciplineDTO } from "../Types/Discipline";
+import type { AreaDTO } from "../Types/area";
 import { getAreas } from "../Services/areasService";
 
 
@@ -29,8 +28,7 @@ export function Discipline() {
 
     const [disciplines, setDisciplines] = useState<DisciplinesDTO[]>([])
 
-    const [cor, setCor] = useState("Roxo");
-
+    
     const [newDisciplineModal, setNewDisciplineModal] = useState(false);
     const [usersModal, setUsersModal] = useState(false);
     const [newAreaModal, setNewAreaModal] = useState(false);
@@ -41,11 +39,15 @@ export function Discipline() {
     const [editAreaModal, setEditAreaModal] = useState(false);
     const [excludeAreaModal, setExcludeAreaModal] = useState(false);
     const [resetPasswordModal, setResetPasswordModal] = useState(false);
-
+    
     //Inputs to create and edit a discipline
     const [disciplineName, setDisciplineName] = useState("")
-    const [areas, setAreas] = useState<registerAreaDTO[]>([]);
+    const [areas, setAreas] = useState<AreaDTO[]>([]);
     const [areaId, setAreaId] = useState<number>(0);
+    
+    //Inputs to create and edit a area
+    const [areaName, setAreaName] = useState("")
+    const [cor, setCor] = useState("Roxo");
 
     //Variables to control the users and its interactions
     const { user } = useAuth();
@@ -240,9 +242,9 @@ export function Discipline() {
                         <div className="textBox">
                             <h2>Selecione o tipo de usuário</h2>
                             <select name="" id="" className="selectFilter">
-                                <option value="Administrador">Administrador</option>
-                                <option value="Instrutor">Instrutor</option>
-                                <option value="Aluno" selected>Aluno</option>
+                                <option value="ADMIN">Administrador</option>
+                                <option value="INSTRUCTOR">Instrutor</option>
+                                <option value="STUDENT" selected>Aluno</option>
                             </select>
                         </div>
                         {/* Input for username */}

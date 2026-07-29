@@ -20,9 +20,9 @@ export async function createDiscipline(
     data: CreateDisciplineDTO
 ): Promise<DisciplineDTO> {
 
-    const response = await api.post("discipline/create", data);
+    const response = await api.post("/discipline/create", data);
 
-    return response.data;
+    return response.data.response;
 }
 
 
@@ -31,12 +31,12 @@ export async function updateDiscipline(
     data: CreateDisciplineDTO
 ): Promise<DisciplineDTO> {
 
-    const response = await api.put(`discipline/${id}`, data);
+    const response = await api.put(`discipline/editar/${id}`, data);
 
-    return response.data;
+    return response.data.response;
 }
 
 
 export async function deleteDiscipline(id: number): Promise<void> {
-    await api.delete(`discipline/${id}`);
+    await api.delete(`discipline/delete/${id}`);
 }
