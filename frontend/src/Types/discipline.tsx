@@ -19,6 +19,7 @@ export interface DisciplinesDTO{
         name: string;
     } | null,
     competences: {
+
         name: string
     }[];
     lastUpdate: Date | null;
@@ -26,8 +27,8 @@ export interface DisciplinesDTO{
 
 // response to findOne service
 export interface DisciplineDTO{
-    name: string;
     id: number;
+    name: string;
     workLoad: number;
     area:{
         name: string

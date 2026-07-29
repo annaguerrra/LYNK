@@ -1,5 +1,5 @@
 import api from "./api";
-import type { DisciplinesDTO, DisciplineDTO, CreateDisciplineDTO } from "../Types/Discipline";
+import type { DisciplinesDTO, DisciplineDTO, CreateDisciplineDTO } from "../Types/discipline";
 
 
 export async function getDisciplines(): Promise<DisciplinesDTO[]> {
