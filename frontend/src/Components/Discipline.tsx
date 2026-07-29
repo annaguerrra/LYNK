@@ -7,7 +7,7 @@ import { Button } from "./Button";
 import { ButtonClose } from "./ButtonClose";
 import { ButtonExclude } from "./ButtonExclude";
 import { ButtonCancel } from "./ButtonCancel";
-import { useAuth } from "../Auth/AuthContext";
+import { useAuth } from "../Contexts/AuthContext";
 
 export function DisciplineComp({Discipline}) {
     const navigate = useNavigate();

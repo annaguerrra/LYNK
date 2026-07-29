@@ -35,7 +35,7 @@ import { ButtonIcon } from '../Components/ButtonIcon'
 import { useNavigate, useParams } from 'react-router-dom'
 import { InputFile } from '../Components/InputFile'
 import LessonSelect from '../Components/LessonSelect'
-import { useAuth } from '../Auth/AuthContext'
+import { useAuth } from '../Contexts/AuthContext'
 import api from '../Services/api'
 
 export function Class() {

@@ -43,8 +43,6 @@ export function AuthProvider({
     });
 
     async function login(username: string, password: string) {
-
-        try {
             const response = await api.post("/login", {
                 username,
                 password
@@ -52,8 +50,6 @@ export function AuthProvider({
 
 
             const { token, mustChangePassword, user } = response.data.response;
-
-            console.log(response.data.response)
 
             localStorage.setItem("token", token);
 
@@ -73,10 +69,6 @@ export function AuthProvider({
 
             return mustChangePassword;
         }
-        catch (e) {
-            console.log(e)
-        }
-    }
 
     async function changePassword(
         oldPassword: string,

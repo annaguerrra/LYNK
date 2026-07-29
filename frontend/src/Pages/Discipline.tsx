@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
 import api from "../Services/api";
-import { useAuth } from "../Auth/AuthContext";
+import { useAuth } from "../Contexts/AuthContext";
 
 export function Discipline() {
     //Variables to navigate and open modals
@@ -19,7 +19,7 @@ export function Discipline() {
     const cores = {
         Roxo: "var(--purple)",
         Verde: "var(--green)",
-        "Verde-água": "var(--acqua)",
+        VerdeAgua: "var(--acqua)",
     };
 
     const [disciplines, setDisciplines] = useState([])
@@ -127,18 +127,18 @@ export function Discipline() {
                     <div className="filters">
                         {/* Filter for areas */}
                         <form>
-                            <select id="" name="" className="selectFilter">
+                            <select name="" id="" className="selectFilter" defaultValue="Mecânica">
                                 <option value="TI">TI</option>
-                                <option value="Mecânica" selected>Mecânica</option>
+                                <option value="Mecânica">Mecânica</option>
                                 <option value="Eletrônica">Eletrônica</option>
-                                <option value="Administração" selected>Administração</option>
+                                <option value="Administração">Administração</option>
                             </select>
                         </form>
                         {/* Filter for disciplines */}
                         <form>
-                            <select id="" name="" className="selectFilter">
+                            <select id="" name="" className="selectFilter" defaultValue="Inglês">
                                 <option value="Inglês">Inglês</option>
-                                <option value="Comunicação" selected>Comunicação</option>
+                                <option value="Comunicação">Comunicação</option>
                                 <option value="Slides">Slides</option>
                                 <option value="Organização">Organização</option>
                             </select>
@@ -150,9 +150,9 @@ export function Discipline() {
                 </div>
                 {/* Box for all the disciplines display */}
                 <div className="disciplinesContainer">
-                    {disciplines.map((discipline) => (                       
+                    {disciplines.map((discipline) => (
                         <DisciplineComp Discipline={discipline}></DisciplineComp>
-                    ))}                     
+                    ))}
                 </div>
             </div>
 
@@ -286,7 +286,7 @@ export function Discipline() {
             )}
 
             {/* Modal to exclude the user */}
-            {excludeUserModal && isAdmin&& (
+            {excludeUserModal && isAdmin && (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeUserModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
@@ -338,7 +338,8 @@ export function Discipline() {
                             <h2>Selecione a cor da área</h2>
                             <select name="" id="" className="selectFilter" value={cor}
                                 onChange={(e) => setCor(e.target.value)}
-                                style={{ color: cores[cor] }}>
+                            // style={{ color: cores[cor] }}
+                            >
                                 <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
                                 <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
                                 <option value="Verde-água" style={{ color: "var(--acqua)" }}>Verde-água</option>
@@ -392,7 +393,8 @@ export function Discipline() {
                             <h2>Selecione a cor da área</h2>
                             <select name="" id="" className="selectFilter" value={cor}
                                 onChange={(e) => setCor(e.target.value)}
-                                style={{ color: cores[cor] }}>
+                            // style={{ color: cores[cor] }}
+                            >
                                 <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
                                 <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
                                 <option value="Verde-água" style={{ color: "var(--acqua)" }}>Verde-água</option>

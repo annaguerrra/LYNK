@@ -1,13 +1,13 @@
 import './Styles/Login.css'
 import { Button } from '../Components/Button'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../Auth/AuthContext'
+import { useAuth } from '../Contexts/AuthContext'
 import { useState } from 'react'
 import { ToastContainer, toast } from 'react-toastify';
 
 export function Login() {
     //Variables to navigate and open modals
-    const navigate = useNavigate()   
+    const navigate = useNavigate()
     //Variables to control the users and its interactions
     const [username, setUsername] = useState("")
     const [userPassword, setUserPassword] = useState("")
@@ -19,31 +19,40 @@ export function Login() {
     const notifySucess = () => toast.success("Usuário logado com sucesso!");
     const notifyServer = () => toast.error("Erro interno. Tente novamente.");
     const notifyNull = () => toast.warning("Campos vazios ou inválidos.");
-    // const notifyInvalid = () => toast.error("Usuário ou senha inválidos.");
+    const notifyInvalidLogin = () => toast.error("Usuário ou senha inválidos.");
     // const notifyDifferentPassword = () => toast.error("As senhas não coincidem.");
     // const notifySamePassword = () => toast.error("A nova senha não pode ser igual à senha atual.");
-    
+
 
     const { login, changePassword } = useAuth();
 
     async function handleLogin() {
-        if (username === "" || userPassword === ""){
-            notifyNull
-            return;
-        }
-        
-        const changePassword = await login(username, userPassword);
-    
 
-        if (changePassword) {
-            setMustChangePassword(true);
+        if (!username || !userPassword) {
+            notifyNull();
             return;
         }
-        
-        if (localStorage.getItem){
-            notifySucess
+
+        try {
+            const changePassword = await login(username, userPassword);
+
+            if (changePassword) {
+                setMustChangePassword(true);
+                return;
+            }
+
+            notifySucess();
             navigate("/Disciplines");
+        } catch (error: any) {
+            if (error.response?.status === 404) { // alterar para 401 depois que arrumar o bug do backend
+                notifyInvalidLogin();
+            } else {
+                notifyServer();
+            }
+            setUsername("");
+            setUserPassword("");
         }
+        
     }
 
     async function handleChangePassword() {
@@ -55,8 +64,11 @@ export function Login() {
             );
 
             setMustChangePassword(false);
+
+            setUsername("");
+            setUserPassword("");
         } catch (error) {
-            notifyServer
+            notifyServer()
             console.error(error);
         }
     }
@@ -68,21 +80,21 @@ export function Login() {
             <div className="backgroundLogin">
                 <div className='containerLogin'>
                     <img src="/BoschLogo.png" alt="" />
-                    
+
                     {/* Username input */}
                     <div className='boxTexts'>
                         <h1>Usuário</h1>
                         <input className='loginInput' type="text" placeholder='Digite seu usuário:'
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}/>
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)} />
                     </div>
-                    
+
                     {/* Password input */}
                     <div className='boxTexts'>
                         <h1>Senha</h1>
                         <input className='loginInput' type="password" placeholder='Digite sua senha :'
-                        value={userPassword}
-                        onChange={(e) => setUserPassword(e.target.value)}/>
+                            value={userPassword}
+                            onChange={(e) => setUserPassword(e.target.value)} />
                     </div>
 
                     {mustChangePassword && (
@@ -110,7 +122,7 @@ export function Login() {
                             </div>
                         </>
                     )}
-                    <Button ButtonTitle={"Entrar"}  onClose={mustChangePassword ? handleChangePassword : handleLogin}></Button>
+                    <Button ButtonTitle={"Entrar"} onClose={mustChangePassword ? handleChangePassword : handleLogin}></Button>
                     <ToastContainer
                         position="top-center"
                         autoClose={2500}
