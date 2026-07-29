@@ -1,7 +1,6 @@
 // used to create a discipline
 export interface CreateDisciplineDTO{
     name: string
-    workload: number
     areaID: number
     userID: number
 }

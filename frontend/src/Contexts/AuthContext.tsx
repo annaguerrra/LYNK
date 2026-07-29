@@ -9,7 +9,7 @@ type Role = "ADMIN" | "INSTRUCTOR" | "STUDENT";
 
 interface User {
     username: string;
-    // profilePic: string;
+    userId: number;
     role: Role;
     token: string;
     mustChangePassword: boolean;
@@ -55,13 +55,13 @@ export function AuthProvider({
 
             localStorage.setItem("user", JSON.stringify({
                 username: user.username,
-                // profilePic: user.photo,
+                userId: user.id,
                 role: user.userType
             }));
 
             setUser({
                 username: user.username,
-                // profilePic: user.photo,
+                userId: user.id,
                 role: user.userType,
                 token: token,
                 mustChangePassword

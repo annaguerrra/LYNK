@@ -19,18 +19,12 @@ import { HClassesView } from "./HistoryViews/HClassesView";
 import { HCompetencesView } from "./HistoryViews/HCompetencesView";
 import { HExamsView } from "./HistoryViews/HExamsView";
 import { HUsersView } from "./HistoryViews/HUsersView";
-import { ToastContainer, toast } from 'react-toastify';
 
 export function History() {
     //Variables to navigate and open modals
     const navigate = useNavigate()
     const [selectedTab, setSelectedTab] = useState("disciplines");
     const [open, setOpen] = useState(false)
-
-    //Declaring all the alerts
-    const notifySucess = () => toast.success("Usuário logado com sucesso!");
-    const notifyServer = () => toast.error("Erro interno. Tente novamente.");
-    const notifyNull = () => toast.warning("Campos vazios ou inválidos.");
 
     const { refs, floatingStyles, context } = useFloating({
         open,
@@ -121,18 +115,6 @@ export function History() {
 
                 </div>
             </div>
-            <ToastContainer
-                position="top-center"
-                autoClose={2500}
-                hideProgressBar={false}
-                newestOnTop={true}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-            />
         </>
     )
 }
