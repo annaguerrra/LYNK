@@ -1,7 +1,12 @@
-import UserController from "#api/controllers/UserController.js" 
 import { authMiddleware } from "#api/middleware/authMiddleware.js";
 import { authorize } from "#api/middleware/authorize.js";
+<<<<<<< HEAD
+import { validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent, validatePassword } from "#api/middleware/userMiddleware.js";
+=======
+import { validatePasswordFormat } from "#api/middleware/passwordMiddleware.js";
 import { validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent } from "#api/middleware/userMiddleware.js";
+import { makeUserController } from "#infrastructure/Factories/UserFactory.js";
+>>>>>>> b8456f52320d6ef7cbb45d11bcf8c2d8dfe7f5b1
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { UserType } from "#infrastructure/src/generated/prisma/enums.js";
 import { Router } from 'express';
@@ -9,11 +14,11 @@ import express from 'express';
 
 const router: Router = express.Router();
 
-const userController = new UserController();
+const userController = makeUserController();
 const jwt = new JwtTokenService()
 
 router
-    .post('/user/create', validateRegister, authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.register.bind(userController))
+    .post("/user/create", validatePassword, authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, userController.register.bind(userController))
     .post('/login', userController.login.bind(userController))
 
     // returns all the students registered without any filter
@@ -36,7 +41,7 @@ router
     .put('/user/updateInst/:id', validateUpdateInstructor, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateInstructor.bind(userController))
     // allows update informations of a specific admin by id
     .put('/user/updateAdmin/:id', validateUpdateAdmin, authorize(UserType.ADMIN), userController.updateAdmin.bind(userController))
-    .put('/user/change-password', validateRegister, authMiddleware, userController.changePassword.bind(userController))
+    .put('/user/change-password', validatePassword, authMiddleware(jwt), userController.changePassword.bind(userController))
 
     .delete('/user/deleteStud/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
     // deletes an instructor by id

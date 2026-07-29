@@ -1,19 +1,11 @@
 import { attachtFileDTO, registerExamDTO, updateExamDTO } from "#application/dtos/examDTO.js";
-import { getBucket } from "#infrastructure/database/database.js"
-import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js"
-import { HashService } from "#infrastructure/services/Authetication/Hash.service.js";
-import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { ExamService } from "#infrastructure/services/Exam/ExamService.js"
-import { UserService } from "#infrastructure/services/User/UserService.js"
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 
 export default class ExamController{
-    private attachmentService = new AttachmentService()
-    private hashService = new HashService()
-    private jwtTokenService = new JwtTokenService()
-    private userService = new UserService(this.attachmentService, this.hashService, this.jwtTokenService)
-    private examService = new ExamService(this.attachmentService, this.userService)
-
+    constructor (
+        private readonly examService: ExamService
+    ) {}
 
     // POST
     //// gets the userid from request and based on data from calls the respective service to create a new Exam

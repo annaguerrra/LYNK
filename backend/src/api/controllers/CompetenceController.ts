@@ -1,18 +1,11 @@
 import { registerCompetenceDTO, updateCompetenceDTO } from "#application/dtos/competenceDTO.js";
-import { getBucket } from "#infrastructure/database/database.js";
-import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js";
-import { HashService } from "#infrastructure/services/Authetication/Hash.service.js";
-import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { CompetenceService } from "#infrastructure/services/Competence/CompetenceService.js";
-import { UserService } from "#infrastructure/services/User/UserService.js";
 import { Request, Response } from "express";
 
 export default class CompetenceController{
-    private hashService = new HashService()
-    private jwtService = new JwtTokenService()
-    private attachmentService = new AttachmentService()
-    private userService = new UserService(this.attachmentService, this.hashService, this.jwtService)
-    private competenceService = new CompetenceService(this.userService)
+    constructor (
+        private readonly competenceService: CompetenceService
+    ) {}
 
     // POST
     // creates a competence

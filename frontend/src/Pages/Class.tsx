@@ -22,72 +22,63 @@ import {
     InsertImage,
     thematicBreakPlugin,
     InsertThematicBreak,
-    Separator
+    Separator,
 } from '@mdxeditor/editor'
 import { Header } from "../Components/Header"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import '@mdxeditor/editor/style.css'
 import './Styles/Class.css'
 import { ButtonBack } from '../Components/ButtonBack'
 import { RowItem } from '../Components/RowItem'
 import { ButtonClose } from '../Components/ButtonClose'
 import { ButtonIcon } from '../Components/ButtonIcon'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { InputFile } from '../Components/InputFile'
 import LessonSelect from '../Components/LessonSelect'
+import { useAuth } from '../Auth/AuthContext'
+import api from '../Services/api'
 
 export function Class() {
     //Variables to navigate and open modals
     const [editMode, setEditMode] = useState(false)
-    const [titleClass, setTitleClass] = useState("Aula 05")
+    const [titleClass, setTitleClass] = useState("")
     const navigate = useNavigate();
+    
+    //Variables to control the users and its interactions
+    const { user } = useAuth();
+    const isAdmin = user?.role === "ADMIN";
+    const isInstructor = user?.role === "INSTRUCTOR";
+    
+    const { class_id } = useParams();
+    
+    const [classItem, setClassItem] = useState(null);
+
+    const [materials, setMaterials] = useState([])
+    const [competences, setCompetences] = useState([])
+
     //Generic content for the markdown
-    const [content, setContent] = useState(`# Introdução ao Python
+    const [content, setContent] = useState(`# Título da Aula
 
-Python é uma linguagem de programação simples, poderosa e muito utilizada.
+        Introdução breve sobre o tema da aula.
 
-## Primeiro programa
+        ## Conteúdo
 
-O comando mais básico em Python é o \`print()\`, usado para mostrar informações na tela.
+        Explique os principais pontos abordados.
 
-\`\`\`python
-print("Olá, mundo!")
-\`\`\`
+        ## Exemplo
 
-Resultado:
+        \`\`\`
+        Exemplo ou demonstração.
+        \`\`\`
 
-\`\`\`
-Olá, mundo!
-\`\`\`
+        ## Exercício
 
-## Variáveis
+        Descreva uma atividade para praticar.
 
-Variáveis armazenam valores dentro do programa.
+        ## Resumo
 
-\`\`\`python
-nome = "Maria"
-idade = 20
-
-print(nome)
-print(idade)
-\`\`\`
-
-## Exercício
-
-Crie um programa que:
-
-- Peça o nome do usuário;
-- Guarde o nome em uma variável;
-- Mostre uma mensagem de boas-vindas.
-
-Exemplo:
-
-\`\`\`
-Digite seu nome: Ana
-
-Olá, Ana!
-\`\`\`
-`);
+        Principais aprendizados da aula.
+    `);
 
     //Options to edit the markdown
     const editorPlugins = [
@@ -103,29 +94,81 @@ Olá, Ana!
         }),
         codeMirrorPlugin({
             codeBlockLanguages: {
-                csharp: 'C#',
-                python: 'Python',
                 javascript: 'JavaScript',
                 typescript: 'TypeScript',
+                python: 'Python',
+                java: 'Java',
+                csharp: 'C#',
+                cpp: 'C++',
+                c: 'C',
                 html: 'HTML',
                 css: 'CSS',
-                sql: 'SQL'
+                json: 'JSON',
+                markdown: 'Markdown',
+                sql: 'SQL',
+                xml: 'XML',
+                bash: 'Bash'
             }
         }),
         markdownShortcutPlugin()
     ]
 
+    async function loadClass() {
+        try {
+            const response = await api.get(`/class/${class_id}`);
+            setClassItem(response.data);
+        } catch (error) {
+            console.error(error);
+            navigate("/error")
+        }
+    }
+
+    async function loadMaterials() {
+        try {
+            const response = await api.get(`/class/${class_id}/materials`);
+            setMaterials(response.data);
+        } catch (error) {
+            console.error(error);
+            navigate("/error")
+        }
+    }
+
+    async function loadCompetences() {
+        try {
+            const response = await api.get(`/class/${class_id}/competences`);
+            setCompetences(response.data);
+        } catch (error) {
+            console.error(error);
+            navigate("/error")
+        }
+    }
+
+
+
+    useEffect(() => {
+
+        if (class_id) {
+            loadClass();
+            loadMaterials();
+            loadCompetences();
+
+            setTitleClass(classItem.name)
+            setContent(classItem.content)
+        }
+
+    }, [class_id]);
+
     return (
         <>
             {/* Header */}
-            <Header/>
+            <Header />
 
             {/* Whole page */}
             <div className="page-class">
                 <div className="headerContent">
                     <ButtonBack onClick={() => navigate("/content")} />
                 </div>
-                
+
                 {/* Class content (markdown, files and competences) */}
                 <div className='content-class'>
 
@@ -134,7 +177,9 @@ Olá, Ana!
                         <div className='markdownBox'>
                             <div className='toolbar view'>
                                 <span>{titleClass}</span>
-                                <button className='buttonEdit' onClick={() => setEditMode(true)}>Editar</button>
+                                {isAdmin || isInstructor &&
+                                    <button className='buttonEdit' onClick={() => setEditMode(true)}>Editar</button>
+                                }
                             </div>
                             <MDXEditor
                                 key={content}
@@ -144,7 +189,7 @@ Olá, Ana!
                             />
 
                         </div>
-                        
+
                     )}
 
 
@@ -211,43 +256,53 @@ Olá, Ana!
                                     actions={
                                         <>
                                             <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                            <ButtonClose size={18} onClose={() => { }} />
+                                            {isAdmin || isInstructor && editMode &&
+                                                <ButtonClose size={18} onClose={() => { }} />
+                                            }
                                         </>
                                     }>
 
                                     <div>Material_aaa00 drgrdgrd rdg rdg rdg rdgrdg dr gdr grdgr  dgdrgdrg r</div>
                                 </RowItem>
 
-                                <InputFile />
+                                {isAdmin || isInstructor && editMode &&
+                                    <InputFile />
+                                }
 
                             </div>
                             <div className='space'></div>
                             <span className='subtitle'>Competências</span>
                             <div className='attachments' >
-                                
+
                                 {/* Component used to search a competence */}
-                                <LessonSelect/>
-                                <RowItem 
+                                {isAdmin || isInstructor && editMode &&
+                                    <LessonSelect />
+                                }
+                                <RowItem
                                     type='competence'
                                     actions={
                                         <>
-                                        <ButtonClose size={18} onClose={() => { }} />
+                                            {isAdmin || isInstructor && editMode &&
+                                                <ButtonClose size={18} onClose={() => { }} />
+                                            }
                                         </>
                                     } >
                                     <div>Fazer sei la o que, comepencia de não sei o que mais </div>
-                                    
+
                                 </RowItem>
                                 <RowItem
                                     type='competence'
                                     actions={
                                         <>
-                                        <ButtonClose size={18} onClose={() => { }} />
+                                            {isAdmin || isInstructor && editMode &&
+                                                <ButtonClose size={18} onClose={() => { }} />
+                                            }
                                         </>
                                     } >
                                     <div>Teste de nome para o componente usado para representar uma competencia</div>
-                                    
+
                                 </RowItem>
-                                
+
                             </div>
                         </div>
                     </div>

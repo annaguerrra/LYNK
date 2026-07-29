@@ -5,7 +5,7 @@ export const authMiddleware = (jwt: JwtTokenService) => {
     return (req: Request, res: Response, next: NextFunction) => {
         const authAutho = req.headers.authorization;
         
-        if(!authAutho || !authAutho?.startsWith("Bearer")){
+        if(!authAutho || !authAutho?.startsWith("Bearer ")){
             return res.status(401).send({
                 code: "NO_TOKEN",
                 response: "HTTP 401 Unauthorized"

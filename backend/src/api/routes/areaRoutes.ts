@@ -1,13 +1,13 @@
-import AreaController from '#api/controllers/AreaController.js';
 import { validateRegister, validateUpdate } from '#api/middleware/areaMiddleware.js';
 import { authorize } from '#api/middleware/authorize.js';
+import { makeAreaFactory } from '#infrastructure/Factories/AreaFactory.js';
 import { UserType } from '#infrastructure/src/generated/prisma/enums.js';
 import { Router } from 'express';
 import express from 'express';
 
 const router: Router = express.Router()
 
-const areaController = new AreaController()
+const areaController = makeAreaFactory()
 
 router
     // route to create area

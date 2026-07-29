@@ -1,19 +1,11 @@
 import { assignCompetencyDTO, DisciplineDTO } from "#application/dtos/disciplineDTO.js"
-import { getBucket } from "#infrastructure/database/database.js"
-import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js"
-import { HashService } from "#infrastructure/services/Authetication/Hash.service.js"
-import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js"
-import { ClassService } from "#infrastructure/services/Class/ClassService.js"
 import { DisciplineService } from "#infrastructure/services/Discipline/DisciplineService.js"
-import { UserService } from "#infrastructure/services/User/UserService.js"
-import {Request, response, Response } from "express"
+import {Request, Response } from "express"
 
 export class DisciplineController{
-    private hashService = new HashService()
-    private jwtService = new JwtTokenService()
-    private attachmentService = new AttachmentService()
-    private userService = new UserService(this.attachmentService, this.hashService, this.jwtService)
-    private disciplineService = new DisciplineService(this.userService)
+    constructor (
+        private readonly disciplineService: DisciplineService
+    ) {}
 
     // POST
     // creates a discipline

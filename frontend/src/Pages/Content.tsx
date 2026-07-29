@@ -1,6 +1,6 @@
 import "./Styles/Content.css"
 import "./Styles/Class.css"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ButtonBack } from "../Components/ButtonBack";
 import { Header } from "../Components/Header";
 import { TabNavigation } from "../Components/TabNavigation";
@@ -15,6 +15,9 @@ import { ButtonExclude } from "../Components/ButtonExclude";
 import { useNavigate } from "react-router-dom";
 import { RowItem } from "../Components/RowItem";
 import LessonSelect from "../Components/LessonSelect";
+import { useParams } from "react-router-dom";
+import api from "../Services/api";
+import { useAuth } from "../Auth/AuthContext";
 
 export function Content() {
     //Variables to navigate and open modals
@@ -26,6 +29,15 @@ export function Content() {
     const [editCompetence, setEditCompetence] = useState(false);
     const [excludeTestModal, setExcludeTestModal] = useState(false);
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
+    const [discipline, setDiscipline] = useState(null);
+
+
+    const { discipline_id } = useParams();
+    
+    //Variables to control the users and its interactions
+    const { user } = useAuth();
+    const isAdmin = user?.role === "ADMIN";
+    const isInstructor = user?.role === "INSTRUCTOR";
 
     //Options for the option buttons
     const options = [
@@ -45,15 +57,38 @@ export function Content() {
 
     //Tab options
     const tabs = [
-    { id: "classes", label: "Aulas" },
-    { id: "competences", label: "Competências" },
-    { id: "exams", label: "Avaliações" },
-];
+        { id: "classes", label: "Aulas" },
+        { id: "competences", label: "Competências" },
+        { id: "exams", label: "Avaliações" },
+    ];
+
+    if (!discipline) {
+        return <div>Carregando...</div>;
+    }
+
+    async function loadContent() {
+        try {
+            const response = await api.get(`/disipline/${discipline_id}`);
+            setDiscipline(response.data);
+        } catch (error) {
+            console.error(error);
+            navigate("/error")
+        }
+    }
+
+    useEffect(() => {
+
+        if (discipline_id) {
+            loadContent();
+        }
+
+    }, [discipline_id]);
+
 
     return (
         <>
             <Header />
-            
+
             {/* Whole page */}
             <div className="page">
 
@@ -61,94 +96,96 @@ export function Content() {
                 <div className="headerContent">
                     <div className="startBox">
                         <ButtonBack onClick={() => navigate("/disciplines")} />
-                        <span style={{ fontWeight: "bold", fontSize: "30px" }}>Introdução a Python</span>
+                        <span style={{ fontWeight: "bold", fontSize: "30px" }}>{discipline.name}</span>
                     </div>
-                    <MoreOpt data={options} size={30}></MoreOpt>
+                    {isAdmin || isInstructor &&
+                        <MoreOpt data={options} size={30}></MoreOpt>
+                    }
                 </div>
                 <div className="content">
                     {/* Change the content based on the selected tab */}
                     <TabNavigation
                         selected={selectedTab}
-                        onChange={setSelectedTab} tabs={tabs}                    />
+                        onChange={setSelectedTab} tabs={tabs} />
 
-                    {selectedTab === "classes" && <ClassesView />}
-                    {selectedTab === "competences" && <CompetencesView />}
+                    {selectedTab === "classes" && <ClassesView classes />}
+                    {selectedTab === "competences" && <CompetencesView competences={discipline.competences ?? []} />}
                     {selectedTab === "exams" && <ExamsView />}
 
 
                 </div>
             </div>
 
-{/* -------------------------------------------------------- TEST MODALS -------------------------------------------------------- */}
+            {/* -------------------------------------------------------- TEST MODALS -------------------------------------------------------- */}
             {/* Modal to create a test */}
             {newTest && (
                 <div className="modalOverlay" onClick={() => setNewTest(false)}>
-                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                    {/* Title and close button box */}
-                    <div className="titleContainer">
-                        <h1>Registrar avaliação</h1>
-                        <ButtonClose size={40} onClose={() => setNewTest(false)}></ButtonClose>
-                    </div>
-                    {/* Input for test name */}
-                    <div className="textBox">
-                        <h2>Nome da avaliação</h2>
-                        <input type="text"/>
-                    </div>
-                    {/* Input to select the discipline */}
-                    <div className="textBox">
-                        <h2>Selecione a disciplina</h2>
-                        <select name="" id="">
-                            <option value="Tecnologia" selected></option>
-                        </select>
-                    </div>
-                    {/* Input to select the test file */}
-                    <div className="textBox">
-                        <h2>Selecione o arquivo</h2> 
-                        <input type="file" />
-                    </div>
-                    {/* Search for competence and its display */}
-                    <div className="textBox">
-                        <h2>Selecione as competências</h2> 
-                        
-                        <div className='attachments' >
-                            {/* Component used to search a competence */}
-                            <LessonSelect/>
-                            <br />
-                            <div className="scrollBox">
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Registrar avaliação</h1>
+                            <ButtonClose size={40} onClose={() => setNewTest(false)}></ButtonClose>
+                        </div>
+                        {/* Input for test name */}
+                        <div className="textBox">
+                            <h2>Nome da avaliação</h2>
+                            <input type="text" />
+                        </div>
+                        {/* Input to select the discipline */}
+                        <div className="textBox">
+                            <h2>Selecione a disciplina</h2>
+                            <select name="" id="">
+                                <option value="Tecnologia" selected></option>
+                            </select>
+                        </div>
+                        {/* Input to select the test file */}
+                        <div className="textBox">
+                            <h2>Selecione o arquivo</h2>
+                            <input type="file" />
+                        </div>
+                        {/* Search for competence and its display */}
+                        <div className="textBox">
+                            <h2>Selecione as competências</h2>
 
-                                <RowItem 
-                                    type='competence'
-                                    actions={
-                                        <>
-                                        <ButtonClose size={18} onClose={() => { }} />
-                                        </>
-                                    } >
-                                    <div>Fazer sei la o que, comepencia de não sei o que mais </div>
-                                    
-                                </RowItem>
-                                <RowItem
-                                    type='competence'
-                                    actions={
-                                        <>
-                                        <ButtonClose size={18} onClose={() => { }} />
-                                        </>
-                                    } >
-                                    <div>Teste de nome para o componente usado para representar uma competencia</div>
-                                    
-                                </RowItem>
+                            <div className='attachments' >
+                                {/* Component used to search a competence */}
+                                <LessonSelect />
+                                <br />
+                                <div className="scrollBox">
+
+                                    <RowItem
+                                        type='competence'
+                                        actions={
+                                            <>
+                                                <ButtonClose size={18} onClose={() => { }} />
+                                            </>
+                                        } >
+                                        <div>Fazer sei la o que, comepencia de não sei o que mais </div>
+
+                                    </RowItem>
+                                    <RowItem
+                                        type='competence'
+                                        actions={
+                                            <>
+                                                <ButtonClose size={18} onClose={() => { }} />
+                                            </>
+                                        } >
+                                        <div>Teste de nome para o componente usado para representar uma competencia</div>
+
+                                    </RowItem>
+                                </div>
                             </div>
+
                         </div>
 
+                        <Button ButtonTitle={"Enviar"} onClose={() => setNewTest(false)}></Button>
                     </div>
-
-                    <Button ButtonTitle={"Enviar"} onClose={() => setNewTest(false)}></Button>
-                </div>
                 </div>
             )}
 
 {/* -------------------------------------------------------- COMPETENCE MODALS -------------------------------------------------------- */}
             {newCompetence && (
-                    <div className="modalOverlay" onClick={() => setNewCompetence(false)}>
+                <div className="modalOverlay" onClick={() => setNewCompetence(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
@@ -158,7 +195,7 @@ export function Content() {
                         {/* Input for the competence name */}
                         <div className="textBox">
                             <h2>Nome da competência</h2>
-                            <input type="text"/>
+                            <input type="text" />
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => setNewCompetence(false)}></Button>
@@ -167,7 +204,7 @@ export function Content() {
             )}
 
             {editCompetence && (
-                    <div className="modalOverlay" onClick={() => setEditCompetence(false)}>
+                <div className="modalOverlay" onClick={() => setEditCompetence(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
@@ -177,7 +214,7 @@ export function Content() {
                         {/* Input for the competence name */}
                         <div className="textBox">
                             <h2>Nome da competência</h2>
-                            <input type="text"/>
+                            <input type="text" />
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => setEditCompetence(false)}></Button>
@@ -187,17 +224,17 @@ export function Content() {
 
             {excludeCompetenceModal && (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeCompetenceModal(false)}>
-                <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
-                <div className="redString"></div>
-                    <p>Deseja excluir a competência?</p>
+                    <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
+                        <div className="redString"></div>
+                        <p>Deseja excluir a competência?</p>
 
-                    <div className="buttonsBox">
-                        <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeCompetenceModal(false)}></ButtonExclude>
-                        <br />
-                        <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeCompetenceModal(false)}></ButtonCancel>
+                        <div className="buttonsBox">
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeCompetenceModal(false)}></ButtonExclude>
+                            <br />
+                            <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeCompetenceModal(false)}></ButtonCancel>
+                        </div>
                     </div>
                 </div>
-            </div>
             )}
         </>
     );

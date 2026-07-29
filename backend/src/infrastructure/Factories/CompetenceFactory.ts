@@ -1,11 +1,11 @@
-import AreaController from "#api/controllers/AreaController.js"
-import { AreaService } from "#infrastructure/services/Area/AreaService.js"
+import CompetenceController from "#api/controllers/CompetenceController.js"
 import { AttachmentService } from "#infrastructure/services/Attachment/AttachmentService.js"
 import { HashService } from "#infrastructure/services/Authetication/Hash.service.js"
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js"
+import { CompetenceService } from "#infrastructure/services/Competence/CompetenceService.js"
 import { UserService } from "#infrastructure/services/User/UserService.js"
 
-export function makeAreaFactory() {
+export function makeCompetenceController() {
     const attachmentService = new AttachmentService()
     const hashService = new HashService()
     const jwtTokenService = new JwtTokenService()
@@ -16,9 +16,9 @@ export function makeAreaFactory() {
         jwtTokenService
     )
 
-    const areaService = new AreaService(
+    const competenceService = new CompetenceService(
         userService
     )
 
-    return new AreaController(areaService)
+    return new CompetenceController(competenceService)
 }

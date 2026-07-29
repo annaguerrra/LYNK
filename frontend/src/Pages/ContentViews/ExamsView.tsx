@@ -4,6 +4,7 @@ import { useState } from "react"
 import { ButtonIcon } from "../../Components/ButtonIcon"
 import { MoreOpt } from "../../Components/MoreOpt"
 import { RowItem } from "../../Components/RowItem"
+import { useAuth } from "../../Auth/AuthContext"
 import { Button } from "../../Components/Button"
 import { ButtonClose } from "../../Components/ButtonClose"
 import { ButtonCancel } from "../../Components/ButtonCancel"
@@ -30,6 +31,11 @@ export function ExamsView() {
         }
     ]
 
+    //Variables to control the users and its interactions
+    const { user } = useAuth();
+    const isAdmin = user?.role === "ADMIN";
+    const isInstructor = user?.role === "INSTRUCTOR";
+    
     return (
         <>
             {/* Items shown on the specified tab */}
@@ -40,7 +46,9 @@ export function ExamsView() {
                     actions={
                         <>
                             <ButtonIcon icon="icon-download" size={28} onClick={() => navigate("/")} />
-                            <MoreOpt size={22} data={options} />
+                            {isAdmin || isInstructor &&
+                                <MoreOpt size={22} data={[]} />
+                            }
                         </>
                     }>
 

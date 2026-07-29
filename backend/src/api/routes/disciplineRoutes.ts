@@ -1,13 +1,13 @@
-import { DisciplineController } from '#api/controllers/DisciplineController.js';
 import { authorize } from '#api/middleware/authorize.js';
 import { validateCompetence, validateRegister, validateUpdate } from '#api/middleware/disciplineMiddleware.js';
+import { makeDisciplineController } from '#infrastructure/Factories/DisciplineFactory.js';
 import { UserType } from '#infrastructure/src/generated/prisma/enums.js';
 import { Router } from 'express';
 import express from 'express';
 
 const router: Router = express.Router()
 
-const disciplineController = new DisciplineController()
+const disciplineController = makeDisciplineController()
 
 router
     // route to create discipline
@@ -16,7 +16,7 @@ router
    .get('/disciplines', disciplineController.findAll.bind(disciplineController))
     // route to show a discipline
    .get('/discipline/:id', disciplineController.findOne.bind(disciplineController))
-   .get('/disciplines/get')
+//    .get('/disciplines/get')
    .get('disciplines/:id/exams', disciplineController.viewExams.bind(disciplineController))
    .get('/discipline/:id/classes', disciplineController.viewClasses.bind(disciplineController))
    .get('/discipline/:id/materials', disciplineController.viewMaterial.bind(disciplineController))

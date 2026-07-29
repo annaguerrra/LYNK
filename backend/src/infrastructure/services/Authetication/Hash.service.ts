@@ -30,6 +30,7 @@ export class HashService implements IHashService{
         const currentHashBuffer = Buffer.from(derivedKey.toString("hex"), "hex");
         const originalHashBuffer = Buffer.from(originalHash, "hex");
 
+        // console.log(currentHashBuffer, originalHashBuffer)
         // this function does not leak timing information that would allow an attacker to guess one of the values
         return timingSafeEqual(currentHashBuffer, originalHashBuffer);
     }    
