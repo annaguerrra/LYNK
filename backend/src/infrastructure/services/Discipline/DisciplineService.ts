@@ -208,66 +208,23 @@ export class DisciplineService implements IDisciplineService{
         }
     }
     
-    async findAll(): Promise<findAllDTO[]> {
-        // finds all disciplines and areas and competences connected to them
-        const target = await prisma.discipline.findMany({
+    async findAll(): Promise<number[]> {
+        // finds all disciplines
+        const disciplines = await prisma.discipline.findMany({
             select:{
-                id: true,
-                name: true,
-                area:{
-                    select:{
-                        name: true
-                    }
-                },
-                competences:{
-                    select:{
-                        name: true
-                    }
-                }
+                id: true
             }
         });
         
-        if(!target){
+        if(!disciplines){
             throw new Error("Not Disciplines Found");
         }
-        
-        // maps all logs attached to discipline to track updates
-        const log = await prisma.log.findMany({
-            where:{
-                entityId: {
-                    in: target.map((item: Discipline) => item.id)
-                },
-                entityType: "Discipline"
-            }
-        });
-        
-        if(!log){
-            throw new Error("No register found");
-        }
-        
-        // uses variable log to track last updated to the discipline
-        return target.map((disc: Discipline) => {
-            const lastUpdate = log.find(
-                (log: Log) => log.entityId === disc.id
-            );
-            
-            return {
-                name: disc.name,
-                area:{
-                    name: disc.area.name
-                },
-                competences: disc.competences.map((competence: Compentence) => {
-                    return{
-                        name: competence.name
-                    }
-                }),
-                lastUpdate: lastUpdate?.updatedAt ?? null
-            }
-        });
+
+        return disciplines.map(discipline => discipline.id)
         
     }
     
-    async findOne(id: number): Promise<findOneDTO> {
+    async findOne(id: number): Promise<number> {
         // variable used to search if the discipline is valid
         const target = await prisma.discipline.findUnique({
             where: { id: id}
@@ -276,43 +233,8 @@ export class DisciplineService implements IDisciplineService{
         if(!target){
             throw new Error("Discipline Not Found");
         }
-        const area = await prisma.area.findUnique({
-            where:{ id: target?.areaId},
-            select:{
-                name: true
-            }
-        });
-        if(!area){
-            throw new Error("Area Not Found");
-        }
-        const competence = await prisma.competence.findMany({
-            where:{
-                classes:{
-                    some:{ id: target?.id} 
-                }
-            },
-            select:{
-                name: true
-            }
-        });
         
-        const log = await prisma.log.findFirst({
-            where:{
-                entityId: id,
-                entityType: "Discipline"
-            }
-        });
-        
-        const lastUpdate = log?.updatedAt;
-        
-        return {
-            id: target.id,
-            name: target.name,
-            workLoad: target.workLoad,
-            area: area,
-            competences: competence,
-            lastUpdate: lastUpdate,
-        }
+        return target.id
     }
 
     async getColor(id: number) : Promise<string> {
@@ -336,96 +258,91 @@ export class DisciplineService implements IDisciplineService{
         return target.area.color;
     }
 
-    async viewExams(id: number): Promise<viewExamsDTO[]> {
-        const target = await prisma.discipline.findMany({
+    async viewExams(id: number): Promise<number[]> {
+        const disciplines = await prisma.discipline.findMany({
             where:{
                 id: id
             },
             select:{
-                name: true,
                 exams: {
                     select: {
-                        name: true
+                        id: true
                     }
                 }
             }
         });
 
-        if(!target) {
-            throw new Error("Not Exams Found!");
+        if(!disciplines) {
+            throw new Error("Exams Not Found!");
         }
 
-        return target;
+        return disciplines.flatMap(discipline => discipline.exams.map(exam => exam.id))
     }
 
-    async viewClasses(id: number): Promise<viewClassesDTO[]> {
+    async viewClasses(id: number): Promise<number[]> {
         // finds discipline and selects it's classes
-        const target = await prisma.discipline.findMany({
+        const disciplines = await prisma.discipline.findMany({
             where:{
                 id: id
             },
             select:{
-                name: true,
-                classes:{
-                    select:{
-                        name: true
+                classes: {
+                    select: {
+                        id: true
                     }
                 }
             }
         });
 
-        if(!target){
-            throw new Error("Not Classes Found");
+        if(!disciplines) {
+            throw new Error("Classes Not Found!");
         }
 
-        return target;
+        return disciplines.flatMap(discipline => discipline.classes.map(item => item.id))
     }
 
-    async viewMaterials(disciplineID: number): Promise<viewMaterialsDTO[]> {
+    async viewMaterials(disciplineID: number): Promise<number[]> {
         // finds discipline and selects it's materials
-        const target = await prisma.discipline.findMany({
+        const disciplines = await prisma.discipline.findMany({
             where:{
                 id: disciplineID
             },
             select:{
-                name: true,
-                materials:{
-                    select:{
-                        name: true
+                materials: {
+                    select: {
+                        id: true
                     }
                 }
             }
         });
 
-        if(!target){
-            throw new Error("Not Materials Found");
+        if(!disciplines) {
+            throw new Error("Materials Not Found!");
         }
 
-        return target;
+        return disciplines.flatMap(discipline => discipline.materials.map(material => material.id))
     }
 
-    async viewCompetences(disciplineID: number): Promise<viewCompetencesDTO[]> {
+    async viewCompetences(disciplineID: number): Promise<number[]> {
         // finds discipline and selects it's competences
-        const target = await prisma.discipline.findMany({
+        const disciplines = await prisma.discipline.findMany({
             where:{
                 id: disciplineID
             },
             select:{
-                name: true,
-                competences:{
-                    select:{
-                        name: true,
-                        numOfClasses: true
+                competences: {
+                    select: {
+                        id: true
                     }
                 }
             }
         });
 
-        if(!target){
-            throw new Error("No Competences Found");
+        if(!disciplines) {
+            throw new Error("COmpetences Not Found!");
         }
 
-        return target;
+        return disciplines.flatMap(discipline => discipline.competences.map(competence => competence.id))
     }
 
     async delete(disciplineID: number, userId: number): Promise<boolean> {

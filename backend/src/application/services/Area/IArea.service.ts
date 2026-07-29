@@ -3,7 +3,7 @@ import { Area } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export interface IAreaService {
     registerArea(data: registerAreaDTO, userId: number): Promise<Area>
-    showAreas(): Promise<Area[]>
+    showAreas(): Promise<number[]>
     updateArea(id: number, data: updateAreaDTO, userId: number): Promise<Area>
     deleteArea(id: number, userId: number): Promise<boolean>
     deleteMany(areasId: number[]): Promise<boolean>

@@ -7,13 +7,13 @@ export interface IDisciplineService{
         assignCompetence(payload: assignCompetencyDTO, userId:number): Promise<Discipline>;
         duplicate(id: number, userId: number): Promise<Discipline>
         // get
-        findAll(): Promise<findAllDTO[]>;
-        findOne(id: number): Promise<findOneDTO>;
+        findAll(): Promise<number[]>;
+        findOne(id: number): Promise<number>;
         getColor(id: number) : Promise<string>;
-        viewClasses(id: number): Promise<viewClassesDTO[]>
-        viewExams(id: number): Promise<viewExamsDTO[]>
-        viewMaterials(disciplineID: number): Promise<viewMaterialsDTO[]>
-        viewCompetences(disciplineID: number): Promise<viewCompetencesDTO[]>;
+        viewClasses(id: number): Promise<number[]>
+        viewExams(id: number): Promise<number[]>
+        viewMaterials(disciplineID: number): Promise<number[]>
+        viewCompetences(disciplineID: number): Promise<number[]>;
         
         // delete
         delete(disciplineID: number, userId: number): Promise<boolean>;
