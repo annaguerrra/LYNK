@@ -1,5 +1,6 @@
-import { Specialties, UserType } from "../../infrastructure/src/generated/prisma/enums.js"
-import { UploadedFile } from "./attachment.js"
+import type { UploadedFileDTO } from "./attachment.js"
+
+export type UserType = "ADMIN" | "INSTRUCTOR" | "STUDENT";
 
 // used to create a student
 export interface registerStudentDTO {
@@ -15,7 +16,6 @@ export interface registerInstructorDTO {
     password: string
     repeatPassword: string
     userType: UserType
-    specialty: Specialties
 }
 
 // used to create an admin
@@ -24,7 +24,6 @@ export interface registerAdminDTO {
     password: string
     repeatPassword: string
     userType: UserType
-    specialty: Specialties
 }
 
 // used to do login
@@ -59,7 +58,6 @@ export interface showStudentDTO {
 export interface showInstructorDTO {
     username: string
     userType: UserType
-    specialty: Specialties
     active: boolean
     attachmentId: string | null
 }
@@ -68,7 +66,6 @@ export interface showInstructorDTO {
 export interface showAdminDTO {
     username: string
     userType: UserType
-    specialty: Specialties
     active: boolean
     attachmentId: string | null
 }
@@ -83,16 +80,14 @@ export interface updateStudentDTO {
 export interface updateInstructorDTO {
     username: string
     password: string
-    specialty: Specialties
     active: boolean
-    file: UploadedFile
+    file: UploadedFileDTO
 }
 
 // used to edit admin
 export interface updateAdminDTO {
     username: string
     password: string
-    specialty: Specialties
     active: boolean
-    file: UploadedFile
+    file: UploadedFileDTO
 }
