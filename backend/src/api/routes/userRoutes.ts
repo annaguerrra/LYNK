@@ -1,7 +1,7 @@
 import { authMiddleware } from "#api/middleware/authMiddleware.js";
 import { authorize } from "#api/middleware/authorize.js";
-//import { validatePasswordFormat } from "#api/middleware/passwordMiddleware.js";
-import { validatePassword, validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent } from "#api/middleware/userMiddleware.js";
+import { validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent, validatePassword } from "#api/middleware/userMiddleware.js";
+import { validatePasswordFormat } from "#api/middleware/passwordMiddleware.js";
 import { makeUserController } from "#infrastructure/Factories/UserFactory.js";
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { UserType } from "#infrastructure/src/generated/prisma/enums.js";
