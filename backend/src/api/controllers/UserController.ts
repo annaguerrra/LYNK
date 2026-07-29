@@ -49,7 +49,7 @@ export default class UserController {
             return res.status(200).send({ response: loginResponse });
         } catch(e) {
             console.log(e)
-            return res.status(404).send({ response: "Failed to Login"});
+            return res.status(400).send({ response: "Failed to Login"});
         }
     }
 
