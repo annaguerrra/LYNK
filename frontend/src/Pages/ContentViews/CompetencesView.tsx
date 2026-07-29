@@ -7,7 +7,7 @@ import { ButtonCancel } from "../../Components/ButtonCancel"
 import { ButtonClose } from "../../Components/ButtonClose"
 import { Button } from "../../Components/Button"
 import { useState } from "react"
-import { useAuth } from "../../Auth/AuthContext"
+import { useAuth } from "../../Contexts/AuthContext"
 
 export function CompetencesView({ competences }) {
     //Variables to navigate and open modals

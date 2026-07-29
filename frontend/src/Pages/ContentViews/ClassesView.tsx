@@ -6,7 +6,7 @@ import { RowItem } from "../../Components/RowItem"
 import { ButtonExclude } from "../../Components/ButtonExclude"
 import { ButtonCancel } from "../../Components/ButtonCancel"
 import { useState } from "react"
-import { useAuth } from "../../Auth/AuthContext"
+import { useAuth } from "../../Contexts/AuthContext"
 import api from "../../Services/api"
 
 export function ClassesView({ classes }) {

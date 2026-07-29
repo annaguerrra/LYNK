@@ -10,8 +10,12 @@ import { ButtonCancel } from "../Components/ButtonCancel";
 import { useEffect, useState } from "react";
 import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
-import api from "../Services/api";
-import { useAuth } from "../Auth/AuthContext";
+import { useAuth } from "../Contexts/AuthContext";
+import { createDiscipline, getDisciplines } from "../Services/disciplinesService";
+import type { DisciplinesDTO, CreateDisciplineDTO } from "../Types/Discipline";
+import type { AreaDTO } from "../Types/area";
+import { getAreas } from "../Services/areasService";
+
 
 export function Discipline() {
     //Variables to navigate and open modals
@@ -19,13 +23,12 @@ export function Discipline() {
     const cores = {
         Roxo: "var(--purple)",
         Verde: "var(--green)",
-        "Verde-água": "var(--acqua)",
+        VerdeAgua: "var(--acqua)",
     };
 
-    const [disciplines, setDisciplines] = useState([])
+    const [disciplines, setDisciplines] = useState<DisciplinesDTO[]>([])
 
-    const [cor, setCor] = useState("Roxo");
-
+    
     const [newDisciplineModal, setNewDisciplineModal] = useState(false);
     const [usersModal, setUsersModal] = useState(false);
     const [newAreaModal, setNewAreaModal] = useState(false);
@@ -36,6 +39,15 @@ export function Discipline() {
     const [editAreaModal, setEditAreaModal] = useState(false);
     const [excludeAreaModal, setExcludeAreaModal] = useState(false);
     const [resetPasswordModal, setResetPasswordModal] = useState(false);
+    
+    //Inputs to create and edit a discipline
+    const [disciplineName, setDisciplineName] = useState("")
+    const [areas, setAreas] = useState<AreaDTO[]>([]);
+    const [areaId, setAreaId] = useState<number>(0);
+    
+    //Inputs to create and edit a area
+    const [areaName, setAreaName] = useState("")
+    const [cor, setCor] = useState("Roxo");
 
     //Variables to control the users and its interactions
     const { user } = useAuth();
@@ -99,16 +111,38 @@ export function Discipline() {
         },
     ];
 
+    async function loadAreas() {
+        try {
+            const response = await getAreas();
+            setAreas(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async function loadDisciplines() {
         try {
-            const response = await api.get("/disciplines");
-            setDisciplines(response.data);
+            const response = await getDisciplines();
+            setDisciplines(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function createDisc(data : CreateDisciplineDTO) {
+        try {
+            const response = await createDiscipline(data);
+            console.log(response);
+
+            await loadDisciplines();
+            setNewDisciplineModal(false);
         } catch (error) {
             console.error(error);
         }
     }
 
     useEffect(() => {
+        loadAreas();
         loadDisciplines();
     }, []);
 
@@ -127,18 +161,18 @@ export function Discipline() {
                     <div className="filters">
                         {/* Filter for areas */}
                         <form>
-                            <select id="" name="" className="selectFilter">
+                            <select name="" id="" className="selectFilter" defaultValue="Mecânica">
                                 <option value="TI">TI</option>
-                                <option value="Mecânica" selected>Mecânica</option>
+                                <option value="Mecânica">Mecânica</option>
                                 <option value="Eletrônica">Eletrônica</option>
-                                <option value="Administração" selected>Administração</option>
+                                <option value="Administração">Administração</option>
                             </select>
                         </form>
                         {/* Filter for disciplines */}
                         <form>
-                            <select id="" name="" className="selectFilter">
+                            <select id="" name="" className="selectFilter" defaultValue="Inglês">
                                 <option value="Inglês">Inglês</option>
-                                <option value="Comunicação" selected>Comunicação</option>
+                                <option value="Comunicação">Comunicação</option>
                                 <option value="Slides">Slides</option>
                                 <option value="Organização">Organização</option>
                             </select>
@@ -150,9 +184,9 @@ export function Discipline() {
                 </div>
                 {/* Box for all the disciplines display */}
                 <div className="disciplinesContainer">
-                    {disciplines.map((discipline) => (                       
+                    {disciplines.map((discipline) => (
                         <DisciplineComp Discipline={discipline}></DisciplineComp>
-                    ))}                     
+                    ))}
                 </div>
             </div>
 
@@ -171,17 +205,25 @@ export function Discipline() {
                         {/* Input for discipline name */}
                         <div className="textBox">
                             <h2>Nome da disciplina</h2>
-                            <input type="text" />
+                            <input type="text" value={disciplineName} onChange={(e) => setDisciplineName(e.target.value)}/>
                         </div>
                         {/* Select for the area */}
                         <div className="textBox">
                             <h2>Selecione a área de conhecimento</h2>
-                            <select name="" id="">
-                                <option value="Tecnologia" selected>Tecnologia</option>
+                            <select
+                                value={areaId}
+                                onChange={(e) => setAreaId (e.target.value)}
+                            >
+                                {areas.map((area) => (
+                                    <option key={area.name} value={area.name}>
+                                        {area.name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => navigate("/erro", { state: { errorText: "Deu erro" } })}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => createDisc({
+                            name: disciplineName, areaID: areaId, userID: user.userId })}></Button>
                     </div>
                 </div>
             )}
@@ -200,9 +242,9 @@ export function Discipline() {
                         <div className="textBox">
                             <h2>Selecione o tipo de usuário</h2>
                             <select name="" id="" className="selectFilter">
-                                <option value="Administrador">Administrador</option>
-                                <option value="Instrutor">Instrutor</option>
-                                <option value="Aluno" selected>Aluno</option>
+                                <option value="ADMIN">Administrador</option>
+                                <option value="INSTRUCTOR">Instrutor</option>
+                                <option value="STUDENT" selected>Aluno</option>
                             </select>
                         </div>
                         {/* Input for username */}
@@ -286,7 +328,7 @@ export function Discipline() {
             )}
 
             {/* Modal to exclude the user */}
-            {excludeUserModal && isAdmin&& (
+            {excludeUserModal && isAdmin && (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeUserModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
@@ -338,7 +380,8 @@ export function Discipline() {
                             <h2>Selecione a cor da área</h2>
                             <select name="" id="" className="selectFilter" value={cor}
                                 onChange={(e) => setCor(e.target.value)}
-                                style={{ color: cores[cor] }}>
+                            // style={{ color: cores[cor] }}
+                            >
                                 <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
                                 <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
                                 <option value="Verde-água" style={{ color: "var(--acqua)" }}>Verde-água</option>
@@ -392,7 +435,8 @@ export function Discipline() {
                             <h2>Selecione a cor da área</h2>
                             <select name="" id="" className="selectFilter" value={cor}
                                 onChange={(e) => setCor(e.target.value)}
-                                style={{ color: cores[cor] }}>
+                            // style={{ color: cores[cor] }}
+                            >
                                 <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
                                 <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
                                 <option value="Verde-água" style={{ color: "var(--acqua)" }}>Verde-água</option>

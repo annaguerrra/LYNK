@@ -6,8 +6,8 @@ import { Class } from './Pages/Class'
 import { Content } from './Pages/Content'
 import { ErrorPage } from './Pages/ErrorPage'
 import { History } from './Pages/History'
-import { AuthProvider } from './Auth/AuthContext'
-import { PrivateRoute } from './Auth/PrivateRoute'
+import { AuthProvider } from './Contexts/AuthContext'
+import { PrivateRoute } from './Contexts/PrivateRoute'
 
 function App() {
 

@@ -17,7 +17,7 @@ import { RowItem } from "../Components/RowItem";
 import LessonSelect from "../Components/LessonSelect";
 import { useParams } from "react-router-dom";
 import api from "../Services/api";
-import { useAuth } from "../Auth/AuthContext";
+import { useAuth } from "../Contexts/AuthContext";
 
 export function Content() {
     //Variables to navigate and open modals
