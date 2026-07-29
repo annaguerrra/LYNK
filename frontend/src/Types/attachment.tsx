@@ -1,15 +1,9 @@
-import { Readable } from "node:stream";
+// File uploaded by the user
+export type UploadedFileDTO = File;
 
-// used to create a new file
-export interface UploadedFile {
-  originalName: string;
-  mimeType: string;
-  buffer: Buffer;
-}
-
-// used to download a file
-export interface DownloadedFile {
-    stream: Readable;
+// Attachment returned by the API
+export interface MaterialAttachmentDTO {
+    id: number;
     fileName: string;
-    mimeType?: string;
+    mimeType: string;
 }

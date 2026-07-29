@@ -1,45 +1,46 @@
-import { Class, Discipline, MaterialAttachment } from "#infrastructure/prisma/generated/prisma/client.js";
-import { UploadedFile } from "./attachment.js";
+import type { MaterialAttachmentDTO, UploadedFileDTO } from "./attachment";
+import type { ClassDTO } from "./class";
+import type { DisciplineDTO } from "./discipline";
 
-// response to findOne service
-export interface findOneDTO{
-    id: number
-    name: string
+// Response to find one material service
+export interface FindOneDTO {
+    id: number;
+    name: string;
 }
 
-// response to viewMaterials service
-export interface viewMaterialsDTO{
+// Response to view materials service
+export interface ViewMaterialsDTO {
     materials: {
         name: string;
     }[];
 }
 
-// used to create a material
-export interface registerMaterialDTO {
-    name: string,
-    files: UploadedFile[]
-    disciplineId: number
-    classId: number,
+// Used to create a material
+export interface RegisterMaterialDTO {
+    name: string;
+    files: UploadedFileDTO[];
+    disciplineId: number;
+    classId: number;
 }
 
-// response to showMaterial service 
-export interface showMaterialDTO {
-    name: string,
-    attachments: MaterialAttachment[]
-    discipline: Discipline
-    class: Class,
+// Response to show material service
+export interface ShowMaterialDTO {
+    name: string;
+    attachments: MaterialAttachmentDTO[];
+    discipline: DisciplineDTO;
+    class: ClassDTO;
 }
 
-// used to update material
-export interface updateMaterialDTO {
-    name: string,
-    files: UploadedFile[]
-    disciplineId: number
-    classId: number,
+// Used to update material
+export interface UpdateMaterialDTO {
+    name: string;
+    files: UploadedFileDTO[];
+    disciplineId: number;
+    classId: number;
 }
 
-// used to create files and attach to material
-export interface attachtFileDTO {
-    materialId: number
-    files: UploadedFile[]
+// Used to create files and attach to material
+export interface AttachFileDTO {
+    materialId: number;
+    files: UploadedFileDTO[];
 }
