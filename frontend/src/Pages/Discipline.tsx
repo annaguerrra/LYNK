@@ -12,6 +12,11 @@ import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
 import api from "../Services/api";
 import { useAuth } from "../Contexts/AuthContext";
+import { createDiscipline, getDisciplines } from "../Services/disciplinesService";
+import type { DisciplinesDTO, DisciplineDTO, CreateDisciplineDTO } from "../Types/Discipline";
+import type { registerAreaDTO } from "../Types/area";
+import { getAreas } from "../Services/areasService";
+
 
 export function Discipline() {
     //Variables to navigate and open modals
@@ -22,7 +27,7 @@ export function Discipline() {
         VerdeAgua: "var(--acqua)",
     };
 
-    const [disciplines, setDisciplines] = useState([])
+    const [disciplines, setDisciplines] = useState<DisciplinesDTO[]>([])
 
     const [cor, setCor] = useState("Roxo");
 
@@ -36,6 +41,11 @@ export function Discipline() {
     const [editAreaModal, setEditAreaModal] = useState(false);
     const [excludeAreaModal, setExcludeAreaModal] = useState(false);
     const [resetPasswordModal, setResetPasswordModal] = useState(false);
+
+    //Inputs to create and edit a discipline
+    const [disciplineName, setDisciplineName] = useState("")
+    const [areas, setAreas] = useState<registerAreaDTO[]>([]);
+    const [areaId, setAreaId] = useState<number>(0);
 
     //Variables to control the users and its interactions
     const { user } = useAuth();
@@ -99,16 +109,38 @@ export function Discipline() {
         },
     ];
 
+    async function loadAreas() {
+        try {
+            const response = await getAreas();
+            setAreas(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     async function loadDisciplines() {
         try {
-            const response = await api.get("/disciplines");
-            setDisciplines(response.data);
+            const response = await getDisciplines();
+            setDisciplines(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function createDisc(data : CreateDisciplineDTO) {
+        try {
+            const response = await createDiscipline(data);
+            console.log(response);
+
+            await loadDisciplines();
+            setNewDisciplineModal(false);
         } catch (error) {
             console.error(error);
         }
     }
 
     useEffect(() => {
+        loadAreas();
         loadDisciplines();
     }, []);
 
@@ -171,17 +203,25 @@ export function Discipline() {
                         {/* Input for discipline name */}
                         <div className="textBox">
                             <h2>Nome da disciplina</h2>
-                            <input type="text" />
+                            <input type="text" value={disciplineName} onChange={(e) => setDisciplineName(e.target.value)}/>
                         </div>
                         {/* Select for the area */}
                         <div className="textBox">
                             <h2>Selecione a área de conhecimento</h2>
-                            <select name="" id="">
-                                <option value="Tecnologia" selected>Tecnologia</option>
+                            <select
+                                value={areaId}
+                                onChange={(e) => setAreaId (e.target.value)}
+                            >
+                                {areas.map((area) => (
+                                    <option key={area.name} value={area.name}>
+                                        {area.name}
+                                    </option>
+                                ))}
                             </select>
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => navigate("/erro", { state: { errorText: "Deu erro" } })}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => createDisc({
+                            name: disciplineName, areaID: areaId, userID: user.userId })}></Button>
                     </div>
                 </div>
             )}
