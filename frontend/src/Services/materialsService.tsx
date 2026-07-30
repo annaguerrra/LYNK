@@ -1,5 +1,5 @@
 import api from "./api";
-import type { ShowMaterialDTO, RegisterMaterialDTO, UpdateMaterialDTO, AttachFileDTO } from "../Types/material";
+import type { ShowMaterialDTO, RegisterMaterialDTO, UpdateMaterialDTO, AttachFileDTO, MaterialDTO } from "../Types/material";
 
 // Get a material by ID
 export async function getMaterialById(id: number): Promise<ShowMaterialDTO> {
@@ -8,7 +8,7 @@ export async function getMaterialById(id: number): Promise<ShowMaterialDTO> {
 }
 
 // Create a new material
-export async function createMaterial(data: RegisterMaterialDTO): Promise<ShowMaterialDTO> {
+export async function createMaterial(data: RegisterMaterialDTO): Promise<RegisterMaterialDTO> {
     const response = await api.post("/material/create", data);
     return response.data;
 }

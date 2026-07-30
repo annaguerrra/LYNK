@@ -3,7 +3,7 @@ import type { ClassDTO } from "./class";
 import type { DisciplineDTO } from "./disciplineDTOS";
 
 // Response to find one material service
-export interface FindOneDTO {
+export interface MaterialDTO {
     id: number;
     name: string;
 }

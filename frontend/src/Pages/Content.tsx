@@ -23,9 +23,14 @@ import { toast } from "react-toastify";
 import { getDisciplineById } from "../Services/disciplinesService";
 import type { DisciplineDTO } from "../Types/disciplineDTOS";
 
-export function Content() {
+
+
+export function Content({ content_id }) {
     //Variables to navigate and open modals
     const navigate = useNavigate()
+
+    const { content_id } = useParams<{ class_id: string }>();
+
     const [selectedTab, setSelectedTab] = useState("classes");
     const [newTest, setNewTest] = useState(false);
     const [editTest, setEditTest] = useState(false);

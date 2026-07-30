@@ -38,9 +38,12 @@ import LessonSelect from '../Components/LessonSelect'
 import { useAuth } from '../Contexts/AuthContext'
 
 import type { ClassDTO } from '../Types/class'
-import { getClassById, updateClass } from '../Services/classesService'
+import { getClassById, getClassMaterials, updateClass } from '../Services/classesService'
 import { toast, ToastContainer } from 'react-toastify'
 import { isAxiosError } from 'axios'
+import type { MaterialDTO } from '../Types/material'
+import type { CompetenceDTO } from '../Types/competence'
+import { createMaterial, attachMaterialFile } from '../Services/materialsService'
 
 export function Class() {
     //Variables to navigate and open modals
@@ -58,8 +61,8 @@ export function Class() {
 
     const [classItem, setClassItem] = useState<ClassDTO | null>(null);
 
-    const [materials, setMaterials] = useState([])
-    const [competences, setCompetences] = useState([])
+    const [materials, setMaterials] = useState<MaterialDTO[]>([])
+    const [competences, setCompetences] = useState<CompetenceDTO[]>([])
 
     //Generic content for the markdown
     const [content, setContent] = useState("");
@@ -98,6 +101,21 @@ export function Class() {
         markdownShortcutPlugin()
     ]
 
+    async function loadMaterials(id: number) {
+        try {
+            const response = await getClassMaterials(id);
+            setMaterials(response)
+        } catch (error) {
+            if (isAxiosError(error)) {
+                if (error.response?.status === 404) {
+                    toast.error("404 - Materiais não encontrados.");
+                    return;
+                }
+            }
+            toast.error(`${error}`);
+        }
+    }
+    
     async function loadDataClass(id: number) {
         try {
             const response = await getClassById(id);
@@ -140,6 +158,7 @@ export function Class() {
         setTitleClass(classItem.name);
         setContent(classItem.content);
         setIsContentLoaded(true);
+        loadMaterials(classItem.id)
 
     }, [classItem]);
 
@@ -168,6 +187,27 @@ export function Class() {
 
             console.error(error);
             toast.error("Erro ao salvar alterações.");
+        }
+    }
+
+
+    async function handleFileUpload(file: File) {
+        if (!classItem) return;
+
+        try {
+            await createMaterial({
+                name: file.name,
+                classId: classItem.id,
+                disciplineId: classItem.disciplineId,
+                files: [file]
+            });
+
+            toast.success("Material enviado.");
+
+            await loadDataClass(classItem.id);
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao enviar material.");
         }
     }
 
@@ -269,7 +309,7 @@ export function Class() {
                                 {materials.map((material) => (
                                     <>
                                         <RowItem
-                                            type='class'
+                                            color='var(--purple)'
                                             actions={
                                                 <>
                                                     <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
@@ -279,14 +319,14 @@ export function Class() {
                                                 </>
                                             }>
 
-                                            <div>Material_aaa00</div>
+                                            <div>{material.name}</div>
                                         </RowItem>
                                     </>
                                 ))}
 
 
                                 {(isAdmin || isInstructor) && editMode &&
-                                    <InputFile />
+                                    <InputFile onFileSelect={handleFileUpload} />
                                 }
 
                             </div>
