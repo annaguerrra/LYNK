@@ -62,6 +62,7 @@ export function Discipline() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userType, setUserType] = useState("STUDENT");
 
+
     //Options for the option buttons
     const options = [
         {
@@ -214,7 +215,7 @@ export function Discipline() {
                                 <option value="Organização">Organização</option>
                             </select>
                         </form>
-                        {isAdmin || isInstructor &&
+                        {(isAdmin || isInstructor) &&
                             <MoreOpt data={options} size={40}></MoreOpt>
                         }
                     </div>
@@ -267,7 +268,7 @@ export function Discipline() {
             {/* -------------------------------------------------------- USERS MODALS -------------------------------------------------------- */}
 
             {/* Modal to create a user */}
-            {newUserModal && isAdmin && (
+            {(newUserModal && isAdmin) && (
                 <div className="modalOverlay" onClick={() => setNewUserModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
@@ -310,7 +311,7 @@ export function Discipline() {
             )}
 
             {/* Modal to manage users */}
-            {usersModal && isAdmin && (
+            {(usersModal && isAdmin) && (
                 <div className="modalOverlay" onClick={() => setUsersModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
@@ -339,7 +340,7 @@ export function Discipline() {
             )}
 
             {/* Modal to edit a user */}
-            {editStudentModal && isAdmin && (
+            {(editStudentModal && isAdmin) && (
                 <div className="modalOverlay" onClick={() => setEditStudentModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
@@ -373,7 +374,7 @@ export function Discipline() {
             )}
 
             {/* Modal to exclude the user */}
-            {excludeUserModal && isAdmin && (
+            {(excludeUserModal && isAdmin) && (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeUserModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
@@ -389,7 +390,7 @@ export function Discipline() {
             )}
 
             {/* Modal to rest a user password */}
-            {resetPasswordModal && isAdmin && (
+            {(resetPasswordModal && isAdmin) && (
                 <div className="modalExcludeOverlay" onClick={() => setResetPasswordModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>

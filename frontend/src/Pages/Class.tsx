@@ -193,7 +193,7 @@ export function Class() {
                         <div className='markdownBox'>
                             <div className='toolbar view'>
                                 <span>{titleClass}</span>
-                                {isAdmin || isInstructor &&
+                                {(isAdmin || isInstructor) &&
                                     <button className='buttonEdit' onClick={() => setEditMode(true)}>Editar</button>
                                 }
                             </div>
@@ -273,7 +273,7 @@ export function Class() {
                                     actions={
                                         <>
                                             <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                            {isAdmin || isInstructor && editMode &&
+                                            {(isAdmin || isInstructor) && editMode &&
                                                 <ButtonClose size={18} onClose={() => { }} />
                                             }
                                         </>
@@ -282,7 +282,7 @@ export function Class() {
                                     <div>Material_aaa00</div>
                                 </RowItem>
 
-                                {isAdmin || isInstructor && editMode &&
+                                {(isAdmin || isInstructor) && editMode &&
                                     <InputFile />
                                 }
 
@@ -292,14 +292,14 @@ export function Class() {
                             <div className='attachments' >
 
                                 {/* Component used to search a competence */}
-                                {isAdmin || isInstructor && editMode &&
+                                {(isAdmin || isInstructor) && editMode &&
                                     <LessonSelect />
                                 }
                                 <RowItem
                                     type='competence'
                                     actions={
                                         <>
-                                            {isAdmin || isInstructor && editMode &&
+                                            {(isAdmin || isInstructor) && editMode &&
                                                 <ButtonClose size={18} onClose={() => { }} />
                                             }
                                         </>
@@ -311,7 +311,7 @@ export function Class() {
                                     type='competence'
                                     actions={
                                         <>
-                                            {isAdmin || isInstructor && editMode &&
+                                            {(isAdmin || isInstructor) && editMode &&
                                                 <ButtonClose size={18} onClose={() => { }} />
                                             }
                                         </>

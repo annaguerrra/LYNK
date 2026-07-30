@@ -121,7 +121,7 @@ export function Content() {
                         <ButtonBack onClick={() => navigate("/disciplines")} />
                         <span style={{ fontWeight: "bold", fontSize: "30px" }}>{discipline.name}</span>
                     </div>
-                    {isAdmin || isInstructor &&
+                    {(isAdmin || isInstructor) &&
                         <MoreOpt data={options} size={30}></MoreOpt>
                     }
                 </div>
