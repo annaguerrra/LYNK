@@ -14,22 +14,22 @@ const userController = makeUserController();
 const jwt = new JwtTokenService()
 
 router
-    .post("/user/create", validatePassword, authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, userController.register.bind(userController))
-    .post('/login', userController.login.bind(userController))
+    .post("/user/create", authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, userController.register.bind(userController)) // ok
+    .post('/login', userController.login.bind(userController)) // ok
 
     // returns all the students registered without any filter
-    .get('/user/showStud', userController.showStudents.bind(userController))
+    .get('/user/showStud', userController.showStudents.bind(userController)) // ok
     // returns all the instructors registered without any filter
-    .get('/user/showInst', userController.showInstructors.bind(userController))
+    .get('/user/showInst', userController.showInstructors.bind(userController)) // ok
     // returns all the admins registered without any filter
-    .get('/user/showAdmin', userController.showAdmins.bind(userController))
+    .get('/user/showAdmin', userController.showAdmins.bind(userController)) // ok
 
     // returns a specific student by id
-    .get('/user/showStud/:id', userController.showStudent.bind(userController))
+    .get('/user/showStud/:id', userController.showStudent.bind(userController)) // ok
     // returns a specific instructor by id
-    .get('/user/showInst/:id', userController.showInstructor.bind(userController))
+    .get('/user/showInst/:id', userController.showInstructor.bind(userController)) // ok
     // returns a specific admin by id
-    .get('/user/showAdmin/:id', userController.showAdmin.bind(userController))
+    .get('/user/showAdmin/:id', userController.showAdmin.bind(userController)) // ok
     
     // allows update informations of a specific user by id    
     .put('/user/updateStud/:id', validateUpdateStudent, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateStudent.bind(userController))
@@ -37,12 +37,12 @@ router
     .put('/user/updateInst/:id', validateUpdateInstructor, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateInstructor.bind(userController))
     // allows update informations of a specific admin by id
     .put('/user/updateAdmin/:id', validateUpdateAdmin, authorize(UserType.ADMIN), userController.updateAdmin.bind(userController))
-    .put('/user/change-password', validatePassword, authMiddleware(jwt), userController.changePassword.bind(userController))
+    .put('/user/change-password', authMiddleware(jwt), validatePassword, userController.changePassword.bind(userController)) // ok
 
-    .delete('/user/deleteStud/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
+    .delete('/user/deleteStud/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
     // deletes an instructor by id
-    .delete('/user/deleteInst/:id', authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteInstructor.bind(userController))
+    .delete('/user/deleteInst/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteInstructor.bind(userController))
     // deletes an admin by id
-    .delete('/user/deleteAdmin/:id', authorize(UserType.ADMIN), userController.deleteAdmin.bind(userController));
+    .delete('/user/deleteAdmin/:id', authMiddleware(jwt), authorize(UserType.ADMIN), userController.deleteAdmin.bind(userController));
     
 export default router;

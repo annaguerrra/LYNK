@@ -3,31 +3,31 @@ import { Request, Response, NextFunction, response } from "express"
 
 export const validateRegister = (req: Request, res: Response, next: NextFunction) => {
     // validates if the necessary data were provided to create a user
-    const { username, password, repeatpassword, userType, specialty } = req.body
+    const { username, password, repeatPassword, userType, specialty } = req.body
 
     // verifies if the usertype to determine the data necessary to create
     if (userType === UserType.STUDENT){
 
-        if(!username || !password || !repeatpassword || !userType)
+        if(!username || !password || !repeatPassword || !userType)
             return res.status(400).send({ response: `There is empty data`})
     }
 
     if (userType === UserType.INSTRUCTOR || userType === UserType.ADMIN){
 
-        if(!username || !password || !repeatpassword || !userType || !specialty)
+        if(!username || !password || !repeatPassword || !userType || !specialty)
             return res.status(400).send({ response: `There is empty data`})
     }
 
     // verifies if the passowrd and repeatpassword inputs match
-    if(password !== repeatpassword)
+    if(password !== repeatPassword)
         return res.status(400).send({ response: `Passwords don't match`})
     next()
 }
 
 export const validatePassword = (req: Request, res: Response, next: NextFunction) => {
-    const { oldPassword, newPassword, confirmPassword} = req.body
+    const { oldPassword, newPassword, repeatPassword} = req.body
     
-    if(!oldPassword || !newPassword || !confirmPassword){
+    if(!oldPassword || !newPassword || !repeatPassword){
         return res.status(400).send({ response: `There is empty data.`});
     }
 
@@ -35,7 +35,7 @@ export const validatePassword = (req: Request, res: Response, next: NextFunction
         return res.status(400).send({ response: `Your new password cannot be the same as your old password. Try again`});
     }
     
-    else if( newPassword !== confirmPassword){
+    else if( newPassword !== repeatPassword){
         return res.status(400).send({ response: `Passwords do not match. Try again`});
 
     }
