@@ -53,3 +53,8 @@ export interface editClass{
     content: string
 }
 
+export interface ClassItem {
+    id: number
+    name: string
+}
+

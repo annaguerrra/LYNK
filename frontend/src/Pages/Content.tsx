@@ -131,9 +131,9 @@ export function Content() {
                         selected={selectedTab}
                         onChange={setSelectedTab} tabs={tabs} />
 
-                    {selectedTab === "classes" && <ClassesView classes />}
-                    {selectedTab === "competences" && <CompetencesView competences={discipline!.competences} />}
-                    {selectedTab === "exams" && <ExamsView />}
+                    {selectedTab === "classes" && <ClassesView disciplineId={discipline.id} />}
+                    {selectedTab === "competences" && <CompetencesView disciplineId={discipline.id} />}
+                    {selectedTab === "exams" && <ExamsView  />}
 
 
                 </div>

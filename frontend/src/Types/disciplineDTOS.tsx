@@ -49,6 +49,7 @@ export interface viewMaterialsDTO{
 export interface viewCompetencesDTO{
     name: string;
     competences:{
+        id: number
         name: string
         numOfClasses: number
     }[];
