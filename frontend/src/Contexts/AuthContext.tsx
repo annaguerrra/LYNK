@@ -5,6 +5,7 @@ import {
     useState
 } from "react";
 import api from "../Services/api";
+import { useNavigate } from "react-router-dom";
 
 type Role = "ADMIN" | "INSTRUCTOR" | "STUDENT";
 
@@ -34,6 +35,8 @@ export function AuthProvider({
 }: {
     children: React.ReactNode;
 }) {
+
+    const navigate = useNavigate();
 
     const [user, setUser] = useState<User | null>(() => {
         const token = localStorage.getItem("token");
@@ -85,7 +88,9 @@ export function AuthProvider({
 
     function logout() {
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         setUser(null);
+        navigate('/')
     }
 
 

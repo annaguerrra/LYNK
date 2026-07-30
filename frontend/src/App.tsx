@@ -13,27 +13,35 @@ function App() {
 
   return (
     <>
-      <AuthProvider>
         <BrowserRouter>
+      <AuthProvider>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/Disciplines" element={
+              <PrivateRoute>
                 <Discipline />
+              </PrivateRoute>
             } />
             <Route path="/Content" element={
+              <PrivateRoute>
                 <Content />
+              </PrivateRoute>
             } />
-            <Route path="/Class/:class_id" element={
+            <Route path="/Class" element={
+              <PrivateRoute>
                 <Class />
+              </PrivateRoute>
             } />
             <Route path="/History" element={
+              <PrivateRoute>
                 <History />
+              </PrivateRoute>
             } />
             <Route path="*" element={<ErrorPage />} />
             <Route path="/erro" element={<ErrorPage />} />
           </Routes>
-        </BrowserRouter>
       </AuthProvider>
+        </BrowserRouter>
     </>
   )
 }

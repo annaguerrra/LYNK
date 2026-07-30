@@ -201,21 +201,13 @@ export function Discipline() {
                         {/* Filter for areas */}
                         <form>
                             <select name="" id="" className="selectFilter" defaultValue="Mecânica">
-                                <option value="TI">TI</option>
-                                <option value="Mecânica">Mecânica</option>
-                                <option value="Eletrônica">Eletrônica</option>
-                                <option value="Administração">Administração</option>
+                                {areas.map((area) => (
+                                    <option key={area.id} value={area.id}>{area.id}</option>
+                                ))}
+                               
                             </select>
                         </form>
-                        {/* Filter for disciplines */}
-                        <form>
-                            <select id="" name="" className="selectFilter" defaultValue="Inglês">
-                                <option value="Inglês">Inglês</option>
-                                <option value="Comunicação">Comunicação</option>
-                                <option value="Slides">Slides</option>
-                                <option value="Organização">Organização</option>
-                            </select>
-                        </form>
+                        
                         {(isAdmin || isInstructor) &&
                             <MoreOpt data={options} size={40}></MoreOpt>
                         }

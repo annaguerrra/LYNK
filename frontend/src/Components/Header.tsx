@@ -3,12 +3,16 @@ import "./Styles/header.css"
 import "../Pages/Styles/Modals.css"
 import { useNavigate } from "react-router-dom";
 import ChoosePicture from "./ChoosePicture";
+import { useAuth } from "../Contexts/AuthContext";
 
 export function Header({ user = null }) {
+    
     //Variables to open the edit/logout modals and navigate throught pages
     const [openBox, setOpenBox] = useState(false);
     const [pictureModal, setPictureModal] = useState(false);
     const navigate = useNavigate();
+
+    const { logout } = useAuth();
 
     return (
         <>
@@ -40,7 +44,7 @@ export function Header({ user = null }) {
                                     <i className="icon icon-user"></i>
                                     <span>Trocar foto</span>
                                 </button>
-                                <button className="textIcon" style={{ color: "var(--red)" }} onClick={() => navigate("/")}>
+                                <button className="textIcon" style={{ color: "var(--red)" }} onClick={() => logout()}>
                                     <i className="icon icon-logout"></i>
                                     <span>Logout</span>
                                 </button>
