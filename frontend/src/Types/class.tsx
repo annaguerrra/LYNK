@@ -1,5 +1,6 @@
 // used to create and edit a class
 export interface ClassDTO{
+    id: number
     name: string
     content: string
     disciplineId: number
@@ -39,11 +40,6 @@ export interface viewCompetencesDTO{
     }[];
 }
 
-// response to view content service
-export interface viewContentDTO{
-    name: string
-    content: string
-}
 
 // used for pdf service
 export interface getContentDTO{
@@ -55,6 +51,5 @@ export interface getContentDTO{
 export interface editClass{
     name: string
     content: string
-    lastUpdate?: Date
 }
 

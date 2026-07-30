@@ -11,8 +11,8 @@ import { useEffect, useState } from "react";
 import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
-import { createDiscipline, getDisciplines } from "../Services/disciplinesService";
-import type { DisciplinesDTO, CreateDisciplineDTO } from "../Types/Discipline";
+import { createDisciplineService, getDisciplines } from "../Services/disciplinesService";
+import type { DisciplinesDTO, createDiscipline } from "../Types/disciplineDTOS";
 import type { AreaDTO } from "../Types/area";
 import { getAreas } from "../Services/areasService";
 
@@ -129,9 +129,9 @@ export function Discipline() {
         }
     }
 
-    async function createDisc(data : CreateDisciplineDTO) {
+    async function createDisc(data : createDiscipline) {
         try {
-            const response = await createDiscipline(data);
+            const response = await createDisciplineService(data);
             console.log(response);
 
             await loadDisciplines();
@@ -145,7 +145,6 @@ export function Discipline() {
         loadAreas();
         loadDisciplines();
     }, []);
-
 
 
     return (
@@ -212,7 +211,7 @@ export function Discipline() {
                             <h2>Selecione a área de conhecimento</h2>
                             <select
                                 value={areaId}
-                                onChange={(e) => setAreaId (e.target.value)}
+                                onChange={(e) => setAreaId(Number(e.target.value))}
                             >
                                 {areas.map((area) => (
                                     <option key={area.name} value={area.name}>
@@ -223,7 +222,7 @@ export function Discipline() {
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => createDisc({
-                            name: disciplineName, areaID: areaId, userID: user.userId })}></Button>
+                            name: disciplineName, areaID: areaId, userID: user!.userId })}></Button>
                     </div>
                 </div>
             )}
