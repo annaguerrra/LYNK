@@ -14,8 +14,8 @@ import { useAuth } from "../Contexts/AuthContext";
 import { createDisciplineService, getDisciplines, duplicateDiscipline } from "../Services/disciplinesService";
 
 import type { DisciplinesDTO, createDiscipline } from "../Types/disciplineDTOS";
-import type { AreaDTO, registerAreaDTO } from "../Types/area";
-import { createArea, getAreas } from "../Services/areasService";
+import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
+import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
 import type { registerUserDTO } from "../Types/user";
 import { createUser } from "../Services/userService";
 
@@ -31,7 +31,7 @@ export function Discipline() {
 
     const [disciplines, setDisciplines] = useState<DisciplinesDTO[]>([])
 
-    
+
     const [newDisciplineModal, setNewDisciplineModal] = useState(false);
     const [usersModal, setUsersModal] = useState(false);
     const [newAreaModal, setNewAreaModal] = useState(false);
@@ -42,8 +42,8 @@ export function Discipline() {
     const [editAreaModal, setEditAreaModal] = useState(false);
     const [excludeAreaModal, setExcludeAreaModal] = useState(false);
     const [resetPasswordModal, setResetPasswordModal] = useState(false);
-    
-    
+
+
     //Variables to control the users and its interactions
     const { user } = useAuth();
     const isAdmin = user?.role === "ADMIN";
@@ -53,8 +53,8 @@ export function Discipline() {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userType, setUserType] = useState("STUDENT");
-    
-    
+
+
     //Options for the option buttons
     const options = [
         {
@@ -82,7 +82,7 @@ export function Discipline() {
             onClick: () => navigate("/History")
         },
     ];
-    
+
     const userOpt = [
         {
             name: "Editar usuário",
@@ -99,7 +99,7 @@ export function Discipline() {
             color: "red"
         },
     ];
-    
+
     const areasOpt = [
         {
             name: "Editar área",
@@ -111,12 +111,13 @@ export function Discipline() {
             color: "red",
         },
     ];
-    
+
     //---------------------- From Area Services ---------------------------------------------------------------- 
     //Inputs to create and edit a area
     const [areaName, setAreaName] = useState("")
     const [areaColor, setAreaCor] = useState("Roxo");
-    
+    const [selectedAreaId, setSelectedAreaId] = useState<number | null>(null);
+
     async function loadAreas() {
         try {
             const response = await getAreas();
@@ -126,24 +127,49 @@ export function Discipline() {
         }
     }
 
-    async function createNewArea(data : registerAreaDTO) {
+    async function createNewArea(data: registerAreaDTO) {
         try {
-            const response = await createArea(data);
-            console.log(response);
+            await createArea(data);
+            await loadAreas();
 
             setNewAreaModal(false);
+            setAreaName("")
         } catch (error) {
             console.error(error);
         }
     }
-    
+
+    async function editArea(id: number, data: updateAreaDTO) {
+        try {
+            await updateArea(id, data);
+            await loadAreas();
+
+            setEditAreaModal(false);
+            setAreaName("")
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function deleteAreas(id: number) {
+        try {
+            await deleteArea(id);
+            await loadAreas();
+
+            setExcludeAreaModal(false);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+
     //---------------------- From Disciplines Services ----------------------------------------------------------------
     //Inputs to create and edit a discipline
     const [disciplineName, setDisciplineName] = useState("")
     const [areas, setAreas] = useState<AreaDTO[]>([]);
     const [areaId, setAreaId] = useState<number>(0);
-    
-    
+
+
     async function loadDisciplines() {
         try {
             const response = await getDisciplines();
@@ -153,13 +179,14 @@ export function Discipline() {
         }
     }
 
-    async function createDisc(data : createDiscipline) {
+    async function createDisc(data: createDiscipline) {
         try {
             const response = await createDisciplineService(data);
             console.log(response);
 
             await loadDisciplines();
             setNewDisciplineModal(false);
+            setDisciplineName("")
         } catch (error) {
             console.error(error);
         }
@@ -170,7 +197,7 @@ export function Discipline() {
         loadDisciplines();
     }, []);
 
-    async function duplicate( id: number) {
+    async function duplicate(id: number) {
         try {
             const response = await duplicateDiscipline(id);
             console.log(response);
@@ -179,11 +206,11 @@ export function Discipline() {
         } catch (error) {
             console.log(error);
         }
-    }   
-    
+    }
+
     //---------------------- From User Services ---------------------------------------------------------------- 
 
-    async function createUserf( data: registerUserDTO) {
+    async function createUserf(data: registerUserDTO) {
         try {
             const response = await createUser(data);
 
@@ -257,7 +284,7 @@ export function Discipline() {
                         {/* Input for discipline name */}
                         <div className="textBox">
                             <h2>Nome da disciplina</h2>
-                            <input type="text" value={disciplineName} onChange={(e) => setDisciplineName(e.target.value)}/>
+                            <input type="text" value={disciplineName} onChange={(e) => setDisciplineName(e.target.value)} />
                         </div>
                         {/* Select for the area */}
                         <div className="textBox">
@@ -267,15 +294,16 @@ export function Discipline() {
                                 onChange={(e) => setAreaId(Number(e.target.value))}
                             >
                                 {areas.map((area) => (
-                                    <option key={area.name} value={area.name}>
-                                        {area.name}
+                                    <option key={area.id} value={area.id}>
+                                        {area.id}
                                     </option>
                                 ))}
                             </select>
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => createDisc({
-                            name: disciplineName, areaID: areaId, userID: user!.userId })}></Button>
+                            name: disciplineName, areaID: areaId, userID: user!.userId
+                        })}></Button>
                     </div>
                 </div>
             )}
@@ -293,11 +321,11 @@ export function Discipline() {
                         {/* Select for user type */}
                         <div className="textBox">
                             <h2>Selecione o tipo de usuário</h2>
-                            <select name="" id="" 
+                            <select name="" id=""
                                 className="selectFilter"
                                 value={userType}
                                 onChange={(e) => setUserType(e.target.value)}
-                                >
+                            >
                                 <option value="ADMIN">Administrador</option>
                                 <option value="INSTRUCTOR">Instrutor</option>
                                 <option value="STUDENT" selected>Aluno</option>
@@ -306,7 +334,7 @@ export function Discipline() {
                         {/* Input for username */}
                         <div className="textBox">
                             <h2>Nome do usuário</h2>
-                            <input type="text" onChange={(e) => setUserPassword(e.target.value)}/>
+                            <input type="text" onChange={(e) => setUserPassword(e.target.value)} />
                         </div>
                         {/* Input for user password */}
                         <div className="textBox">
@@ -316,7 +344,7 @@ export function Discipline() {
                         {/* Input for user password confirmation */}
                         <div className="textBox">
                             <h2>Confirmar senha do usuário</h2>
-                            <input type="password" onChange={(e) => setUserPassword(e.target.value)}/>
+                            <input type="password" onChange={(e) => setUserPassword(e.target.value)} />
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => createUserf}></Button>
@@ -433,7 +461,7 @@ export function Discipline() {
                         {/* Input for the area name */}
                         <div className="textBox">
                             <h2>Nome da área</h2>
-                            <input type="text" value={areaName} onChange={(e) => setAreaName(e.target.value)}/>
+                            <input type="text" value={areaName} onChange={(e) => setAreaName(e.target.value)} />
                         </div>
                         {/* Select for the area color */}
                         <div className="textBox">
@@ -449,31 +477,54 @@ export function Discipline() {
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => createNewArea({
-                            name: areaName, color: areaColor })}></Button>
+                            name: areaName, color: areaColor
+                        })}></Button>
                     </div>
                 </div>
             )}
 
             {/* Modal to manage areas */}
             {areasModal && (
-                <div className="modalOverlay" onClick={() => setAreasModal(false)}>
-                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                        {/* Title and close button box */}
-                        <div className="titleContainer">
-                            <h1>Gerenciar áreas</h1>
-                            <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose>
-                        </div>
-                        <div className="itemsBox">
+                <div className="modalOverlay" onClick={() => setAreasModal(false)}> 
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}> 
+                    {/* Title and close button box */}
+                    <div className="titleContainer"> 
+                        <h1>Gerenciar áreas</h1> 
+                        <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose> 
+                    </div> 
+                    <div className="itemsBox">
+                    {areas.map((area) => (
+                        <RowItem color={area.color}>
+                            <div className="itemText">
+                                <p>{area.name}</p>
+                            </div>
 
-                            <RowItem color='var(--green)'>
-                                <div className="itemText">
-                                    <p>Administração</p>
-                                </div>
-                                <MoreOpt data={areasOpt} size={25}></MoreOpt>
-                            </RowItem>
-                        </div>
-                        <div></div>
-                    </div>
+                            <MoreOpt
+                                size={25}
+                                data={[
+                                    {
+                                        name: "Editar",
+                                        onClick: () => {
+                                            setSelectedAreaId(area.id);
+                                            setAreaName(area.name);
+                                            setAreaCor(area.color);
+                                            setEditAreaModal(true);
+                                        },
+                                    },
+                                    {
+                                        name: "Excluir",
+                                        onClick: () => {
+                                            setSelectedAreaId(area.id);
+                                            setExcludeAreaModal(true);
+                                        },
+                                    },
+                                ]}
+                            />
+                        </RowItem>
+                    ))}
+                </div>
+                    <div></div> 
+                    </div> 
                 </div>
             )}
 
