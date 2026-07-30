@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
 import { getLogUsers } from "../../Services/logServices";
+import type { HistoricDTO } from "../../Types/historic";
 
 export function HUsersView() {
     //Variables to control the users and its interactions
-    const [husers, setHUser] = useState([])
+    const [husers, setHUser] = useState<HistoricDTO[]>([]);
     
     async function loadHUser() {
         try {
@@ -31,6 +32,7 @@ export function HUsersView() {
             <div className="view-page">
                 {husers.map((huser) => (
                 <RowItem
+                    key={huser.id}
                     color={actionColors[huser.action]}
                     size="--medium"
                     userAction={
@@ -39,9 +41,9 @@ export function HUsersView() {
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
 
-                            <span>{huser.updatedAt}</span>
+                            <span>{huser.updatedAt.toLocaleDateString("pt-BR")}</span>
                             <span> | </span>
-                            <span>{huser.updatedAt}</span>
+                            <span>{huser.updatedAt.toLocaleDateString("pt-BR")}</span>
                         </>
                     }>
 

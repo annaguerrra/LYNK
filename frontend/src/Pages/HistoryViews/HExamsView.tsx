@@ -9,7 +9,7 @@ export function HExamsView() {
     
     async function loadHExam() {
         try {
-            const response = await getLogExams('exam');
+            const response = await getLogExams('Exam');
             setHExam(response);
         } catch (error) {
             console.error(error);
@@ -39,9 +39,9 @@ export function HExamsView() {
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
 
-                            <span>{hexam.updatedAt}</span>
+                            <span>{hexam.updatedAt.toLocaleDateString("pt-BR")}</span>
                             <span> | </span>
-                            <span>{hexam.updatedAt}</span>
+                            <span>{hexam.updatedAt.toLocaleDateString("pt-BR")}</span>
                         </>
                     }>
 
