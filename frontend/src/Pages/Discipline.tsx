@@ -181,6 +181,7 @@ export function Discipline() {
             setConfirmPassword("");
             setUserType("STUDENT");
             console.log(response);
+            setNewDisciplineModal(false);
         } catch (error) {
             console.log(error);
         }
@@ -292,22 +293,20 @@ export function Discipline() {
                         {/* Input for username */}
                         <div className="textBox">
                             <h2>Nome do usuário</h2>
-                            <input type="text" value={username}/>
+                            <input type="text" onChange={(e) => setUserPassword(e.target.value)}/>
                         </div>
                         {/* Input for user password */}
                         <div className="textBox">
                             <h2>Senha do usuário</h2>
-                            <input type="password" />
+                            <input type="password" onChange={(e) => setUserPassword(e.target.value)} />
                         </div>
-                         {/* Input for user password confirmation */}
+                        {/* Input for user password confirmation */}
                         <div className="textBox">
-                            <h2>Confirmar senha do usuári.
-                                3,                                                                                                          'o</h2>
-                            <input type="password" />
+                            <h2>Confirmar senha do usuário</h2>
+                            <input type="password" onChange={(e) => setUserPassword(e.target.value)}/>
                         </div>
 
-
-                        <Button ButtonTitle={"Enviar"} onClose={() => setNewUserModal(false)}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => createUserf}></Button>
                     </div>
                 </div>
             )}
