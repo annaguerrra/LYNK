@@ -22,12 +22,12 @@ function App() {
                 <Discipline />
               </PrivateRoute>
             } />
-            <Route path="/Content/:id" element={
+            <Route path="/Content/:discipline_id" element={
               <PrivateRoute>
                 <Content />
               </PrivateRoute>
             } />
-            <Route path="/Class/:id" element={
+            <Route path="/Class/:class_id" element={
               <PrivateRoute>
                 <Class />
               </PrivateRoute>
