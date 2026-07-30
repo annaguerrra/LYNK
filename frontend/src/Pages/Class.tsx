@@ -38,47 +38,33 @@ import LessonSelect from '../Components/LessonSelect'
 import { useAuth } from '../Contexts/AuthContext'
 import api from '../Services/api'
 
+import type { ClassDTO } from '../Types/class'
+import { getClassById } from '../Services/classesService'
+import { toast } from 'react-toastify'
+import { isAxiosError } from 'axios'
+
 export function Class() {
     //Variables to navigate and open modals
     const [editMode, setEditMode] = useState(false)
     const [titleClass, setTitleClass] = useState("")
+
     const navigate = useNavigate();
-    
+
     //Variables to control the users and its interactions
     const { user } = useAuth();
     const isAdmin = user?.role === "ADMIN";
     const isInstructor = user?.role === "INSTRUCTOR";
-    
-    const { class_id } = useParams();
-    
-    const [classItem, setClassItem] = useState(null);
+
+    const { class_id } = useParams<{ class_id: string }>();
+
+    const [classItem, setClassItem] = useState<ClassDTO | null>(null);
 
     const [materials, setMaterials] = useState([])
     const [competences, setCompetences] = useState([])
 
     //Generic content for the markdown
-    const [content, setContent] = useState(`# Título da Aula
-
-        Introdução breve sobre o tema da aula.
-
-        ## Conteúdo
-
-        Explique os principais pontos abordados.
-
-        ## Exemplo
-
-        \`\`\`
-        Exemplo ou demonstração.
-        \`\`\`
-
-        ## Exercício
-
-        Descreva uma atividade para praticar.
-
-        ## Resumo
-
-        Principais aprendizados da aula.
-    `);
+    const [content, setContent] = useState("");
+    const [isContentLoaded, setIsContentLoaded] = useState(false);
 
     //Options to edit the markdown
     const editorPlugins = [
@@ -113,50 +99,54 @@ export function Class() {
         markdownShortcutPlugin()
     ]
 
-    async function loadClass() {
+    async function loadDataClass(id: number) {
         try {
-            const response = await api.get(`/class/${class_id}`);
-            setClassItem(response.data);
+            const response = await getClassById(id);
+            setClassItem(response);
+
         } catch (error) {
+            if (isAxiosError(error)) {
+                if (error.response?.status === 404) {
+                    toast.error("404 - Aula não encontrada.");
+                    navigate("/error");
+                    return;
+                }
+
+                if (error.response?.status === 500) {
+                    toast.error("500 - Erro de servidor.");
+                    return;
+                }
+            }
+
             console.error(error);
-            navigate("/error")
+            toast.error(`${error}`);
         }
     }
-
-    async function loadMaterials() {
-        try {
-            const response = await api.get(`/class/${class_id}/materials`);
-            setMaterials(response.data);
-        } catch (error) {
-            console.error(error);
-            navigate("/error")
-        }
-    }
-
-    async function loadCompetences() {
-        try {
-            const response = await api.get(`/class/${class_id}/competences`);
-            setCompetences(response.data);
-        } catch (error) {
-            console.error(error);
-            navigate("/error")
-        }
-    }
-
-
 
     useEffect(() => {
+        if (!class_id) return;
 
-        if (class_id) {
-            loadClass();
-            loadMaterials();
-            loadCompetences();
+        const id = Number(class_id);
 
-            setTitleClass(classItem.name)
-            setContent(classItem.content)
+        if (isNaN(id)) {
+            navigate("/error");
+            return;
         }
 
+        loadDataClass(id);
     }, [class_id]);
+
+    useEffect(() => {
+    if (!classItem || isContentLoaded) return;
+
+    setTitleClass(classItem.name);
+    setContent(classItem.content);
+    setIsContentLoaded(true);
+
+}, [classItem]);
+
+
+
 
     return (
         <>
@@ -311,3 +301,26 @@ export function Class() {
         </>
     )
 }
+
+// const [content, setContent] = useState(`# Título da Aula
+
+//         Introdução breve sobre o tema da aula.
+
+//         ## Conteúdo
+
+//         Explique os principais pontos abordados.
+
+//         ## Exemplo
+
+//         \`\`\`
+//         Exemplo ou demonstração.
+//         \`\`\`
+
+//         ## Exercício
+
+//         Descreva uma atividade para praticar.
+
+//         ## Resumo
+
+//         Principais aprendizados da aula.
+//     `);

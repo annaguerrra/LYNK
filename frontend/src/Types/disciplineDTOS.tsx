@@ -1,6 +1,7 @@
 // used to create a discipline
-export interface CreateDisciplineDTO{
+export interface createDiscipline{
     name: string
+    workload: number
     areaID: number
     userID: number
 }
@@ -18,7 +19,6 @@ export interface DisciplinesDTO{
         name: string;
     } | null,
     competences: {
-
         name: string
     }[];
     lastUpdate: Date | null;
@@ -26,8 +26,8 @@ export interface DisciplinesDTO{
 
 // response to findOne service
 export interface DisciplineDTO{
-    id: number;
     name: string;
+    id: number;
     workLoad: number;
     area:{
         name: string
@@ -71,7 +71,7 @@ export interface viewExamsDTO {
 }
 
 // response to editDiscipline service 
-export interface EditDisciplineDTO{
+export interface editDisciplineDTO{
     name: string
     workload: number
     lastUpdate?: Date

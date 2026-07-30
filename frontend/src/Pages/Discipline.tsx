@@ -12,7 +12,7 @@ import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { createDiscipline, getDisciplines } from "../Services/disciplinesService";
-import type { DisciplinesDTO, CreateDisciplineDTO } from "../Types/Discipline";
+import type { DisciplinesDTO, CreateDisciplineDTO } from "../Types/disciplineDTOS";
 import type { AreaDTO } from "../Types/area";
 import { getAreas } from "../Services/areasService";
 
