@@ -1,9 +1,8 @@
-import { DisciplineDTO, assignCompetencyDTO, findAllDTO, viewMaterialsDTO, viewCompetencesDTO, editDisciplineDTO, findOneDTO, viewClassesDTO, viewExamsDTO } from "#application/dtos/disciplineDTO.js";
+import { DisciplineDTO, assignCompetencyDTO, editDisciplineDTO, findOneDTO, viewClassesDTO } from "#application/dtos/disciplineDTO.js";
 import { IDisciplineService } from "#application/services/Discipline/IDiscipline.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
-import { Class, Discipline, Exam, Log, Material } from "#infrastructure/prisma/generated/prisma/client.js";
+import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
 import { UserService } from "#infrastructure/services/User/UserService.js"
-import { Compentence } from "#infrastructure/src/generated/prisma/browser.js";
 
 export class DisciplineService implements IDisciplineService{
     constructor(
@@ -308,13 +307,13 @@ export class DisciplineService implements IDisciplineService{
         });
 
         if(!disciplines) {
-            throw new Error("Exams Not Found!");
+            throw new Error("Disciplines Not Found!");
         }
 
         return disciplines.exams.map(({ id }) => id)
     }
 
-    async viewClasses(id: number): Promise<number[]> {
+    async viewClasses(id: number): Promise<viewClassesDTO[]> {
         // finds discipline and selects it's classes
         const disciplines = await prisma.discipline.findUnique({
             where:{
@@ -323,17 +322,23 @@ export class DisciplineService implements IDisciplineService{
             select:{
                 classes: {
                     select: {
-                        id: true
+                        id: true,
+                        name: true
                     }
                 }
             }
         });
 
         if(!disciplines) {
-            throw new Error("Classes Not Found!");
+            throw new Error("Disciplines Not Found!");
         }
 
-        return disciplines.classes.map(({ id }) => id)
+        return (
+            disciplines.classes.map(c => ({
+                classId: c.id,
+                name: c.name
+            }))
+        )
     }
 
     async viewMaterials(disciplineID: number): Promise<number[]> {
@@ -352,7 +357,7 @@ export class DisciplineService implements IDisciplineService{
         });
 
         if(!disciplines) {
-            throw new Error("Materials Not Found!");
+            throw new Error("Disciplines Not Found!");
         }
 
         return disciplines.materials.map(({ id }) => id)
@@ -374,7 +379,7 @@ export class DisciplineService implements IDisciplineService{
         });
 
         if(!disciplines) {
-            throw new Error("Competences Not Found!");
+            throw new Error("Disciplines Not Found!");
         }
 
         return disciplines.competences.map(({ id }) => id)
