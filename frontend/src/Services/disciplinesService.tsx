@@ -26,7 +26,7 @@ export async function duplicateDiscipline(id: number) {
 // Get all disciplines
 export async function getDisciplines(): Promise<DisciplinesDTO[]> {
     const response = await api.get("/disciplines");
-    return response.data;
+    return response.data.response;
 }
 
 // Get a discipline by ID

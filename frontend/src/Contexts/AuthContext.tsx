@@ -22,7 +22,7 @@ interface AuthContextType {
     changePassword: (
         oldPassword: string,
         newPassword: string,
-        confirmPassword: string
+        repeatPassword: string
     ) => Promise<void>;
     logout: () => void;
 }
@@ -74,12 +74,12 @@ export function AuthProvider({
     async function changePassword(
         oldPassword: string,
         newPassword: string,
-        confirmPassword: string
+        repeatPassword: string
     ) {
         await api.put("/user/change-password", {
             oldPassword,
             newPassword,
-            confirmPassword
+            repeatPassword
         });
     }
 

@@ -62,6 +62,7 @@ export function Discipline() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userType, setUserType] = useState("STUDENT");
 
+
     //Options for the option buttons
     const options = [
         {
@@ -214,7 +215,7 @@ export function Discipline() {
                                 <option value="Organização">Organização</option>
                             </select>
                         </form>
-                        {isAdmin || isInstructor &&
+                        {(isAdmin || isInstructor) &&
                             <MoreOpt data={options} size={40}></MoreOpt>
                         }
                     </div>
