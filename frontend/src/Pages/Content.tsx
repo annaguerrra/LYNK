@@ -25,11 +25,11 @@ import type { DisciplineDTO } from "../Types/discipline";
 
 
 
-export function Content({ content_id }) {
+export function Content() {
     //Variables to navigate and open modals
     const navigate = useNavigate()
 
-    const { content_id } = useParams<{ class_id: string }>();
+    // const { content_id } = useParams<{ class_id: string }>();
 
     const [selectedTab, setSelectedTab] = useState("classes");
     const [newTest, setNewTest] = useState(false);

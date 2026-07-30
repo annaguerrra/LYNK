@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import { Login } from './Pages/Login'
 import { Discipline } from './Pages/Discipline'
 import { Class } from './Pages/Class'
@@ -8,6 +8,7 @@ import { ErrorPage } from './Pages/ErrorPage'
 import { History } from './Pages/History'
 import { AuthProvider } from './Contexts/AuthContext'
 import { PrivateRoute } from './Contexts/PrivateRoute'
+import { Navigate } from "react-router-dom";
 
 function App() {
 
@@ -22,11 +23,11 @@ function App() {
                 <Discipline />
               </PrivateRoute>
             } />
-            <Route path="/Content/:id" element={
+            {/* <Route path="/Content/:id" element={
               <PrivateRoute>
                 <Content />
               </PrivateRoute>
-            } />
+            } /> */}
             <Route path="/Class/:id" element={
               <PrivateRoute>
                 <Class />
@@ -37,7 +38,16 @@ function App() {
                 <History />
               </PrivateRoute>
             } />
-            <Route path="*" element={<ErrorPage />} />
+            <Route
+              path="*"
+              element={
+                  <Navigate
+                      to="/erro"
+                      state={{ errorText: "Página não encontrada" }}
+                      replace
+                  />
+              }
+          />
             <Route path="/erro" element={<ErrorPage />} />
           </Routes>
       </AuthProvider>
