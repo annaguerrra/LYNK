@@ -1,3 +1,5 @@
+import { MaterialAttachment } from "#infrastructure/prisma/generated/prisma/client.js"
+
 // used to create and edit a class
 export interface ClassDTO{
     name: string
@@ -14,6 +16,7 @@ export interface assignCompetencyDTO{
 
 // response to findAll service
 export interface findAllDTO {
+    id: number
     name: string;
     content: string;
     createdAt: Date;
@@ -31,9 +34,18 @@ export interface findAllDTO {
     }[];
 }
 
+export interface viewMaterialsDTO{
+    materials: {
+        id: number
+        name: string
+        attachments: MaterialAttachment[]
+    }[];
+}
+
 // response to viewCompentences service 
 export interface viewCompetencesDTO{
     competences: {
+        id: number
         name: string;
         numOfClasses: number;
     }[];

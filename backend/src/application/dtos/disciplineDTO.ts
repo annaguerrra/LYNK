@@ -1,3 +1,5 @@
+import { Class, Exam, ExamAttachment, MaterialAttachment } from "#infrastructure/prisma/generated/prisma/client.js"
+
 // used to create a discipline
 export interface DisciplineDTO{
     name: string
@@ -14,14 +16,15 @@ export interface assignCompetencyDTO{
 
 // response to findAll service
 export interface findAllDTO{
+    id: number
     name: string
+    workLoad: number
     area:{
         name: string;
     } | null,
     competences: {
         name: string
     }[];
-    lastUpdate: Date | null;
 }
 
 // response to findOne service
@@ -40,31 +43,37 @@ export interface findOneDTO{
 
 // response to viewMaterials service 
 export interface viewMaterialsDTO{
-    name: string;
     materials: {
-        name: string;
-    }[];
+        id: number
+        name: string
+        attachments: MaterialAttachment[]
+    }[]
 }
 
 // response to viewCompentences service 
 export interface viewCompetencesDTO{
-    name: string;
     competences:{
+        id: number
         name: string
         numOfClasses: number
-    }[];
+        exams: Exam[],
+        classes: Class[]
+    }[]
 }
 
 // response to viewClasses service 
 export interface viewClassesDTO{
-    classId: number
-    name: string
+    classes: {
+        id: number
+        name: string,
+    }[]
 }
 
 export interface viewExamsDTO {
-    name: string
     exams: {
+        id: number
         name: string
+        attachments: ExamAttachment[]
     }[];
 }
 

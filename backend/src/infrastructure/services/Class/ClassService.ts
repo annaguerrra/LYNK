@@ -1,7 +1,6 @@
-import { assignCompetencyDTO, ClassDTO, getContentDTO, editClass, findAllDTO, viewCompetencesDTO, viewContentDTO } from "#application/dtos/classDTO.js";
+import { assignCompetencyDTO, ClassDTO, getContentDTO, viewMaterialsDTO, editClass, findAllDTO, viewCompetencesDTO, viewContentDTO } from "#application/dtos/classDTO.js";
 import { IClassService } from "#application/services/Class/IClass.service.js";
 import { Class, Competence, Material } from "#infrastructure/prisma/generated/prisma/client.js";
-import { viewMaterialsDTO } from "#application/dtos/materialDTO.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { UserService } from "../User/UserService.js";
 import { PdfService } from "../Pdf/PdfService.js";
@@ -62,27 +61,51 @@ export class ClassService implements IClassService{
         return createdClass;
     }
 
-    async findAll(): Promise<number[]> {
+    async findAll(): Promise<findAllDTO[]> {
         const classes =  await prisma.class.findMany({
             select:{
-                id: true
+                id: true,
+                name: true,
+                content: true,
+                createdAt: true,
+                discipline: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                competences: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                materials: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
             }
         });
+
         if(!classes){
             throw new Error("No Class Found!");
         }
-        return classes.map(c => c.id)
+
+        return classes
     }
 
-    async findOne(id: number): Promise<number>{
+    async findOne(id: number): Promise<Class>{
         const target = await prisma.class.findFirst({
             where:{id}
         });
+
         if(!target){
             throw new Error("Class not Found!");
         }
     
-        return target.id
+        return target
     }
 
     async assignCompetency(payload: assignCompetencyDTO, userId: number): Promise<Class> {
@@ -151,7 +174,7 @@ export class ClassService implements IClassService{
         }
     }
 
-    async viewCompetences(id: number): Promise<number[]> {
+    async viewCompetences(id: number): Promise<viewCompetencesDTO> {
         const classes = await prisma.class.findUnique({
             where:{
                 id: id
@@ -159,7 +182,9 @@ export class ClassService implements IClassService{
             select:{
                 competences:{
                     select:{
-                        id: true
+                        id: true,
+                        name: true,
+                        numOfClasses: true
                     }
                 }
             }
@@ -169,14 +194,18 @@ export class ClassService implements IClassService{
             throw new Error("Class not Found!");
         }
 
-        return classes.competences.map(({ id }) => id)
+        return classes
     }
-    async viewMaterials(classId: number): Promise<number[]> {
+    async viewMaterials(classId: number): Promise<viewMaterialsDTO> {
         const classes = await prisma.class.findFirst({
             where:{ id: classId },
             select:{
                 materials:{
-                    select: { id: true }
+                    select: {
+                        id: true,
+                        name: true,
+                        attachments: true
+                    }
                 }
             }
         });
@@ -185,7 +214,7 @@ export class ClassService implements IClassService{
             throw("Class not Found!");
         }
 
-        return classes.materials.map(({ id }) => id)
+        return classes
     }
 
     async viewContent(classId: number): Promise<string> {

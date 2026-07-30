@@ -51,12 +51,15 @@ export interface changePasswordDTO {
 }
 
 export interface showStudentDTO {
+    id: number
     username: string
     userType: UserType
 }
 
 // response to showInstructor service
 export interface showInstructorDTO {
+
+    id: number
     username: string
     userType: UserType
     specialty: Specialties
@@ -66,6 +69,7 @@ export interface showInstructorDTO {
 
 // response to showAdmin service
 export interface showAdminDTO {
+    id: number
     username: string
     userType: UserType
     specialty: Specialties

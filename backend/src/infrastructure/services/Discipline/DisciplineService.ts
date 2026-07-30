@@ -1,4 +1,4 @@
-import { DisciplineDTO, assignCompetencyDTO, editDisciplineDTO, findOneDTO, viewClassesDTO } from "#application/dtos/disciplineDTO.js";
+import { DisciplineDTO, assignCompetencyDTO, editDisciplineDTO, findAllDTO, findOneDTO, viewClassesDTO, viewCompetencesDTO, viewExamsDTO, viewMaterialsDTO } from "#application/dtos/disciplineDTO.js";
 import { IDisciplineService } from "#application/services/Discipline/IDiscipline.service.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
 import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
@@ -207,20 +207,31 @@ export class DisciplineService implements IDisciplineService{
         }
     }
     
-    async findAll(): Promise<number[]> {
+    async findAll(): Promise<findAllDTO[]> {
         // finds all disciplines
         const disciplines = await prisma.discipline.findMany({
             select:{
-                id: true
+                id: true,
+                name: true,
+                workLoad: true,
+                area: {
+                    select: {
+                        name: true
+                    }
+                },
+                competences: {
+                    select: {
+                        name: true
+                    }
+                }
             }
         });
         
         if(!disciplines){
-            throw new Error("Not Disciplines Found");
+            throw new Error("Disciplines Not Found");
         }
 
-        return disciplines.map(discipline => discipline.id)
-        
+        return disciplines
     }
     
     async findOne(id: number): Promise<findOneDTO> {
@@ -292,30 +303,32 @@ export class DisciplineService implements IDisciplineService{
         return target.area.color;
     }
 
-    async viewExams(id: number): Promise<number[]> {
-        const disciplines = await prisma.discipline.findUnique({
+    async viewExams(id: number): Promise<viewExamsDTO> {
+        const discipline = await prisma.discipline.findUnique({
             where:{
                 id: id
             },
             select:{
                 exams: {
                     select: {
-                        id: true
+                        id: true,
+                        name: true,
+                        attachments: true
                     }
                 }
             }
         });
 
-        if(!disciplines) {
-            throw new Error("Disciplines Not Found!");
+        if(!discipline) {
+            throw new Error("Discipline Not Found!");
         }
 
-        return disciplines.exams.map(({ id }) => id)
+        return discipline
     }
 
-    async viewClasses(id: number): Promise<viewClassesDTO[]> {
+    async viewClasses(id: number): Promise<viewClassesDTO> {
         // finds discipline and selects it's classes
-        const disciplines = await prisma.discipline.findUnique({
+        const discipline = await prisma.discipline.findUnique({
             where:{
                 id: id
             },
@@ -329,41 +342,38 @@ export class DisciplineService implements IDisciplineService{
             }
         });
 
-        if(!disciplines) {
-            throw new Error("Disciplines Not Found!");
+        if(!discipline) {
+            throw new Error("Discipline Not Found!");
         }
 
-        return (
-            disciplines.classes.map(c => ({
-                classId: c.id,
-                name: c.name
-            }))
-        )
+        return discipline
     }
 
-    async viewMaterials(disciplineID: number): Promise<number[]> {
+    async viewMaterials(disciplineID: number): Promise<viewMaterialsDTO> {
         // finds discipline and selects it's materials
-        const disciplines = await prisma.discipline.findUnique({
+        const discipline = await prisma.discipline.findUnique({
             where:{
                 id: disciplineID
             },
             select:{
                 materials: {
                     select: {
-                        id: true
+                        id: true,
+                        name: true,
+                        attachments: true
                     }
                 }
             }
         });
 
-        if(!disciplines) {
-            throw new Error("Disciplines Not Found!");
+        if(!discipline) {
+            throw new Error("Discipline Not Found!");
         }
 
-        return disciplines.materials.map(({ id }) => id)
+        return discipline
     }
 
-    async viewCompetences(disciplineID: number): Promise<number[]> {
+    async viewCompetences(disciplineID: number): Promise<viewCompetencesDTO> {
         // finds discipline and selects it's competences
         const disciplines = await prisma.discipline.findUnique({
             where:{
@@ -372,7 +382,11 @@ export class DisciplineService implements IDisciplineService{
             select:{
                 competences: {
                     select: {
-                        id: true
+                        id: true,
+                        name: true,
+                        numOfClasses: true,
+                        exams: true,
+                        classes: true
                     }
                 }
             }
@@ -382,7 +396,7 @@ export class DisciplineService implements IDisciplineService{
             throw new Error("Disciplines Not Found!");
         }
 
-        return disciplines.competences.map(({ id }) => id)
+        return disciplines
     }
 
     async delete(disciplineID: number, userId: number): Promise<boolean> {

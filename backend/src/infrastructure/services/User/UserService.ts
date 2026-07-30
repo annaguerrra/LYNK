@@ -391,19 +391,15 @@ export class UserService implements IUserService {
     }
     
     // returns all the students/ instructors / admin registered on the database
-    async showStudents(): Promise<number[]> {
-        const users = await prisma.student.findMany()
-        return users.map(user => user.id)
+    async showStudents(): Promise<showStudentDTO[]> {
+        return await prisma.student.findMany()    }
+
+    async showInstructors(): Promise<showInstructorDTO[]> {
+        return await prisma.instructor.findMany()
     }
 
-    async showInstructors(): Promise<number[]> {
-        const users = await prisma.instructor.findMany()
-        return users.map(user => user.id)
-    }
-
-    async showAdmins(): Promise<number[]> {
-        const users = await prisma.admin.findMany()
-        return users.map(user => user.id)
+    async showAdmins(): Promise<showAdminDTO[]> {
+        return await prisma.admin.findMany()
     }
 
     // returns a specific student / instructor / admin with the provided id
@@ -413,6 +409,7 @@ export class UserService implements IUserService {
                 id: id
             },
             select: {
+                id: true,
                 username: true,
                 userType: true,
             }
@@ -430,6 +427,7 @@ export class UserService implements IUserService {
                 id: id
             },
             select: {
+                id: true,
                 username: true,
                 userType: true,
                 specialty: true,
@@ -450,6 +448,7 @@ export class UserService implements IUserService {
                 id: id
             },
             select: {
+                id: true,
                 username: true,
                 userType: true,
                 specialty: true,
