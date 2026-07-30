@@ -1,53 +1,13 @@
-import { Specialties, UserType } from "../../infrastructure/src/generated/prisma/enums.js"
-import { UploadedFile } from "./attachment.js"
+import type { UploadedFileDTO } from "./attachment.js"
 
-// used to create a student
-export interface registerStudentDTO {
+export type UserType = "ADMIN" | "INSTRUCTOR" | "STUDENT";
+
+// used to create an user
+export interface registerUserDTO {
     username: string
     password: string
     repeatPassword: string
     userType: UserType
-}
-
-// used to create an instructor
-export interface registerInstructorDTO {
-    username: string
-    password: string
-    repeatPassword: string
-    userType: UserType
-    specialty: Specialties
-}
-
-// used to create an admin
-export interface registerAdminDTO {
-    username: string
-    password: string
-    repeatPassword: string
-    userType: UserType
-    specialty: Specialties
-}
-
-// used to do login
-export interface loginPayloadDTO {
-    username: string
-    password: string
-}
-
-// response to login
-export interface loginResponseDTO {
-    token: string
-    mustChangePassword: boolean
-    user:{
-        id: number;
-        username: string;
-        userType: UserType;
-    }
-}
-
-export interface changePasswordDTO {
-    oldPassword: string;
-    newPassword: string;
-    confirmPassword: string
 }
 
 export interface showStudentDTO {
@@ -55,20 +15,10 @@ export interface showStudentDTO {
     userType: UserType
 }
 
-// response to showInstructor service
-export interface showInstructorDTO {
+// response to showInstructor or showAdmin service
+export interface showPrivilegedUserDTO {
     username: string
     userType: UserType
-    specialty: Specialties
-    active: boolean
-    attachmentId: string | null
-}
-
-// response to showAdmin service
-export interface showAdminDTO {
-    username: string
-    userType: UserType
-    specialty: Specialties
     active: boolean
     attachmentId: string | null
 }
@@ -79,20 +29,10 @@ export interface updateStudentDTO {
     password: string
 }
 
-// used to edit instructor
-export interface updateInstructorDTO {
+// used to edit instructor or admin
+export interface updatePrivilegedUserDTO {
     username: string
     password: string
-    specialty: Specialties
     active: boolean
-    file: UploadedFile
-}
-
-// used to edit admin
-export interface updateAdminDTO {
-    username: string
-    password: string
-    specialty: Specialties
-    active: boolean
-    file: UploadedFile
+    file: UploadedFileDTO
 }

@@ -41,7 +41,8 @@ export async function downloadExamFile(id: number, examFileId: number): Promise<
     return response.data;
 }
 
-// Delete a material
-export async function deleteExam(id: number): Promise<void> {
-    await api.delete(`/exam/delete/${id}`);
+// Delete an exam by ID
+export async function deleteExam(id: number) {
+    const response = await api.delete(`/exam/delete/${id}`);
+    return response.data;
 }
