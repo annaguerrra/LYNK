@@ -1,7 +1,7 @@
 import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
-import api from "../../Services/api";
 import { useEffect, useState } from "react";
+import { getLogClasses } from "../../Services/logServices";
 
 export function HClassesView() {
     //Variables to control the users and its interactions
@@ -9,8 +9,8 @@ export function HClassesView() {
     
     async function loadHClasses() {
         try {
-            const response = await api.get("/logs/class");
-            setHClasses(response.data);
+            const response = await getLogClasses('class');
+            setHClasses(response);
         } catch (error) {
             console.error(error);
         }
@@ -21,7 +21,7 @@ export function HClassesView() {
     }, []);
 
     const actionColors = {
-        CREATE: "var(--green)",
+        POST: "var(--green)",
         PUT: "var(--blue)",
         DELETE: "var(--red)",
     };

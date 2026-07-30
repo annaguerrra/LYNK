@@ -1,9 +1,9 @@
-import { UploadedFile } from "./attachment.js"
+import type { UploadedFileDTO } from "./attachment"
 
 // used to create an exam
 export interface registerExamDTO {
     name: string
-    files: UploadedFile[]
+    files: UploadedFileDTO[]
     disciplineId: number
     competencesId: number[]
 }
@@ -11,7 +11,7 @@ export interface registerExamDTO {
 // used to create a file and attach to exam
 export interface attachtFileDTO {
     examId: number
-    files: UploadedFile[]
+    files: UploadedFileDTO[]
 }
 
 // used to edit an exam

@@ -14,26 +14,19 @@ export async function createMaterial(data: RegisterMaterialDTO): Promise<ShowMat
 }
 
 // Update a material
-export async function updateMaterial(
-    id: number,
-    data: UpdateMaterialDTO
-): Promise<ShowMaterialDTO> {
+export async function updateMaterial(id: number, data: UpdateMaterialDTO): Promise<ShowMaterialDTO> {
     const response = await api.put(`/material/edit/${id}`, data);
     return response.data;
 }
 
 // Attach a file to a material
-export async function attachMaterialFile(
-    data: AttachFileDTO
-): Promise<ShowMaterialDTO> {
+export async function attachMaterialFile(data: AttachFileDTO): Promise<ShowMaterialDTO> {
     const response = await api.put("/material/attach", data);
     return response.data;
 }
 
 // Download a material attachment
-export async function downloadMaterial(
-    id: number
-): Promise<Blob> {
+export async function downloadMaterial(id: number): Promise<Blob> {
     const response = await api.get<Blob>(`/material/${id}/download`, {
         responseType: "blob",
     });
