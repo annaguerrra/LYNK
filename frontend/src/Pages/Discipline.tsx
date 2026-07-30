@@ -62,6 +62,7 @@ export function Discipline() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userType, setUserType] = useState("STUDENT");
 
+
     //Options for the option buttons
     const options = [
         {
