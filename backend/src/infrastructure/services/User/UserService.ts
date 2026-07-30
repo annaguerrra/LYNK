@@ -386,27 +386,29 @@ export class UserService implements IUserService {
             }
         } catch(e) {
             console.log(e);
-            console.log("ccc");
         }
         return true;
     }
     
     // returns all the students/ instructors / admin registered on the database
-    async showStudents(): Promise<Student[]> {
-        return await prisma.student.findMany()
+    async showStudents(): Promise<number[]> {
+        const users = await prisma.student.findMany()
+        return users.map(user => user.id)
     }
 
-    async showInstructors(): Promise<Instructor[]> {
-        return await prisma.instructor.findMany()
+    async showInstructors(): Promise<number[]> {
+        const users = await prisma.instructor.findMany()
+        return users.map(user => user.id)
     }
 
-    async showAdmins(): Promise<Admin[]> {
-        return await prisma.admin.findMany()
+    async showAdmins(): Promise<number[]> {
+        const users = await prisma.admin.findMany()
+        return users.map(user => user.id)
     }
 
     // returns a specific student / instructor / admin with the provided id
-    async showStudent(id: number): Promise<showStudentDTO | null> {
-        return await prisma.student.findFirst({
+    async showStudent(id: number): Promise<showStudentDTO> {
+        const student = await prisma.student.findUnique({
             where: {
                 id: id
             },
@@ -415,10 +417,15 @@ export class UserService implements IUserService {
                 userType: true,
             }
         })
+
+        if(!student)
+            throw new Error("Student not found!")
+
+        return student
     }
 
-    async showInstructor(id: number): Promise<showInstructorDTO | null> {
-        return await prisma.instructor.findFirst({
+    async showInstructor(id: number): Promise<showInstructorDTO> {
+        const instructor = await prisma.instructor.findUnique({
             where: {
                 id: id
             },
@@ -430,10 +437,15 @@ export class UserService implements IUserService {
                 attachmentId: true
             }  
         })
+
+        if(!instructor)
+            throw new Error("Instructor not found!")
+
+        return instructor
     }
 
-    async showAdmin(id: number): Promise<showAdminDTO | null> {
-        return await prisma.admin.findFirst({
+    async showAdmin(id: number): Promise<showAdminDTO> {
+        const admin = await prisma.admin.findUnique({
             where: {
                 id: id
             },
@@ -445,6 +457,11 @@ export class UserService implements IUserService {
                 attachmentId: true
             }  
         })
+
+        if(!admin)
+            throw new Error("Admin not found!")
+
+        return admin
     }
 
     // updates the user information by searching its id, updating the prisma information and creating a new log

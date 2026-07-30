@@ -47,7 +47,7 @@ export interface loginResponseDTO {
 export interface changePasswordDTO {
     oldPassword: string;
     newPassword: string;
-    confirmPassword: string
+    repeatPassword: string
 }
 
 export interface showStudentDTO {

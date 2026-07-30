@@ -63,7 +63,7 @@ async function main() {
         }
     });
 
-    console.log("Default admin created successfully!");
+    console.log("Default admin created successfully!\nusername: admin\npassword: admin123");
     
 }
 // runs the seed
