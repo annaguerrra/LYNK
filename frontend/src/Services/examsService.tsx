@@ -1,48 +1,42 @@
-import type { registerExamDTO, updateExamDTO, attachtFileDTO } from "../Types/exam";
+import type { registerExamDTO, updateExamDTO } from "../Types/exam";
+import type { AttachFileDTO } from "../Types/material";
 import api from "./api";
 
-
 // Get all exams
-export async function getExams() {
+export async function getDisciplines(): Promise<registerExamDTO[]> {
     const response = await api.get("/exams");
-    return response.data;
+    return response.data.response;
 }
 
-// Get an exam by ID
-export async function getExamById(id: number) {
+// Get a exam by IDc
+export async function getExamById(id: number): Promise<registerExamDTO> {
     const response = await api.get(`/exam/${id}`);
     return response.data;
 }
 
 // Create a new exam
-export async function createExam(data: registerExamDTO) {
+export async function createExam(data: registerExamDTO): Promise<registerExamDTO> {
     const response = await api.post("/exam/create", data);
     return response.data;
 }
 
-// Update an existing exam
-export async function updateExam(id: number, data: updateExamDTO) {
+// Update a exam
+export async function updateExam(id: number, data: updateExamDTO): Promise<updateExamDTO> {
     const response = await api.put(`/exam/edit/${id}`, data);
     return response.data;
 }
 
-// Attach files to an exam
-export async function attachExamFile(data: attachtFileDTO) {
-    const response = await api.put("/exam/attachfile", data);
+// Attach a file to a material
+export async function attachExamFile(data: AttachFileDTO): Promise<registerExamDTO> {
+    const response = await api.put("/exam/attach", data);
     return response.data;
 }
 
-// Download an exam attachment
-export async function downloadExamFile(
-    examId: number,
-    examAttachmentId: number
-): Promise<Blob> {
-    const response = await api.get(
-        `/exam/download/${examId}/${examAttachmentId}`,
-        {
-            responseType: "blob",
-        }
-    );
+// Download a material attachment
+export async function downloadExamFile(id: number, examFileId: number): Promise<Blob> {
+    const response = await api.get<Blob>(`/exam/download/${id}/${examFileId}`, {
+        responseType: "blob",
+    });
 
     return response.data;
 }
