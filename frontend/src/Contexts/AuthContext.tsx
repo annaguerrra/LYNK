@@ -9,7 +9,7 @@ type Role = "ADMIN" | "INSTRUCTOR" | "STUDENT";
 
 interface User {
     username: string;
-    profilePic: string;
+    userId: number;
     role: Role;
     token: string;
     mustChangePassword: boolean;
@@ -43,41 +43,39 @@ export function AuthProvider({
     });
 
     async function login(username: string, password: string) {
+            const response = await api.post("/login", {
+                username,
+                password
+            });
 
-        const response = await api.post("/login", {
-            username,
-            password
-        });
 
-        const { token, mustChangePassword, user } = response.data.response;
+            const { token, mustChangePassword, user } = response.data.response;
 
-        console.log(response.data.response)
+            localStorage.setItem("token", token);
 
-        localStorage.setItem("token", token);
+            localStorage.setItem("user", JSON.stringify({
+                username: user.username,
+                userId: user.id,
+                role: user.userType
+            }));
 
-        localStorage.setItem("user", JSON.stringify({
-            username: user.username,
-            // profilePic: user.photo,
-            role: user.userType
-        }));
+            setUser({
+                username: user.username,
+                userId: user.id,
+                role: user.userType,
+                token: token,
+                mustChangePassword
+            });
 
-        setUser({
-            username: user.username,
-            profilePic: user.photo,
-            role: user.userType,
-            token: token,
-            mustChangePassword
-        });
-
-        return mustChangePassword;
-    }
+            return mustChangePassword;
+        }
 
     async function changePassword(
         oldPassword: string,
         newPassword: string,
         confirmPassword: string
     ) {
-        await api.post("/user/change-password", {
+        await api.put("/user/change-password", {
             oldPassword,
             newPassword,
             confirmPassword

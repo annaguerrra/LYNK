@@ -16,8 +16,11 @@ export default class UserController {
 
         try {
             if (data.userType === UserType.STUDENT) {
-                await this.userService.registerStudent(data as registerStudentDTO, userId)
-                return res.status(200).send({ response: "User created!"})
+                const createdUser = await this.userService.registerStudent(data as registerStudentDTO, userId)
+                return res.status(200).send({ 
+                    response: "User created!",
+                    data: createdUser
+                })
             } 
             
             if (data.userType === UserType.INSTRUCTOR) {
@@ -49,7 +52,7 @@ export default class UserController {
             return res.status(200).send({ response: loginResponse });
         } catch(e) {
             console.log(e)
-            return res.status(404).send({ response: "Failed to Login"});
+            return res.status(400).send({ response: "Failed to Login"});
         }
     }
 

@@ -1,5 +1,5 @@
 import { Specialties, UserType } from "../../infrastructure/src/generated/prisma/enums.js"
-import { UploadedFile } from "./attachmentDTO.js"
+import { UploadedFile } from "./attachment.js"
 
 // used to create a student
 export interface registerStudentDTO {
@@ -47,7 +47,7 @@ export interface loginResponseDTO {
 export interface changePasswordDTO {
     oldPassword: string;
     newPassword: string;
-    repeatPassword: string
+    confirmPassword: string
 }
 
 export interface showStudentDTO {
