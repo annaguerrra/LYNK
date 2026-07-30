@@ -57,10 +57,8 @@ export interface viewCompetencesDTO{
 
 // response to viewClasses service 
 export interface viewClassesDTO{
+    classId: number
     name: string
-    classes:{
-        name: string
-    }[];
 }
 
 export interface viewExamsDTO {
