@@ -8,7 +8,7 @@ export async function getAreas(): Promise<AreaDTO[]> {
 }
 
 // Create a new area
-export async function createArea(data: registerAreaDTO[]) : Promise<AreaDTO> {
+export async function createArea(data: registerAreaDTO) : Promise<AreaDTO> {
     const response = await api.post("/area/create", data);
     return response.data.response;    
 }

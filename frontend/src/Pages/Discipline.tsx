@@ -14,8 +14,8 @@ import { useAuth } from "../Contexts/AuthContext";
 import { createDisciplineService, getDisciplines, duplicateDiscipline } from "../Services/disciplinesService";
 
 import type { DisciplinesDTO, createDiscipline } from "../Types/disciplineDTOS";
-import type { AreaDTO } from "../Types/area";
-import { getAreas } from "../Services/areasService";
+import type { AreaDTO, registerAreaDTO } from "../Types/area";
+import { createArea, getAreas } from "../Services/areasService";
 import type { registerUserDTO } from "../Types/user";
 import { createUser } from "../Services/userService";
 
@@ -43,15 +43,7 @@ export function Discipline() {
     const [excludeAreaModal, setExcludeAreaModal] = useState(false);
     const [resetPasswordModal, setResetPasswordModal] = useState(false);
     
-    //Inputs to create and edit a discipline
-    const [disciplineName, setDisciplineName] = useState("")
-    const [areas, setAreas] = useState<AreaDTO[]>([]);
-    const [areaId, setAreaId] = useState<number>(0);
     
-    //Inputs to create and edit a area
-    const [areaName, setAreaName] = useState("")
-    const [cor, setCor] = useState("Roxo");
-
     //Variables to control the users and its interactions
     const { user } = useAuth();
     const isAdmin = user?.role === "ADMIN";
@@ -61,8 +53,8 @@ export function Discipline() {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [userType, setUserType] = useState("STUDENT");
-
-
+    
+    
     //Options for the option buttons
     const options = [
         {
@@ -90,7 +82,7 @@ export function Discipline() {
             onClick: () => navigate("/History")
         },
     ];
-
+    
     const userOpt = [
         {
             name: "Editar usuário",
@@ -107,7 +99,7 @@ export function Discipline() {
             color: "red"
         },
     ];
-
+    
     const areasOpt = [
         {
             name: "Editar área",
@@ -119,9 +111,12 @@ export function Discipline() {
             color: "red",
         },
     ];
-
-        //---------------------- From Disciplines Services ----------------------------------------------------------------
-
+    
+    //---------------------- From Area Services ---------------------------------------------------------------- 
+    //Inputs to create and edit a area
+    const [areaName, setAreaName] = useState("")
+    const [areaColor, setAreaCor] = useState("Roxo");
+    
     async function loadAreas() {
         try {
             const response = await getAreas();
@@ -131,6 +126,24 @@ export function Discipline() {
         }
     }
 
+    async function createNewArea(data : registerAreaDTO) {
+        try {
+            const response = await createArea(data);
+            console.log(response);
+
+            setNewAreaModal(false);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    
+    //---------------------- From Disciplines Services ----------------------------------------------------------------
+    //Inputs to create and edit a discipline
+    const [disciplineName, setDisciplineName] = useState("")
+    const [areas, setAreas] = useState<AreaDTO[]>([]);
+    const [areaId, setAreaId] = useState<number>(0);
+    
+    
     async function loadDisciplines() {
         try {
             const response = await getDisciplines();
@@ -301,8 +314,7 @@ export function Discipline() {
                         </div>
                          {/* Input for user password confirmation */}
                         <div className="textBox">
-                            <h2>Confirmar senha do usuári.
-                                3,                                                                                                          'o</h2>
+                            <h2>Confirmar senha do usuário</h2>
                             <input type="password" />
                         </div>
 
@@ -421,13 +433,13 @@ export function Discipline() {
                         {/* Input for the area name */}
                         <div className="textBox">
                             <h2>Nome da área</h2>
-                            <input type="text" />
+                            <input type="text" value={areaName} onChange={(e) => setAreaName(e.target.value)}/>
                         </div>
                         {/* Select for the area color */}
                         <div className="textBox">
                             <h2>Selecione a cor da área</h2>
-                            <select name="" id="" className="selectFilter" value={cor}
-                                onChange={(e) => setCor(e.target.value)}
+                            <select name="" id="" className="selectFilter" value={areaColor}
+                                onChange={(e) => setAreaCor(e.target.value)}
                             // style={{ color: cores[cor] }}
                             >
                                 <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
@@ -436,7 +448,8 @@ export function Discipline() {
                             </select>
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => setNewAreaModal(false)}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => createNewArea({
+                            name: areaName, color: areaColor })}></Button>
                     </div>
                 </div>
             )}
@@ -481,8 +494,8 @@ export function Discipline() {
                         {/* Select for the area color */}
                         <div className="textBox">
                             <h2>Selecione a cor da área</h2>
-                            <select name="" id="" className="selectFilter" value={cor}
-                                onChange={(e) => setCor(e.target.value)}
+                            <select name="" id="" className="selectFilter" value={areaColor}
+                                onChange={(e) => setAreaCor(e.target.value)}
                             // style={{ color: cores[cor] }}
                             >
                                 <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
