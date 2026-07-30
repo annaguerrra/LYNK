@@ -259,7 +259,7 @@ export class DisciplineService implements IDisciplineService{
     }
 
     async viewExams(id: number): Promise<number[]> {
-        const disciplines = await prisma.discipline.findMany({
+        const disciplines = await prisma.discipline.findUnique({
             where:{
                 id: id
             },
@@ -276,12 +276,12 @@ export class DisciplineService implements IDisciplineService{
             throw new Error("Exams Not Found!");
         }
 
-        return disciplines.flatMap(discipline => discipline.exams.map(exam => exam.id))
+        return disciplines.exams.map(({ id }) => id)
     }
 
     async viewClasses(id: number): Promise<number[]> {
         // finds discipline and selects it's classes
-        const disciplines = await prisma.discipline.findMany({
+        const disciplines = await prisma.discipline.findUnique({
             where:{
                 id: id
             },
@@ -298,12 +298,12 @@ export class DisciplineService implements IDisciplineService{
             throw new Error("Classes Not Found!");
         }
 
-        return disciplines.flatMap(discipline => discipline.classes.map(item => item.id))
+        return disciplines.classes.map(({ id }) => id)
     }
 
     async viewMaterials(disciplineID: number): Promise<number[]> {
         // finds discipline and selects it's materials
-        const disciplines = await prisma.discipline.findMany({
+        const disciplines = await prisma.discipline.findUnique({
             where:{
                 id: disciplineID
             },
@@ -320,12 +320,12 @@ export class DisciplineService implements IDisciplineService{
             throw new Error("Materials Not Found!");
         }
 
-        return disciplines.flatMap(discipline => discipline.materials.map(material => material.id))
+        return disciplines.materials.map(({ id }) => id)
     }
 
     async viewCompetences(disciplineID: number): Promise<number[]> {
         // finds discipline and selects it's competences
-        const disciplines = await prisma.discipline.findMany({
+        const disciplines = await prisma.discipline.findUnique({
             where:{
                 id: disciplineID
             },
@@ -339,10 +339,10 @@ export class DisciplineService implements IDisciplineService{
         });
 
         if(!disciplines) {
-            throw new Error("COmpetences Not Found!");
+            throw new Error("Competences Not Found!");
         }
 
-        return disciplines.flatMap(discipline => discipline.competences.map(competence => competence.id))
+        return disciplines.competences.map(({ id }) => id)
     }
 
     async delete(disciplineID: number, userId: number): Promise<boolean> {
