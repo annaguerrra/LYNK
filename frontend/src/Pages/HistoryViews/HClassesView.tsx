@@ -39,7 +39,7 @@ export function HClassesView() {
                                     src="../../../public/UserDefault/user-purple.png">
                                 </img>
 
-                                <span>instrutor_0023</span>
+                                <span>{hclass.alterUser}</span>
                                 <span> | </span>
                                 <span>{hclass.updatedAt}</span>
                             </>
