@@ -1,4 +1,4 @@
-import { changePasswordDTO, loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
+import { changePasswordDTO, loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showAllDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { IUserService } from "#application/services/User/IUser.service.js";
 import { Student, Instructor, Admin, UserType } from "#infrastructure/prisma/generated/prisma/client.js";
 import { Error } from "mongoose";
@@ -389,21 +389,27 @@ export class UserService implements IUserService {
         }
         return true;
     }
+
+    async showAll(): Promise<showAllDTO> {
+        const students = await prisma.student.findMany()
+        const instructors = await prisma.instructor.findMany()
+        const admins = await prisma.admin.findMany()
+        
+        return {
+            students, instructors, admins
+        }
+    }
     
     // returns all the students/ instructors / admin registered on the database
-    async showStudents(): Promise<number[]> {
-        const users = await prisma.student.findMany()
-        return users.map(user => user.id)
+    async showStudents(): Promise<showStudentDTO[]> {
+        return await prisma.student.findMany()    }
+
+    async showInstructors(): Promise<showInstructorDTO[]> {
+        return await prisma.instructor.findMany()
     }
 
-    async showInstructors(): Promise<number[]> {
-        const users = await prisma.instructor.findMany()
-        return users.map(user => user.id)
-    }
-
-    async showAdmins(): Promise<number[]> {
-        const users = await prisma.admin.findMany()
-        return users.map(user => user.id)
+    async showAdmins(): Promise<showAdminDTO[]> {
+        return await prisma.admin.findMany()
     }
 
     // returns a specific student / instructor / admin with the provided id
@@ -413,6 +419,7 @@ export class UserService implements IUserService {
                 id: id
             },
             select: {
+                id: true,
                 username: true,
                 userType: true,
             }
@@ -430,6 +437,7 @@ export class UserService implements IUserService {
                 id: id
             },
             select: {
+                id: true,
                 username: true,
                 userType: true,
                 specialty: true,
@@ -450,6 +458,7 @@ export class UserService implements IUserService {
                 id: id
             },
             select: {
+                id: true,
                 username: true,
                 userType: true,
                 specialty: true,

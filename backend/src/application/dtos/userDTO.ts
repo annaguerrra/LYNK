@@ -51,12 +51,14 @@ export interface changePasswordDTO {
 }
 
 export interface showStudentDTO {
+    id: number
     username: string
     userType: UserType
 }
 
 // response to showInstructor service
 export interface showInstructorDTO {
+    id: number
     username: string
     userType: UserType
     specialty: Specialties
@@ -66,6 +68,7 @@ export interface showInstructorDTO {
 
 // response to showAdmin service
 export interface showAdminDTO {
+    id: number
     username: string
     userType: UserType
     specialty: Specialties
@@ -95,4 +98,28 @@ export interface updateAdminDTO {
     specialty: Specialties
     active: boolean
     file: UploadedFile
+}
+
+export interface showAllDTO {
+    students: {
+        id: number
+        username: string
+        userType: UserType
+    }[] | null,
+    instructors: {
+        id: number
+        username: string
+        userType: UserType
+        specialty: Specialties
+        active: boolean
+        attachmentId: string | null
+    }[] | null,
+    admins: {
+        id: number
+        username: string
+        userType: UserType
+        specialty: Specialties
+        active: boolean
+        attachmentId: string | null
+    }[] | null
 }

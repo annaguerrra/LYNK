@@ -1,4 +1,4 @@
-import { changePasswordDTO, loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
+import { changePasswordDTO, loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showAllDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { Admin, Instructor, Student, UserType } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export interface IUserService {
@@ -7,9 +7,10 @@ export interface IUserService {
     registerAdmin(data: registerAdminDTO, userId: number): Promise<Admin>
     login(data: loginPayloadDTO): Promise<loginResponseDTO>
     changePassword( data: changePasswordDTO, userId: number, userType: UserType ): Promise<boolean>
-    showStudents(): Promise<number[]>
-    showInstructors(): Promise<number[]>
-    showAdmins(): Promise<number[]>
+    showAll(): Promise<showAllDTO>
+    showStudents(): Promise<showStudentDTO[]>
+    showInstructors(): Promise<showInstructorDTO[]>
+    showAdmins(): Promise<showAdminDTO[]>
     showStudent(id: number): Promise<showStudentDTO>
     showInstructor(id: number): Promise<showInstructorDTO>
     showAdmin(id: number): Promise<showAdminDTO>

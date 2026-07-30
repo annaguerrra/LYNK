@@ -40,14 +40,14 @@ export class AreaService implements IAreaService{
         return createdArea
     }
     
-    async showAreas(): Promise<number[]> {
-        const areas = await prisma.area.findMany({
+    async showAreas(): Promise<Area[]> {
+        return await prisma.area.findMany({
             select: {
-                id: true
+                id: true,
+                name: true,
+                color: true
             }
         })
-
-        return areas.map(area => area.id)
     }
     
     async updateArea(id: number, data: updateAreaDTO, userId: number): Promise<Area> {
