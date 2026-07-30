@@ -15,6 +15,7 @@ export interface assignCompetencyDTO{
 
 // response to findAll service
 export interface ClassesDTO {
+    id: number
     name: string;
     content: string;
     createdAt: Date;
