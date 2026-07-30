@@ -14,7 +14,7 @@ export class DisciplineService implements IDisciplineService{
         const admin = await this.userService.isAdmin(userID)
         const username = await this.userService.getUsername(userID)
         // variables used to create discipline
-        const { name, workload, areaID } = payload
+        const { name, areaID } = payload
         
         const area = await prisma.area.findUnique({ where:{ id: areaID }});
         
@@ -25,7 +25,6 @@ export class DisciplineService implements IDisciplineService{
         const target = await prisma.discipline.create({
             data:{
                 name: name,
-                workLoad: workload,
                 areaId: area.id               
             }
         });

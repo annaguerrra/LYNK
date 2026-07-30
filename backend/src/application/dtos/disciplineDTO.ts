@@ -3,7 +3,6 @@ import { Class, Exam, ExamAttachment, MaterialAttachment } from "#infrastructure
 // used to create a discipline
 export interface DisciplineDTO{
     name: string
-    workload: number
     areaID: number
     userID: number
 }
