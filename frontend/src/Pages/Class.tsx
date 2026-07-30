@@ -39,7 +39,7 @@ import { useAuth } from '../Contexts/AuthContext'
 
 import type { ClassDTO } from '../Types/class'
 import { getClassById, updateClass } from '../Services/classesService'
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import { isAxiosError } from 'axios'
 
 export function Class() {
@@ -106,18 +106,22 @@ export function Class() {
         } catch (error) {
             if (isAxiosError(error)) {
                 if (error.response?.status === 404) {
-                    toast.error("404 - Aula não encontrada.");
-                    navigate("/error");
+                    navigate("/error", {
+                        state: { errorText: "404 - Aula não encontrada." }
+                    });
                     return;
                 }
 
                 if (error.response?.status === 500) {
-                    toast.error("500 - Erro de servidor.");
+                    navigate("/error", {
+                        state: { errorText: "500 - Error de servidor" }
+                    });
                     return;
                 }
             }
 
-            console.error(error);
+            navigate("/error");
+            console.log(error);
             toast.error(`${error}`);
         }
     }
@@ -126,11 +130,6 @@ export function Class() {
         if (!class_id) return;
 
         const id = Number(class_id);
-
-        if (isNaN(id)) {
-            navigate("/error");
-            return;
-        }
 
         loadDataClass(id);
     }, [class_id]);
@@ -267,20 +266,24 @@ export function Class() {
                         <div className='attachmentsContent'>
                             <span className='subtitle'>Anexos</span>
                             <div className='attachments'>
-                                
-                                <RowItem
-                                    type='class'
-                                    actions={
-                                        <>
-                                            <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                            {(isAdmin || isInstructor) && editMode &&
-                                                <ButtonClose size={18} onClose={() => { }} />
-                                            }
-                                        </>
-                                    }>
+                                {materials.map((material) => (
+                                    <>
+                                        <RowItem
+                                            type='class'
+                                            actions={
+                                                <>
+                                                    <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                                    {(isAdmin || isInstructor) && editMode &&
+                                                        <ButtonClose size={18} onClose={() => { }} />
+                                                    }
+                                                </>
+                                            }>
 
-                                    <div>Material_aaa00</div>
-                                </RowItem>
+                                            <div>Material_aaa00</div>
+                                        </RowItem>
+                                    </>
+                                ))}
+
 
                                 {(isAdmin || isInstructor) && editMode &&
                                     <InputFile />
@@ -325,6 +328,18 @@ export function Class() {
                     </div>
                 </div>
             </div>
+            <ToastContainer
+                position="top-center"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
         </>
     )
 }

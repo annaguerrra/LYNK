@@ -23,7 +23,7 @@ function App() {
             <Route path="/Content" element={
                 <Content />
             } />
-            <Route path="/Class" element={
+            <Route path="/Class/:class_id" element={
                 <Class />
             } />
             <Route path="/History" element={
