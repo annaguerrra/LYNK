@@ -7,12 +7,12 @@ export interface IUserService {
     registerAdmin(data: registerAdminDTO, userId: number): Promise<Admin>
     login(data: loginPayloadDTO): Promise<loginResponseDTO>
     changePassword( data: changePasswordDTO, userId: number, userType: UserType ): Promise<boolean>
-    showStudents(): Promise<Student[]>
-    showInstructors(): Promise<Instructor[]>
-    showAdmins(): Promise<Admin[]>
-    showStudent(id: number): Promise<showStudentDTO | null>
-    showInstructor(id: number): Promise<showInstructorDTO | null>
-    showAdmin(id: number): Promise<showAdminDTO | null>
+    showStudents(): Promise<number[]>
+    showInstructors(): Promise<number[]>
+    showAdmins(): Promise<number[]>
+    showStudent(id: number): Promise<showStudentDTO>
+    showInstructor(id: number): Promise<showInstructorDTO>
+    showAdmin(id: number): Promise<showAdminDTO>
     updateStudent(id: number, data: updateStudentDTO, userId: number): Promise<Student>
     updateInstructor(id: number, data: updateInstructorDTO, userId: number): Promise<Instructor>
     updateAdmin(id: number, data: updateAdminDTO, userId: number): Promise<Admin>

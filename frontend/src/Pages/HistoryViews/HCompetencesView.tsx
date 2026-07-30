@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
-import api from "../../Services/api";
+import { getLogCompetences } from "../../Services/logServices";
 
 export function HCompetencesView() {
     //Variables to control the users and its interactions
@@ -9,8 +9,8 @@ export function HCompetencesView() {
     
     async function loadHCompetence() {
         try {
-            const response = await api.get("/logs/competence");
-            setHCompetence(response.data);
+            const response = await getLogCompetences('competence');
+            setHCompetence(response);
         } catch (error) {
             console.error(error);
         }
@@ -39,7 +39,7 @@ export function HCompetencesView() {
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
 
-                            <span>instrutor_0023</span>
+                            <span>{hcompetence.alterUser}</span>
                             <span> | </span>
                             <span>{hcompetence.updatedAt}</span>
                         </>

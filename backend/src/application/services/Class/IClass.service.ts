@@ -7,11 +7,11 @@ export interface IClassService{
     create(payload: ClassDTO, userId: number): Promise<Class>;
     assignCompetency(payload: assignCompetencyDTO, userId:number): Promise<Class>;
     // get
-    findAll(): Promise<findAllDTO[]>;
-    findOne(id: number): Promise<ClassDTO>;
-    viewMaterials(classId: number): Promise<viewMaterialsDTO>
-    viewCompetences(classId: number): Promise<viewCompetencesDTO>;
-    viewContent(classId: number): Promise<viewContentDTO>
+    findAll(): Promise<number[]>;
+    findOne(id: number): Promise<number>;
+    viewMaterials(classId: number): Promise<number[]>
+    viewCompetences(classId: number): Promise<number[]>;
+    viewContent(classId: number): Promise<string>
     downloadContent(classId: number): Promise<Buffer>
     // delete
     delete(id: number, userId: number): Promise<boolean>;

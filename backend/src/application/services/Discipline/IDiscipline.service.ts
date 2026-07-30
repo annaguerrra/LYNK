@@ -8,7 +8,7 @@ export interface IDisciplineService{
         duplicate(id: number, userId: number): Promise<Discipline>
         // get
         findAll(): Promise<number[]>;
-        findOne(id: number): Promise<number>;
+        findOne(id: number): Promise<findOneDTO>;
         getColor(id: number) : Promise<string>;
         viewClasses(id: number): Promise<number[]>
         viewExams(id: number): Promise<number[]>

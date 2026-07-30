@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
-import { getLogDisciplines } from "../../Services/logServices";
+import { getLogAreas } from "../../Services/logServices";
 
-export function HDisciplinesView() {
+export function HUsersView() {
     //Variables to control the users and its interactions
-    const [disciplines, setHDisciplines] = useState([])
+    const [hareas, setHArea] = useState([])
     
-    async function loadHDisicpline() {
+    async function loadHArea() {
         try {
-            const response = await getLogDisciplines('disciplines');
-            setHDisciplines(response);
+            const response = await getLogAreas('areas');
+            setHArea(response);
         } catch (error) {
             console.error(error);
         }
     }
 
     useEffect(() => {
-        loadHDisicpline();
+        loadHArea();
     }, []);
 
     const actionColors = {
@@ -29,9 +29,9 @@ export function HDisciplinesView() {
     return (
         <>
             <div className="view-page">
-                {disciplines.map((hdiscipline) => (
+                {hareas.map((harea) => (
                 <RowItem
-                    color={actionColors[hdiscipline.action]}
+                    color={actionColors[harea.action]}
                     size="--medium"
                     userAction={
                         <>
@@ -39,13 +39,13 @@ export function HDisciplinesView() {
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
 
-                            <span>{hdiscipline.updatedAt}</span>
+                            <span>{harea.updatedAt}</span>
                             <span> | </span>
-                            <span>{hdiscipline.updatedAt}</span>
+                            <span>{harea.updatedAt}</span>
                         </>
                     }>
 
-                    <span>{hdiscipline.entityName}</span>
+                    <span>{harea.entityName}</span>
 
                 </RowItem>
                 ))}

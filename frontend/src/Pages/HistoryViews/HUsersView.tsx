@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
-import api from "../../Services/api";
+import { getLogUsers } from "../../Services/logServices";
 
 export function HUsersView() {
     //Variables to control the users and its interactions
@@ -9,8 +9,8 @@ export function HUsersView() {
     
     async function loadHUser() {
         try {
-            const response = await api.get("/logs/competence");
-            setHUser(response.data);
+            const response = await getLogUsers('class');
+            setHUser(response);
         } catch (error) {
             console.error(error);
         }
@@ -39,7 +39,7 @@ export function HUsersView() {
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
 
-                            <span>instrutor_0023</span>
+                            <span>{huser.updatedAt}</span>
                             <span> | </span>
                             <span>{huser.updatedAt}</span>
                         </>
