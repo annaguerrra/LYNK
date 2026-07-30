@@ -30,33 +30,25 @@ export async function getDisciplines(): Promise<DisciplinesDTO[]> {
 }
 
 // Get a discipline by ID
-export async function getDisciplineById(
-    id: number
-): Promise<DisciplineDTO> {
+export async function getDisciplineById(id: number): Promise<DisciplineDTO> {
     const response = await api.get(`/discipline/${id}`);
     return response.data;
 }
 
 // Get discipline exams
-export async function getDisciplineExams(
-    id: number
-): Promise<viewExamsDTO> {
+export async function getDisciplineExams(id: number): Promise<viewExamsDTO> {
     const response = await api.get(`/disciplines/${id}/exams`);
     return response.data;
 }
 
 // Get discipline classes
-export async function getDisciplineClasses(
-    id: number
-): Promise<viewClassesDTO> {
+export async function getDisciplineClasses(id: number): Promise<viewClassesDTO> {
     const response = await api.get(`/discipline/${id}/classes`);
     return response.data;
 }
 
 // Get discipline materials
-export async function getDisciplineMaterials(
-    id: number
-): Promise<viewMaterialsDTO> {
+export async function getDisciplineMaterials(id: number): Promise<viewMaterialsDTO> {
     const response = await api.get(`/discipline/${id}/materials`);
     return response.data;
 }
@@ -70,22 +62,14 @@ export async function getDisciplineCompetences(
 }
 
 // Update a discipline
-export async function updateDiscipline(
-    id: number,
-    data: editDisciplineDTO
-) {
+export async function updateDiscipline(id: number, data: editDisciplineDTO) {
     const response = await api.put(`/discipline/edit/${id}`, data);
     return response.data;
 }
 
 // Assign a competence to a discipline
-export async function assignCompetence(
-    data: assignCompetencyDTO
-) {
-    const response = await api.put(
-        "/discipline/assigncompetence",
-        data
-    );
+export async function assignCompetence(data: assignCompetencyDTO) {
+    const response = await api.put("/discipline/assigncompetence", data);
     return response.data;
 }
 

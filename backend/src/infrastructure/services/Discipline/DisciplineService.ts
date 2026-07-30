@@ -148,33 +148,33 @@ export class DisciplineService implements IDisciplineService{
                     workLoad: target.workLoad,
                     areaId: target.areaId,
                     materials: {
-                        create: target.materials.map((material: Material) => ({
+                        create: target.materials.map((material) => ({
                             name: material.name,
                             disciplineId: id,
                             classId: material.classId
                         }))
                     },
                     competences: {
-                        create: target.competences.map((competence: Compentence) => ({
+                        create: target.competences.map((competence) => ({
                             name: competence.name,
                             numOfClasses: competence.numOfClasses
                         }))
                     },
                     classes: {
-                        create: target.classes.map((item: Class) => ({
+                        create: target.classes.map((item) => ({
                             name: item.name,
                             disciplineId: id,
                             content: item.content
                         }))
                     },
                     exams: {
-                        create: target.exams.map((exam: Exam) => ({
+                        create: target.exams.map((exam) => ({
                             name: exam.name,
                             disciplineId: id,
                             // only duplicates attachments reference to the new disciplne
                             // the files at mongodb are not duplicated
                             attachments: {
-                                create: exam.attachments.map((attachment: any) => ({
+                                create: exam.attachments.map((attachment) => ({
                                     attachmentId: attachment.attachmentId
                                 }))
                             }
@@ -224,7 +224,7 @@ export class DisciplineService implements IDisciplineService{
         
     }
     
-    async findOne(id: number): Promise<number> {
+    async findOne(id: number): Promise<findOneDTO> {
         // variable used to search if the discipline is valid
         const target = await prisma.discipline.findUnique({
             where: { id: id}
@@ -233,8 +233,43 @@ export class DisciplineService implements IDisciplineService{
         if(!target){
             throw new Error("Discipline Not Found");
         }
+        const area = await prisma.area.findUnique({
+            where:{ id: target?.areaId},
+            select:{
+                name: true
+            }
+        });
+        if(!area){
+            throw new Error("Area Not Found");
+        }
+        const competence = await prisma.competence.findMany({
+            where:{
+                classes:{
+                    some:{ id: target?.id} 
+                }
+            },
+            select:{
+                name: true
+            }
+        });
         
-        return target.id
+        const log = await prisma.log.findFirst({
+            where:{
+                entityId: id,
+                entityType: "Discipline"
+            }
+        });
+        
+        const lastUpdate = log?.updatedAt;
+        
+        return {
+            id: target.id,
+            name: target.name,
+            workLoad: target.workLoad,
+            area: area,
+            competences: competence,
+            lastUpdate: lastUpdate,
+        }
     }
 
     async getColor(id: number) : Promise<string> {
@@ -259,7 +294,7 @@ export class DisciplineService implements IDisciplineService{
     }
 
     async viewExams(id: number): Promise<number[]> {
-        const disciplines = await prisma.discipline.findMany({
+        const disciplines = await prisma.discipline.findUnique({
             where:{
                 id: id
             },
@@ -276,12 +311,12 @@ export class DisciplineService implements IDisciplineService{
             throw new Error("Exams Not Found!");
         }
 
-        return disciplines.flatMap(discipline => discipline.exams.map(exam => exam.id))
+        return disciplines.exams.map(({ id }) => id)
     }
 
     async viewClasses(id: number): Promise<number[]> {
         // finds discipline and selects it's classes
-        const disciplines = await prisma.discipline.findMany({
+        const disciplines = await prisma.discipline.findUnique({
             where:{
                 id: id
             },
@@ -298,12 +333,12 @@ export class DisciplineService implements IDisciplineService{
             throw new Error("Classes Not Found!");
         }
 
-        return disciplines.flatMap(discipline => discipline.classes.map(item => item.id))
+        return disciplines.classes.map(({ id }) => id)
     }
 
     async viewMaterials(disciplineID: number): Promise<number[]> {
         // finds discipline and selects it's materials
-        const disciplines = await prisma.discipline.findMany({
+        const disciplines = await prisma.discipline.findUnique({
             where:{
                 id: disciplineID
             },
@@ -320,12 +355,12 @@ export class DisciplineService implements IDisciplineService{
             throw new Error("Materials Not Found!");
         }
 
-        return disciplines.flatMap(discipline => discipline.materials.map(material => material.id))
+        return disciplines.materials.map(({ id }) => id)
     }
 
     async viewCompetences(disciplineID: number): Promise<number[]> {
         // finds discipline and selects it's competences
-        const disciplines = await prisma.discipline.findMany({
+        const disciplines = await prisma.discipline.findUnique({
             where:{
                 id: disciplineID
             },
@@ -339,10 +374,10 @@ export class DisciplineService implements IDisciplineService{
         });
 
         if(!disciplines) {
-            throw new Error("COmpetences Not Found!");
+            throw new Error("Competences Not Found!");
         }
 
-        return disciplines.flatMap(discipline => discipline.competences.map(competence => competence.id))
+        return disciplines.competences.map(({ id }) => id)
     }
 
     async delete(disciplineID: number, userId: number): Promise<boolean> {
