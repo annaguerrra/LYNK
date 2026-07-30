@@ -1,7 +1,7 @@
 import { changePasswordDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { UserType } from "#infrastructure/prisma/generated/prisma/enums.js";
 import { UserService } from "#infrastructure/services/User/UserService.js";
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 
 export default class UserController {
     constructor (
@@ -53,6 +53,17 @@ export default class UserController {
         } catch(e) {
             console.log(e)
             return res.status(400).send({ response: "Failed to Login"});
+        }
+    }
+
+    // GET
+    // get all users
+    async showAll(req: Request, res: Response) {
+        try {
+            const users = await this.userService.showAll()
+            return res.status(200).send({ response: users })
+        } catch (e) {
+            return res.status(404).send({ response: "Users not found!" })
         }
     }
 

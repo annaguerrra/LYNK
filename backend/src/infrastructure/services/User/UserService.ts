@@ -1,4 +1,4 @@
-import { changePasswordDTO, loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
+import { changePasswordDTO, loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showAllDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { IUserService } from "#application/services/User/IUser.service.js";
 import { Student, Instructor, Admin, UserType } from "#infrastructure/prisma/generated/prisma/client.js";
 import { Error } from "mongoose";
@@ -388,6 +388,16 @@ export class UserService implements IUserService {
             console.log(e);
         }
         return true;
+    }
+
+    async showAll(): Promise<showAllDTO> {
+        const students = await prisma.student.findMany()
+        const instructors = await prisma.instructor.findMany()
+        const admins = await prisma.admin.findMany()
+        
+        return {
+            students, instructors, admins
+        }
     }
     
     // returns all the students/ instructors / admin registered on the database

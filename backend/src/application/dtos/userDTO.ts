@@ -58,7 +58,6 @@ export interface showStudentDTO {
 
 // response to showInstructor service
 export interface showInstructorDTO {
-
     id: number
     username: string
     userType: UserType
@@ -99,4 +98,28 @@ export interface updateAdminDTO {
     specialty: Specialties
     active: boolean
     file: UploadedFile
+}
+
+export interface showAllDTO {
+    students: {
+        id: number
+        username: string
+        userType: UserType
+    }[] | null,
+    instructors: {
+        id: number
+        username: string
+        userType: UserType
+        specialty: Specialties
+        active: boolean
+        attachmentId: string | null
+    }[] | null,
+    admins: {
+        id: number
+        username: string
+        userType: UserType
+        specialty: Specialties
+        active: boolean
+        attachmentId: string | null
+    }[] | null
 }
