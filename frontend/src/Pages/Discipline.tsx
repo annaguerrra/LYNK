@@ -11,10 +11,13 @@ import { useEffect, useState } from "react";
 import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
-import { createDisciplineService, getDisciplines } from "../Services/disciplinesService";
+import { createDisciplineService, getDisciplines, duplicateDiscipline } from "../Services/disciplinesService";
+
 import type { DisciplinesDTO, createDiscipline } from "../Types/disciplineDTOS";
 import type { AreaDTO } from "../Types/area";
 import { getAreas } from "../Services/areasService";
+import type { registerUserDTO } from "../Types/user";
+import { createUser } from "../Services/userService";
 
 
 export function Discipline() {
@@ -53,6 +56,11 @@ export function Discipline() {
     const { user } = useAuth();
     const isAdmin = user?.role === "ADMIN";
     const isInstructor = user?.role === "INSTRUCTOR";
+    const [username, setUsername] = useState("")
+    const [userPassword, setUserPassword] = useState("")
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [userType, setUserType] = useState("STUDENT");
 
     //Options for the option buttons
     const options = [
@@ -111,6 +119,8 @@ export function Discipline() {
         },
     ];
 
+        //---------------------- From Disciplines Services ----------------------------------------------------------------
+
     async function loadAreas() {
         try {
             const response = await getAreas();
@@ -146,7 +156,34 @@ export function Discipline() {
         loadDisciplines();
     }, []);
 
+    async function duplicate( id: number) {
+        try {
+            const response = await duplicateDiscipline(id);
+            console.log(response);
 
+            await loadDisciplines();
+        } catch (error) {
+            console.log(error);
+        }
+    }   
+    
+    //---------------------- From User Services ---------------------------------------------------------------- 
+
+    async function createUserf( data: registerUserDTO) {
+        try {
+            const response = await createUser(data);
+
+            setNewUserModal(false);
+            setUsername("");
+            setNewPassword("");
+            setUserPassword("");
+            setConfirmPassword("");
+            setUserType("STUDENT");
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <>
@@ -241,7 +278,11 @@ export function Discipline() {
                         {/* Select for user type */}
                         <div className="textBox">
                             <h2>Selecione o tipo de usuário</h2>
-                            <select name="" id="" className="selectFilter">
+                            <select name="" id="" 
+                                className="selectFilter"
+                                value={userType}
+                                onChange={(e) => setUserType(e.target.value)}
+                                >
                                 <option value="ADMIN">Administrador</option>
                                 <option value="INSTRUCTOR">Instrutor</option>
                                 <option value="STUDENT" selected>Aluno</option>
@@ -250,11 +291,17 @@ export function Discipline() {
                         {/* Input for username */}
                         <div className="textBox">
                             <h2>Nome do usuário</h2>
-                            <input type="text" />
+                            <input type="text" value={username}/>
                         </div>
                         {/* Input for user password */}
                         <div className="textBox">
                             <h2>Senha do usuário</h2>
+                            <input type="password" />
+                        </div>
+                         {/* Input for user password confirmation */}
+                        <div className="textBox">
+                            <h2>Confirmar senha do usuári.
+                                3,                                                                                                          'o</h2>
                             <input type="password" />
                         </div>
 
