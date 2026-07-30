@@ -46,7 +46,7 @@ export function ExamsView() {
                     actions={
                         <>
                             <ButtonIcon icon="icon-download" size={28} onClick={() => navigate("/")} />
-                            {isAdmin || isInstructor &&
+                            {(isAdmin || isInstructor) &&
                                 <MoreOpt size={22} data={[]} />
                             }
                         </>

@@ -91,7 +91,7 @@ export function CompetencesView({ disciplineId }: CompetencesViewProps) {
                         button={true}
                         actions={
                             <>
-                                {isAdmin || isInstructor &&
+                                {(isAdmin || isInstructor) &&
                                     <MoreOpt size={22} data={
                                         [
                                             {
