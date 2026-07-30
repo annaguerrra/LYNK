@@ -18,6 +18,10 @@ import LessonSelect from "../Components/LessonSelect";
 import { useParams } from "react-router-dom";
 import api from "../Services/api";
 import { useAuth } from "../Contexts/AuthContext";
+import { isAxiosError } from "axios";
+import { toast } from "react-toastify";
+import { getDisciplineById } from "../Services/disciplinesService";
+import type { DisciplineDTO } from "../Types/disciplineDTOS";
 
 export function Content() {
     //Variables to navigate and open modals
@@ -29,11 +33,11 @@ export function Content() {
     const [editCompetence, setEditCompetence] = useState(false);
     const [excludeTestModal, setExcludeTestModal] = useState(false);
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
-    const [discipline, setDiscipline] = useState(null);
 
+    const [discipline, setDiscipline] = useState<DisciplineDTO | null>(null);
 
     const { discipline_id } = useParams();
-    
+
     //Variables to control the users and its interactions
     const { user } = useAuth();
     const isAdmin = user?.role === "ADMIN";
@@ -62,25 +66,44 @@ export function Content() {
         { id: "exams", label: "Avaliações" },
     ];
 
-    if (!discipline) {
-        return <div>Carregando...</div>;
-    }
-
-    async function loadContent() {
+    async function loadContent(id: number) {
         try {
-            const response = await api.get(`/disipline/${discipline_id}`);
-            setDiscipline(response.data);
+            const response = await getDisciplineById(id);
+
+            setDiscipline(response);
+
         } catch (error) {
+            if (isAxiosError(error)) {
+
+                if (error.response?.status === 404) {
+                    toast.error("404 - Disciplina não encontrada.");
+                    navigate("/error");
+                    return;
+                }
+
+                if (error.response?.status === 500) {
+                    toast.error("500 - Erro de servidor.");
+                    return;
+                }
+            }
+
             console.error(error);
-            navigate("/error")
+            toast.error("Erro ao carregar disciplina.");
         }
     }
+
 
     useEffect(() => {
+        if (!discipline_id) return;
 
-        if (discipline_id) {
-            loadContent();
+        const id = Number(discipline_id);
+
+        if (isNaN(id)) {
+            navigate("/error");
+            return;
         }
+
+        loadContent(id);
 
     }, [discipline_id]);
 
@@ -109,7 +132,7 @@ export function Content() {
                         onChange={setSelectedTab} tabs={tabs} />
 
                     {selectedTab === "classes" && <ClassesView classes />}
-                    {selectedTab === "competences" && <CompetencesView competences={discipline.competences ?? []} />}
+                    {selectedTab === "competences" && <CompetencesView competences={discipline!.competences} />}
                     {selectedTab === "exams" && <ExamsView />}
 
 
@@ -183,7 +206,7 @@ export function Content() {
                 </div>
             )}
 
-{/* -------------------------------------------------------- COMPETENCE MODALS -------------------------------------------------------- */}
+            {/* -------------------------------------------------------- COMPETENCE MODALS -------------------------------------------------------- */}
             {newCompetence && (
                 <div className="modalOverlay" onClick={() => setNewCompetence(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>

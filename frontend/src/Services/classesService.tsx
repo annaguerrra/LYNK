@@ -1,4 +1,4 @@
-import type { ClassesDTO, ClassDTO, assignCompetencyDTO } from "../Types/class";
+import type { ClassesDTO, ClassDTO, assignCompetencyDTO, editClass } from "../Types/class";
 import api from "./api";
 
 // Get all classes
@@ -20,7 +20,7 @@ export async function createClass(data: ClassDTO) {
 }
 
 // Update a class
-export async function updateClass(id: number, data: ClassDTO) {
+export async function updateClass(id: number, data: editClass) {
     const response = await api.put(`/class/edit/${id}`, data);
     return response.data.response;
 }
@@ -40,12 +40,6 @@ export async function getClassMaterials(id: number) {
 // Get all competences from a class
 export async function getClassCompetences(id: number) {
     const response = await api.get(`/class/${id}/competences`);
-    return response.data;
-}
-
-// Get all content from a class
-export async function getClassContent(id: number) {
-    const response = await api.get(`/class/${id}/content`);
     return response.data;
 }
 

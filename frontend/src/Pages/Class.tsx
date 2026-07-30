@@ -36,10 +36,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { InputFile } from '../Components/InputFile'
 import LessonSelect from '../Components/LessonSelect'
 import { useAuth } from '../Contexts/AuthContext'
-import api from '../Services/api'
 
 import type { ClassDTO } from '../Types/class'
-import { getClassById } from '../Services/classesService'
+import { getClassById, updateClass } from '../Services/classesService'
 import { toast } from 'react-toastify'
 import { isAxiosError } from 'axios'
 
@@ -137,14 +136,41 @@ export function Class() {
     }, [class_id]);
 
     useEffect(() => {
-    if (!classItem || isContentLoaded) return;
+        if (!classItem || isContentLoaded) return;
 
-    setTitleClass(classItem.name);
-    setContent(classItem.content);
-    setIsContentLoaded(true);
+        setTitleClass(classItem.name);
+        setContent(classItem.content);
+        setIsContentLoaded(true);
 
-}, [classItem]);
+    }, [classItem]);
 
+
+    async function saveClass() {
+        if (!classItem) return;
+
+        const data = {
+            name: titleClass,
+            content: content
+        };
+
+        try {
+            await updateClass(classItem.id, data);
+
+            toast.success("Aula alterada com sucesso!");
+            setEditMode(false);
+
+        } catch (error) {
+            if (isAxiosError(error)) {
+                if (error.response?.status === 403) {
+                    toast.error("403 - Você não tem permissão para esta ação.");
+                    return;
+                }
+            }
+
+            console.error(error);
+            toast.error("Erro ao salvar alterações.");
+        }
+    }
 
 
 
@@ -226,7 +252,7 @@ export function Class() {
 
                                                     </div>
                                                     <div className='toolbar-end'>
-                                                        <button onClick={() => setEditMode(false)}>Salvar</button>
+                                                        <button onClick={() => saveClass()}>Salvar</button>
                                                     </div>
                                                 </div>
                                             )
@@ -241,6 +267,7 @@ export function Class() {
                         <div className='attachmentsContent'>
                             <span className='subtitle'>Anexos</span>
                             <div className='attachments'>
+                                
                                 <RowItem
                                     type='class'
                                     actions={
@@ -252,7 +279,7 @@ export function Class() {
                                         </>
                                     }>
 
-                                    <div>Material_aaa00 drgrdgrd rdg rdg rdg rdgrdg dr gdr grdgr  dgdrgdrg r</div>
+                                    <div>Material_aaa00</div>
                                 </RowItem>
 
                                 {isAdmin || isInstructor && editMode &&

@@ -1,7 +1,6 @@
 // used to create a discipline
 export interface createDiscipline{
     name: string
-    workload: number
     areaID: number
     userID: number
 }
@@ -59,6 +58,7 @@ export interface viewCompetencesDTO{
 export interface viewClassesDTO{
     name: string
     classes:{
+        id: number
         name: string
     }[];
 }
