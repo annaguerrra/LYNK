@@ -1,17 +1,20 @@
+import { authMiddleware } from '#api/middleware/authMiddleware.js';
 import { authorize } from '#api/middleware/authorize.js';
 import { validateCompetence, validateRegister, validateUpdate } from '#api/middleware/disciplineMiddleware.js';
 import { makeDisciplineController } from '#infrastructure/Factories/DisciplineFactory.js';
+import { JwtTokenService } from '#infrastructure/services/Authetication/JwtToken.service.js';
 import { UserType } from '#infrastructure/src/generated/prisma/enums.js';
 import { Router } from 'express';
 import express from 'express';
 
 const router: Router = express.Router()
+const jwt = new JwtTokenService()
 
 const disciplineController = makeDisciplineController()
 
 router
     // route to create discipline
-   .post('/discipline/create', authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, disciplineController.create.bind(disciplineController))
+   .post('/discipline/create', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateRegister, disciplineController.create.bind(disciplineController))
    .post('/discipline/:id/duplicate', authorize(UserType.ADMIN, UserType.INSTRUCTOR), disciplineController.duplicateDiscipline.bind(disciplineController))
    .get('/disciplines', disciplineController.findAll.bind(disciplineController))
     // route to show a discipline

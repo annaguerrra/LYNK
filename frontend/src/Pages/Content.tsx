@@ -21,7 +21,7 @@ import { useAuth } from "../Contexts/AuthContext";
 import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
 import { getDisciplineById } from "../Services/disciplinesService";
-import type { DisciplineDTO } from "../Types/disciplineDTOS";
+import type { DisciplineDTO } from "../Types/discipline";
 
 export function Content() {
     //Variables to navigate and open modals

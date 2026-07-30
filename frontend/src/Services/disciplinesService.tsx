@@ -9,10 +9,11 @@ import type {
     viewCompetencesDTO, 
     editDisciplineDTO, 
     assignCompetencyDTO 
-} from "../Types/disciplineDTOS";
+} from "../Types/discipline";
 
 // Create a new discipline
 export async function createDisciplineService(data: createDiscipline) {
+    console.log(data)
     const response = await api.post("/discipline/create", data);
     return response.data;
 }

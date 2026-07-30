@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { createDisciplineService, getDisciplines, duplicateDiscipline } from "../Services/disciplinesService";
 
-import type { DisciplinesDTO, createDiscipline } from "../Types/disciplineDTOS";
+import type { DisciplinesDTO, createDiscipline } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
 import type { registerUserDTO } from "../Types/user";
@@ -182,7 +182,6 @@ export function Discipline() {
     async function createDisc(data: createDiscipline) {
         try {
             const response = await createDisciplineService(data);
-            console.log(response);
 
             await loadDisciplines();
             setNewDisciplineModal(false);
@@ -192,22 +191,22 @@ export function Discipline() {
         }
     }
 
-    useEffect(() => {
-        loadAreas();
-        loadDisciplines();
-    }, []);
-
+    
     async function duplicate(id: number) {
         try {
             const response = await duplicateDiscipline(id);
             console.log(response);
-
+            
             await loadDisciplines();
         } catch (error) {
             console.log(error);
         }
     }
-
+    
+    useEffect(() => {
+        loadAreas();
+        loadDisciplines();
+    }, []);
     //---------------------- From User Services ---------------------------------------------------------------- 
 
     async function createUserf(data: registerUserDTO) {
@@ -242,7 +241,7 @@ export function Discipline() {
                         <form>
                             <select name="" id="" className="selectFilter" defaultValue="Mecânica">
                                 {areas.map((area) => (
-                                    <option key={area.id} value={area.id}>{area.id}</option>
+                                    <option key={area.id} value={area.id}>{area.name}</option>
                                 ))}
                                
                             </select>
@@ -287,14 +286,14 @@ export function Discipline() {
                             >
                                 {areas.map((area) => (
                                     <option key={area.id} value={area.id}>
-                                        {area.id}
+                                        {area.name}
                                     </option>
                                 ))}
                             </select>
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => createDisc({
-                            name: disciplineName, areaID: areaId, userID: user!.userId
+                            name: disciplineName, areaID: areaId
                         })}></Button>
                     </div>
                 </div>
@@ -501,6 +500,7 @@ export function Discipline() {
                                             setAreaName(area.name);
                                             setAreaCor(area.color);
                                             setEditAreaModal(true);
+                                            setAreasModal(false);
                                         },
                                     },
                                     {
@@ -508,6 +508,7 @@ export function Discipline() {
                                         onClick: () => {
                                             setSelectedAreaId(area.id);
                                             setExcludeAreaModal(true);
+                                            setAreasModal(false);
                                         },
                                     },
                                 ]}
@@ -532,7 +533,7 @@ export function Discipline() {
                         {/* Input for the area name */}
                         <div className="textBox">
                             <h2>Nome da área</h2>
-                            <input type="text" />
+                            <input type="text" value={areaName} onChange={(e) => setAreaName(e.target.value)}/>
                         </div>
                         {/* Select for the area color */}
                         <div className="textBox">
@@ -547,7 +548,14 @@ export function Discipline() {
                             </select>
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => setEditAreaModal(false)}></Button>
+                        <Button ButtonTitle={"Enviar"}  onClose={() => {
+                            if (selectedAreaId !== null) {
+                            editArea(selectedAreaId, {
+                                name: areaName,
+                                color: areaColor,
+                            });
+                            }}}>
+                        </Button>
                     </div>
                 </div>
             )}
@@ -557,10 +565,13 @@ export function Discipline() {
                 <div className="modalExcludeOverlay" onClick={() => setExcludeAreaModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
-                        <p>Deseja excluir a área?</p>
+                        <p>Deseja excluir a área {areaName}?</p>
 
                         <div className="buttonsBox">
-                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeAreaModal(false)}></ButtonExclude>
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => {
+                                if (selectedAreaId !== null) {
+                                    deleteAreas(selectedAreaId);
+                                }}}></ButtonExclude>
                             <br />
                             <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeAreaModal(false)}></ButtonCancel>
                         </div>
