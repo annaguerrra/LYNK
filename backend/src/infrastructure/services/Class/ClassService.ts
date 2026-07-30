@@ -1,4 +1,4 @@
-import { assignCompetencyDTO, ClassDTO, getContentDTO, viewMaterialsDTO, editClass, findAllDTO, viewCompetencesDTO, viewContentDTO } from "#application/dtos/classDTO.js";
+import { assignCompetencyDTO, ClassDTO, getContentDTO, viewMaterialsDTO, editClass, findAllDTO, viewCompetencesDTO, viewContentDTO, findOneDTO } from "#application/dtos/classDTO.js";
 import { IClassService } from "#application/services/Class/IClass.service.js";
 import { Class, Competence, Material } from "#infrastructure/prisma/generated/prisma/client.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
@@ -96,9 +96,35 @@ export class ClassService implements IClassService{
         return classes
     }
 
-    async findOne(id: number): Promise<Class>{
-        const target = await prisma.class.findFirst({
-            where:{id}
+    async findOne(id: number): Promise<findOneDTO>{
+        const target =  await prisma.class.findUnique({
+            where: {
+                id: id
+            },
+            select:{
+                id: true,
+                name: true,
+                content: true,
+                createdAt: true,
+                discipline: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                competences: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                materials: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                }
+            }
         });
 
         if(!target){

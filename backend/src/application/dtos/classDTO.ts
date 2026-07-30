@@ -34,6 +34,25 @@ export interface findAllDTO {
     }[];
 }
 
+export interface findOneDTO {
+    id: number
+    name: string;
+    content: string;
+    createdAt: Date;
+    discipline: {
+        id: number;
+        name: string;
+    };
+    competences: {
+        id: number;
+        name: string;
+    }[];
+    materials: {
+        id: number;
+        name: string;
+    }[];
+}
+
 export interface viewMaterialsDTO{
     materials: {
         id: number
