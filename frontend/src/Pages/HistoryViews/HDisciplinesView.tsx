@@ -19,13 +19,19 @@ export function HDisciplinesView() {
     useEffect(() => {
         loadHDisicpline();
     }, []);
-
+// 
     const actionColors = {
-        CREATE: "var(--green)",
-        PUT: "var(--blue)",
-        DELETE: "var(--red)",
+        CREATED: "var(--green)",
+        UPDATED: "var(--blue)",
+        DELETED: "var(--red)",
     };
 
+    const actionsName = {
+        CREATED: "CRIADO",
+        UPDATED: "EDITADO",
+        DELETED: "DELETADO",
+    };
+    
     return (
         <>
             <div className="view-page">
@@ -35,16 +41,17 @@ export function HDisciplinesView() {
                     size="--medium"
                     userAction={
                         <>
+                            <span>{actionsName[hdiscipline.action]} por</span>
                             <img
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
+                            <span>{hdiscipline.username}</span>
 
-                            <span>{hdiscipline.updatedAt.toLocaleDateString("pt-BR")}</span>
-                            <span> | </span>
-                            <span>{hdiscipline.updatedAt.toLocaleDateString("pt-BR")}</span>
+                            <span>{hdiscipline.updatedAt 
+                                ? new Date(hdiscipline.updatedAt).toLocaleDateString("pt-BR")
+                                : "Sem data"}</span>
                         </>
                     }>
-
                     <span>{hdiscipline.entityName}</span>
 
                 </RowItem>

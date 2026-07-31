@@ -1,26 +1,20 @@
 // used to create a discipline
 export interface createDiscipline{
-    name: string
     areaID: number
+    name: string
 }
 
 // used to assign a competency to a discipline
 export interface assignCompetencyDTO{
-    disciplineID: number
-    competencyID: number
+    disciplineId: number
+    competencyId: number
 }
 
-// response to findAll service
-export interface DisciplinesDTO{
+export interface DisciplineBasic {
+    id: number
     name: string
-    area:{
-        name: string;
-    } | null,
-    competences: {
-        name: string
-    }[];
-    lastUpdate: Date | null;
 }
+
 
 // response to findOne service
 export interface DisciplineDTO{
@@ -28,7 +22,9 @@ export interface DisciplineDTO{
     id: number;
     workLoad: number;
     area:{
+        id: number
         name: string
+        color: string
     };
     competences: {
         name: string

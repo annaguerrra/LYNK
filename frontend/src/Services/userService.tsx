@@ -4,7 +4,8 @@ import type {
     showStudentDTO, 
     showPrivilegedUserDTO,
     updateStudentDTO,
-    updatePrivilegedUserDTO
+    updatePrivilegedUserDTO,
+    resetPasswordDTO
 } from "../Types/user";
 
 
@@ -12,6 +13,16 @@ import type {
 export async function createUser(data: registerUserDTO) {
     const response = await api.post("/user/create", data);
     return response.data;
+}
+
+// Get all users
+export async function getUsers(): Promise<showStudentDTO[]> {
+    const response = await api.get("/user/showAll");
+    return [
+        ...response.data.response.students,
+        ...response.data.response.instructors,
+        ...response.data.response.admins,
+    ];
 }
 
 // Get all students
@@ -74,6 +85,11 @@ export async function updateAdmin(
     data: updatePrivilegedUserDTO
 ) {
     const response = await api.put(`/user/updateAdmin/${id}`, data);
+    return response.data;
+}
+
+export async function resetPassword(data: resetPasswordDTO){
+    const response = await api.put(`user/change-password`, data);
     return response.data;
 }
 

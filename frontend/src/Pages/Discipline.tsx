@@ -7,29 +7,24 @@ import { Button } from "../Components/Button";
 import { ButtonClose } from "../Components/ButtonClose";
 import { ButtonExclude } from "../Components/ButtonExclude";
 import { ButtonCancel } from "../Components/ButtonCancel";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { createDisciplineService, getDisciplines, duplicateDiscipline } from "../Services/disciplinesService";
-
-import type { DisciplinesDTO, createDiscipline } from "../Types/discipline";
+import { toast } from "react-toastify";
+import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
-import type { registerUserDTO } from "../Types/user";
+import type { registerUserDTO, UserType } from "../Types/user";
 import { createUser } from "../Services/userService";
 
 
 export function Discipline() {
     //Variables to navigate and open modals
     const navigate = useNavigate();
-    const cores = {
-        Roxo: "var(--purple)",
-        Verde: "var(--green)",
-        VerdeAgua: "var(--acqua)",
-    };
-
-    const [disciplines, setDisciplines] = useState<DisciplinesDTO[]>([])
+    const [disciplines, setDisciplines] = useState<DisciplineDTO[]>([])
+    const [selectedAreaFilter, setSelectedAreaFilter] = useState<number | null>(null)
 
 
     const [newDisciplineModal, setNewDisciplineModal] = useState(false);
@@ -48,11 +43,12 @@ export function Discipline() {
     const { user } = useAuth();
     const isAdmin = user?.role === "ADMIN";
     const isInstructor = user?.role === "INSTRUCTOR";
+    const [userId, setUserId] = useState()
     const [username, setUsername] = useState("")
     const [userPassword, setUserPassword] = useState("")
     const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [userType, setUserType] = useState("STUDENT");
+    const [repeatPassword, setRepeatPassword] = useState("");
+    const [userType, setUserType] = useState<UserType>("STUDENT");
 
 
     //Options for the option buttons
@@ -83,39 +79,11 @@ export function Discipline() {
         },
     ];
 
-    const userOpt = [
-        {
-            name: "Editar usuário",
-            onClick: () => { setEditStudentModal(true), setUsersModal(false) }
-        },
-        {
-            name: "Excluir usuário",
-            onClick: () => { setExcludeUserModal(true), setUsersModal(false) },
-            color: "red"
-        },
-        {
-            name: "Resetar senha",
-            onClick: () => { setResetPasswordModal(true), setUsersModal(false) },
-            color: "red"
-        },
-    ];
-
-    const areasOpt = [
-        {
-            name: "Editar área",
-            onClick: () => { setEditAreaModal(true), setAreasModal(false) }
-        },
-        {
-            name: "Excluir área",
-            onClick: () => { setExcludeAreaModal(true), setAreasModal(false) },
-            color: "red",
-        },
-    ];
 
     //---------------------- From Area Services ---------------------------------------------------------------- 
     //Inputs to create and edit a area
     const [areaName, setAreaName] = useState("")
-    const [areaColor, setAreaCor] = useState("Roxo");
+    const [areaColor, setAreaCor] = useState("#9E2896");
     const [selectedAreaId, setSelectedAreaId] = useState<number | null>(null);
 
     async function loadAreas() {
@@ -131,23 +99,28 @@ export function Discipline() {
         try {
             await createArea(data);
             await loadAreas();
-
+            toast.success("Área criada com sucesso!");
+            
             setNewAreaModal(false);
             setAreaName("")
         } catch (error) {
+            toast.error("Não foi possivel criar a área!");
             console.error(error);
         }
     }
-
+    
     async function editArea(id: number, data: updateAreaDTO) {
         try {
             await updateArea(id, data);
             await loadAreas();
+            toast.success("Área editada com sucesso!");
 
             setEditAreaModal(false);
             setAreaName("")
         } catch (error) {
-            console.error(error);
+            toast.error("Não foi possivel editar a área!");
+            console.log(error.response?.status);
+            console.log(error.response?.data);
         }
     }
 
@@ -155,9 +128,11 @@ export function Discipline() {
         try {
             await deleteArea(id);
             await loadAreas();
+            toast.success("Área deletada com sucesso!");
 
             setExcludeAreaModal(false);
         } catch (error) {
+            toast.error("Não foi possivel deletar a área!");
             console.error(error);
         }
     }
@@ -167,7 +142,7 @@ export function Discipline() {
     //Inputs to create and edit a discipline
     const [disciplineName, setDisciplineName] = useState("")
     const [areas, setAreas] = useState<AreaDTO[]>([]);
-    const [areaId, setAreaId] = useState<number>(0);
+    const [areaId, setAreaId] = useState(1);
 
 
     async function loadDisciplines() {
@@ -181,12 +156,14 @@ export function Discipline() {
 
     async function createDisc(data: createDiscipline) {
         try {
-            const response = await createDisciplineService(data);
+            toast.success("Disciplina criada com sucesso!");
+            await createDisciplineService(data);
 
             await loadDisciplines();
             setNewDisciplineModal(false);
             setDisciplineName("")
         } catch (error) {
+            toast.error("Não foi possivel criar a disciplina!");
             console.error(error);
         }
     }
@@ -194,6 +171,7 @@ export function Discipline() {
     
     async function duplicate(id: number) {
         try {
+            toast.success("Disciplina duplicada com sucesso!");
             const response = await duplicateDiscipline(id);
             console.log(response);
             
@@ -202,14 +180,46 @@ export function Discipline() {
             console.log(error);
         }
     }
+
+    const filteredDisciplines =
+        selectedAreaId === null
+            ? disciplines
+            : disciplines.filter(
+                (discipline) => discipline.area.id === selectedAreaId
+            );
     
     useEffect(() => {
         loadAreas();
-        loadDisciplines();
     }, []);
-    //---------------------- From User Services ---------------------------------------------------------------- 
 
-    async function createUserf(data: registerUserDTO) {
+    useEffect(() => {
+        loadDisciplines();
+    }, [areas]);
+
+    useEffect(() => {
+        if (usersModal) {
+            loadUsers();
+        }
+    }, [usersModal]);
+    //---------------------- From User Services ---------------------------------------------------------------- 
+    const [showUsers, setShowUsers] = useState<showStudentDTO[]>([])
+    
+    async function loadUsers() {
+        try {
+            const response = await getUsers();
+            setShowUsers(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    async function createUserf() {
+        const data: registerUserDTO = {
+            username: username,
+            password: newPassword,
+            repeatPassword: repeatPassword,
+            userType: userType
+        }
         try {
             const response = await createUser(data);
 
@@ -217,7 +227,7 @@ export function Discipline() {
             setUsername("");
             setNewPassword("");
             setUserPassword("");
-            setConfirmPassword("");
+            setRepeatPassword("");
             setUserType("STUDENT");
             console.log(response);
             setNewDisciplineModal(false);
@@ -225,6 +235,7 @@ export function Discipline() {
             console.log(error);
         }
     }
+
 
     return (
         <>
@@ -239,11 +250,22 @@ export function Discipline() {
                     <div className="filters">
                         {/* Filter for areas */}
                         <form>
-                            <select name="" id="" className="selectFilter" defaultValue="Mecânica">
+                            <select
+                                className="selectFilter"
+                                value={selectedAreaId ?? ""}
+                                onChange={(e) =>
+                                    setSelectedAreaId(
+                                    e.target.value === "" ? null : Number(e.target.value)
+                                    )
+                                }
+                                >
+                                <option value="">Selecione uma área</option>
+
                                 {areas.map((area) => (
-                                    <option key={area.id} value={area.id}>{area.name}</option>
+                                    <option key={area.id} value={area.id}>
+                                    {area.name}
+                                    </option>
                                 ))}
-                               
                             </select>
                         </form>
                         
@@ -254,10 +276,13 @@ export function Discipline() {
                 </div>
                 {/* Box for all the disciplines display */}
                 <div className="disciplinesContainer">
-                    {disciplines.map((discipline) => (
-                        <DisciplineComp Discipline={discipline}></DisciplineComp>
+                    {filteredDisciplines.map((discipline) => (
+                        <DisciplineComp
+                        key={discipline.id}
+                        Discipline={discipline}
+                        />
                     ))}
-                </div>
+                    </div>
             </div>
 
             {/* -------------------------------------------------------- DISCIPLINES MODALS -------------------------------------------------------- */}
@@ -304,41 +329,56 @@ export function Discipline() {
             {(newUserModal && isAdmin) && (
                 <div className="modalOverlay" onClick={() => setNewUserModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                        {/* Title and close button box */}
+
                         <div className="titleContainer">
                             <h1>Registrar usuário</h1>
-                            <ButtonClose size={40} onClose={() => setNewUserModal(false)}></ButtonClose>
+                            <ButtonClose size={40} onClose={() => setNewUserModal(false)} />
                         </div>
-                        {/* Select for user type */}
+
                         <div className="textBox">
                             <h2>Selecione o tipo de usuário</h2>
-                            <select name="" id=""
+                            <select
                                 className="selectFilter"
                                 value={userType}
-                                onChange={(e) => setUserType(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setUserType(e.target.value as UserType)}
                             >
                                 <option value="ADMIN">Administrador</option>
                                 <option value="INSTRUCTOR">Instrutor</option>
-                                <option value="STUDENT" selected>Aluno</option>
+                                <option value="STUDENT">Aluno</option>
                             </select>
                         </div>
-                        {/* Input for username */}
+
                         <div className="textBox">
                             <h2>Nome do usuário</h2>
-                            <input type="text" onChange={(e) => setUserPassword(e.target.value)} />
-                        </div>
-                        {/* Input for user password */}
-                        <div className="textBox">
-                            <h2>Senha do usuário</h2>
-                            <input type="password" onChange={(e) => setUserPassword(e.target.value)} />
-                        </div>
-                        {/* Input for user password confirmation */}
-                        <div className="textBox">
-                            <h2>Confirmar senha do usuário</h2>
-                            <input type="password" onChange={(e) => setUserPassword(e.target.value)} />
+                            <input
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => createUserf}></Button>
+                        <div className="textBox">
+                            <h2>Senha do usuário</h2>
+                            <input
+                                type="password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="textBox">
+                            <h2>Confirmar senha do usuário</h2>
+                            <input
+                                type="password"
+                                value={repeatPassword}
+                                onChange={(e) => setRepeatPassword(e.target.value)}
+                            />
+                        </div>
+
+                        <Button
+                            ButtonTitle={"Enviar"}
+                            onClose={() => createUserf()}
+                        />
                     </div>
                 </div>
             )}
@@ -354,54 +394,31 @@ export function Discipline() {
                         </div>
                         {/* Users display */}
                         <div className="itemsBox">
-                            <RowItem color='var(--green)'>
-                                <div className="itemText">
-                                    <p>Manufatura_20252</p>
-                                </div>
-                                <MoreOpt data={userOpt} size={25}></MoreOpt>
-                            </RowItem>
-                            <RowItem color='var(--green)'>
-                                <div className="itemText">
-                                    <p>Manufatura_20252</p>
-                                </div>
-                                <MoreOpt data={userOpt} size={25}></MoreOpt>
-                            </RowItem>
+                            {showUsers.map((users) => (
+                                <RowItem color={"#000000"}>
+                                    <div className="itemText">
+                                        <p>{users.username} | {users.userType}</p>
+                                    </div>
+                                    {/* Ignore the error, it is working */}
+                                    <MoreOpt
+                                        size={25}
+                                        data={[
+                                            {
+                                                name: "Excluir",
+                                                onClick: () => {
+                                                    setUserId(users.id);
+                                                    setUsername(users.username);
+                                                    setUserType(users.userType);
+                                                    setExcludeUserModal(true);
+                                                    setUsersModal(false);
+                                                },
+                                            },
+                                        ]}
+                                    />
+                                </RowItem>
+                            ))}
                         </div>
-                        <div></div>
-                    </div>
-                </div>
-            )}
-
-            {/* Modal to edit a user */}
-            {(editStudentModal && isAdmin) && (
-                <div className="modalOverlay" onClick={() => setEditStudentModal(false)}>
-                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                        {/* Title and close button box */}
-                        <div className="titleContainer">
-                            <h1>Editar usuário</h1>
-                            <ButtonClose size={40} onClose={() => setEditStudentModal(false)}></ButtonClose>
-                        </div>
-                        {/* Select the user type */}
-                        <div className="textBox">
-                            <h2>Selecione o tipo de usuário</h2>
-                            <select name="" id="" className="selectFilter">
-                                <option value="Administrador">Administrador</option>
-                                <option value="Instrutor">Instrutor</option>
-                                <option value="Aluno" selected>Aluno</option>
-                            </select>
-                        </div>
-                        {/* Input for the username */}
-                        <div className="textBox">
-                            <h2>Nome do usuário</h2>
-                            <input type="text" />
-                        </div>
-                        {/* Input for the user password */}
-                        <div className="textBox">
-                            <h2>Senha do usuário</h2>
-                            <input type="password" />
-                        </div>
-
-                        <Button ButtonTitle={"Enviar"} onClose={() => setEditStudentModal(false)}></Button>
+                    <div></div> 
                     </div>
                 </div>
             )}
@@ -411,10 +428,10 @@ export function Discipline() {
                 <div className="modalExcludeOverlay" onClick={() => setExcludeUserModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
-                        <p>Deseja excluir o usuário?</p>
+                        <p>Deseja excluir o usuário {user.username}?</p>
 
                         <div className="buttonsBox">
-                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeUserModal(false)}></ButtonExclude>
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => deleteUser(userId)}></ButtonExclude>
                             <br />
                             <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeUserModal(false)}></ButtonCancel>
                         </div>
@@ -422,7 +439,7 @@ export function Discipline() {
                 </div>
             )}
 
-            {/* Modal to rest a user password */}
+            {/* Modal to reset a user password */}
             {(resetPasswordModal && isAdmin) && (
                 <div className="modalExcludeOverlay" onClick={() => setResetPasswordModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
@@ -461,9 +478,9 @@ export function Discipline() {
                                 onChange={(e) => setAreaCor(e.target.value)}
                             // style={{ color: cores[cor] }}
                             >
-                                <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
-                                <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
-                                <option value="Verde-água" style={{ color: "var(--acqua)" }}>Verde-água</option>
+                                <option value="#9E2896" style={{ color: "#9E2896" }}>Roxo</option>
+                                <option value="#00884A" style={{ color: "#00884A" }}>Verde</option>
+                                <option value="#18837E" style={{ color: "#18837E" }}>Verde-água</option>
                             </select>
                         </div>
 
@@ -524,7 +541,8 @@ export function Discipline() {
             {/* Modal to edit a area */}
             {editAreaModal && (
                 <div className="modalOverlay" onClick={() => setEditAreaModal(false)}>
-                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal
+                    Container" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Editar  área</h1>
@@ -542,19 +560,13 @@ export function Discipline() {
                                 onChange={(e) => setAreaCor(e.target.value)}
                             // style={{ color: cores[cor] }}
                             >
-                                <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
-                                <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
-                                <option value="Verde-água" style={{ color: "var(--acqua)" }}>Verde-água</option>
+                                <option value="#9E2896" style={{ color: "#9E2896" }}>Roxo</option>
+                                <option value="#00884A" style={{ color: "#00884A" }}>Verde</option>
+                                <option value="#18837E" style={{ color: "#18837E" }}>Verde-água</option>
                             </select>
                         </div>
 
-                        <Button ButtonTitle={"Enviar"}  onClose={() => {
-                            if (selectedAreaId !== null) {
-                            editArea(selectedAreaId, {
-                                name: areaName,
-                                color: areaColor,
-                            });
-                            }}}>
+                        <Button ButtonTitle={"Enviar"}  onClose={() => editArea(selectedAreaId, {name: areaName, color: areaColor})}>
                         </Button>
                     </div>
                 </div>
@@ -568,10 +580,7 @@ export function Discipline() {
                         <p>Deseja excluir a área {areaName}?</p>
 
                         <div className="buttonsBox">
-                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => {
-                                if (selectedAreaId !== null) {
-                                    deleteAreas(selectedAreaId);
-                                }}}></ButtonExclude>
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => {deleteAreas(selectedAreaId);}}></ButtonExclude>
                             <br />
                             <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeAreaModal(false)}></ButtonCancel>
                         </div>

@@ -219,7 +219,9 @@ export class DisciplineService implements IDisciplineService{
                 workLoad: true,
                 area: {
                     select: {
-                        name: true
+                        id: true,
+                        name: true,
+                        color: true
                     }
                 },
                 competences: {

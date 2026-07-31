@@ -1,5 +1,5 @@
 import api from "./api";
-import type { CreateCompetenceDTO, CompetenceDTO, UpdateCompetenceDTO } from "../Types/competence";
+import type { CompetenceDTO, UpdateCompetenceDTO } from "../Types/competence";
 
 // Get all competences
 export async function getCompetence(): Promise<CompetenceDTO[]> {
@@ -9,8 +9,9 @@ export async function getCompetence(): Promise<CompetenceDTO[]> {
 }
 
 // Creating a competency
-export async function createCompetence(data: CreateCompetenceDTO): Promise<CompetenceDTO[]> {
-    const response = await api.post("/competency/create", data);
+export async function createCompetenceService(name: string) {
+    console.log(name)
+    const response = await api.post("/competency/create", { name: name});
     return response.data.response;
 }
 

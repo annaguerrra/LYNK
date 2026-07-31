@@ -38,12 +38,14 @@ import LessonSelect from '../Components/LessonSelect'
 import { useAuth } from '../Contexts/AuthContext'
 
 import type { ClassDTO } from '../Types/class'
-import { getClassById, getClassMaterials, updateClass } from '../Services/classesService'
-import { toast, ToastContainer } from 'react-toastify'
+import { getClassById, getClassCompetences, getClassMaterials, updateClass } from '../Services/classesService'
+import { toast } from 'react-toastify'
 import { isAxiosError } from 'axios'
 import type { MaterialDTO } from '../Types/material'
 import type { CompetenceDTO } from '../Types/competence'
-import { createMaterial, attachMaterialFile } from '../Services/materialsService'
+import { createMaterial } from '../Services/materialsService'
+import ActivityIndicator from '../Components/ActivityIndicator'
+import { getDisciplineCompetences } from '../Services/disciplinesService'
 
 export function Class() {
     //Variables to navigate and open modals
@@ -63,6 +65,7 @@ export function Class() {
 
     const [materials, setMaterials] = useState<MaterialDTO[]>([])
     const [competences, setCompetences] = useState<CompetenceDTO[]>([])
+    const [allCompetences, setAllCompetences] = useState<CompetenceDTO[]>([])
 
     //Generic content for the markdown
     const [content, setContent] = useState("");
@@ -113,12 +116,50 @@ export function Class() {
                 }
             }
             toast.error(`${error}`);
+            console.log(error)
         }
     }
-    
+
+    async function loadCompetences(id: number) {
+        try {
+            const response = await getClassCompetences(id);
+            setCompetences(response)
+        } catch (error) {
+            if (isAxiosError(error)) {
+                if (error.response?.status === 404) {
+                    toast.error("404 - Competencias não encontradas.");
+                    return;
+                }
+            }
+            toast.error(`${error}`);
+            console.log(error)
+        }
+    }
+
+    async function loadCompetencesByDiscipline() {
+        try {
+            const response = await getDisciplineCompetences(classItem.discipline.id);
+
+            setAllCompetences(response.competences);
+
+        } catch (error) {
+            if (isAxiosError(error)) {
+                if (error.response?.status === 500) {
+                    toast.error("500 - Erro de servidor.");
+                    return;
+                }
+            }
+
+            console.error(error);
+            toast.error("Erro ao carregar competências.");
+        }
+
+    }
+
     async function loadDataClass(id: number) {
         try {
             const response = await getClassById(id);
+            console.log(response)
             setClassItem(response);
 
         } catch (error) {
@@ -159,8 +200,10 @@ export function Class() {
         setContent(classItem.content);
         setIsContentLoaded(true);
         loadMaterials(classItem.id)
+        loadCompetencesByDiscipline();
 
     }, [classItem]);
+
 
 
     async function saveClass() {
@@ -178,12 +221,6 @@ export function Class() {
             setEditMode(false);
 
         } catch (error) {
-            if (isAxiosError(error)) {
-                if (error.response?.status === 403) {
-                    toast.error("403 - Você não tem permissão para esta ação.");
-                    return;
-                }
-            }
 
             console.error(error);
             toast.error("Erro ao salvar alterações.");
@@ -198,7 +235,7 @@ export function Class() {
             await createMaterial({
                 name: file.name,
                 classId: classItem.id,
-                disciplineId: classItem.disciplineId,
+                disciplineId: classItem.discipline.id,
                 files: [file]
             });
 
@@ -211,7 +248,14 @@ export function Class() {
         }
     }
 
-
+    if (!classItem) {
+        return (
+            <>
+                <Header />
+                <ActivityIndicator size="large" />
+            </>
+        );
+    }
 
     return (
         <>
@@ -221,7 +265,7 @@ export function Class() {
             {/* Whole page */}
             <div className="page-class">
                 <div className="headerContent">
-                    <ButtonBack onClick={() => navigate("/content")} />
+                    <ButtonBack onClick={() => navigate(-1)} />
                 </div>
 
                 {/* Class content (markdown, files and competences) */}
@@ -233,7 +277,7 @@ export function Class() {
                             <div className='toolbar view'>
                                 <span>{titleClass}</span>
                                 {(isAdmin || isInstructor) &&
-                                    <button className='buttonEdit' onClick={() => setEditMode(true)}>Editar</button>
+                                    <button className='buttonAction' onClick={() => setEditMode(true)}>Editar</button>
                                 }
                             </div>
                             <MDXEditor
@@ -250,7 +294,16 @@ export function Class() {
 
                     {editMode &&
                         <div style={{ display: 'flex', flexDirection: 'column', width: "100%" }}>
+                            <div className='inputTitleContainer'>
+
                             <input className='inputTitle' type='text' value={titleClass} onChange={(e) => setTitleClass(e.target.value)}></input>
+                            <div className='containerButtons'>
+
+                            <button className='buttonAction' onClick={() => saveClass()}>Salvar</button>
+                            <button className='buttonCancelAction' onClick={() => {}}>Cancelar</button>
+                            </div>
+                            </div>
+                            
                             <div className="markdownEditBox">
                                 <MDXEditor className='mdx-editor'
                                     markdown={content}
@@ -291,7 +344,7 @@ export function Class() {
 
                                                     </div>
                                                     <div className='toolbar-end'>
-                                                        <button onClick={() => saveClass()}>Salvar</button>
+                                                        
                                                     </div>
                                                 </div>
                                             )
@@ -309,6 +362,7 @@ export function Class() {
                                 {materials.map((material) => (
                                     <>
                                         <RowItem
+                                            key={material.id}
                                             color='var(--purple)'
                                             actions={
                                                 <>
@@ -336,73 +390,36 @@ export function Class() {
 
                                 {/* Component used to search a competence */}
                                 {(isAdmin || isInstructor) && editMode &&
-                                    <LessonSelect />
+                                    <LessonSelect lessons={allCompetences} />
                                 }
-                                <RowItem
-                                    type='competence'
-                                    actions={
-                                        <>
-                                            {(isAdmin || isInstructor) && editMode &&
-                                                <ButtonClose size={18} onClose={() => { }} />
-                                            }
-                                        </>
-                                    } >
-                                    <div>Fazer sei la o que, comepencia de não sei o que mais </div>
 
-                                </RowItem>
-                                <RowItem
-                                    type='competence'
-                                    actions={
-                                        <>
-                                            {(isAdmin || isInstructor) && editMode &&
-                                                <ButtonClose size={18} onClose={() => { }} />
-                                            }
-                                        </>
-                                    } >
-                                    <div>Teste de nome para o componente usado para representar uma competencia</div>
-
-                                </RowItem>
+                                {competences.map((competence) => (
+                                    <RowItem
+                                        key={competence.id}
+                                        type="competence"
+                                        actions={
+                                            <>
+                                                {(isAdmin || isInstructor) && editMode && (
+                                                    <ButtonClose
+                                                        size={18}
+                                                        onClose={() => {
+                                                            // ação para remover a competência
+                                                        }}
+                                                    />
+                                                )}
+                                            </>
+                                        }
+                                    >
+                                        <div>{competence.name}</div>
+                                    </RowItem>
+                                ))}
 
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <ToastContainer
-                position="top-center"
-                autoClose={2500}
-                hideProgressBar={false}
-                newestOnTop={true}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-            />
         </>
     )
 }
 
-// const [content, setContent] = useState(`# Título da Aula
-
-//         Introdução breve sobre o tema da aula.
-
-//         ## Conteúdo
-
-//         Explique os principais pontos abordados.
-
-//         ## Exemplo
-
-//         \`\`\`
-//         Exemplo ou demonstração.
-//         \`\`\`
-
-//         ## Exercício
-
-//         Descreva uma atividade para praticar.
-
-//         ## Resumo
-
-//         Principais aprendizados da aula.
-//     `);

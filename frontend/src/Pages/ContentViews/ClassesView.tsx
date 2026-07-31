@@ -8,19 +8,19 @@ import { ButtonCancel } from "../../Components/ButtonCancel"
 import { useEffect, useState } from "react"
 import { useAuth } from "../../Contexts/AuthContext"
 import { getDisciplineClasses } from "../../Services/disciplinesService"
-import type { viewClassesDTO } from "../../Types/discipline"
 import { toast } from "react-toastify"
 import { isAxiosError } from "axios"
 import api from "../../Services/api"
-import type { ClassDTO, ClassItem } from "../../Types/class"
+import type { ClassItem } from "../../Types/class"
+import type { DisciplineDTO } from "../../Types/discipline"
 
 
 interface ClassesViewProps {
-    disciplineId: number;
+    discipline: DisciplineDTO;
 }
 
 
-export function ClassesView({ disciplineId }: ClassesViewProps) {
+export function ClassesView({ discipline }: ClassesViewProps) {
 
     const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
 
     async function loadClasses() {
         try {
-            const response = await getDisciplineClasses(disciplineId);
+            const response = await getDisciplineClasses(discipline.id);
 
             setClasses(response.classes);
 
@@ -58,7 +58,7 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
                 }
             }
 
-            console.error(error);
+            console.log(error);
             toast.error("Erro ao carregar aulas.");
 
         } finally {
@@ -69,7 +69,8 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
     
     useEffect(() => {
         loadClasses();
-    }, [disciplineId]);
+    }, [discipline.id]);
+
 
 
     async function downloadClass(id: number) {
@@ -112,7 +113,7 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
                 {classes.map((item) => (
 
                     <RowItem
-                        key={item.name}
+                        key={item.id}
                         onClick={() => navigate(`/Class/${item.id}`)}
                         color="var(--purple)"
                         size="--medium"

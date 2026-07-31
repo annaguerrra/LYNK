@@ -11,8 +11,14 @@ import { useAuth } from "../Contexts/AuthContext";
 import { deleteDiscipline, updateDiscipline } from "../Services/disciplinesService";
 import type { AreaDTO } from "../Types/area";
 import { getAreas } from "../Services/areasService";
+import type { DisciplineDTO } from "../Types/discipline";
+import { ToastContainer, toast } from "react-toastify";
 
-export function DisciplineComp({Discipline}) {
+interface DisciplineCompProps {
+    Discipline: DisciplineDTO;
+}
+
+export function DisciplineComp({ Discipline } : DisciplineCompProps) {
     const navigate = useNavigate();
     //Variables to open the modals
     const [editModal, setEditModal] = useState(false);
@@ -46,10 +52,12 @@ export function DisciplineComp({Discipline}) {
                 name: disciplineName,
                 areaID: areaId
             });
+            toast.success("Disciplina editada com sucesso!");
             
             setDisciplineName("")
             setEditModal(false);
         } catch (error) {
+            toast.error("Não foi possivel editar a disciplina!");
             console.error(error);
         }
     }
@@ -57,9 +65,11 @@ export function DisciplineComp({Discipline}) {
     async function removeDiscipline() {
         try {
             await deleteDiscipline(Discipline.id);
+            toast.success("Disciplina deletada com sucesso!");
 
             setExcludeModal(false);
         } catch (error) {
+            toast.error("Não foi possivel deletar a disciplina!");
             console.error(error);
         }
     }
@@ -87,7 +97,7 @@ export function DisciplineComp({Discipline}) {
                     <h1>{Discipline.name}</h1>
                     <h2>{Discipline.area.name}</h2>
                 </div>
-                {isAdmin || isInstructor &&
+                {(isAdmin || isInstructor) &&
                     <MoreOpt data={options} size={30}></MoreOpt>
                 }
             </div>
@@ -108,16 +118,19 @@ export function DisciplineComp({Discipline}) {
                         <input type="text" value={disciplineName} onChange={(e) => setDisciplineName(e.target.value)}/>
                     </div>
                     {/* Select for the area */}
-                    <select
-                        value={areaId}
-                        onChange={(e) => setAreaId(Number(e.target.value))}
-                    >
-                        {areas.map((area) => (
-                            <option key={area.id} value={area.id}>
-                                {area.name}
-                            </option>
-                        ))}
-                    </select>
+                        <div className="textBox">
+                            <h2>Selecione a área de conhecimento</h2>
+                            <select
+                                value={areaId}
+                                onChange={(e) => setAreaId(Number(e.target.value))}
+                            >
+                                {areas.map((area) => (
+                                    <option key={area.id} value={area.id}>
+                                        {area.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
                     <Button ButtonTitle={"Enviar"} onClose={editDiscipline}></Button>
                 </div>

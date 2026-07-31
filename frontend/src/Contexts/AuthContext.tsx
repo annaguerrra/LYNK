@@ -6,6 +6,7 @@ import {
 } from "react";
 import api from "../Services/api";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 type Role = "ADMIN" | "INSTRUCTOR" | "STUDENT";
 
@@ -100,6 +101,11 @@ export function AuthProvider({
             error => {
                 if (error.response?.status === 401) {
                     logout();
+                    toast.error("401 - Sua sessão expirou. Faça login novamente.")
+                }
+
+                if (error.response?.status === 403) {
+                    toast.error("403 - Você não tem permissão para realizar esta ação.");
                 }
 
                 return Promise.reject(error);

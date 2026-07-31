@@ -21,9 +21,15 @@ export function HCompetencesView() {
     }, []);
 
     const actionColors = {
-        CREATE: "var(--green)",
-        PUT: "var(--blue)",
-        DELETE: "var(--red)",
+        CREATED: "var(--green)",
+        UPDATED: "var(--blue)",
+        DELETED: "var(--red)",
+    };
+
+    const actionsName = {
+        CREATED: "CRIADO",
+        UPDATED: "EDITADO",
+        DELETED: "DELETADO",
     };
 
     return (
@@ -35,16 +41,17 @@ export function HCompetencesView() {
                     size="--medium"
                     userAction={
                         <>
+                            <span>{actionsName[hcompetence.action]} por</span>
                             <img
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
+                            <span>{hcompetence.username}</span>
 
-                            <span>{hcompetence.alterUser.toLocaleDateString("pt-BR")}</span>
-                            <span> | </span>
-                            <span>{hcompetence.updatedAt.toLocaleDateString("pt-BR")}</span>
+                            <span>{hcompetence.updatedAt 
+                                ? new Date(hcompetence.updatedAt).toLocaleDateString("pt-BR")
+                                : "Sem data"}</span>
                         </>
                     }>
-
                     <span>{hcompetence.entityName}</span>
 
                 </RowItem>

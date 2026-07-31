@@ -1,7 +1,6 @@
 import api from "./api";
 import type { 
     createDiscipline, 
-    DisciplinesDTO, 
     DisciplineDTO, 
     viewExamsDTO, 
     viewClassesDTO, 
@@ -13,7 +12,6 @@ import type {
 
 // Create a new discipline
 export async function createDisciplineService(data: createDiscipline) {
-    console.log(data)
     const response = await api.post("/discipline/create", data);
     return response.data;
 }
@@ -25,7 +23,7 @@ export async function duplicateDiscipline(id: number) {
 }
 
 // Get all disciplines
-export async function getDisciplines(): Promise<DisciplinesDTO[]> {
+export async function getDisciplines(): Promise<DisciplineDTO[]> {
     const response = await api.get("/disciplines");
     return response.data.response;
 }
@@ -33,7 +31,6 @@ export async function getDisciplines(): Promise<DisciplinesDTO[]> {
 // Get a discipline by ID
 export async function getDisciplineById(id: number): Promise<DisciplineDTO> {
     const response = await api.get(`/discipline/${id}`);
-    console.log(response.data.response)
     return response.data.response;
 }
 
@@ -46,7 +43,7 @@ export async function getDisciplineExams(id: number): Promise<viewExamsDTO> {
 // Get discipline classes
 export async function getDisciplineClasses(id: number): Promise<viewClassesDTO> {
     const response = await api.get(`/discipline/${id}/classes`);
-    return response.data;
+    return response.data.response;
 }
 
 // Get discipline materials
@@ -56,11 +53,9 @@ export async function getDisciplineMaterials(id: number): Promise<viewMaterialsD
 }
 
 // Get discipline competences
-export async function getDisciplineCompetences(
-    id: number
-): Promise<viewCompetencesDTO> {
+export async function getDisciplineCompetences(id: number): Promise<viewCompetencesDTO> {
     const response = await api.get(`/discipline/${id}/competences`);
-    return response.data;
+    return response.data.response;
 }
 
 // Update a discipline
@@ -71,6 +66,7 @@ export async function updateDiscipline(id: number, data: editDisciplineDTO) {
 
 // Assign a competence to a discipline
 export async function assignCompetence(data: assignCompetencyDTO) {
+    console.log(data)
     const response = await api.put("/discipline/assigncompetence", data);
     return response.data;
 }

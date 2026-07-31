@@ -1,4 +1,4 @@
-import { changePasswordDTO, loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, showAdminDTO, showAllDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
+import { changePasswordDTO, loginPayloadDTO, loginResponseDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, resetPasswordDTO, showAdminDTO, showAllDTO, showInstructorDTO, showStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { IUserService } from "#application/services/User/IUser.service.js";
 import { Student, Instructor, Admin, UserType } from "#infrastructure/prisma/generated/prisma/client.js";
 import { Error } from "mongoose";
@@ -89,7 +89,7 @@ export class UserService implements IUserService {
         await prisma.log.create({
             data: {
                 action: "CREATED",
-                entityType: "Instructor",
+                entityType: "INSTRUCTOR",
                 entityId: createdUser.id,
                 entityName: createdUser.username,
                 oldData: {},
@@ -239,9 +239,156 @@ export class UserService implements IUserService {
             }
         };
     }
+    async resetPassword(data: resetPasswordDTO, userId: number, id: number, userType: UserType): Promise<resetPasswordDTO> {
+        const ownerUsername = await this.getUsername(userId)
+        let user;
+
+        const [ student, instructor, admin ] = await Promise.all([
+            prisma.student.findUnique({
+                where:{
+                    id: id
+                }
+            }),
+
+            prisma.instructor.findUnique({
+                where:{
+                    id: id
+                }
+            }),
+
+            prisma.admin.findUnique({
+                where:{
+                    id: id
+                }
+            })
+        ]);
+
+        if(student) {
+            user = {
+                id: student.id,
+                username: student.username,
+                password: student.password,
+                userType: student.userType
+            }
+        }
+        if(instructor) {
+            user = {
+                id: instructor.id,
+                username: instructor.username,
+                password: instructor.password,
+                userType: instructor.userType
+            }
+        }
+        if(admin) {
+            user = {
+                id: admin.id,
+                username: admin.username,
+                password: admin.password,
+                userType: admin.userType
+            }
+        } else{
+            console.log(error);
+            throw new Error("User invalid");
+        }
+        
+        if(!user) {
+            throw new Error("User Not Found");
+        }
+
+        const hashedPassword = await this.hashService.hash(data.newPassword);
+
+        try{
+            if(user.userType === UserType.STUDENT) {
+                await prisma.student.update({
+                    where:{
+                        id: user.id
+                    },
+                    data:{
+                        password: hashedPassword,
+                        firstAccess: true
+                    }
+                });
+
+                await prisma.log.create({
+                    data:{
+                        action: "UPDATED",
+                        entityId: user.id,
+                        entityType: user.userType,
+                        entityName: user.username,
+                        newData: user,
+                        oldData: {},
+                        adminId: userId,
+                        username: ownerUsername,
+                        updatedAt: new Date()
+
+                    }
+                })
+            }
+
+            if(user.userType === UserType.INSTRUCTOR) {
+                await prisma.instructor.update({
+                    where:{
+                        id: user.id
+                    },
+                    data:{ 
+                        password: hashedPassword,
+                        firstAccess: true
+                    }
+                });
+
+                await prisma.log.create({
+                    data:{
+                        action: "UPDATED",
+                        entityId: user.id,
+                        entityType: user.userType,
+                        entityName: user.username,
+                        newData: user,
+                        oldData: {},
+                        adminId: userId,
+                        username: ownerUsername,
+                        updatedAt: new Date()
+
+                    }
+                });
+            }
+            if(user.userType === UserType.ADMIN) {
+                await prisma.admin.update({
+                    where:{
+                        id: user.id
+                    },
+                    data: {
+                        password: hashedPassword,
+                        firstAccess: true
+                    }
+                });
+
+                await prisma.log.create({
+                    data:{
+                        action: "UPDATED",
+                        entityId: user.id,
+                        entityType: user.userType,
+                        entityName: user.username,
+                        newData: user,
+                        oldData: {},
+                        adminId: userId,
+                        username: ownerUsername,
+                        updatedAt: new Date()
+
+                    }
+                })
+            }
+        } catch(e) {
+            console.log(e);
+            throw new Error("Internal Server Error");
+        }
+
+        return {
+            newPassword: user.password
+        }
+    }
     
-    async changePassword(data: changePasswordDTO, userId: number, userType: UserType): Promise<boolean> {
-        // const ownerUsername = await this.getUsername(userId)
+    async changePassword(data: changePasswordDTO, userId: number, userType: UserType): Promise<true> {
+        const ownerUsername = await this.getUsername(userId)
         let user;
 
         const [student, instructor, admin] = await Promise.all([
@@ -326,11 +473,11 @@ export class UserService implements IUserService {
                     action: "UPDATED",
                     entityId: user.id,
                     entityName: user.userType,
-                    entityType: "Instructor",
+                    entityType: "INSTRUCTOR",
                     newData: hashedPassword, 
                     oldData: data.oldPassword,
                     adminId: user.id,
-                    username: user.username
+                    username: ownerUsername
                 }})
 
             } 
@@ -351,7 +498,7 @@ export class UserService implements IUserService {
                     action: "UPDATED",
                     entityId: user.id,
                     entityName: user.userType,
-                    entityType: "Instructor",
+                    entityType: "INSTRUCTOR",
                     newData: hashedPassword, 
                     oldData: data.oldPassword,
                     adminId: user.id,
@@ -578,7 +725,7 @@ export class UserService implements IUserService {
             await prisma.log.create({
                 data: {
                     action: "UPDATED",
-                    entityType: "Instructor",
+                    entityType: "INSTRUCTOR",
                     entityId: target.id,
                     entityName: target.username,
                     oldData: {
@@ -731,7 +878,7 @@ export class UserService implements IUserService {
         await prisma.log.create({
             data: {
                 action: "DELETED",
-                entityType: "Instructor",
+                entityType: "INSTRUCTOR",
                 entityId: target.id,
                 entityName: target.username,
                 oldData: {

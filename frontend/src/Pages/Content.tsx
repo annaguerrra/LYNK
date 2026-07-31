@@ -16,12 +16,15 @@ import { useNavigate } from "react-router-dom";
 import { RowItem } from "../Components/RowItem";
 import LessonSelect from "../Components/LessonSelect";
 import { useParams } from "react-router-dom";
-import api from "../Services/api";
 import { useAuth } from "../Contexts/AuthContext";
 import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
-import { getDisciplineById } from "../Services/disciplinesService";
+import { assignCompetence, getDisciplineById } from "../Services/disciplinesService";
 import type { DisciplineDTO } from "../Types/discipline";
+import { createClassService } from "../Services/classesService";
+import ActivityIndicator from "../Components/ActivityIndicator";
+import type { CreateCompetenceDTO } from "../Types/competence";
+import { createCompetenceService } from "../Services/competencesService";
 
 
 
@@ -31,6 +34,8 @@ export function Content() {
 
     const { discipline_id } = useParams<{ discipline_id: string }>();
 
+
+
     const [selectedTab, setSelectedTab] = useState("classes");
     const [newTest, setNewTest] = useState(false);
     const [editTest, setEditTest] = useState(false);
@@ -38,6 +43,8 @@ export function Content() {
     const [editCompetence, setEditCompetence] = useState(false);
     const [excludeTestModal, setExcludeTestModal] = useState(false);
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
+
+    const [competenceName, setCompetenceName] = useState("");
 
     const [discipline, setDiscipline] = useState<DisciplineDTO | null>(null);
 
@@ -58,7 +65,7 @@ export function Content() {
         },
         {
             name: "Nova aula",
-            onClick: () => navigate('/Class')
+            onClick: () => createClass()
         },
     ];
 
@@ -68,6 +75,74 @@ export function Content() {
         { id: "competences", label: "Competências" },
         { id: "exams", label: "Avaliações" },
     ];
+
+
+    const templateContent = `# Título da Aula
+
+        Introdução breve sobre o tema da aula.
+
+        ## Conteúdo
+
+        Explique os principais pontos abordados.
+
+        ## Exemplo
+
+        \`\`\`
+        Exemplo ou demonstração.
+        \`\`\`
+
+        ## Exercício
+
+        Descreva uma atividade para praticar.
+
+        ## Resumo
+
+        Principais aprendizados da aula.
+    `
+
+
+    async function createClass() {
+        try {
+            if (!discipline) return;
+
+            const createdClass = await createClassService({
+                name: "Nova Aula",
+                content: templateContent,
+                disciplineId: discipline.id
+            });
+
+            console.log(createdClass.id)
+
+            navigate(`/Class/${createdClass.id}`)
+
+        } catch (error) {
+
+            console.error(error);
+            toast.error("Erro ao criar a aula.");
+        }
+    }
+
+    async function createCompetence() {
+        try {
+            
+            if (!competenceName) {
+                toast.warning("Nome da competência não pode ser nulo!")
+                return;
+            }
+
+            const competence = await createCompetenceService(competenceName);
+
+            await assignCompetence({
+                competencyId: competence.id,
+                disciplineId: discipline.id,
+            });
+
+            setCompetenceName("")
+            setNewCompetence(false);
+        } catch (error) {
+            console.error("Erro ao criar e vincular competência:", error);
+        }
+    }
 
     async function loadContent(id: number) {
         try {
@@ -111,6 +186,17 @@ export function Content() {
     }, [discipline_id]);
 
 
+
+    if (!discipline) {
+        return (
+            <>
+                <Header />
+                <ActivityIndicator size="large" />
+            </>
+        );
+    }
+
+
     return (
         <>
             <Header />
@@ -121,8 +207,8 @@ export function Content() {
                 {/* Button to go back and more interative options */}
                 <div className="headerContent">
                     <div className="startBox">
-                        <ButtonBack onClick={() => navigate("/disciplines")} />
-                        {/* <span style={{ fontWeight: "bold", fontSize: "30px" }}>{discipline.name}</span> */}
+                        <ButtonBack onClick={() => navigate(-1)} />
+                        <span style={{ fontWeight: "bold", fontSize: "30px" }}>{discipline.name}</span>
                     </div>
                     {(isAdmin || isInstructor) &&
                         <MoreOpt data={options} size={30}></MoreOpt>
@@ -134,9 +220,9 @@ export function Content() {
                         selected={selectedTab}
                         onChange={setSelectedTab} tabs={tabs} />
 
-                    {selectedTab === "classes" && <ClassesView disciplineId={discipline.id} />}
-                    {selectedTab === "competences" && <CompetencesView disciplineId={discipline.id} />}
-                    {selectedTab === "exams" && <ExamsView  />}
+                    {discipline && selectedTab === "classes" && <ClassesView discipline={discipline} />}
+                    {discipline && selectedTab === "competences" && <CompetencesView discipline={discipline} />}
+                    {discipline && selectedTab === "exams" && <ExamsView />}
 
 
                 </div>
@@ -175,7 +261,7 @@ export function Content() {
 
                             <div className='attachments' >
                                 {/* Component used to search a competence */}
-                                <LessonSelect />
+                                <LessonSelect lessons={[]}/>
                                 <br />
                                 <div className="scrollBox">
 
@@ -216,15 +302,19 @@ export function Content() {
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Registrar competência</h1>
-                            <ButtonClose size={40} onClose={() => setNewCompetence(false)}></ButtonClose>
+                            <ButtonClose size={40} onClose={() => {
+                                setNewCompetence(false)
+                                setCompetenceName("")
+                            }
+                            }></ButtonClose>
                         </div>
                         {/* Input for the competence name */}
                         <div className="textBox">
                             <h2>Nome da competência</h2>
-                            <input type="text" />
+                            <input type="text" value={competenceName} onChange={(e) => setCompetenceName(e.target.value)} />
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => setNewCompetence(false)}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => createCompetence()}></Button>
                     </div>
                 </div>
             )}

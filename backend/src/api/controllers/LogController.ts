@@ -46,31 +46,31 @@ export default class LogController{
         try {
             switch (lowerEntityType) {
                 case 'class':
-                    type = EntityType.Class
+                    type = EntityType.CLASS
                     break
                 case 'competence':
-                    type = EntityType.Compentence
+                    type = EntityType.INSTRUCTOR
                     break
                 case 'material':
-                    type = EntityType.Material
+                    type = EntityType.MATERIAL
                     break
                 case 'instructor':
-                    type = EntityType.Instructor
+                    type = EntityType.INSTRUCTOR
                     break
                 case 'discipline':
-                    type = EntityType.Discipline
+                    type = EntityType.DISCIPLINE
                     break
                 case 'area':
-                    type = EntityType.Area
+                    type = EntityType.AREA
                     break
                 case 'student':
-                    type = EntityType.Student
+                    type = EntityType.STUDENT
                     break
                 case 'exam':
-                    type = EntityType.Exam
+                    type = EntityType.EXAM
                     break
                 case 'admin':
-                    type = EntityType.Admin
+                    type = EntityType.ADMIN
                     break
                 default: 
                     throw new Error("Invalid entity-type")
