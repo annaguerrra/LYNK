@@ -1,3 +1,5 @@
+import type { Buffer } from "buffer";
+
 // File uploaded by the user
 export type UploadedFileDTO = File;
 
@@ -6,4 +8,10 @@ export interface MaterialAttachmentDTO {
     id: number;
     fileName: string;
     mimeType: string;
+}
+
+export interface UploadedFile {
+  originalName: string;
+  mimeType: string;
+  buffer: Buffer;
 }

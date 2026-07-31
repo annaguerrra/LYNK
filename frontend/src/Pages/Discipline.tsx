@@ -12,7 +12,7 @@ import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { createDisciplineService, getDisciplines, duplicateDiscipline } from "../Services/disciplinesService";
-
+import { ToastContainer, toast } from "react-toastify";
 import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
@@ -24,6 +24,7 @@ export function Discipline() {
     //Variables to navigate and open modals
     const navigate = useNavigate();
     const [disciplines, setDisciplines] = useState<DisciplineDTO[]>([])
+    const [selectedAreaFilter, setSelectedAreaFilter] = useState<number | null>(null)
 
 
     const [newDisciplineModal, setNewDisciplineModal] = useState(false);
@@ -123,24 +124,28 @@ export function Discipline() {
 
     async function createNewArea(data: registerAreaDTO) {
         try {
+            toast.success("Área criada com sucesso!");
             await createArea(data);
             await loadAreas();
             
             setNewAreaModal(false);
             setAreaName("")
         } catch (error) {
+            toast.error("Não foi possivel criar a área!");
             console.error(error);
         }
     }
     
     async function editArea(id: number, data: updateAreaDTO) {
         try {
+            toast.success("Área editada com sucesso!");
             await updateArea(id, data);
             await loadAreas();
 
             setEditAreaModal(false);
             setAreaName("")
         } catch (error) {
+            toast.error("Não foi possivel editar a área!");
             console.log(error.response?.status);
             console.log(error.response?.data);
         }
@@ -148,11 +153,13 @@ export function Discipline() {
 
     async function deleteAreas(id: number) {
         try {
+            toast.success("Área deletada com sucesso!");
             await deleteArea(id);
             await loadAreas();
 
             setExcludeAreaModal(false);
         } catch (error) {
+            toast.error("Não foi possivel deletar a área!");
             console.error(error);
         }
     }
@@ -176,12 +183,14 @@ export function Discipline() {
 
     async function createDisc(data: createDiscipline) {
         try {
+            toast.success("Disciplina criada com sucesso!");
             await createDisciplineService(data);
 
             await loadDisciplines();
             setNewDisciplineModal(false);
             setDisciplineName("")
         } catch (error) {
+            toast.error("Não foi possivel criar a disciplina!");
             console.error(error);
         }
     }
@@ -189,6 +198,7 @@ export function Discipline() {
     
     async function duplicate(id: number) {
         try {
+            toast.success("Disciplina duplicada com sucesso!");
             const response = await duplicateDiscipline(id);
             console.log(response);
             
@@ -197,6 +207,13 @@ export function Discipline() {
             console.log(error);
         }
     }
+
+    const filteredDisciplines =
+        selectedAreaId === null
+            ? disciplines
+            : disciplines.filter(
+                (discipline) => discipline.area.id === selectedAreaId
+            );
     
     useEffect(() => {
         loadAreas();
@@ -221,6 +238,10 @@ export function Discipline() {
         }
     }
 
+    async function updateUser() {
+        const userId = localStorage.getItem()
+    }
+
     return (
         <>
             <Header />
@@ -234,11 +255,22 @@ export function Discipline() {
                     <div className="filters">
                         {/* Filter for areas */}
                         <form>
-                            <select name="" id="" className="selectFilter" defaultValue="Mecânica">
+                            <select
+                                className="selectFilter"
+                                value={selectedAreaId ?? ""}
+                                onChange={(e) =>
+                                    setSelectedAreaId(
+                                    e.target.value === "" ? null : Number(e.target.value)
+                                    )
+                                }
+                                >
+                                <option value="">Selecione uma área</option>
+
                                 {areas.map((area) => (
-                                    <option key={area.id} value={area.id}>{area.name}</option>
+                                    <option key={area.id} value={area.id}>
+                                    {area.name}
+                                    </option>
                                 ))}
-                               
                             </select>
                         </form>
                         
@@ -249,10 +281,13 @@ export function Discipline() {
                 </div>
                 {/* Box for all the disciplines display */}
                 <div className="disciplinesContainer">
-                    {disciplines.map((discipline) => (
-                        <DisciplineComp key={discipline.id} Discipline={discipline}></DisciplineComp>
+                    {filteredDisciplines.map((discipline) => (
+                        <DisciplineComp
+                        key={discipline.id}
+                        Discipline={discipline}
+                        />
                     ))}
-                </div>
+                    </div>
             </div>
 
             {/* -------------------------------------------------------- DISCIPLINES MODALS -------------------------------------------------------- */}
@@ -379,7 +414,7 @@ export function Discipline() {
                         {/* Select the user type */}
                         <div className="textBox">
                             <h2>Selecione o tipo de usuário</h2>
-                            <select name="" id="" className="selectFilter">
+                            <select name="" id="" className="selectFilter" onChange={(e) => setUserType(e.target.value)}>
                                 <option value="Administrador">Administrador</option>
                                 <option value="Instrutor">Instrutor</option>
                                 <option value="Aluno" selected>Aluno</option>
@@ -388,12 +423,12 @@ export function Discipline() {
                         {/* Input for the username */}
                         <div className="textBox">
                             <h2>Nome do usuário</h2>
-                            <input type="text" />
+                            <input type="text" onChange={(e) => setUsername(e.target.value)}/>
                         </div>
                         {/* Input for the user password */}
                         <div className="textBox">
                             <h2>Senha do usuário</h2>
-                            <input type="password" />
+                            <input type="password" onChange={(e) => setUserPassword(e.target.value)}/>
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => setEditStudentModal(false)}></Button>

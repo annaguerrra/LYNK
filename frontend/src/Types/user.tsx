@@ -1,4 +1,4 @@
-import type { UploadedFileDTO } from "./attachment.js"
+import type { UploadedFile } from "./attachment.js"
 
 export type UserType = "ADMIN" | "INSTRUCTOR" | "STUDENT";
 
@@ -23,10 +23,27 @@ export interface showPrivilegedUserDTO {
     attachmentId: string | null
 }
 
-// used to edit student
 export interface updateStudentDTO {
     username: string
     password: string
+    active: boolean
+    
+}
+
+// used to edit instructor
+export interface updateInstructorDTO {
+    username: string
+    password: string
+    active: boolean
+    file: UploadedFile
+}
+
+// used to edit admin
+export interface updateAdminDTO {
+    username: string
+    password: string
+    active: boolean
+    file: UploadedFile
 }
 
 // used to edit instructor or admin
@@ -34,5 +51,5 @@ export interface updatePrivilegedUserDTO {
     username: string
     password: string
     active: boolean
-    file: UploadedFileDTO
+    file: UploadedFile
 }
