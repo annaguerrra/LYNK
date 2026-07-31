@@ -23,12 +23,6 @@ import { createUser } from "../Services/userService";
 export function Discipline() {
     //Variables to navigate and open modals
     const navigate = useNavigate();
-    const cores = {
-        Roxo: "var(--purple)",
-        Verde: "var(--green)",
-        VerdeAgua: "var(--acqua)",
-    };
-
     const [disciplines, setDisciplines] = useState<DisciplineDTO[]>([])
 
 
@@ -115,7 +109,7 @@ export function Discipline() {
     //---------------------- From Area Services ---------------------------------------------------------------- 
     //Inputs to create and edit a area
     const [areaName, setAreaName] = useState("")
-    const [areaColor, setAreaCor] = useState("Roxo");
+    const [areaColor, setAreaCor] = useState("#9E2896");
     const [selectedAreaId, setSelectedAreaId] = useState<number | null>(null);
 
     async function loadAreas() {
@@ -131,14 +125,14 @@ export function Discipline() {
         try {
             await createArea(data);
             await loadAreas();
-
+            
             setNewAreaModal(false);
             setAreaName("")
         } catch (error) {
             console.error(error);
         }
     }
-
+    
     async function editArea(id: number, data: updateAreaDTO) {
         try {
             await updateArea(id, data);
@@ -147,7 +141,8 @@ export function Discipline() {
             setEditAreaModal(false);
             setAreaName("")
         } catch (error) {
-            console.error(error);
+            console.log(error.response?.status);
+            console.log(error.response?.data);
         }
     }
 
@@ -167,7 +162,7 @@ export function Discipline() {
     //Inputs to create and edit a discipline
     const [disciplineName, setDisciplineName] = useState("")
     const [areas, setAreas] = useState<AreaDTO[]>([]);
-    const [areaId, setAreaId] = useState<number>(0);
+    const [areaId, setAreaId] = useState(1);
 
 
     async function loadDisciplines() {
@@ -181,7 +176,7 @@ export function Discipline() {
 
     async function createDisc(data: createDiscipline) {
         try {
-            const response = await createDisciplineService(data);
+            await createDisciplineService(data);
 
             await loadDisciplines();
             setNewDisciplineModal(false);
@@ -206,7 +201,7 @@ export function Discipline() {
     useEffect(() => {
         loadAreas();
         loadDisciplines();
-    }, []);
+    }, [areas]);
     //---------------------- From User Services ---------------------------------------------------------------- 
 
     async function createUserf(data: registerUserDTO) {
@@ -465,9 +460,9 @@ export function Discipline() {
                                 onChange={(e) => setAreaCor(e.target.value)}
                             // style={{ color: cores[cor] }}
                             >
-                                <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
-                                <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
-                                <option value="Verde-água" style={{ color: "var(--acqua)" }}>Verde-água</option>
+                                <option value="#9E2896" style={{ color: "#9E2896" }}>Roxo</option>
+                                <option value="#00884A" style={{ color: "#00884A" }}>Verde</option>
+                                <option value="#18837E" style={{ color: "#18837E" }}>Verde-água</option>
                             </select>
                         </div>
 
@@ -546,19 +541,13 @@ export function Discipline() {
                                 onChange={(e) => setAreaCor(e.target.value)}
                             // style={{ color: cores[cor] }}
                             >
-                                <option value="Roxo" style={{ color: "var(--purple)" }} selected>Roxo</option>
-                                <option value="Verde" style={{ color: "var(--green)" }}>Verde</option>
-                                <option value="Verde-água" style={{ color: "var(--acqua)" }}>Verde-água</option>
+                                <option value="#9E2896" style={{ color: "#9E2896" }}>Roxo</option>
+                                <option value="#00884A" style={{ color: "#00884A" }}>Verde</option>
+                                <option value="#18837E" style={{ color: "#18837E" }}>Verde-água</option>
                             </select>
                         </div>
 
-                        <Button ButtonTitle={"Enviar"}  onClose={() => {
-                            if (selectedAreaId !== null) {
-                            editArea(selectedAreaId, {
-                                name: areaName,
-                                color: areaColor,
-                            });
-                            }}}>
+                        <Button ButtonTitle={"Enviar"}  onClose={() => editArea(selectedAreaId, {name: areaName, color: areaColor})}>
                         </Button>
                     </div>
                 </div>
@@ -572,10 +561,7 @@ export function Discipline() {
                         <p>Deseja excluir a área {areaName}?</p>
 
                         <div className="buttonsBox">
-                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => {
-                                if (selectedAreaId !== null) {
-                                    deleteAreas(selectedAreaId);
-                                }}}></ButtonExclude>
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => {deleteAreas(selectedAreaId);}}></ButtonExclude>
                             <br />
                             <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeAreaModal(false)}></ButtonCancel>
                         </div>

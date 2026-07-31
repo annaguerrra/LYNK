@@ -92,7 +92,7 @@ export function DisciplineComp({ Discipline } : DisciplineCompProps) {
                     <h1>{Discipline.name}</h1>
                     <h2>{Discipline.area.name}</h2>
                 </div>
-                {isAdmin || isInstructor &&
+                {(isAdmin || isInstructor) &&
                     <MoreOpt data={options} size={30}></MoreOpt>
                 }
             </div>
@@ -113,16 +113,19 @@ export function DisciplineComp({ Discipline } : DisciplineCompProps) {
                         <input type="text" value={disciplineName} onChange={(e) => setDisciplineName(e.target.value)}/>
                     </div>
                     {/* Select for the area */}
-                    <select
-                        value={areaId}
-                        onChange={(e) => setAreaId(Number(e.target.value))}
-                    >
-                        {areas.map((area) => (
-                            <option key={area.id} value={area.id}>
-                                {area.name}
-                            </option>
-                        ))}
-                    </select>
+                        <div className="textBox">
+                            <h2>Selecione a área de conhecimento</h2>
+                            <select
+                                value={areaId}
+                                onChange={(e) => setAreaId(Number(e.target.value))}
+                            >
+                                {areas.map((area) => (
+                                    <option key={area.id} value={area.id}>
+                                        {area.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
 
                     <Button ButtonTitle={"Enviar"} onClose={editDiscipline}></Button>
                 </div>
