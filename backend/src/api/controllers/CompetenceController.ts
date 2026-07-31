@@ -15,8 +15,8 @@ export default class CompetenceController{
         // will be used in service to register who was responsible for the action
         const userId = req.user.userId
         try {
-            await this.competenceService.registerCompetence(data, userId)
-            return res.status(200).send({ response: "Success!"})
+            const competence = await this.competenceService.registerCompetence(data, userId)
+            return res.status(200).send({ response: competence })
         } catch (e) {
             if (e instanceof Error)
                 return res.status(500).json({ message: e.message });
