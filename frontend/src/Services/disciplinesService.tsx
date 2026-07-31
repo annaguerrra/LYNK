@@ -1,7 +1,6 @@
 import api from "./api";
 import type { 
     createDiscipline, 
-    DisciplinesDTO, 
     DisciplineDTO, 
     viewExamsDTO, 
     viewClassesDTO, 
@@ -25,7 +24,7 @@ export async function duplicateDiscipline(id: number) {
 }
 
 // Get all disciplines
-export async function getDisciplines(): Promise<DisciplinesDTO[]> {
+export async function getDisciplines(): Promise<DisciplineDTO[]> {
     const response = await api.get("/disciplines");
     return response.data.response;
 }
@@ -46,7 +45,7 @@ export async function getDisciplineExams(id: number): Promise<viewExamsDTO> {
 // Get discipline classes
 export async function getDisciplineClasses(id: number): Promise<viewClassesDTO> {
     const response = await api.get(`/discipline/${id}/classes`);
-    return response.data;
+    return response.data.response;
 }
 
 // Get discipline materials

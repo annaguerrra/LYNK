@@ -10,17 +10,7 @@ export interface assignCompetencyDTO{
     competencyID: number
 }
 
-// response to findAll service
-export interface DisciplinesDTO{
-    name: string
-    area:{
-        name: string;
-    } | null,
-    competences: {
-        name: string
-    }[];
-    lastUpdate: Date | null;
-}
+
 
 // response to findOne service
 export interface DisciplineDTO{
@@ -28,7 +18,9 @@ export interface DisciplineDTO{
     id: number;
     workLoad: number;
     area:{
+        id: number
         name: string
+        color: string
     };
     competences: {
         name: string

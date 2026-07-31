@@ -109,10 +109,10 @@ export class DisciplineController{
     // GET
     // gets all classes in discipline
     async viewClasses(req: Request, res: Response){
-        const disciplineId = req.body
+        const { id } = req.params
 
         try{
-            const classes = await this.disciplineService.viewClasses(disciplineId);
+            const classes = await this.disciplineService.viewClasses(Number(id));
             return res.status(200).send({response: classes });
         } catch(e){
             return res.status(500).send({response: e});

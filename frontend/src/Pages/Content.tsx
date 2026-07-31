@@ -22,6 +22,7 @@ import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
 import { getDisciplineById } from "../Services/disciplinesService";
 import type { DisciplineDTO } from "../Types/discipline";
+import { createClassService } from "../Services/classesService";
 
 
 
@@ -30,6 +31,7 @@ export function Content() {
     const navigate = useNavigate()
 
     const { discipline_id } = useParams<{ discipline_id: string }>();
+
 
     const [selectedTab, setSelectedTab] = useState("classes");
     const [newTest, setNewTest] = useState(false);
@@ -58,7 +60,7 @@ export function Content() {
         },
         {
             name: "Nova aula",
-            onClick: () => navigate('/Class')
+            onClick: () => createClass()
         },
     ];
 
@@ -68,6 +70,50 @@ export function Content() {
         { id: "competences", label: "Competências" },
         { id: "exams", label: "Avaliações" },
     ];
+
+
+    const templateContent = `# Título da Aula
+
+        Introdução breve sobre o tema da aula.
+
+        ## Conteúdo
+
+        Explique os principais pontos abordados.
+
+        ## Exemplo
+
+        \`\`\`
+        Exemplo ou demonstração.
+        \`\`\`
+
+        ## Exercício
+
+        Descreva uma atividade para praticar.
+
+        ## Resumo
+
+        Principais aprendizados da aula.
+    `
+
+
+    async function createClass() {
+        try {
+            if (!discipline) return;
+
+            const createdClass = await createClassService({
+                name: "Nova Aula",
+                content: templateContent,
+                disciplineId: discipline.id
+            });
+
+            navigate(`/Class/${createdClass.id}`)
+
+        } catch (error) {
+
+            console.error(error);
+            toast.error("Erro ao criar a aula.");
+        }
+    }
 
     async function loadContent(id: number) {
         try {
@@ -111,6 +157,7 @@ export function Content() {
     }, [discipline_id]);
 
 
+
     return (
         <>
             <Header />
@@ -136,7 +183,7 @@ export function Content() {
 
                     {selectedTab === "classes" && <ClassesView disciplineId={discipline.id} />}
                     {selectedTab === "competences" && <CompetencesView disciplineId={discipline.id} />}
-                    {selectedTab === "exams" && <ExamsView  />}
+                    {selectedTab === "exams" && <ExamsView />}
 
 
                 </div>

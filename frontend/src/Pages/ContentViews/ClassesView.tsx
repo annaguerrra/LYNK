@@ -8,11 +8,10 @@ import { ButtonCancel } from "../../Components/ButtonCancel"
 import { useEffect, useState } from "react"
 import { useAuth } from "../../Contexts/AuthContext"
 import { getDisciplineClasses } from "../../Services/disciplinesService"
-import type { viewClassesDTO } from "../../Types/discipline"
 import { toast } from "react-toastify"
 import { isAxiosError } from "axios"
 import api from "../../Services/api"
-import type { ClassDTO, ClassItem } from "../../Types/class"
+import type { ClassItem } from "../../Types/class"
 
 
 interface ClassesViewProps {
@@ -39,6 +38,7 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
 
     async function loadClasses() {
         try {
+            console.log("passo 2")
             const response = await getDisciplineClasses(disciplineId);
 
             setClasses(response.classes);
@@ -58,7 +58,7 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
                 }
             }
 
-            console.error(error);
+            console.log(error);
             toast.error("Erro ao carregar aulas.");
 
         } finally {
@@ -68,6 +68,7 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
 
     
     useEffect(() => {
+        console.log("passo 1")
         loadClasses();
     }, [disciplineId]);
 

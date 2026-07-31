@@ -3,7 +3,7 @@ import { Button } from '../Components/Button'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../Contexts/AuthContext'
 import { useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 export function Login() {
     //Variables to navigate and open modals
@@ -124,19 +124,7 @@ export function Login() {
                             </div>
                         </>
                     )}
-                    <Button ButtonTitle={"Entrar"} onClose={mustChangePassword ? handleChangePassword : handleLogin}></Button>
-                    <ToastContainer
-                        position="top-center"
-                        autoClose={2500}
-                        hideProgressBar={false}
-                        newestOnTop={true}
-                        closeOnClick={false}
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                        theme="colored"
-                    />
+                    <Button ButtonTitle={"Entrar"} onClose={mustChangePassword ? handleChangePassword : handleLogin}></Button>               
                 </div>
             </div>
         </>

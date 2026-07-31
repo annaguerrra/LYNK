@@ -1,4 +1,4 @@
-import type { ClassesDTO, ClassDTO, assignCompetencyDTO, editClass } from "../Types/class";
+import type { ClassesDTO, ClassDTO, assignCompetencyDTO, editClass, CreateClassDTO, ClassResponse } from "../Types/class";
 import api from "./api";
 
 // Get all classes
@@ -14,7 +14,7 @@ export async function getClassById(id: number): Promise<ClassDTO> {
 }
 
 // Create a new class
-export async function createClass(data: ClassDTO) {
+export async function createClassService(data: CreateClassDTO) : Promise<ClassResponse> {
     const response = await api.post("/class/create", data);
     return response.data.response;
 }

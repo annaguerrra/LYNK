@@ -19,7 +19,7 @@ export const validateCompetence = (req: Request, res: Response, next: NextFuncti
 export const validateUpdate = (req: Request, res: Response, next: NextFunction) => {
     // validates if the necessary data were provided to update discipline
     const { name, workload } = req.body
-    if(!name || !workload)
+    if(!name)
         return res.status(400).send({ response: `There are empty data`})
     next()
 }

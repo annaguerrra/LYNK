@@ -216,7 +216,9 @@ export class DisciplineService implements IDisciplineService{
                 workLoad: true,
                 area: {
                     select: {
-                        name: true
+                        id: true,
+                        name: true,
+                        color: true
                     }
                 },
                 competences: {
@@ -246,7 +248,9 @@ export class DisciplineService implements IDisciplineService{
         const area = await prisma.area.findUnique({
             where:{ id: target?.areaId},
             select:{
-                name: true
+                id: true,
+                name: true,
+                color: true
             }
         });
         if(!area){

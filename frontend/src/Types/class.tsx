@@ -1,10 +1,26 @@
-// used to create and edit a class
+// used to get class
 export interface ClassDTO{
     id: number
     name: string
     content: string
     disciplineId: number
     lastUpdate?: Date
+}
+
+// used to create class
+export interface CreateClassDTO{
+    name: string
+    content: string
+    disciplineId: number
+}
+
+// response to createClass
+export interface ClassResponse{
+    id: number
+    name: string
+    content: string
+    disciplineId: number
+    createdAt?: Date
 }
 
 // used to assign a competency to a class

@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { createDisciplineService, getDisciplines, duplicateDiscipline } from "../Services/disciplinesService";
 
-import type { DisciplinesDTO, createDiscipline } from "../Types/discipline";
+import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
 import type { registerUserDTO } from "../Types/user";
@@ -29,7 +29,7 @@ export function Discipline() {
         VerdeAgua: "var(--acqua)",
     };
 
-    const [disciplines, setDisciplines] = useState<DisciplinesDTO[]>([])
+    const [disciplines, setDisciplines] = useState<DisciplineDTO[]>([])
 
 
     const [newDisciplineModal, setNewDisciplineModal] = useState(false);

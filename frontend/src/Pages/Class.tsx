@@ -39,11 +39,11 @@ import { useAuth } from '../Contexts/AuthContext'
 
 import type { ClassDTO } from '../Types/class'
 import { getClassById, getClassMaterials, updateClass } from '../Services/classesService'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import { isAxiosError } from 'axios'
 import type { MaterialDTO } from '../Types/material'
 import type { CompetenceDTO } from '../Types/competence'
-import { createMaterial, attachMaterialFile } from '../Services/materialsService'
+import { createMaterial } from '../Services/materialsService'
 
 export function Class() {
     //Variables to navigate and open modals
@@ -177,13 +177,7 @@ export function Class() {
             toast.success("Aula alterada com sucesso!");
             setEditMode(false);
 
-        } catch (error) {
-            if (isAxiosError(error)) {
-                if (error.response?.status === 403) {
-                    toast.error("403 - Você não tem permissão para esta ação.");
-                    return;
-                }
-            }
+        } catch (error) {          
 
             console.error(error);
             toast.error("Erro ao salvar alterações.");
@@ -368,41 +362,7 @@ export function Class() {
                     </div>
                 </div>
             </div>
-            <ToastContainer
-                position="top-center"
-                autoClose={2500}
-                hideProgressBar={false}
-                newestOnTop={true}
-                closeOnClick={false}
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="colored"
-            />
         </>
     )
 }
 
-// const [content, setContent] = useState(`# Título da Aula
-
-//         Introdução breve sobre o tema da aula.
-
-//         ## Conteúdo
-
-//         Explique os principais pontos abordados.
-
-//         ## Exemplo
-
-//         \`\`\`
-//         Exemplo ou demonstração.
-//         \`\`\`
-
-//         ## Exercício
-
-//         Descreva uma atividade para praticar.
-
-//         ## Resumo
-
-//         Principais aprendizados da aula.
-//     `);

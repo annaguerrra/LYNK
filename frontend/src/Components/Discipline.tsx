@@ -11,8 +11,13 @@ import { useAuth } from "../Contexts/AuthContext";
 import { deleteDiscipline, updateDiscipline } from "../Services/disciplinesService";
 import type { AreaDTO } from "../Types/area";
 import { getAreas } from "../Services/areasService";
+import type { DisciplineDTO } from "../Types/discipline";
 
-export function DisciplineComp({Discipline}) {
+interface DisciplineCompProps {
+    Discipline: DisciplineDTO;
+}
+
+export function DisciplineComp({ Discipline } : DisciplineCompProps) {
     const navigate = useNavigate();
     //Variables to open the modals
     const [editModal, setEditModal] = useState(false);
