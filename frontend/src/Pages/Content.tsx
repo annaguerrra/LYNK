@@ -124,7 +124,7 @@ export function Content() {
 
     async function createCompetence() {
         try {
-            console.log(competenceName)
+            
             if (!competenceName) {
                 toast.warning("Nome da competência não pode ser nulo!")
                 return;

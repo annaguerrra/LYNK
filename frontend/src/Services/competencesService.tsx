@@ -10,7 +10,7 @@ export async function getCompetence(): Promise<CompetenceDTO[]> {
 
 // Creating a competency
 export async function createCompetenceService(name: string) {
-    const response = await api.post("/competency/create", name);
+    const response = await api.post("/competency/create", { name: name});
     return response.data.response;
 }
 
