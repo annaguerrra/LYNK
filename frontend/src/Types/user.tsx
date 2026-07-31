@@ -11,12 +11,14 @@ export interface registerUserDTO {
 }
 
 export interface showStudentDTO {
+    id: number
     username: string
     userType: UserType
 }
 
 // response to showInstructor or showAdmin service
 export interface showPrivilegedUserDTO {
+    id: number
     username: string
     userType: UserType
     active: boolean

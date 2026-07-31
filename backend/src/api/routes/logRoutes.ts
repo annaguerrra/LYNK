@@ -17,8 +17,8 @@ router
     // returns a specific log by id
     .get('/log/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), logController.getById.bind(logController))
     // returns all logs filtered by entity trpe
-    .get('/logs/entity-type', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), logController.getByEntityType.bind(logController))
+    .get('/logs/entitytype/:entitytype', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), logController.getByEntityType.bind(logController))
     // returns all logs filtered by action
-    .get('/logs/action', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), logController.getByAction.bind(logController))
+    .get('/logs/action/:action', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), logController.getByAction.bind(logController))
 
 export default router

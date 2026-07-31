@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ChoosePicture from "./ChoosePicture";
 import { useAuth } from "../Contexts/AuthContext";
 
-export function Header({ user = null }) {
+export function Header() {
     
     //Variables to open the edit/logout modals and navigate throught pages
     const [openBox, setOpenBox] = useState(false);
@@ -13,6 +13,7 @@ export function Header({ user = null }) {
     const navigate = useNavigate();
 
     const { logout } = useAuth();
+    const {user} = useAuth()
 
     return (
         <>
@@ -34,16 +35,16 @@ export function Header({ user = null }) {
                         <button className="user" onClick={() => setOpenBox(!openBox)}>
                             <img className="userPicture" src="../../public/UserDefault/user-purple.png"></img>
 
-                            <span>Instrutor</span>
+                            <span>{user.username}</span>
                         </button>
 
                         {/* Modal to edit profile or logout */}
                         {openBox &&
                             <div className="userBox">
-                                <button onClick={() => setPictureModal(true)} className="textIcon">
+                                {/* <button onClick={() => setPictureModal(true)} className="textIcon">
                                     <i className="icon icon-user"></i>
                                     <span>Trocar foto</span>
-                                </button>
+                                </button> */}
                                 <button className="textIcon" style={{ color: "var(--red)" }} onClick={() => logout()}>
                                     <i className="icon icon-logout"></i>
                                     <span>Logout</span>
