@@ -7,16 +7,16 @@ import { Button } from "../Components/Button";
 import { ButtonClose } from "../Components/ButtonClose";
 import { ButtonExclude } from "../Components/ButtonExclude";
 import { ButtonCancel } from "../Components/ButtonCancel";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RowItem } from "../Components/RowItem";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { createDisciplineService, getDisciplines, duplicateDiscipline } from "../Services/disciplinesService";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
-import type { registerUserDTO } from "../Types/user";
+import type { registerUserDTO, UserType } from "../Types/user";
 import { createUser } from "../Services/userService";
 
 
@@ -46,8 +46,8 @@ export function Discipline() {
     const [username, setUsername] = useState("")
     const [userPassword, setUserPassword] = useState("")
     const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const [userType, setUserType] = useState("STUDENT");
+    const [repeatPassword, setRepeatPassword] = useState("");
+    const [userType, setUserType] = useState<UserType>("STUDENT");
 
 
     //Options for the option buttons
@@ -217,11 +217,19 @@ export function Discipline() {
     
     useEffect(() => {
         loadAreas();
+    }, []);
+    useEffect(() => {
         loadDisciplines();
     }, [areas]);
     //---------------------- From User Services ---------------------------------------------------------------- 
 
-    async function createUserf(data: registerUserDTO) {
+    async function createUserf() {
+        const data: registerUserDTO = {
+            username: username,
+            password: newPassword,
+            repeatPassword: repeatPassword,
+            userType: userType
+        }
         try {
             const response = await createUser(data);
 
@@ -229,7 +237,7 @@ export function Discipline() {
             setUsername("");
             setNewPassword("");
             setUserPassword("");
-            setConfirmPassword("");
+            setRepeatPassword("");
             setUserType("STUDENT");
             console.log(response);
             setNewDisciplineModal(false);
@@ -238,9 +246,6 @@ export function Discipline() {
         }
     }
 
-    async function updateUser() {
-        const userId = localStorage.getItem()
-    }
 
     return (
         <>
@@ -334,41 +339,56 @@ export function Discipline() {
             {(newUserModal && isAdmin) && (
                 <div className="modalOverlay" onClick={() => setNewUserModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                        {/* Title and close button box */}
+
                         <div className="titleContainer">
                             <h1>Registrar usuário</h1>
-                            <ButtonClose size={40} onClose={() => setNewUserModal(false)}></ButtonClose>
+                            <ButtonClose size={40} onClose={() => setNewUserModal(false)} />
                         </div>
-                        {/* Select for user type */}
+
                         <div className="textBox">
                             <h2>Selecione o tipo de usuário</h2>
-                            <select name="" id=""
+                            <select
                                 className="selectFilter"
                                 value={userType}
-                                onChange={(e) => setUserType(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setUserType(e.target.value as UserType)}
                             >
                                 <option value="ADMIN">Administrador</option>
                                 <option value="INSTRUCTOR">Instrutor</option>
-                                <option value="STUDENT" selected>Aluno</option>
+                                <option value="STUDENT">Aluno</option>
                             </select>
                         </div>
-                        {/* Input for username */}
+
                         <div className="textBox">
                             <h2>Nome do usuário</h2>
-                            <input type="text" onChange={(e) => setUserPassword(e.target.value)} />
-                        </div>
-                        {/* Input for user password */}
-                        <div className="textBox">
-                            <h2>Senha do usuário</h2>
-                            <input type="password" onChange={(e) => setUserPassword(e.target.value)} />
-                        </div>
-                        {/* Input for user password confirmation */}
-                        <div className="textBox">
-                            <h2>Confirmar senha do usuário</h2>
-                            <input type="password" onChange={(e) => setUserPassword(e.target.value)} />
+                            <input
+                                type="text"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => createUserf}></Button>
+                        <div className="textBox">
+                            <h2>Senha do usuário</h2>
+                            <input
+                                type="password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="textBox">
+                            <h2>Confirmar senha do usuário</h2>
+                            <input
+                                type="password"
+                                value={repeatPassword}
+                                onChange={(e) => setRepeatPassword(e.target.value)}
+                            />
+                        </div>
+
+                        <Button
+                            ButtonTitle={"Enviar"}
+                            onClose={() => createUserf()}
+                        />
                     </div>
                 </div>
             )}
