@@ -16,10 +16,14 @@ export class ClassController {
         const userId = req.user.userId
 
         try {
-            await this.classService.create(data, userId)
-            return res.status(200).send({ response: "Success!"})
+            const createdClass = await this.classService.create(data, userId)
+            return res.status(200).send({ response: createdClass })
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -35,7 +39,11 @@ export class ClassController {
             await this.classService.assignCompetency(data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "Class not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -46,7 +54,11 @@ export class ClassController {
             const classes = await this.classService.findAll()
             return res.status(200).send({ response: classes })
         } catch (e) {
-            return res.status(404).send({ response: "Class not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -58,55 +70,75 @@ export class ClassController {
             const item = await this.classService.findOne(Number(id))
             return res.status(200).send({ response: item })
         } catch (e) {
-            return res.status(404).send({ response: "Class not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
     // GET
     // gets all materials in a class
     async viewMaterials(req: Request, res: Response){
-        const { classId } = req.params
+        const { id } = req.params
         try {
-            const materials = await this.classService.viewMaterials(Number(classId))
+            const materials = await this.classService.viewMaterials(Number(id))
             return res.status(200).send({ response: materials })
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
     // GET
     // gets all competences in a class
     async viewCompetences(req: Request, res: Response){
-        const { classId } = req.params
+        const { id } = req.params
         try {
-            const competences = await this.classService.viewCompetences(Number(classId))
+            const competences = await this.classService.viewCompetences(Number(id))
             return res.status(200).send({ response: competences })
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
     // GET
     // gets content in a class
     async viewContent(req: Request, res: Response){
-        const { classId } = req.params
+        const { id } = req.params
         try {
-            const content = await this.classService.viewContent(Number(classId))
+            const content = await this.classService.viewContent(Number(id))
             return res.status(200).send({ response: content })
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
     // GET
     // used to download content in a class
     async downloadContent(req: Request, res: Response){
-        const { classId } = req.params
+        const { id } = req.params
         try {
-            const downloadedContent = await this.classService.downloadContent(Number(classId))
+            const downloadedContent = await this.classService.downloadContent(Number(id))
             return res.status(200).send({ response: downloadedContent })
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -122,7 +154,11 @@ export class ClassController {
             await this.classService.edit(data, Number(id), userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "Class not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -137,7 +173,11 @@ export class ClassController {
             await this.classService.delete(Number(id), userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "Class not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 }

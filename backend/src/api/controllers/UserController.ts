@@ -34,7 +34,11 @@ export default class UserController {
             }
             
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -52,7 +56,11 @@ export default class UserController {
             return res.status(200).send({ response: loginResponse });
         } catch(e) {
             console.log(e)
-            return res.status(400).send({ response: "Failed to Login"});
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -63,7 +71,11 @@ export default class UserController {
             const users = await this.userService.showAll()
             return res.status(200).send({ response: users })
         } catch (e) {
-            return res.status(404).send({ response: "Users not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -74,7 +86,11 @@ export default class UserController {
             const students = await this.userService.showStudents()
             return res.status(200).send({ response: students })
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -83,7 +99,11 @@ export default class UserController {
             const instructors = await this.userService.showInstructors()
             return res.status(200).send({ response: instructors })
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -92,7 +112,11 @@ export default class UserController {
             const admins = await this.userService.showAdmins()
             return res.status(200).send({ response: admins })
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -104,7 +128,11 @@ export default class UserController {
             const student = await this.userService.showStudent(Number(id))
             return res.status(200).send({ response: student })
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -114,7 +142,11 @@ export default class UserController {
             const instructor = await this.userService.showInstructor(Number(id))
             return res.status(200).send({ response: instructor })
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -124,7 +156,11 @@ export default class UserController {
             const admin = await this.userService.showAdmin(Number(id))
             return res.status(200).send({ response: admin })
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -140,8 +176,11 @@ export default class UserController {
             await this.userService.changePassword(data, userId, userType);
             return res.status(200).send({response: "Password updated"});
         } catch(e) {
-            console.log(e);
-            return res.status(500).send({ response: "Internal Server Error"});
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -157,7 +196,11 @@ export default class UserController {
             await this.userService.updateStudent(Number(id), data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -170,7 +213,11 @@ export default class UserController {
             await this.userService.updateInstructor(Number(id), data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -183,7 +230,11 @@ export default class UserController {
             await this.userService.updateAdmin(Number(id), data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -197,7 +248,11 @@ export default class UserController {
             await this.userService.deleteStudent(Number(id), userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -209,7 +264,11 @@ export default class UserController {
             await this.userService.deleteInstructor(Number(id), userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -221,7 +280,11 @@ export default class UserController {
             await this.userService.deleteAdmin(Number(id), userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "User not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 }

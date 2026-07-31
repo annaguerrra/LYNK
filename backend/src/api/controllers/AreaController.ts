@@ -19,7 +19,11 @@ export default class AreaController {
             await this.areaService.registerArea(data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -30,7 +34,11 @@ export default class AreaController {
             const areas = await this.areaService.showAreas()
             return res.status(200).send({ response: areas })
         } catch (e) {
-            return res.status(404).send({ response: "Area not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -47,7 +55,11 @@ export default class AreaController {
             await this.areaService.updateArea(Number(id), data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "Area not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -63,7 +75,11 @@ export default class AreaController {
             await this.areaService.deleteArea(Number(id), userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "Area not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 }
