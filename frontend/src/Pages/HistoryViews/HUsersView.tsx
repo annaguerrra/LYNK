@@ -10,8 +10,17 @@ export function HUsersView() {
     
     async function loadHUser() {
         try {
-            const response = await getLogUsers('class');
-            setHUser(response);
+            const [students, admins, instructors] = await Promise.all([
+                getLogUsers("student"),
+                getLogUsers("admin"),
+                getLogUsers("instructor"),
+            ]);
+
+            setHUser([
+                ...students,
+                ...admins,
+                ...instructors,
+            ]);
         } catch (error) {
             console.error(error);
         }

@@ -16,8 +16,8 @@ import { ToastContainer, toast } from "react-toastify";
 import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
-import type { registerUserDTO } from "../Types/user";
-import { createUser } from "../Services/userService";
+import type { registerUserDTO, showStudentDTO } from "../Types/user";
+import { createUser, getAdmins, getInstructors, getStudents, getUsers } from "../Services/userService";
 
 
 export function Discipline() {
@@ -43,6 +43,7 @@ export function Discipline() {
     const { user } = useAuth();
     const isAdmin = user?.role === "ADMIN";
     const isInstructor = user?.role === "INSTRUCTOR";
+    const [userId, setUserId] = useState()
     const [username, setUsername] = useState("")
     const [userPassword, setUserPassword] = useState("")
     const [newPassword, setNewPassword] = useState("");
@@ -217,9 +218,23 @@ export function Discipline() {
     
     useEffect(() => {
         loadAreas();
+    }, []);
+
+    useEffect(() => {
         loadDisciplines();
     }, [areas]);
     //---------------------- From User Services ---------------------------------------------------------------- 
+    const [showUsers, setShowUsers] = useState<showStudentDTO[]>([])
+    
+    async function loadUsers() {
+        try {
+            const response = await getUsers();
+
+            setShowUsers(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     async function createUserf(data: registerUserDTO) {
         try {
@@ -384,20 +399,35 @@ export function Discipline() {
                         </div>
                         {/* Users display */}
                         <div className="itemsBox">
-                            <RowItem color='var(--green)'>
-                                <div className="itemText">
-                                    <p>Manufatura_20252</p>
-                                </div>
-                                <MoreOpt data={userOpt} size={25}></MoreOpt>
-                            </RowItem>
-                            <RowItem color='var(--green)'>
-                                <div className="itemText">
-                                    <p>Manufatura_20252</p>
-                                </div>
-                                <MoreOpt data={userOpt} size={25}></MoreOpt>
-                            </RowItem>
+                            {showUsers.map((users) => (
+                                <RowItem color={"#000000"}>
+                                    <div className="itemText">
+                                        <p>{users.username}</p>
+                                    </div>
+
+                                    <MoreOpt
+                                        size={25}
+                                        data={[
+                                            {
+                                                name: "Editar",
+                                                onClick: () => {
+                                                    setUserType(users.userType);
+                                                    setUsername(users.username);
+                                                    setUserId(users.id);
+                                                },
+                                            },
+                                            {
+                                                name: "Excluir",
+                                                onClick: () => {
+                                                    setUserId(users.id);
+                                                },
+                                            },
+                                        ]}
+                                    />
+                                </RowItem>
+                            ))}
                         </div>
-                        <div></div>
+                    <div></div> 
                     </div>
                 </div>
             )}

@@ -11,6 +11,7 @@ export interface registerUserDTO {
 }
 
 export interface showStudentDTO {
+    id: number
     username: string
     userType: UserType
 }
