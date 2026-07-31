@@ -10,8 +10,8 @@ export const validateRegister = (req: Request, res: Response, next: NextFunction
 
 export const validateCompetency = (req: Request, res: Response, next: NextFunction) => {
     // validates if the necessary data were provided to assign a competence
-    const { classId, competencyId } = req.body
-    if(!classId || !competencyId)
+    const { id, competencyId } = req.body
+    if(!id || !competencyId)
         return res.status(400).send({ response: `There are empty data`})
     next()
 }

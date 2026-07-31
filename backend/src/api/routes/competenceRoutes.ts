@@ -18,9 +18,8 @@ router
     // route to show all competencies
     .get('/competencies', competenceController.show.bind(competenceController))
     // route to edit a competency
-    .put('/competency/edit/id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdate, competenceController.update.bind(competenceController))
-    // route to delete a competency
     .put('/competency/edit/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdate, competenceController.update.bind(competenceController))
+    // route to delete a competency
     .delete('/competency/delete/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), competenceController.delete.bind(competenceController))
 
 export default router

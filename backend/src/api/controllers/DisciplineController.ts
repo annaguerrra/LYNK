@@ -19,8 +19,11 @@ export class DisciplineController{
             await this.disciplineService.create(data, userId)
             return res.status(200).send({response: "Discipline created!"});
         } catch(e){
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
             console.log(e)
-            return res.status(500).send({response: e});
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
     
@@ -36,7 +39,11 @@ export class DisciplineController{
             await this.disciplineService.duplicate(Number(id), userid)
             return res.status(200).send({response: "Discipline duplicated!"})
         } catch (e) {
-            return res.status(500).send({response: e})
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -52,8 +59,11 @@ export class DisciplineController{
             await this.disciplineService.assignCompetence(data, userId);
             return res.status(200).send({response: "Discipline updated!"});
         } catch(e){
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
             console.log(e)
-            return res.status(500).send({response: e});
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -66,7 +76,11 @@ export class DisciplineController{
             await this.disciplineService.getColor(areaid);
             return res.status(200).send({ response: "Success!"});
         } catch(e) {
-            return res.status(500).send({ response: e});
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -77,7 +91,11 @@ export class DisciplineController{
             const disciplines = await this.disciplineService.findAll();
             return res.status(200).send({response: disciplines });
         } catch(e){
-            return res.status(500).send({response: e});
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -90,7 +108,11 @@ export class DisciplineController{
             const discipline = await this.disciplineService.findOne(Number(id));
             return res.status(200).send({response: discipline });
         } catch(e){
-            return res.status(500).send({response: e});
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -103,7 +125,11 @@ export class DisciplineController{
             const exams = await this.disciplineService.viewExams(Number(id));
             return res.status(200).send({response: exams});
         } catch(e){
-            return res.status(500).send({response: e});
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
 
     }
@@ -117,7 +143,11 @@ export class DisciplineController{
             const classes = await this.disciplineService.viewClasses(Number(id));
             return res.status(200).send({response: classes });
         } catch(e){
-            return res.status(500).send({response: e});
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -130,7 +160,11 @@ export class DisciplineController{
             const materials = await this.disciplineService.viewMaterials(Number(id));
             return res.status(200).send({response: materials });
         } catch(e){
-            return res.status(500).send({response: e});
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -143,7 +177,11 @@ export class DisciplineController{
             const competences = await this.disciplineService.viewCompetences(Number(id));
             return res.status(200).send({response: competences });
         } catch(e){
-            return res.status(500).send({response: e});
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -159,7 +197,11 @@ export class DisciplineController{
             await this.disciplineService.delete(Number(id), userId);
             return res.status(200).send({response: "Success"});
         } catch(e){
-            return res.status(500).send({response: e});
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -176,7 +218,11 @@ export class DisciplineController{
             await this.disciplineService.edit(data, Number(id), userId);
             return res.status(200).send({response: "Success"});
         } catch(e){
-            return res.status(500).send({response: e});
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 }
