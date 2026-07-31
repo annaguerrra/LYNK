@@ -50,7 +50,7 @@ export class ExamService implements IExamService {
             await prisma.log.create({
                 data: {
                     action: "CREATED",
-                    entityType: "Exam",
+                    entityType: "EXAM",
                     entityId: createdExam.id,
                     entityName: createdExam.name,
                     oldData: {},
@@ -123,7 +123,7 @@ export class ExamService implements IExamService {
             await prisma.log.create({
                 data: {
                     action: "UPDATED",
-                    entityType: "Exam",
+                    entityType: "EXAM",
                     entityId: target.id,
                     entityName: target.name,
                     oldData: {
@@ -198,7 +198,7 @@ export class ExamService implements IExamService {
         await prisma.log.create({
             data: {
                 entityId: target.id,
-                entityType: "Exam",
+                entityType: "EXAM",
                 entityName: target.name,
                 action: "UPDATED",
                 oldData: {
@@ -248,7 +248,7 @@ export class ExamService implements IExamService {
         await prisma.log.create({
             data: {
                 action: "DELETED",
-                entityType: "Exam",
+                entityType: "EXAM",
                 entityId: target.id,
                 entityName: target.name,
                 oldData: {

@@ -16,8 +16,8 @@ import { toast } from "react-toastify";
 import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
-import type { registerUserDTO, UserType } from "../Types/user";
-import { createUser } from "../Services/userService";
+import type { registerUserDTO, resetPasswordDTO, showStudentDTO, UserType } from "../Types/user";
+import { createUser, getUsers } from "../Services/userService";
 
 
 export function Discipline() {
@@ -233,6 +233,12 @@ export function Discipline() {
             toast.success("Usuário criado com sucesso!");
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    async function resetPassword(data: resetPasswordDTO, id: number) {
+        try {
+            
         }
     }
 
