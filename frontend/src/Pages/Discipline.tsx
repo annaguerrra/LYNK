@@ -238,6 +238,10 @@ export function Discipline() {
         }
     }
 
+    async function updateUser() {
+        const userId = localStorage.getItem()
+    }
+
     return (
         <>
             <Header />
@@ -410,7 +414,7 @@ export function Discipline() {
                         {/* Select the user type */}
                         <div className="textBox">
                             <h2>Selecione o tipo de usuário</h2>
-                            <select name="" id="" className="selectFilter">
+                            <select name="" id="" className="selectFilter" onChange={(e) => setUserType(e.target.value)}>
                                 <option value="Administrador">Administrador</option>
                                 <option value="Instrutor">Instrutor</option>
                                 <option value="Aluno" selected>Aluno</option>
@@ -419,12 +423,12 @@ export function Discipline() {
                         {/* Input for the username */}
                         <div className="textBox">
                             <h2>Nome do usuário</h2>
-                            <input type="text" />
+                            <input type="text" onChange={(e) => setUsername(e.target.value)}/>
                         </div>
                         {/* Input for the user password */}
                         <div className="textBox">
                             <h2>Senha do usuário</h2>
-                            <input type="password" />
+                            <input type="password" onChange={(e) => setUserPassword(e.target.value)}/>
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => setEditStudentModal(false)}></Button>
