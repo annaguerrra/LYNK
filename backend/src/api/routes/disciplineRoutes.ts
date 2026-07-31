@@ -8,6 +8,7 @@ import { Router } from 'express';
 import express from 'express';
 
 const router: Router = express.Router()
+const jwt = new JwtTokenService()
 
 const disciplineController = makeDisciplineController()
 const jwt = new JwtTokenService()

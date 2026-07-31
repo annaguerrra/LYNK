@@ -6,25 +6,75 @@ import { ButtonExclude } from "../../Components/ButtonExclude"
 import { ButtonCancel } from "../../Components/ButtonCancel"
 import { ButtonClose } from "../../Components/ButtonClose"
 import { Button } from "../../Components/Button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAuth } from "../../Contexts/AuthContext"
+import { isAxiosError } from "axios"
+import { toast } from "react-toastify"
+import { getDisciplineCompetences } from "../../Services/disciplinesService"
+import type { CompetenceItem } from "../../Types/competence"
 
-export function CompetencesView({ competences }) {
+interface CompetencesViewProps {
+    disciplineId: number;
+}
+
+
+export function CompetencesView({ disciplineId }: CompetencesViewProps) {
     //Variables to navigate and open modals
     const navigate = useNavigate();
+
     const [openCompetenceModal, setOpenCompetenceModal] = useState(false);
     const [editCompetenceModal, setEditCompetenceModal] = useState(false);
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
 
-    const [selectedCompetence, setSelectedCompetence] = useState(null);
+    const [competences, setCompetences] = useState<CompetenceItem[]>([]);
+    const [selectedCompetence, setSelectedCompetence] = useState<CompetenceItem | null>(null);
+    const [loading, setLoading] = useState(true);
+
     //Variables to control the users and its interactions
     const { user } = useAuth();
     const isAdmin = user?.role === "ADMIN";
     const isInstructor = user?.role === "INSTRUCTOR";
 
+
+    async function loadCompetences() {
+        try {
+            const response = await getDisciplineCompetences(disciplineId);
+
+            setCompetences(response.competences);
+
+        } catch (error) {
+            if (isAxiosError(error)) {
+                if (error.response?.status === 404) {
+                    toast.error("404 - Disciplina não encontrada.");
+                    return;
+                }
+
+                if (error.response?.status === 500) {
+                    toast.error("500 - Erro de servidor.");
+                    return;
+                }
+            }
+
+            console.error(error);
+            toast.error("Erro ao carregar competências.");
+
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        loadCompetences();
+    }, [disciplineId]);
+
+    if (loading) {
+        return <div>Carregando competências...</div>;
+    }
+
     if (!competences.length) {
         return <div>Nenhuma competência encontrada.</div>;
     }
+
 
     return (
         <>
@@ -41,7 +91,7 @@ export function CompetencesView({ competences }) {
                         button={true}
                         actions={
                             <>
-                                {isAdmin || isInstructor &&
+                                {(isAdmin || isInstructor) &&
                                     <MoreOpt size={22} data={
                                         [
                                             {
@@ -49,7 +99,7 @@ export function CompetencesView({ competences }) {
                                                 onClick: () => {
                                                     setEditCompetenceModal(true), setSelectedCompetence(competence)
                                                 }
-                                            },                                           
+                                            },
                                             {
                                                 name: "Excluir competência",
                                                 onClick: () => {
@@ -149,3 +199,4 @@ export function CompetencesView({ competences }) {
         </>
     )
 }
+

@@ -15,6 +15,7 @@ export interface assignCompetencyDTO{
 
 // response to findAll service
 export interface ClassesDTO {
+    id: number
     name: string;
     content: string;
     createdAt: Date;
@@ -51,5 +52,10 @@ export interface getContentDTO{
 export interface editClass{
     name: string
     content: string
+}
+
+export interface ClassItem {
+    id: number
+    name: string
 }
 

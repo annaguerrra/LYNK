@@ -3,7 +3,7 @@ import type { AttachFileDTO } from "../Types/material";
 import api from "./api";
 
 // Get all exams
-export async function getDisciplines(): Promise<registerExamDTO[]> {
+export async function getExams(): Promise<registerExamDTO[]> {
     const response = await api.get("/exams");
     return response.data.response;
 }

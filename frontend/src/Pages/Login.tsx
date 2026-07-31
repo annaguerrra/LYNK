@@ -44,13 +44,13 @@ export function Login() {
             notifySucess();
             navigate("/Disciplines");
         } catch (error: any) {
-            if (error.response?.status === 404) { // alterar para 401 depois que arrumar o bug do backend
+            if (error.response?.status === 400) { 
                 notifyInvalidLogin();
             } else {
                 notifyServer();
             }
-            setUsername("");
-            setUserPassword("");
+            // setUsername("");
+            // setUserPassword("");
         }
         
     }
@@ -65,11 +65,13 @@ export function Login() {
 
             setMustChangePassword(false);
 
-            setUsername("");
-            setUserPassword("");
+            // setUsername("");
+            // setUserPassword("");
         } catch (error) {
             notifyServer()
-            console.error(error);
+            console.error(userPassword,
+                newPassword,
+                confirmPassword);
         }
     }
 

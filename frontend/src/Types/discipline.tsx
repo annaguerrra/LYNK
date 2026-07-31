@@ -2,7 +2,6 @@
 export interface createDiscipline{
     name: string
     areaID: number
-    userID: number
 }
 
 // used to assign a competency to a discipline
@@ -49,6 +48,7 @@ export interface viewMaterialsDTO{
 export interface viewCompetencesDTO{
     name: string;
     competences:{
+        id: number
         name: string
         numOfClasses: number
     }[];
@@ -73,6 +73,6 @@ export interface viewExamsDTO {
 // response to editDiscipline service 
 export interface editDisciplineDTO{
     name: string
-    workload: number
+    areaID: number
     lastUpdate?: Date
 }

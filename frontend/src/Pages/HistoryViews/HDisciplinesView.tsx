@@ -9,7 +9,7 @@ export function HDisciplinesView() {
     
     async function loadHDisicpline() {
         try {
-            const response = await getLogDisciplines('disciplines');
+            const response = await getLogDisciplines('Discipline');
             setHDisciplines(response);
         } catch (error) {
             console.error(error);
@@ -39,9 +39,9 @@ export function HDisciplinesView() {
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
 
-                            <span>{hdiscipline.updatedAt}</span>
+                            <span>{hdiscipline.updatedAt.toLocaleDateString("pt-BR")}</span>
                             <span> | </span>
-                            <span>{hdiscipline.updatedAt}</span>
+                            <span>{hdiscipline.updatedAt.toLocaleDateString("pt-BR")}</span>
                         </>
                     }>
 

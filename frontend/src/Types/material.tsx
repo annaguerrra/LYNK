@@ -1,9 +1,9 @@
 import type { MaterialAttachmentDTO, UploadedFileDTO } from "./attachment";
 import type { ClassDTO } from "./class";
-import type { DisciplineDTO } from "./disciplineDTOS";
+import type { DisciplineDTO } from "./discipline";
 
 // Response to find one material service
-export interface FindOneDTO {
+export interface MaterialDTO {
     id: number;
     name: string;
 }

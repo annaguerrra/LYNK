@@ -4,6 +4,12 @@ export interface CompetenceDTO {
     name: string
 }
 
+export interface CompetenceItem {
+    id: number,
+    name: string
+    numOfClasses: number
+}
+
 // used to create a competence
 export interface CreateCompetenceDTO {
     name: string

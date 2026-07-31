@@ -38,9 +38,12 @@ import LessonSelect from '../Components/LessonSelect'
 import { useAuth } from '../Contexts/AuthContext'
 
 import type { ClassDTO } from '../Types/class'
-import { getClassById, updateClass } from '../Services/classesService'
-import { toast } from 'react-toastify'
+import { getClassById, getClassMaterials, updateClass } from '../Services/classesService'
+import { toast, ToastContainer } from 'react-toastify'
 import { isAxiosError } from 'axios'
+import type { MaterialDTO } from '../Types/material'
+import type { CompetenceDTO } from '../Types/competence'
+import { createMaterial, attachMaterialFile } from '../Services/materialsService'
 
 export function Class() {
     //Variables to navigate and open modals
@@ -58,8 +61,8 @@ export function Class() {
 
     const [classItem, setClassItem] = useState<ClassDTO | null>(null);
 
-    const [materials, setMaterials] = useState([])
-    const [competences, setCompetences] = useState([])
+    const [materials, setMaterials] = useState<MaterialDTO[]>([])
+    const [competences, setCompetences] = useState<CompetenceDTO[]>([])
 
     //Generic content for the markdown
     const [content, setContent] = useState("");
@@ -98,6 +101,21 @@ export function Class() {
         markdownShortcutPlugin()
     ]
 
+    async function loadMaterials(id: number) {
+        try {
+            const response = await getClassMaterials(id);
+            setMaterials(response)
+        } catch (error) {
+            if (isAxiosError(error)) {
+                if (error.response?.status === 404) {
+                    toast.error("404 - Materiais não encontrados.");
+                    return;
+                }
+            }
+            toast.error(`${error}`);
+        }
+    }
+    
     async function loadDataClass(id: number) {
         try {
             const response = await getClassById(id);
@@ -106,18 +124,22 @@ export function Class() {
         } catch (error) {
             if (isAxiosError(error)) {
                 if (error.response?.status === 404) {
-                    toast.error("404 - Aula não encontrada.");
-                    navigate("/error");
+                    navigate("/error", {
+                        state: { errorText: "404 - Aula não encontrada." }
+                    });
                     return;
                 }
 
                 if (error.response?.status === 500) {
-                    toast.error("500 - Erro de servidor.");
+                    navigate("/error", {
+                        state: { errorText: "500 - Error de servidor" }
+                    });
                     return;
                 }
             }
 
-            console.error(error);
+            navigate("/error");
+            console.log(error);
             toast.error(`${error}`);
         }
     }
@@ -126,11 +148,6 @@ export function Class() {
         if (!class_id) return;
 
         const id = Number(class_id);
-
-        if (isNaN(id)) {
-            navigate("/error");
-            return;
-        }
 
         loadDataClass(id);
     }, [class_id]);
@@ -141,6 +158,7 @@ export function Class() {
         setTitleClass(classItem.name);
         setContent(classItem.content);
         setIsContentLoaded(true);
+        loadMaterials(classItem.id)
 
     }, [classItem]);
 
@@ -173,6 +191,27 @@ export function Class() {
     }
 
 
+    async function handleFileUpload(file: File) {
+        if (!classItem) return;
+
+        try {
+            await createMaterial({
+                name: file.name,
+                classId: classItem.id,
+                disciplineId: classItem.disciplineId,
+                files: [file]
+            });
+
+            toast.success("Material enviado.");
+
+            await loadDataClass(classItem.id);
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao enviar material.");
+        }
+    }
+
+
 
     return (
         <>
@@ -193,7 +232,7 @@ export function Class() {
                         <div className='markdownBox'>
                             <div className='toolbar view'>
                                 <span>{titleClass}</span>
-                                {isAdmin || isInstructor &&
+                                {(isAdmin || isInstructor) &&
                                     <button className='buttonEdit' onClick={() => setEditMode(true)}>Editar</button>
                                 }
                             </div>
@@ -267,23 +306,27 @@ export function Class() {
                         <div className='attachmentsContent'>
                             <span className='subtitle'>Anexos</span>
                             <div className='attachments'>
-                                
-                                <RowItem
-                                    type='class'
-                                    actions={
-                                        <>
-                                            <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                            {isAdmin || isInstructor && editMode &&
-                                                <ButtonClose size={18} onClose={() => { }} />
-                                            }
-                                        </>
-                                    }>
+                                {materials.map((material) => (
+                                    <>
+                                        <RowItem
+                                            color='var(--purple)'
+                                            actions={
+                                                <>
+                                                    <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                                    {(isAdmin || isInstructor) && editMode &&
+                                                        <ButtonClose size={18} onClose={() => { }} />
+                                                    }
+                                                </>
+                                            }>
 
-                                    <div>Material_aaa00</div>
-                                </RowItem>
+                                            <div>{material.name}</div>
+                                        </RowItem>
+                                    </>
+                                ))}
 
-                                {isAdmin || isInstructor && editMode &&
-                                    <InputFile />
+
+                                {(isAdmin || isInstructor) && editMode &&
+                                    <InputFile onFileSelect={handleFileUpload} />
                                 }
 
                             </div>
@@ -292,14 +335,14 @@ export function Class() {
                             <div className='attachments' >
 
                                 {/* Component used to search a competence */}
-                                {isAdmin || isInstructor && editMode &&
+                                {(isAdmin || isInstructor) && editMode &&
                                     <LessonSelect />
                                 }
                                 <RowItem
                                     type='competence'
                                     actions={
                                         <>
-                                            {isAdmin || isInstructor && editMode &&
+                                            {(isAdmin || isInstructor) && editMode &&
                                                 <ButtonClose size={18} onClose={() => { }} />
                                             }
                                         </>
@@ -311,7 +354,7 @@ export function Class() {
                                     type='competence'
                                     actions={
                                         <>
-                                            {isAdmin || isInstructor && editMode &&
+                                            {(isAdmin || isInstructor) && editMode &&
                                                 <ButtonClose size={18} onClose={() => { }} />
                                             }
                                         </>
@@ -325,6 +368,18 @@ export function Class() {
                     </div>
                 </div>
             </div>
+            <ToastContainer
+                position="top-center"
+                autoClose={2500}
+                hideProgressBar={false}
+                newestOnTop={true}
+                closeOnClick={false}
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+            />
         </>
     )
 }

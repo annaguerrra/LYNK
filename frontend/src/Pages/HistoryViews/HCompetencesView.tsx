@@ -9,7 +9,7 @@ export function HCompetencesView() {
     
     async function loadHCompetence() {
         try {
-            const response = await getLogCompetences('competence');
+            const response = await getLogCompetences('Competence');
             setHCompetence(response);
         } catch (error) {
             console.error(error);
@@ -39,9 +39,9 @@ export function HCompetencesView() {
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
 
-                            <span>{hcompetence.alterUser}</span>
+                            <span>{hcompetence.alterUser.toLocaleDateString("pt-BR")}</span>
                             <span> | </span>
-                            <span>{hcompetence.updatedAt}</span>
+                            <span>{hcompetence.updatedAt.toLocaleDateString("pt-BR")}</span>
                         </>
                     }>
 

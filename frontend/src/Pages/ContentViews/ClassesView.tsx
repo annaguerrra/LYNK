@@ -8,10 +8,11 @@ import { ButtonCancel } from "../../Components/ButtonCancel"
 import { useEffect, useState } from "react"
 import { useAuth } from "../../Contexts/AuthContext"
 import { getDisciplineClasses } from "../../Services/disciplinesService"
-import type { viewClassesDTO } from "../../Types/disciplineDTOS"
+import type { viewClassesDTO } from "../../Types/discipline"
 import { toast } from "react-toastify"
 import { isAxiosError } from "axios"
 import api from "../../Services/api"
+import type { ClassDTO, ClassItem } from "../../Types/class"
 
 
 interface ClassesViewProps {
@@ -26,7 +27,7 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
     const [excludeClassModal, setExcludeClassModal] = useState(false);
     const [selectedClass, setSelectedClass] = useState(null);
 
-    const [classes, setClasses] = useState<{id: number, name: string}[]>([]);
+    const [classes, setClasses] = useState<ClassItem[]>([]);
     const [loading, setLoading] = useState(true);
 
 
@@ -38,7 +39,7 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
 
     async function loadClasses() {
         try {
-            const response: viewClassesDTO = await getDisciplineClasses(disciplineId);
+            const response = await getDisciplineClasses(disciplineId);
 
             setClasses(response.classes);
 
@@ -65,7 +66,7 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
         }
     }
 
-
+    
     useEffect(() => {
         loadClasses();
     }, [disciplineId]);

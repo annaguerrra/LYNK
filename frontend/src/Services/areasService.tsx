@@ -4,11 +4,12 @@ import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 // Get all areas
 export async function getAreas(): Promise<AreaDTO[]> {
     const response = await api.get("/areas");
+    console.log(response.data)
     return response.data.response;
 }
 
 // Create a new area
-export async function createArea(data: registerAreaDTO[]) : Promise<AreaDTO> {
+export async function createArea(data: registerAreaDTO) : Promise<AreaDTO> {
     const response = await api.post("/area/create", data);
     return response.data.response;    
 }

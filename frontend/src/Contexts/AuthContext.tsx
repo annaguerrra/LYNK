@@ -1,9 +1,11 @@
 import {
     createContext,
     useContext,
+    useEffect,
     useState
 } from "react";
 import api from "../Services/api";
+import { useNavigate } from "react-router-dom";
 
 type Role = "ADMIN" | "INSTRUCTOR" | "STUDENT";
 
@@ -21,7 +23,7 @@ interface AuthContextType {
     changePassword: (
         oldPassword: string,
         newPassword: string,
-        confirmPassword: string
+        repeatPassword: string
     ) => Promise<void>;
     logout: () => void;
 }
@@ -34,6 +36,8 @@ export function AuthProvider({
     children: React.ReactNode;
 }) {
 
+    const navigate = useNavigate();
+
     const [user, setUser] = useState<User | null>(() => {
         const token = localStorage.getItem("token");
 
@@ -43,49 +47,69 @@ export function AuthProvider({
     });
 
     async function login(username: string, password: string) {
-            const response = await api.post("/login", {
-                username,
-                password
-            });
+        const response = await api.post("/login", {
+            username,
+            password
+        });
 
 
-            const { token, mustChangePassword, user } = response.data.response;
+        const { token, mustChangePassword, user } = response.data.response;
 
-            localStorage.setItem("token", token);
+        localStorage.setItem("token", token);
 
-            localStorage.setItem("user", JSON.stringify({
-                username: user.username,
-                userId: user.id,
-                role: user.userType
-            }));
+        localStorage.setItem("user", JSON.stringify({
+            username: user.username,
+            userId: user.id,
+            role: user.userType
+        }));
 
-            setUser({
-                username: user.username,
-                userId: user.id,
-                role: user.userType,
-                token: token,
-                mustChangePassword
-            });
+        setUser({
+            username: user.username,
+            userId: user.id,
+            role: user.userType,
+            token: token,
+            mustChangePassword
+        });
 
-            return mustChangePassword;
-        }
+        return mustChangePassword;
+    }
 
     async function changePassword(
         oldPassword: string,
         newPassword: string,
-        confirmPassword: string
+        repeatPassword: string
     ) {
         await api.put("/user/change-password", {
             oldPassword,
             newPassword,
-            confirmPassword
+            repeatPassword
         });
     }
 
     function logout() {
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         setUser(null);
+        navigate('/')
     }
+
+
+    useEffect(() => {
+        const interceptor = api.interceptors.response.use(
+            response => response,
+            error => {
+                if (error.response?.status === 401) {
+                    logout();
+                }
+
+                return Promise.reject(error);
+            }
+        );
+
+        return () => api.interceptors.response.eject(interceptor);
+    }, []);
+
+
 
 
     return (

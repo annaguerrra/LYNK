@@ -9,7 +9,7 @@ export function HClassesView() {
     
     async function loadHClasses() {
         try {
-            const response = await getLogClasses('class');
+            const response = await getLogClasses('Class');
             setHClasses(response);
         } catch (error) {
             console.error(error);
@@ -39,9 +39,9 @@ export function HClassesView() {
                                     src="../../../public/UserDefault/user-purple.png">
                                 </img>
 
-                                <span>{hclass.alterUser}</span>
+                                <span>{hclass.alterUser.toLocaleDateString("pt-BR")}</span>
                                 <span> | </span>
-                                <span>{hclass.updatedAt}</span>
+                                <span>{hclass.updatedAt.toLocaleDateString("pt-BR")}</span>
                             </>
                         }>
                             <span>{hclass.entityName}</span>

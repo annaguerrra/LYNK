@@ -19,6 +19,7 @@ import { HClassesView } from "./HistoryViews/HClassesView";
 import { HCompetencesView } from "./HistoryViews/HCompetencesView";
 import { HExamsView } from "./HistoryViews/HExamsView";
 import { HUsersView } from "./HistoryViews/HUsersView";
+import { HAreasView } from "./HistoryViews/HAreasView";
 
 export function History() {
     //Variables to navigate and open modals
@@ -47,6 +48,7 @@ export function History() {
 
 
     const tabs = [
+        { id: "areas", label: "Áreas" },
         { id: "disciplines", label: "Disciplinas" },
         { id: "classes", label: "Aulas" },
         { id: "competences", label: "Competências" },
@@ -106,6 +108,7 @@ export function History() {
                         onChange={setSelectedTab}
                         tabs={tabs} />
 
+                    {selectedTab === "areas" && <HAreasView />}
                     {selectedTab === "disciplines" && <HDisciplinesView />}
                     {selectedTab === "classes" && <HClassesView />}
                     {selectedTab === "competences" && <HCompetencesView />}

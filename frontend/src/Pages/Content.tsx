@@ -21,11 +21,16 @@ import { useAuth } from "../Contexts/AuthContext";
 import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
 import { getDisciplineById } from "../Services/disciplinesService";
-import type { DisciplineDTO } from "../Types/disciplineDTOS";
+import type { DisciplineDTO } from "../Types/discipline";
+
+
 
 export function Content() {
     //Variables to navigate and open modals
     const navigate = useNavigate()
+
+    const { discipline_id } = useParams<{ discipline_id: string }>();
+
     const [selectedTab, setSelectedTab] = useState("classes");
     const [newTest, setNewTest] = useState(false);
     const [editTest, setEditTest] = useState(false);
@@ -35,8 +40,6 @@ export function Content() {
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
 
     const [discipline, setDiscipline] = useState<DisciplineDTO | null>(null);
-
-    const { discipline_id } = useParams();
 
     //Variables to control the users and its interactions
     const { user } = useAuth();
@@ -119,9 +122,9 @@ export function Content() {
                 <div className="headerContent">
                     <div className="startBox">
                         <ButtonBack onClick={() => navigate("/disciplines")} />
-                        <span style={{ fontWeight: "bold", fontSize: "30px" }}>{discipline.name}</span>
+                        {/* <span style={{ fontWeight: "bold", fontSize: "30px" }}>{discipline.name}</span> */}
                     </div>
-                    {isAdmin || isInstructor &&
+                    {(isAdmin || isInstructor) &&
                         <MoreOpt data={options} size={30}></MoreOpt>
                     }
                 </div>
@@ -131,9 +134,9 @@ export function Content() {
                         selected={selectedTab}
                         onChange={setSelectedTab} tabs={tabs} />
 
-                    {selectedTab === "classes" && <ClassesView classes />}
-                    {selectedTab === "competences" && <CompetencesView competences={discipline!.competences} />}
-                    {selectedTab === "exams" && <ExamsView />}
+                    {selectedTab === "classes" && <ClassesView disciplineId={discipline.id} />}
+                    {selectedTab === "competences" && <CompetencesView disciplineId={discipline.id} />}
+                    {selectedTab === "exams" && <ExamsView  />}
 
 
                 </div>
