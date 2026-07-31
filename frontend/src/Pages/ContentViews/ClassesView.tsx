@@ -12,14 +12,15 @@ import { toast } from "react-toastify"
 import { isAxiosError } from "axios"
 import api from "../../Services/api"
 import type { ClassItem } from "../../Types/class"
+import type { DisciplineDTO } from "../../Types/discipline"
 
 
 interface ClassesViewProps {
-    disciplineId: number;
+    discipline: DisciplineDTO;
 }
 
 
-export function ClassesView({ disciplineId }: ClassesViewProps) {
+export function ClassesView({ discipline }: ClassesViewProps) {
 
     const navigate = useNavigate();
 
@@ -38,8 +39,7 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
 
     async function loadClasses() {
         try {
-            console.log("passo 2")
-            const response = await getDisciplineClasses(disciplineId);
+            const response = await getDisciplineClasses(discipline.id);
 
             setClasses(response.classes);
 
@@ -68,9 +68,8 @@ export function ClassesView({ disciplineId }: ClassesViewProps) {
 
     
     useEffect(() => {
-        console.log("passo 1")
         loadClasses();
-    }, [disciplineId]);
+    }, [discipline.id]);
 
 
     async function downloadClass(id: number) {

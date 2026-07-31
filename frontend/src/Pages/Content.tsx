@@ -16,13 +16,13 @@ import { useNavigate } from "react-router-dom";
 import { RowItem } from "../Components/RowItem";
 import LessonSelect from "../Components/LessonSelect";
 import { useParams } from "react-router-dom";
-import api from "../Services/api";
 import { useAuth } from "../Contexts/AuthContext";
 import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
 import { getDisciplineById } from "../Services/disciplinesService";
 import type { DisciplineDTO } from "../Types/discipline";
 import { createClassService } from "../Services/classesService";
+import ActivityIndicator from "../Components/ActivityIndicator";
 
 
 
@@ -31,6 +31,7 @@ export function Content() {
     const navigate = useNavigate()
 
     const { discipline_id } = useParams<{ discipline_id: string }>();
+
 
 
     const [selectedTab, setSelectedTab] = useState("classes");
@@ -117,6 +118,7 @@ export function Content() {
 
     async function loadContent(id: number) {
         try {
+            await new Promise(resolve => setTimeout(resolve, 3000));
             const response = await getDisciplineById(id);
 
             setDiscipline(response);
@@ -158,6 +160,16 @@ export function Content() {
 
 
 
+    if (!discipline) {
+        return (
+            <>
+                <Header />
+                <ActivityIndicator size="large" />
+            </>
+        );
+    }
+
+
     return (
         <>
             <Header />
@@ -168,8 +180,8 @@ export function Content() {
                 {/* Button to go back and more interative options */}
                 <div className="headerContent">
                     <div className="startBox">
-                        <ButtonBack onClick={() => navigate("/disciplines")} />
-                        {/* <span style={{ fontWeight: "bold", fontSize: "30px" }}>{discipline.name}</span> */}
+                        <ButtonBack onClick={() => navigate(-1)} />
+                        <span style={{ fontWeight: "bold", fontSize: "30px" }}>{discipline.name}</span>
                     </div>
                     {(isAdmin || isInstructor) &&
                         <MoreOpt data={options} size={30}></MoreOpt>
@@ -181,9 +193,9 @@ export function Content() {
                         selected={selectedTab}
                         onChange={setSelectedTab} tabs={tabs} />
 
-                    {selectedTab === "classes" && <ClassesView disciplineId={discipline.id} />}
-                    {selectedTab === "competences" && <CompetencesView disciplineId={discipline.id} />}
-                    {selectedTab === "exams" && <ExamsView />}
+                    {discipline && selectedTab === "classes" && <ClassesView discipline={discipline} />}
+                    {discipline && selectedTab === "competences" && <CompetencesView discipline={discipline} />}
+                    {discipline && selectedTab === "exams" && <ExamsView />}
 
 
                 </div>

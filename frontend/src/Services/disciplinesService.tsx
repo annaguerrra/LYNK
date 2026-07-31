@@ -12,7 +12,6 @@ import type {
 
 // Create a new discipline
 export async function createDisciplineService(data: createDiscipline) {
-    console.log(data)
     const response = await api.post("/discipline/create", data);
     return response.data;
 }
@@ -55,11 +54,9 @@ export async function getDisciplineMaterials(id: number): Promise<viewMaterialsD
 }
 
 // Get discipline competences
-export async function getDisciplineCompetences(
-    id: number
-): Promise<viewCompetencesDTO> {
+export async function getDisciplineCompetences(id: number): Promise<viewCompetencesDTO> {
     const response = await api.get(`/discipline/${id}/competences`);
-    return response.data;
+    return response.data.response;
 }
 
 // Update a discipline

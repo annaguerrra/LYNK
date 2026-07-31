@@ -44,6 +44,7 @@ import { isAxiosError } from 'axios'
 import type { MaterialDTO } from '../Types/material'
 import type { CompetenceDTO } from '../Types/competence'
 import { createMaterial } from '../Services/materialsService'
+import ActivityIndicator from '../Components/ActivityIndicator'
 
 export function Class() {
     //Variables to navigate and open modals
@@ -115,7 +116,7 @@ export function Class() {
             toast.error(`${error}`);
         }
     }
-    
+
     async function loadDataClass(id: number) {
         try {
             const response = await getClassById(id);
@@ -177,7 +178,7 @@ export function Class() {
             toast.success("Aula alterada com sucesso!");
             setEditMode(false);
 
-        } catch (error) {          
+        } catch (error) {
 
             console.error(error);
             toast.error("Erro ao salvar alterações.");
@@ -205,7 +206,14 @@ export function Class() {
         }
     }
 
-
+    if (!classItem) {
+        return (
+            <>
+                <Header />
+                <ActivityIndicator size="large" />
+            </>
+        );
+    }
 
     return (
         <>
@@ -215,7 +223,7 @@ export function Class() {
             {/* Whole page */}
             <div className="page-class">
                 <div className="headerContent">
-                    <ButtonBack onClick={() => navigate("/content")} />
+                    <ButtonBack onClick={() => navigate(-1)} />
                 </div>
 
                 {/* Class content (markdown, files and competences) */}

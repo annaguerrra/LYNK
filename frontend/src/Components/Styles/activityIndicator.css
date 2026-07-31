@@ -1,0 +1,123 @@
+.activity-indicator {
+  --size: 72px;
+  --move: 24px;
+
+  width: var(--size);
+  height: var(--size);
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.activity-indicator.small {
+  --size: 48px;
+  --move: 16px;
+}
+
+.activity-indicator.large {
+  --size: 128px;
+  --move: 42.66px;
+}
+
+.top-box,
+.bottom-box {
+  position: absolute;
+  width: calc(var(--size) / 3);
+  height: calc(var(--size) / 3);
+  top: calc(var(--size) / 3);
+  left: calc(var(--size) / 3);
+}
+
+.top-box {
+  background: var(--red);
+  z-index: 1;
+  animation: topAnimation 3s ease-in-out infinite;
+}
+
+.bottom-box {
+  background: var(--purple);
+  z-index: 0;
+  animation: bottomAnimation 3s ease-in-out infinite;
+}
+
+@keyframes topAnimation {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    background: var(--red);
+  }
+
+  12.5% {
+    transform: translate(calc(var(--move) * -1), 0);
+  }
+
+  25% {
+    transform: translate(0, 0);
+    background: var(--blue);
+  }
+
+  37.5% {
+    transform: translate(0, calc(var(--move) * -1));
+  }
+
+  50% {
+    transform: translate(0, 0);
+  }
+
+  62.5% {
+    transform: translate(calc(var(--move) * -1), 0);
+  }
+
+  75% {
+    transform: translate(0, 0);
+    background: var(--red);
+  }
+
+  87.5% {
+    transform: translate(0, calc(var(--move) * -1));
+  }
+}
+
+@keyframes bottomAnimation {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    background: var(--purple);
+    z-index: 0;
+  }
+
+  12.5% {
+    transform: translate(var(--move), 0);
+    z-index: 2;
+  }
+
+  25% {
+    transform: translate(0, 0);
+  }
+
+  37.5% {
+    transform: translate(0, var(--move));
+    z-index: 0;
+  }
+
+  50% {
+    transform: translate(0, 0);
+    background: var(--green);
+  }
+
+  62.5% {
+    transform: translate(var(--move), 0);
+    z-index: 2;
+  }
+
+  75% {
+    transform: translate(0, 0);
+  }
+
+  87.5% {
+    transform: translate(0, var(--move));
+    z-index: 0;
+  }
+}

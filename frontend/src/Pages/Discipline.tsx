@@ -255,7 +255,7 @@ export function Discipline() {
                 {/* Box for all the disciplines display */}
                 <div className="disciplinesContainer">
                     {disciplines.map((discipline) => (
-                        <DisciplineComp Discipline={discipline}></DisciplineComp>
+                        <DisciplineComp key={discipline.id} Discipline={discipline}></DisciplineComp>
                     ))}
                 </div>
             </div>

@@ -12,13 +12,14 @@ import { isAxiosError } from "axios"
 import { toast } from "react-toastify"
 import { getDisciplineCompetences } from "../../Services/disciplinesService"
 import type { CompetenceItem } from "../../Types/competence"
+import type { DisciplineDTO } from "../../Types/discipline"
 
 interface CompetencesViewProps {
-    disciplineId: number;
+    discipline: DisciplineDTO;
 }
 
 
-export function CompetencesView({ disciplineId }: CompetencesViewProps) {
+export function CompetencesView({ discipline }: CompetencesViewProps) {
     //Variables to navigate and open modals
     const navigate = useNavigate();
 
@@ -38,7 +39,7 @@ export function CompetencesView({ disciplineId }: CompetencesViewProps) {
 
     async function loadCompetences() {
         try {
-            const response = await getDisciplineCompetences(disciplineId);
+            const response = await getDisciplineCompetences(discipline.id);
 
             setCompetences(response.competences);
 
@@ -65,7 +66,7 @@ export function CompetencesView({ disciplineId }: CompetencesViewProps) {
 
     useEffect(() => {
         loadCompetences();
-    }, [disciplineId]);
+    }, [discipline.id]);
 
     if (loading) {
         return <div>Carregando competências...</div>;
