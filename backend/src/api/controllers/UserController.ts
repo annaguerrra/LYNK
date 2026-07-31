@@ -168,7 +168,16 @@ export default class UserController {
     // resets another user's password
     async resetPassword(req: Request, res: Response) {
         const data: resetPasswordDTO = req.body;
-        cosnt userId
+        const userId = req.user.userId
+        const userType = req.user.usertype
+
+        try {
+            await this.userService.resetPassword(data, userId, userType);
+            return res.status(200).send("Password updated!");
+        } catch(e) {
+            console.log(e);
+            return res.status(500).json({message: "Unknown error"});
+        }
     }
 
     // PUT

@@ -38,6 +38,7 @@ router
     .put('/user/updateInst/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdateInstructor, userController.updateInstructor.bind(userController))
     // allows update informations of a specific admin by id
     .put('/user/updateAdmin/:id', authMiddleware(jwt), authorize(UserType.ADMIN), validateUpdateAdmin, userController.updateAdmin.bind(userController))
+    .put('/user/reset-password/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.resetPassword.bind(userController))
     .put('/user/change-password', authMiddleware(jwt), validatePassword, userController.changePassword.bind(userController)) // ok
 
     .delete('/user/deleteStud/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
