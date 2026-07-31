@@ -11,9 +11,22 @@ export default class MaterialController{
     // receives all material's related informantion from body, and to execute log record gets the userId from request.
     // The service gets this data as a parameter
     async register(req: Request, res: Response){
-        const data: registerMaterialDTO = req.body
-        const userId = req.user.userId
         try {
+            const userId = req.user.userId
+
+            const files = (req.files as Express.Multer.File[]).map(file => ({
+                originalName: file.originalname,
+                mimeType: file.mimetype,
+                buffer: file.buffer
+            }))
+            
+            const data: registerMaterialDTO = {
+                name: req.body.name,
+                disciplineId: Number(req.body.disciplineId),
+                classId: Number(req.body.classId),
+                files
+            }
+
             await this.materialService.registerMaterial(data, userId)
             return res.status(200).send({ response: "Material created!"})
         } catch (e) {
@@ -28,9 +41,20 @@ export default class MaterialController{
     // POST 
     // receives the material's data from body and the userId is obtained from request to execute log record
     async attachFile(req: Request, res: Response){
-        const data: attachtFileDTO = req.body
-        const userId = req.user.userId
         try {
+            const userId = req.user.userId
+
+            const files = (req.files as Express.Multer.File[]).map(file => ({
+                originalName: file.originalname,
+                mimeType: file.mimetype,
+                buffer: file.buffer
+            }))
+
+            const data: attachtFileDTO = {
+                materialId: Number(req.params.id),
+                files
+            }
+
             await this.materialService.attachtFile(data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
@@ -59,10 +83,23 @@ export default class MaterialController{
     // while the id provided in params identifies the material whose page is being updateda and
     // data from body is passed to substitute the old data
     async update(req: Request, res: Response){
-        const { id } = req.params
-        const data: updateMaterialDTO = req.body
-        const userId = req.user.userId
         try {
+            const { id } = req.params
+            const userId = req.user.userId
+
+            const files = (req.files as Express.Multer.File[]).map(file => ({
+                originalName: file.originalname,
+                mimeType: file.mimetype,
+                buffer: file.buffer
+            }))
+
+            const data: updateMaterialDTO = {
+                name: req.body.name,
+                disciplineId: Number(req.body.disciplineId),
+                classId: Number(req.body.classId),
+                files
+            }
+
             await this.materialService.updateMaterial(Number(id), data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
@@ -94,11 +131,16 @@ export default class MaterialController{
     // GET
     // gets one attachment in material to download
     async download(req: Request, res: Response){
-        const { id } = req.params
-        const materialAttachmentId = req.body
+        const { id, materialAttachmentId } = req.params
         try {
-            await this.materialService.downloadMaterial(Number(id), materialAttachmentId)
-            return res.status(200).send({ response: "Success!"})
+            const file = await this.materialService.downloadMaterial(Number(id), Number(materialAttachmentId))
+            res.setHeader("Content-Type", file.mimeType);
+            res.setHeader(
+                "Content-Disposition",
+                `attachment; filename="${file.fileName}"`
+            );
+
+            file.stream.pipe(res);
         } catch (e) {
             if (e instanceof Error)
                 return res.status(500).json({ message: e.message });
