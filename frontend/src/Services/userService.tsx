@@ -4,7 +4,8 @@ import type {
     showStudentDTO, 
     showPrivilegedUserDTO,
     updateStudentDTO,
-    updatePrivilegedUserDTO
+    updatePrivilegedUserDTO,
+    resetPasswordDTO
 } from "../Types/user";
 
 
@@ -84,6 +85,11 @@ export async function updateAdmin(
     data: updatePrivilegedUserDTO
 ) {
     const response = await api.put(`/user/updateAdmin/${id}`, data);
+    return response.data;
+}
+
+export async function resetPassword(data: resetPasswordDTO){
+    const response = await api.put(`user/change-password`, data);
     return response.data;
 }
 

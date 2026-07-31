@@ -16,8 +16,8 @@ import { toast } from "react-toastify";
 import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
-import type { registerUserDTO, showStudentDTO, UserType } from "../Types/user";
-import { createUser, deleteAdmin, deleteInstructor, deleteStudent, getUsers } from "../Services/userService";
+import type { registerUserDTO, UserType } from "../Types/user";
+import { createUser } from "../Services/userService";
 
 
 export function Discipline() {
@@ -236,27 +236,6 @@ export function Discipline() {
         }
     }
 
-    async function deleteUser(id: number) {
-        try {
-            if (userType === "STUDENT") {
-                await deleteStudent(id);
-            } else if (userType === "INSTRUCTOR") {
-                await deleteInstructor(id);
-            } else if (userType === "ADMIN") {
-                await deleteAdmin(id);
-            }
-            
-            await loadAreas();
-            toast.success("Usuário deletado com sucesso!");
-
-            setExcludeAreaModal(false);
-            setUsername("")
-        } catch (error) {
-            toast.error("Não foi possivel deletar o usuário!");
-            console.error(error);
-        }
-    }
-
 
     return (
         <>
@@ -460,7 +439,7 @@ export function Discipline() {
                 </div>
             )}
 
-            {/* Modal to rest a user password */}
+            {/* Modal to reset a user password */}
             {(resetPasswordModal && isAdmin) && (
                 <div className="modalExcludeOverlay" onClick={() => setResetPasswordModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
@@ -562,7 +541,8 @@ export function Discipline() {
             {/* Modal to edit a area */}
             {editAreaModal && (
                 <div className="modalOverlay" onClick={() => setEditAreaModal(false)}>
-                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal
+                    Container" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Editar  área</h1>

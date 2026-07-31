@@ -1,10 +1,18 @@
+import type { DisciplineBasic } from "./discipline"
+
 // used to get class
 export interface ClassDTO{
     id: number
     name: string
     content: string
-    disciplineId: number
+    discipline: DisciplineBasic
     lastUpdate?: Date
+}
+
+export interface ClassDisciplineDTO {
+    id:  number
+    name: string
+    discipline: DisciplineBasic
 }
 
 // used to create class

@@ -68,6 +68,9 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
         loadCompetences();
     }, [discipline.id]);
 
+    useEffect(() => {
+    }, [competences]);
+
     if (loading) {
         return <div>Carregando competências...</div>;
     }
@@ -83,6 +86,7 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
             <div className="view-page">
                 {competences.map((competence) => (
                     <RowItem
+                        key={competence.id}
                         onClick={() => {
                             setSelectedCompetence(competence);
                             setOpenCompetenceModal(true);

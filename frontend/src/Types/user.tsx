@@ -48,6 +48,12 @@ export interface updateAdminDTO {
     file: UploadedFile
 }
 
+// used to reset user's password
+export interface resetPasswordDTO {
+    newPassword: string
+    repeatPassword: string
+}
+
 // used to edit instructor or admin
 export interface updatePrivilegedUserDTO {
     username: string

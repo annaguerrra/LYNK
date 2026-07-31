@@ -36,15 +36,15 @@ export type Action = (typeof Action)[keyof typeof Action]
 
 
 export const EntityType = {
-  Class: 'Class',
-  Compentence: 'Compentence',
-  Material: 'Material',
-  Instructor: 'Instructor',
-  Discipline: 'Discipline',
-  Area: 'Area',
-  Student: 'Student',
-  Exam: 'Exam',
-  Admin: 'Admin'
+  CLASS: 'CLASS',
+  COMPENTENCE: 'COMPENTENCE',
+  MATERIAL: 'MATERIAL',
+  INSTRUCTOR: 'INSTRUCTOR',
+  DISCIPLINE: 'DISCIPLINE',
+  AREA: 'AREA',
+  STUDENT: 'STUDENT',
+  EXAM: 'EXAM',
+  ADMIN: 'ADMIN'
 } as const
 
 export type EntityType = (typeof EntityType)[keyof typeof EntityType]

@@ -134,8 +134,8 @@ export function Content() {
             const competence = await createCompetenceService(competenceName);
 
             await assignCompetence({
-                competencyID: competence.id,
-                disciplineID: discipline.id,
+                competencyId: competence.id,
+                disciplineId: discipline.id,
             });
 
             setCompetenceName("")
@@ -276,7 +276,7 @@ export function Content() {
 
                             <div className='attachments' >
                                 {/* Component used to search a competence */}
-                                <LessonSelect />
+                                <LessonSelect lessons={[]}/>
                                 <br />
                                 <div className="scrollBox">
 

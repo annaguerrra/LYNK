@@ -1,4 +1,4 @@
-import { changePasswordDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
+import { changePasswordDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, resetPasswordDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { UserType } from "#infrastructure/prisma/generated/prisma/enums.js";
 import { UserService } from "#infrastructure/services/User/UserService.js";
 import { Request, response, Response } from "express";
@@ -161,6 +161,23 @@ export default class UserController {
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
+        }
+    }
+
+    // PUT
+    // resets another user's password
+    async resetPassword(req: Request, res: Response) {
+        const data: resetPasswordDTO = req.body;
+        const userId = req.user.userId
+        const userType = req.user.usertype
+        const { id } = req.params
+
+        try {
+            await this.userService.resetPassword(data, userId, Number(id), userType);
+            return res.status(200).send("Password updated!");
+        } catch(e) {
+            console.log(e);
+            return res.status(500).json({message: "Unknown error"});
         }
     }
 
