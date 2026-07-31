@@ -34,13 +34,13 @@ export async function deleteClass(id: number) {
 // Get all materials from a class
 export async function getClassMaterials(id: number) {
     const response = await api.get(`/class/${id}/materials`);
-    return response.data;
+    return response.data.response.materials;
 }
 
 // Get all competences from a class
 export async function getClassCompetences(id: number) {
     const response = await api.get(`/class/${id}/competences`);
-    return response.data;
+    return response.data.response.competences;
 }
 
 // Download class content
