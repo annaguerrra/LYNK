@@ -17,7 +17,11 @@ export async function createUser(data: registerUserDTO) {
 // Get all users
 export async function getUsers(): Promise<showStudentDTO[]> {
     const response = await api.get("/user/showAll");
-    return response.data;
+    return [
+        ...response.data.response.students,
+        ...response.data.response.instructors,
+        ...response.data.response.admins,
+    ];
 }
 
 // Get all students

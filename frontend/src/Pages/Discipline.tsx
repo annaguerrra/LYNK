@@ -16,13 +16,8 @@ import { toast } from "react-toastify";
 import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
-<<<<<<< HEAD
-import type { registerUserDTO, showStudentDTO } from "../Types/user";
-import { createUser, getAdmins, getInstructors, getStudents, getUsers } from "../Services/userService";
-=======
-import type { registerUserDTO, UserType } from "../Types/user";
-import { createUser } from "../Services/userService";
->>>>>>> d95e615e32f497e55b769fdfc5ded33a28b5cf73
+import type { registerUserDTO, showStudentDTO, UserType } from "../Types/user";
+import { createUser, deleteAdmin, deleteInstructor, deleteStudent, getUsers } from "../Services/userService";
 
 
 export function Discipline() {
@@ -84,34 +79,6 @@ export function Discipline() {
         },
     ];
 
-    const userOpt = [
-        {
-            name: "Editar usuário",
-            onClick: () => { setEditStudentModal(true), setUsersModal(false) }
-        },
-        {
-            name: "Excluir usuário",
-            onClick: () => { setExcludeUserModal(true), setUsersModal(false) },
-            color: "red"
-        },
-        {
-            name: "Resetar senha",
-            onClick: () => { setResetPasswordModal(true), setUsersModal(false) },
-            color: "red"
-        },
-    ];
-
-    const areasOpt = [
-        {
-            name: "Editar área",
-            onClick: () => { setEditAreaModal(true), setAreasModal(false) }
-        },
-        {
-            name: "Excluir área",
-            onClick: () => { setExcludeAreaModal(true), setAreasModal(false) },
-            color: "red",
-        },
-    ];
 
     //---------------------- From Area Services ---------------------------------------------------------------- 
     //Inputs to create and edit a area
@@ -130,9 +97,9 @@ export function Discipline() {
 
     async function createNewArea(data: registerAreaDTO) {
         try {
-            toast.success("Área criada com sucesso!");
             await createArea(data);
             await loadAreas();
+            toast.success("Área criada com sucesso!");
             
             setNewAreaModal(false);
             setAreaName("")
@@ -144,9 +111,9 @@ export function Discipline() {
     
     async function editArea(id: number, data: updateAreaDTO) {
         try {
-            toast.success("Área editada com sucesso!");
             await updateArea(id, data);
             await loadAreas();
+            toast.success("Área editada com sucesso!");
 
             setEditAreaModal(false);
             setAreaName("")
@@ -159,9 +126,9 @@ export function Discipline() {
 
     async function deleteAreas(id: number) {
         try {
-            toast.success("Área deletada com sucesso!");
             await deleteArea(id);
             await loadAreas();
+            toast.success("Área deletada com sucesso!");
 
             setExcludeAreaModal(false);
         } catch (error) {
@@ -224,20 +191,22 @@ export function Discipline() {
     useEffect(() => {
         loadAreas();
     }, []);
-<<<<<<< HEAD
 
-=======
->>>>>>> d95e615e32f497e55b769fdfc5ded33a28b5cf73
     useEffect(() => {
         loadDisciplines();
     }, [areas]);
+
+    useEffect(() => {
+        if (usersModal) {
+            loadUsers();
+        }
+    }, [usersModal]);
     //---------------------- From User Services ---------------------------------------------------------------- 
     const [showUsers, setShowUsers] = useState<showStudentDTO[]>([])
     
     async function loadUsers() {
         try {
             const response = await getUsers();
-
             setShowUsers(response);
         } catch (error) {
             console.error(error);
@@ -264,6 +233,27 @@ export function Discipline() {
             setNewDisciplineModal(false);
         } catch (error) {
             console.log(error);
+        }
+    }
+
+    async function deleteUser(id: number) {
+        try {
+            if (userType === "STUDENT") {
+                await deleteStudent(id);
+            } else if (userType === "INSTRUCTOR") {
+                await deleteInstructor(id);
+            } else if (userType === "ADMIN") {
+                await deleteAdmin(id);
+            }
+            
+            await loadAreas();
+            toast.success("Usuário deletado com sucesso!");
+
+            setExcludeAreaModal(false);
+            setUsername("")
+        } catch (error) {
+            toast.error("Não foi possivel deletar o usuário!");
+            console.error(error);
         }
     }
 
@@ -428,24 +418,20 @@ export function Discipline() {
                             {showUsers.map((users) => (
                                 <RowItem color={"#000000"}>
                                     <div className="itemText">
-                                        <p>{users.username}</p>
+                                        <p>{users.username} | {users.userType}</p>
                                     </div>
 
                                     <MoreOpt
                                         size={25}
                                         data={[
                                             {
-                                                name: "Editar",
-                                                onClick: () => {
-                                                    setUserType(users.userType);
-                                                    setUsername(users.username);
-                                                    setUserId(users.id);
-                                                },
-                                            },
-                                            {
                                                 name: "Excluir",
                                                 onClick: () => {
                                                     setUserId(users.id);
+                                                    setUsername(users.username);
+                                                    setUserType(users.userType);
+                                                    setExcludeUserModal(true);
+                                                    setUsersModal(false);
                                                 },
                                             },
                                         ]}
@@ -458,49 +444,15 @@ export function Discipline() {
                 </div>
             )}
 
-            {/* Modal to edit a user */}
-            {(editStudentModal && isAdmin) && (
-                <div className="modalOverlay" onClick={() => setEditStudentModal(false)}>
-                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                        {/* Title and close button box */}
-                        <div className="titleContainer">
-                            <h1>Editar usuário</h1>
-                            <ButtonClose size={40} onClose={() => setEditStudentModal(false)}></ButtonClose>
-                        </div>
-                        {/* Select the user type */}
-                        <div className="textBox">
-                            <h2>Selecione o tipo de usuário</h2>
-                            <select name="" id="" className="selectFilter" onChange={(e) => setUserType(e.target.value)}>
-                                <option value="Administrador">Administrador</option>
-                                <option value="Instrutor">Instrutor</option>
-                                <option value="Aluno" selected>Aluno</option>
-                            </select>
-                        </div>
-                        {/* Input for the username */}
-                        <div className="textBox">
-                            <h2>Nome do usuário</h2>
-                            <input type="text" onChange={(e) => setUsername(e.target.value)}/>
-                        </div>
-                        {/* Input for the user password */}
-                        <div className="textBox">
-                            <h2>Senha do usuário</h2>
-                            <input type="password" onChange={(e) => setUserPassword(e.target.value)}/>
-                        </div>
-
-                        <Button ButtonTitle={"Enviar"} onClose={() => setEditStudentModal(false)}></Button>
-                    </div>
-                </div>
-            )}
-
             {/* Modal to exclude the user */}
             {(excludeUserModal && isAdmin) && (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeUserModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
-                        <p>Deseja excluir o usuário?</p>
+                        <p>Deseja excluir o usuário {user.username}?</p>
 
                         <div className="buttonsBox">
-                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeUserModal(false)}></ButtonExclude>
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => deleteUser(userId)}></ButtonExclude>
                             <br />
                             <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeUserModal(false)}></ButtonCancel>
                         </div>
