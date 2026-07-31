@@ -11,5 +11,5 @@ export interface UploadedFile {
 export interface DownloadedFile {
     stream: Readable;
     fileName: string;
-    mimeType?: string;
+    mimeType: string;
 }
