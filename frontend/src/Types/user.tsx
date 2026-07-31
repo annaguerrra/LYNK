@@ -11,12 +11,14 @@ export interface registerUserDTO {
 }
 
 export interface showStudentDTO {
+    id: number
     username: string
     userType: UserType
 }
 
 // response to showInstructor or showAdmin service
 export interface showPrivilegedUserDTO {
+    id: number
     username: string
     userType: UserType
     active: boolean
@@ -44,6 +46,12 @@ export interface updateAdminDTO {
     password: string
     active: boolean
     file: UploadedFile
+}
+
+// used to reset user's password
+export interface resetPasswordDTO {
+    newPassword: string
+    repeatPassword: string
 }
 
 // used to edit instructor or admin

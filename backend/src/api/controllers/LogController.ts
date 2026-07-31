@@ -1,3 +1,4 @@
+import { Action, EntityType } from "#infrastructure/prisma/generated/prisma/enums.js";
 import { LogService } from "#infrastructure/services/Log/LogService.js";
 import { Request, response, Response } from "express";
 
@@ -38,9 +39,44 @@ export default class LogController{
 
     // gets a specific log by its type from body
     async getByEntityType(req: Request, res: Response){
-        const { entityType } = req.body
+        const { entitytype } = req.params
+        const lowerEntityType = (entitytype as string).toLowerCase()
+        let type: EntityType
+
         try {
-            const logs = await this.logService.getLogsByEntityTipe(entityType)
+            switch (lowerEntityType) {
+                case 'class':
+                    type = EntityType.Class
+                    break
+                case 'competence':
+                    type = EntityType.Compentence
+                    break
+                case 'material':
+                    type = EntityType.Material
+                    break
+                case 'instructor':
+                    type = EntityType.Instructor
+                    break
+                case 'discipline':
+                    type = EntityType.Discipline
+                    break
+                case 'area':
+                    type = EntityType.Area
+                    break
+                case 'student':
+                    type = EntityType.Student
+                    break
+                case 'exam':
+                    type = EntityType.Exam
+                    break
+                case 'admin':
+                    type = EntityType.Admin
+                    break
+                default: 
+                    throw new Error("Invalid entity-type")
+            }
+
+            const logs = await this.logService.getLogsByEntityTipe(type)
             return res.status(200).send({ response: logs })
         } catch (e) {
             if (e instanceof Error)
@@ -53,9 +89,28 @@ export default class LogController{
 
     // gets a specific log by its action from body
     async getByAction(req: Request, res: Response){
-        const { action } = req.body
+        const { action } = req.params
+        const lowerAction = (action as string).toLowerCase()
+        let type: Action
+        console.log("aquiii")
+
         try {
-            const logs = await this.logService.getLogsByAction(action)
+            switch (lowerAction) {
+                case 'created':
+                    type = Action.CREATED
+                    break
+                case 'updated':
+                    type = Action.UPDATED
+                    break
+                case 'deleted':
+                    type = Action.DELETED
+                    break
+                default:
+                    console.log(lowerAction)
+                    throw new Error("Invalid action")
+            }
+
+            const logs = await this.logService.getLogsByAction(type)
             return res.status(200).send({ response: logs })
         } catch (e) {
             if (e instanceof Error)

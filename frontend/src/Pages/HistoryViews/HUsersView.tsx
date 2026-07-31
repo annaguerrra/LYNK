@@ -10,8 +10,17 @@ export function HUsersView() {
     
     async function loadHUser() {
         try {
-            const response = await getLogUsers('class');
-            setHUser(response);
+            const [students, admins, instructors] = await Promise.all([
+                getLogUsers("student"),
+                getLogUsers("admin"),
+                getLogUsers("instructor"),
+            ]);
+
+            setHUser([
+                ...students,
+                ...admins,
+                ...instructors,
+            ]);
         } catch (error) {
             console.error(error);
         }
@@ -22,9 +31,15 @@ export function HUsersView() {
     }, []);
 
     const actionColors = {
-        CREATE: "var(--green)",
-        PUT: "var(--blue)",
-        DELETE: "var(--red)",
+        CREATED: "var(--green)",
+        UPDATED: "var(--blue)",
+        DELETED: "var(--red)",
+    };
+
+    const actionsName = {
+        CREATED: "CRIADO",
+        UPDATED: "EDITADO",
+        DELETED: "DELETADO",
     };
 
     return (
@@ -37,16 +52,18 @@ export function HUsersView() {
                     size="--medium"
                     userAction={
                         <>
+                            {/* Ignore the error, it is working */}
+                            <span>{actionsName[huser.action]} por</span>
                             <img
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
+                            <span>{huser.username}</span>
 
-                            <span>{huser.updatedAt.toLocaleDateString("pt-BR")}</span>
-                            <span> | </span>
-                            <span>{huser.updatedAt.toLocaleDateString("pt-BR")}</span>
+                            <span>{huser.updatedAt 
+                                ? new Date(huser.updatedAt).toLocaleDateString("pt-BR")
+                                : "Sem data"}</span>
                         </>
                     }>
-
                     <span>{huser.entityName}</span>
 
                 </RowItem>

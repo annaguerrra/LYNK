@@ -6,5 +6,5 @@ export interface HistoricDTO {
     updatedAt: Date,
     action: Actions,
     entityName: String
-    alterUser: showStudentDTO
+    username: showStudentDTO
 }

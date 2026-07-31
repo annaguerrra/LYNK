@@ -48,11 +48,11 @@ export function DisciplineComp({ Discipline } : DisciplineCompProps) {
     
     async function editDiscipline() {
         try {
-            toast.success("Disciplina editada com sucesso!");
             await updateDiscipline(Discipline.id, {
                 name: disciplineName,
                 areaID: areaId
             });
+            toast.success("Disciplina editada com sucesso!");
             
             setDisciplineName("")
             setEditModal(false);
@@ -64,8 +64,8 @@ export function DisciplineComp({ Discipline } : DisciplineCompProps) {
 
     async function removeDiscipline() {
         try {
-            toast.success("Disciplina deletada com sucesso!");
             await deleteDiscipline(Discipline.id);
+            toast.success("Disciplina deletada com sucesso!");
 
             setExcludeModal(false);
         } catch (error) {

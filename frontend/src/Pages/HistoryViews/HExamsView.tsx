@@ -21,11 +21,17 @@ export function HExamsView() {
     }, []);
 
     const actionColors = {
-        CREATE: "var(--green)",
-        PUT: "var(--blue)",
-        DELETE: "var(--red)",
+        CREATED: "var(--green)",
+        UPDATED: "var(--blue)",
+        DELETED: "var(--red)",
     };
 
+    const actionsName = {
+        CREATED: "CRIADO",
+        UPDATED: "EDITADO",
+        DELETED: "DELETADO",
+    };
+    
     return (
         <>
             <div className="view-page">
@@ -35,16 +41,17 @@ export function HExamsView() {
                     size="--medium"
                     userAction={
                         <>
+                            <span>{actionsName[hexam.action]} por</span>
                             <img
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
+                            <span>{hexam.username}</span>
 
-                            <span>{hexam.updatedAt.toLocaleDateString("pt-BR")}</span>
-                            <span> | </span>
-                            <span>{hexam.updatedAt.toLocaleDateString("pt-BR")}</span>
+                            <span>{hexam.updatedAt 
+                                ? new Date(hexam.updatedAt).toLocaleDateString("pt-BR")
+                                : "Sem data"}</span>
                         </>
                     }>
-
                     <span>{hexam.entityName}</span>
 
                 </RowItem>
