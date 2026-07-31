@@ -89,7 +89,7 @@ export class UserService implements IUserService {
         await prisma.log.create({
             data: {
                 action: "CREATED",
-                entityType: "Instructor",
+                entityType: "INSTRUCTOR",
                 entityId: createdUser.id,
                 entityName: createdUser.username,
                 oldData: {},
@@ -239,26 +239,26 @@ export class UserService implements IUserService {
             }
         };
     }
-    async resetPassword(data: resetPasswordDTO, userId: number, userType: UserType): Promise<resetPasswordDTO> {
+    async resetPassword(data: resetPasswordDTO, userId: number, id: number, userType: UserType): Promise<resetPasswordDTO> {
         const ownerUsername = await this.getUsername(userId)
         let user;
 
         const [ student, instructor, admin ] = await Promise.all([
             prisma.student.findUnique({
                 where:{
-                    id: data.userId
+                    id: id
                 }
             }),
 
             prisma.instructor.findUnique({
                 where:{
-                    id: data.userId
+                    id: id
                 }
             }),
 
             prisma.admin.findUnique({
                 where:{
-                    id: data.userId
+                    id: id
                 }
             })
         ]);
@@ -294,7 +294,7 @@ export class UserService implements IUserService {
         if(!user) {
             throw new Error("User Not Found");
         }
-        
+
         const hashedPassword = await this.hashService.hash(data.newPassword);
 
         try{
@@ -383,8 +383,7 @@ export class UserService implements IUserService {
         }
 
         return {
-            newPassword: user.password,
-            userId: user.id
+            newPassword: user.password
         }
     }
     
@@ -474,7 +473,7 @@ export class UserService implements IUserService {
                     action: "UPDATED",
                     entityId: user.id,
                     entityName: user.userType,
-                    entityType: "Instructor",
+                    entityType: "INSTRUCTOR",
                     newData: hashedPassword, 
                     oldData: data.oldPassword,
                     adminId: user.id,
@@ -499,7 +498,7 @@ export class UserService implements IUserService {
                     action: "UPDATED",
                     entityId: user.id,
                     entityName: user.userType,
-                    entityType: "Instructor",
+                    entityType: "INSTRUCTOR",
                     newData: hashedPassword, 
                     oldData: data.oldPassword,
                     adminId: user.id,
@@ -726,7 +725,7 @@ export class UserService implements IUserService {
             await prisma.log.create({
                 data: {
                     action: "UPDATED",
-                    entityType: "Instructor",
+                    entityType: "INSTRUCTOR",
                     entityId: target.id,
                     entityName: target.username,
                     oldData: {
@@ -879,7 +878,7 @@ export class UserService implements IUserService {
         await prisma.log.create({
             data: {
                 action: "DELETED",
-                entityType: "Instructor",
+                entityType: "INSTRUCTOR",
                 entityId: target.id,
                 entityName: target.username,
                 oldData: {

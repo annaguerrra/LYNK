@@ -170,9 +170,10 @@ export default class UserController {
         const data: resetPasswordDTO = req.body;
         const userId = req.user.userId
         const userType = req.user.usertype
+        const { id } = req.params
 
         try {
-            await this.userService.resetPassword(data, userId, userType);
+            await this.userService.resetPassword(data, userId, Number(id), userType);
             return res.status(200).send("Password updated!");
         } catch(e) {
             console.log(e);
