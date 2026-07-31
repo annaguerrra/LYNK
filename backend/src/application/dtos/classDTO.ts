@@ -5,12 +5,12 @@ export interface ClassDTO{
     name: string
     content: string
     disciplineId: number
-    lastUpdate?: Date
+    // lastUpdate?: Date
 }
 
 // used to assign a competency to a class
 export interface assignCompetencyDTO{
-    classId: number
+    id: number
     competencyId: number
 }
 

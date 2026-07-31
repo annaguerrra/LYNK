@@ -30,7 +30,7 @@ router
     // route to edit an area
     .put('/class/edit/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdate, classController.update.bind(classController))
     // route to assign an competence to an area
-    .put('/class/assigncompetence', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateCompetency, classController.assignCompetency.bind(classController))
+    .put('/class/assigncompetency', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateCompetency, classController.assignCompetency.bind(classController))
     // route to delete an area
     .delete('/class/delete/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), classController.delete.bind(classController))
 

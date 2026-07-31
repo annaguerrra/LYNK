@@ -18,7 +18,11 @@ export default class CompetenceController{
             await this.competenceService.registerCompetence(data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -29,7 +33,11 @@ export default class CompetenceController{
             const competences = await this.competenceService.showCompetences()
             return res.status(200).send({ response: competences })
         } catch (e) {
-            return res.status(404).send({ response: "Competence not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -41,7 +49,11 @@ export default class CompetenceController{
             const competence = await this.competenceService.getCompetenceByName(name)
             return res.status(200).send({ response: competence })
         } catch (e) {
-            return res.status(404).send({ response: "Competence not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -57,7 +69,11 @@ export default class CompetenceController{
             await this.competenceService.updateCompetence(Number(id), data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "Competence not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -72,7 +88,11 @@ export default class CompetenceController{
             await this.competenceService.deleteCompetence(Number(id), userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "Competence not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 }

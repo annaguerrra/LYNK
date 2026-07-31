@@ -1,4 +1,4 @@
-import { assignCompetencyDTO, ClassDTO, getContentDTO, viewMaterialsDTO, editClass, findAllDTO, viewCompetencesDTO, viewContentDTO, findOneDTO } from "#application/dtos/classDTO.js";
+import { assignCompetencyDTO, ClassDTO, viewMaterialsDTO, editClass, findAllDTO, viewCompetencesDTO, findOneDTO } from "#application/dtos/classDTO.js";
 import { IClassService } from "#application/services/Class/IClass.service.js";
 import { Class, Competence, Material } from "#infrastructure/prisma/generated/prisma/client.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
@@ -31,13 +31,13 @@ export class ClassService implements IClassService{
                 
                 discipline:{
                     connect:{
-                        id: disciplineId
+                        id: Number(disciplineId)
                     }
                 }
             }
         });
 
-        await this.disciplineService.updateWorkLoad(disciplineId)
+        await this.disciplineService.updateWorkLoad(Number(disciplineId))
 
         await prisma.log.create({
             data:{
@@ -139,10 +139,11 @@ export class ClassService implements IClassService{
         const isAdmin = await this.userService.isAdmin(userId)
         const username = await this.userService.getUsername(userId)
         // variables used to update material
-        const { classId, competencyId } = payload
-        const competence = await prisma.competence.findFirst({
+        const { id, competencyId } = payload
+
+        const competence = await prisma.competence.findUnique({
             where:{
-                id: competencyId
+                id: Number(competencyId)
             } 
         });
 
@@ -150,12 +151,12 @@ export class ClassService implements IClassService{
             throw new Error("Competence not Found!");
         }
 
-        const target = await prisma.class.findFirst({
-            where:{
-                id: classId
+        const target =  await prisma.class.findUnique({
+            where: {
+                id: Number(id)
             }
         });
-        
+
         if(!target){
             throw new Error("Class not Found!");
         }
@@ -163,12 +164,12 @@ export class ClassService implements IClassService{
         // connects competency to class
         const updatedClass = await prisma.class.update({
             where:{
-                id: payload.classId
+                id: Number(target.id)
             },
             data:{
                 competences:{
                     connect:{
-                        id: payload.competencyId
+                        id: Number(competence.id)
                     }
                 }
             }
@@ -177,7 +178,7 @@ export class ClassService implements IClassService{
         await prisma.log.create({
             data:{
                 action: "UPDATED",
-                entityId: payload.classId,
+                entityId: target.id,
                 entityType: "Class",
                 entityName: target.name,
                 newData:{
@@ -193,7 +194,7 @@ export class ClassService implements IClassService{
         });
 
         // updates the number of classes this competency is related
-        await this.competenceService.updateNumOfClasses(competencyId)
+        await this.competenceService.updateNumOfClasses(Number(competencyId))
 
         return {
             ...updatedClass
@@ -222,9 +223,9 @@ export class ClassService implements IClassService{
 
         return classes
     }
-    async viewMaterials(classId: number): Promise<viewMaterialsDTO> {
-        const classes = await prisma.class.findFirst({
-            where:{ id: classId },
+    async viewMaterials(id: number): Promise<viewMaterialsDTO> {
+        const target = await prisma.class.findUnique({
+            where:{ id: id },
             select:{
                 materials:{
                     select: {
@@ -236,16 +237,16 @@ export class ClassService implements IClassService{
             }
         });
 
-        if(!classes){
+        if(!target){
             throw("Class not Found!");
         }
 
-        return classes
+        return target
     }
 
-    async viewContent(classId: number): Promise<string> {
+    async viewContent(id: number): Promise<string> {
         const target = await prisma.class.findUnique({
-            where:{ id: classId},
+            where:{ id: id },
             select:{ 
                 content: true
             }
@@ -258,9 +259,9 @@ export class ClassService implements IClassService{
         return target.content
     }
 
-    async downloadContent(classId: number): Promise<Buffer> {
+    async downloadContent(id: number): Promise<Buffer> {
         const target = await prisma.class.findUnique({
-            where: { id: classId },
+            where: { id: id },
             select:{
                 name: true,
                 content: true
@@ -303,7 +304,7 @@ export class ClassService implements IClassService{
             }
         });
 
-        await this.disciplineService.updateWorkLoad(target.disciplineId)
+        await this.disciplineService.updateWorkLoad(Number(target.disciplineId))
         await this.materialService.deleteMany(target.materials.map((material: Material) => material.id))
 
         await prisma.log.create({
@@ -397,7 +398,7 @@ export class ClassService implements IClassService{
             }
         });
 
-        await this.disciplineService.updateWorkLoad(updatedClass.disciplineId)
+        await this.disciplineService.updateWorkLoad(Number(updatedClass.disciplineId))
 
         // updates log last update
         const lastUpdate = log.updatedAt;

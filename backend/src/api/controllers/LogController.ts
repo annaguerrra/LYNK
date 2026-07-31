@@ -13,7 +13,11 @@ export default class LogController{
             const logs = await this.logService.getAllLogs()
             return res.status(200).send({ response: logs })
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -24,7 +28,11 @@ export default class LogController{
             const log = await this.logService.getLogById(Number(id))
             return res.status(200).send({ response: log })
         } catch (e) {
-            return res.status(404).send({ response: "Log not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -35,7 +43,11 @@ export default class LogController{
             const logs = await this.logService.getLogsByEntityTipe(entityType)
             return res.status(200).send({ response: logs })
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -46,7 +58,11 @@ export default class LogController{
             const logs = await this.logService.getLogsByAction(action)
             return res.status(200).send({ response: logs })
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 }
