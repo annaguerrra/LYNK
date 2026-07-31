@@ -19,6 +19,7 @@ export class DisciplineController{
             await this.disciplineService.create(data, userId)
             return res.status(200).send({response: "Discipline created!"});
         } catch(e){
+            console.log(e)
             return res.status(500).send({response: e});
         }
     }
@@ -51,6 +52,7 @@ export class DisciplineController{
             await this.disciplineService.assignCompetence(data, userId);
             return res.status(200).send({response: "Discipline updated!"});
         } catch(e){
+            console.log(e)
             return res.status(500).send({response: e});
         }
     }
@@ -95,10 +97,10 @@ export class DisciplineController{
     // GET
     // gets all exams in discipline
     async viewExams(req: Request, res: Response) {
-        const { disciplineId } = req.params
+        const { id } = req.params
 
         try {
-            const exams = await this.disciplineService.viewExams(Number(disciplineId));
+            const exams = await this.disciplineService.viewExams(Number(id));
             return res.status(200).send({response: exams});
         } catch(e){
             return res.status(500).send({response: e});
@@ -122,10 +124,10 @@ export class DisciplineController{
     // GET
     // gets all materials in discipline
     async viewMaterial(req: Request, res: Response){
-        const disciplineId = req.body
+        const { id } = req.params
 
         try{
-            const materials = await this.disciplineService.viewMaterials(disciplineId);
+            const materials = await this.disciplineService.viewMaterials(Number(id));
             return res.status(200).send({response: materials });
         } catch(e){
             return res.status(500).send({response: e});
@@ -135,10 +137,10 @@ export class DisciplineController{
     // GET
     // gets all competences in discipline
     async viewCompetences(req: Request, res: Response){
-        const disciplineId = req.body
+        const { id } = req.params
 
         try{
-            const competences = await this.disciplineService.viewCompetences(disciplineId);
+            const competences = await this.disciplineService.viewCompetences(Number(id));
             return res.status(200).send({response: competences });
         } catch(e){
             return res.status(500).send({response: e});
@@ -151,10 +153,10 @@ export class DisciplineController{
         // variable used to get userId from request
         // will be used in service to register who was responsible for the action
         const userId = req.user.userId
-        const disciplineId = req.body
+        const { id } = req.params
 
         try{
-            await this.disciplineService.delete(disciplineId, userId);
+            await this.disciplineService.delete(Number(id), userId);
             return res.status(200).send({response: "Success"});
         } catch(e){
             return res.status(500).send({response: e});
@@ -168,10 +170,10 @@ export class DisciplineController{
         // variable used to get userId from request
         // will be used in service to register who was responsible for the action
         const userId = req.user.userId
-        const disciplineId = req.body
+        const { id } = req.params
 
         try{
-            await this.disciplineService.edit(data, disciplineId, userId);
+            await this.disciplineService.edit(data, Number(id), userId);
             return res.status(200).send({response: "Success"});
         } catch(e){
             return res.status(500).send({response: e});

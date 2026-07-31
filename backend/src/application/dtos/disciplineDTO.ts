@@ -3,15 +3,14 @@ import { Class, Exam, ExamAttachment, MaterialAttachment } from "#infrastructure
 // used to create a discipline
 export interface DisciplineDTO{
     name: string
-    workload: number
     areaID: number
-    userID: number
+    // userID: number
 }
 
 // used to assign a competency to a discipline
 export interface assignCompetencyDTO{
-    disciplineID: number
-    competencyID: number
+    disciplineId: number
+    competencyId: number
 }
 
 // response to findAll service
@@ -74,7 +73,7 @@ export interface viewExamsDTO {
         id: number
         name: string
         attachments: ExamAttachment[]
-    }[];
+    }[] | null;
 }
 
 // response to editDiscipline service 

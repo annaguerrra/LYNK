@@ -33,11 +33,11 @@ router
     .get('/user/showAdmin/:id', userController.showAdmin.bind(userController)) // ok
     
     // allows update informations of a specific user by id    
-    .put('/user/updateStud/:id', validateUpdateStudent, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateStudent.bind(userController))
+    .put('/user/updateStud/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdateStudent, userController.updateStudent.bind(userController))
     // allows update informations of a specific instructor by id
-    .put('/user/updateInst/:id', validateUpdateInstructor, authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.updateInstructor.bind(userController))
+    .put('/user/updateInst/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdateInstructor, userController.updateInstructor.bind(userController))
     // allows update informations of a specific admin by id
-    .put('/user/updateAdmin/:id', validateUpdateAdmin, authorize(UserType.ADMIN), userController.updateAdmin.bind(userController))
+    .put('/user/updateAdmin/:id', authMiddleware(jwt), authorize(UserType.ADMIN), validateUpdateAdmin, userController.updateAdmin.bind(userController))
     .put('/user/change-password', authMiddleware(jwt), validatePassword, userController.changePassword.bind(userController)) // ok
 
     .delete('/user/deleteStud/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
