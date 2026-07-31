@@ -50,6 +50,7 @@ export interface updateAdminDTO {
 
 // used to reset user's password
 export interface resetPasswordDTO {
+    id: number
     newPassword: string
     repeatPassword: string
 }

@@ -88,8 +88,11 @@ export async function updateAdmin(
     return response.data;
 }
 
-export async function resetPassword(data: resetPasswordDTO){
-    const response = await api.put(`user/change-password`, data);
+export async function resetPassword(
+    data: resetPasswordDTO,
+    id: number
+){
+    const response = await api.put(`user/change-password/${id}`, data);
     return response.data;
 }
 

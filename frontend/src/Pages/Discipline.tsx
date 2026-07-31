@@ -16,8 +16,8 @@ import { toast } from "react-toastify";
 import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
-import type { registerUserDTO, UserType } from "../Types/user";
-import { createUser } from "../Services/userService";
+import type { registerUserDTO, showStudentDTO, UserType } from "../Types/user";
+import { createUser, getUsers } from "../Services/userService";
 
 
 export function Discipline() {
