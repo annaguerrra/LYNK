@@ -14,9 +14,9 @@ export class DisciplineService implements IDisciplineService{
         const admin = await this.userService.isAdmin(userID)
         const username = await this.userService.getUsername(userID)
         // variables used to create discipline
-        const { name, workload, areaID } = payload
+        const { name, areaID } = payload
         
-        const area = await prisma.area.findUnique({ where:{ id: areaID }});
+        const area = await prisma.area.findUnique({ where:{ id: Number(areaID) }});
         
         if(!area){
             throw new Error("Area not Found");
@@ -25,7 +25,6 @@ export class DisciplineService implements IDisciplineService{
         const target = await prisma.discipline.create({
             data:{
                 name: name,
-                workLoad: workload,
                 areaId: area.id               
             }
         });
@@ -55,12 +54,12 @@ export class DisciplineService implements IDisciplineService{
         const admin = await this.userService.isAdmin(userId)
         const username = await this.userService.getUsername(userId)
         // variables used to assign competence to discipline
-        const { disciplineID, competencyID } = payload
+        const { disciplineId, competencyId } = payload
         
         // stores competence data
         const competence = await prisma.competence.findUnique({ 
             where:{ 
-                id: competencyID
+                id: Number(competencyId)
             }
         });
         
@@ -70,7 +69,7 @@ export class DisciplineService implements IDisciplineService{
         
         const oldData = await prisma.discipline.findUnique({ 
             where:{ 
-                id: disciplineID
+                id: Number(disciplineId)
             }
         });
         
@@ -81,7 +80,7 @@ export class DisciplineService implements IDisciplineService{
         // connects discipline to competence by its id  
         const updatedData = await prisma.discipline.update({
             where:{
-                id: disciplineID
+                id: Number(disciplineId)
             },
             data:{
                 competences:{
@@ -89,8 +88,12 @@ export class DisciplineService implements IDisciplineService{
                         id: competence.id
                     }
                 }
+            },
+            include: {
+                competences: true
             }
-        });
+        })
+        console.log(updatedData)
         
         await prisma.log.create({
             data:{
@@ -226,6 +229,7 @@ export class DisciplineService implements IDisciplineService{
                 }
             }
         });
+        // resolver nome das competencias
         
         if(!disciplines){
             throw new Error("Disciplines Not Found");
@@ -237,31 +241,29 @@ export class DisciplineService implements IDisciplineService{
     async findOne(id: number): Promise<findOneDTO> {
         // variable used to search if the discipline is valid
         const target = await prisma.discipline.findUnique({
-            where: { id: id}
+            where: {
+                id: id
+            },
+            select: {
+                id: true,
+                name: true,
+                workLoad: true,
+                area: {
+                    select: {
+                        name: true
+                    }
+                },
+                competences: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
         });
         
         if(!target){
             throw new Error("Discipline Not Found");
         }
-        const area = await prisma.area.findUnique({
-            where:{ id: target?.areaId},
-            select:{
-                name: true
-            }
-        });
-        if(!area){
-            throw new Error("Area Not Found");
-        }
-        const competence = await prisma.competence.findMany({
-            where:{
-                classes:{
-                    some:{ id: target?.id} 
-                }
-            },
-            select:{
-                name: true
-            }
-        });
         
         const log = await prisma.log.findFirst({
             where:{
@@ -276,8 +278,8 @@ export class DisciplineService implements IDisciplineService{
             id: target.id,
             name: target.name,
             workLoad: target.workLoad,
-            area: area,
-            competences: competence,
+            area: target.area,
+            competences: target.competences,
             lastUpdate: lastUpdate,
         }
     }
@@ -501,7 +503,7 @@ export class DisciplineService implements IDisciplineService{
         const admin = await this.userService.isAdmin(userID)
         const username = await this.userService.getUsername(userID)
         // variables used to update discipline
-        const { name, workload } = payload
+        const { name } = payload
 
         const target = await prisma.discipline.findUnique({ where: { id: disciplineID }});
         if(!target){
@@ -514,8 +516,7 @@ export class DisciplineService implements IDisciplineService{
                     id: disciplineID
                 },
                 data:{
-                    name: name,
-                    workLoad: workload
+                    name: name
                 }
             });
 
