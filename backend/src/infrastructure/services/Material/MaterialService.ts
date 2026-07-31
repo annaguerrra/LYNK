@@ -55,7 +55,7 @@ export class MaterialService implements IMaterialService {
             await prisma.log.create({
                 data: {
                     action: "CREATED",
-                    entityType: "Material",
+                    entityType: "MATERIAL",
                     entityId: createdMaterial.id,
                     entityName: createdMaterial.name,
                     oldData: {},
@@ -153,7 +153,7 @@ export class MaterialService implements IMaterialService {
             await prisma.log.create({
                 data: {
                     action: "DELETED",
-                    entityType: "Material",
+                    entityType: "MATERIAL",
                     entityId: target.id,
                     entityName: target.name,
                     oldData: {
@@ -213,7 +213,7 @@ export class MaterialService implements IMaterialService {
         await prisma.log.create({
             data: {
                 action: "DELETED",
-                entityType: "Material",
+                entityType: "MATERIAL",
                 entityId: target.id,
                 entityName: target.name,
                 oldData: {
@@ -291,7 +291,7 @@ export class MaterialService implements IMaterialService {
             await prisma.log.create({
                 data: {
                     action: "UPDATED",
-                    entityType: "Material",
+                    entityType: "MATERIAL",
                     entityId: target.id,
                     entityName: target.name,
                     oldData: {

@@ -59,7 +59,7 @@ export class UserService implements IUserService {
         await prisma.log.create({
             data: {
                 action: "CREATED",
-                entityType: "Student",
+                entityType: "STUDENT",
                 entityId: createdUser.id,
                 entityName: createdUser.username,
                 oldData: {},
@@ -119,7 +119,7 @@ export class UserService implements IUserService {
         await prisma.log.create({
             data: {
                 action: "CREATED",
-                entityType: "Admin",
+                entityType: "ADMIN",
                 entityId: createdUser.id,
                 entityName: createdUser.username,
                 oldData: {},
@@ -523,7 +523,7 @@ export class UserService implements IUserService {
                     action: "UPDATED",
                     entityId: user.id,
                     entityName: user.userType,
-                    entityType: "Admin",
+                    entityType: "ADMIN",
                     newData: hashedPassword, 
                     oldData: data.oldPassword,
                     adminId: user.id,
@@ -656,7 +656,7 @@ export class UserService implements IUserService {
         await prisma.log.create({
             data: {
                 action: "UPDATED",
-                entityType: "Student",
+                entityType: "STUDENT",
                 entityId: target.id,
                 entityName: target.username,
                 oldData: {
@@ -799,7 +799,7 @@ export class UserService implements IUserService {
             await prisma.log.create({
                 data: {
                     action: "UPDATED",
-                    entityType: "Admin",
+                    entityType: "ADMIN",
                     entityId: target.id,
                     entityName: target.username,
                     oldData: {
@@ -842,7 +842,7 @@ export class UserService implements IUserService {
         await prisma.log.create({
             data: {
                 action: "DELETED",
-                entityType: "Student",
+                entityType: "STUDENT",
                 entityId: target.id,
                 entityName: target.username,
                 oldData: {
@@ -914,7 +914,7 @@ export class UserService implements IUserService {
         await prisma.log.create({
             data: {
                 action: "DELETED",
-                entityType: "Admin",
+                entityType: "ADMIN",
                 entityId: target.id,
                 entityName: target.username,
                 oldData: {
