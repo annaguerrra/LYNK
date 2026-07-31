@@ -1,4 +1,4 @@
-import { changePasswordDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
+import { changePasswordDTO, registerAdminDTO, registerInstructorDTO, registerStudentDTO, resetPasswordDTO, updateAdminDTO, updateInstructorDTO, updateStudentDTO } from "#application/dtos/userDTO.js";
 import { UserType } from "#infrastructure/prisma/generated/prisma/enums.js";
 import { UserService } from "#infrastructure/services/User/UserService.js";
 import { Request, response, Response } from "express";
@@ -126,6 +126,13 @@ export default class UserController {
         } catch (e) {
             return res.status(404).send({ response: "User not found!" })
         }
+    }
+
+    // PUT
+    // resets another user's password
+    async resetPassword(req: Request, res: Response) {
+        const data: resetPasswordDTO = req.body;
+        cosnt userId
     }
 
     // PUT

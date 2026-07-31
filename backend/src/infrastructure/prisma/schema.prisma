@@ -32,15 +32,15 @@ enum Action {
 }
 
 enum EntityType {
-  Class
-  Compentence
-  Material
-  Instructor
-  Discipline
-  Area
-  Student
-  Exam
-  Admin
+  CLASS
+  COMPENTENCE
+  MATERIAL
+  INSTRUCTOR
+  DISCIPLINE
+  AREA
+  STUDENT
+  EXAM
+  ADMIN
 }
 
 model Admin {
