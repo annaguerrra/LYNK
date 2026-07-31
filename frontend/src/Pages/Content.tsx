@@ -19,12 +19,13 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
-import { assignCompetence, getDisciplineById } from "../Services/disciplinesService";
-import type { DisciplineDTO } from "../Types/discipline";
+import { assignCompetence, getDisciplineById, getDisciplines } from "../Services/disciplinesService";
+import type { DisciplineDTO, viewExamsDTO } from "../Types/discipline";
 import { createClassService } from "../Services/classesService";
 import ActivityIndicator from "../Components/ActivityIndicator";
 import type { CreateCompetenceDTO } from "../Types/competence";
 import { createCompetenceService } from "../Services/competencesService";
+import { getExams } from "../Services/examsService";
 
 
 
@@ -170,6 +171,23 @@ export function Content() {
         }
     }
 
+    //------------------------------------ Test Functions ------------------------------------ 
+    const [testName, setTestName] = useState("")
+    const [disciplineId, setDisciplineId] = useState(1);
+    const [exams, setExams] = useState<viewExamsDTO[]>([]);
+
+    async function loadTests() {
+        try {
+            const response = await getExams();
+            setExams(response);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    
+    async function createTest(params:type) {
+        
+    }
 
     useEffect(() => {
         if (!discipline_id) return;
@@ -184,6 +202,10 @@ export function Content() {
         loadContent(id);
 
     }, [discipline_id]);
+
+    useEffect(() => {
+        loadTests();
+    })
 
 
 
@@ -241,14 +263,7 @@ export function Content() {
                         {/* Input for test name */}
                         <div className="textBox">
                             <h2>Nome da avaliação</h2>
-                            <input type="text" />
-                        </div>
-                        {/* Input to select the discipline */}
-                        <div className="textBox">
-                            <h2>Selecione a disciplina</h2>
-                            <select name="" id="">
-                                <option value="Tecnologia" selected></option>
-                            </select>
+                            <input type="text" value={testName} onChange={(e) => setTestName(e.target.value)}/>
                         </div>
                         {/* Input to select the test file */}
                         <div className="textBox">
