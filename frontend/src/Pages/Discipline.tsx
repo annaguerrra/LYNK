@@ -239,7 +239,7 @@ export function Discipline() {
     }
 
     async function updateUser() {
-        const userId = localStorage.getItem()
+        // const userId = localStorage.getItem()
     }
 
     return (
