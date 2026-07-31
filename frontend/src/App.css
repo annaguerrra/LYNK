@@ -3,8 +3,8 @@
 @font-face {
   font-family: 'Bosch Sans';
   src:
-    url('../public/fonts/boschsans_regular.woff2') format('woff2'),
-    url('../public/fonts/boschsans_regular.woff') format('woff');
+    url('/fonts/boschsans_regular.woff2') format('woff2'),
+    url('/fonts/boschsans_regular.woff') format('woff');
   font-weight: 400;
   font-style: normal;
 }
@@ -12,8 +12,8 @@
 @font-face {
   font-family: 'Bosch Sans';
   src:
-    url('../public/fonts/boschsans_bold.woff2') format('woff2'),
-    url('../public/fonts/boschsans_bold.woff') format('woff');
+    url('/fonts/boschsans_bold.woff2') format('woff2'),
+    url('/fonts/boschsans_bold.woff') format('woff');
   font-weight: 700;
   font-style: normal;
 }
@@ -21,8 +21,8 @@
 @font-face {
   font-family: 'Bosch Sans';
   src:
-    url('../public/fonts/boschsans_regularItalic.woff2') format('woff2'),
-    url('../public/fonts/boschsans_regularItalic.woff') format('woff');
+    url('/fonts/boschsans_regularItalic.woff2') format('woff2'),
+    url('/fonts/boschsans_regularItalic.woff') format('woff');
   font-weight: 400;
   font-style: italic;
 }
@@ -30,16 +30,16 @@
 @font-face {
   font-family: 'Bosch Sans';
   src:
-    url('../public/fonts/boschsans_boldItalic.woff2') format('woff2'),
-    url('../public/fonts/boschsans_boldItalic.woff') format('woff');
+    url('/fonts/boschsans_boldItalic.woff2') format('woff2'),
+    url('/fonts/boschsans_boldItalic.woff') format('woff');
   font-weight: 700;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Bosch-Icons';
-  src: url('../public/fonts/bosch_icon.woff2') format('woff2'),
-       url('../public/fonts/bosch_icon.woff') format('woff');     
+  src: url('/fonts/bosch_icon.woff2') format('woff2'),
+       url('/fonts/bosch_icon.woff') format('woff');     
   font-weight: normal;
   font-style: normal;
 }

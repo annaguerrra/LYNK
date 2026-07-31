@@ -31,7 +31,6 @@ export async function getDisciplines(): Promise<DisciplineDTO[]> {
 // Get a discipline by ID
 export async function getDisciplineById(id: number): Promise<DisciplineDTO> {
     const response = await api.get(`/discipline/${id}`);
-    console.log(response.data.response)
     return response.data.response;
 }
 

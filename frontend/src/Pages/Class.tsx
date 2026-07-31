@@ -104,6 +104,7 @@ export function Class() {
 
     async function loadMaterials(id: number) {
         try {
+            console.log(id)
             const response = await getClassMaterials(id);
             setMaterials(response)
         } catch (error) {
