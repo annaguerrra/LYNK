@@ -80,6 +80,7 @@ export interface showAdminDTO {
 export interface updateStudentDTO {
     username: string
     password: string
+    
 }
 
 // used to edit instructor
