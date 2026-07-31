@@ -21,9 +21,15 @@ export function HClassesView() {
     }, []);
 
     const actionColors = {
-        POST: "var(--green)",
-        PUT: "var(--blue)",
-        DELETE: "var(--red)",
+        CREATED: "var(--green)",
+        UPDATED: "var(--blue)",
+        DELETED: "var(--red)",
+    };
+
+    const actionsName = {
+        CREATED: "CRIADO",
+        UPDATED: "EDITADO",
+        DELETED: "DELETADO",
     };
 
     return (
@@ -35,16 +41,18 @@ export function HClassesView() {
                         size="--medium"
                         userAction={
                             <>
+                                <span>{actionsName[hclass.action]} por</span>
                                 <img
                                     src="../../../public/UserDefault/user-purple.png">
                                 </img>
+                                <span>{hclass.username}</span>
 
-                                <span>{hclass.alterUser.toLocaleDateString("pt-BR")}</span>
-                                <span> | </span>
-                                <span>{hclass.updatedAt.toLocaleDateString("pt-BR")}</span>
+                                <span>{hclass.updatedAt 
+                                    ? new Date(hclass.updatedAt).toLocaleDateString("pt-BR")
+                                    : "Sem data"}</span>
                             </>
                         }>
-                            <span>{hclass.entityName}</span>
+                        <span>{hclass.entityName}</span>
 
                     </RowItem>
                 ))}
