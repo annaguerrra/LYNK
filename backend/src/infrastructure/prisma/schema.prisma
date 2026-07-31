@@ -109,7 +109,7 @@ model Competence {
 model Discipline {
   id Int @default(autoincrement()) @id
   name String
-  workLoad Int
+  workLoad Int @default(0)
   areaId Int
   area Area @relation(fields: [areaId], references: [id])
   materials Material[]
