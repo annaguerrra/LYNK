@@ -72,6 +72,7 @@ export function ClassesView({ discipline }: ClassesViewProps) {
     }, [discipline.id]);
 
 
+
     async function downloadClass(id: number) {
         try {
             const { data } = await api.get(`/class/${id}/content/download`, {

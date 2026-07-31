@@ -66,6 +66,7 @@ export async function updateDiscipline(id: number, data: editDisciplineDTO) {
 
 // Assign a competence to a discipline
 export async function assignCompetence(data: assignCompetencyDTO) {
+    console.log(data)
     const response = await api.put("/discipline/assigncompetence", data);
     return response.data;
 }
