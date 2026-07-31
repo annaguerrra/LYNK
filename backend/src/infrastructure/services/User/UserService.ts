@@ -475,10 +475,9 @@ export class UserService implements IUserService {
 
     // updates the user information by searching its id, updating the prisma information and creating a new log
     async updateStudent(id: number, data: updateStudentDTO, userId: number): Promise<Student> {
-        const { username, password } = data
         const isAdmin = await this.isAdmin(userId)
         const ownerUsername = await this.getUsername(userId)
-       
+
         const target = await prisma.student.findUnique({
             where: {
                 id: id
@@ -488,15 +487,24 @@ export class UserService implements IUserService {
         if (!target)
             throw new Error("User not found")
 
+        const dataToUpdate: any = {};
+
+        if(data.username) {
+            dataToUpdate.username = data.username
+        }
+
+        if(data.password){
+            dataToUpdate.password = data.password
+            target.updatedPasswordAt = new Date();
+            target.firstAccess = true
+        }
+
         const updatedUser = await prisma.student.update({
             where: {
                 id: id
             },
-            data: {
-                username: username,
-                password: password,
-            }
-        })
+            data: dataToUpdate
+        });
 
         await prisma.log.create({
             data: {
@@ -507,9 +515,8 @@ export class UserService implements IUserService {
                 oldData: {
                     ...target
                 },
-                newData: {
-                    ...updatedUser
-                },
+                newData: dataToUpdate,
+                
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId }),
                 username: ownerUsername
@@ -536,18 +543,32 @@ export class UserService implements IUserService {
         if (target.attachmentId)
             await this.attachmentService.delete(target?.attachmentId)
 
+        const dataToUpdate: any = {};
+
+        if(data.username) {
+            dataToUpdate.username = data.username;
+        }
+        if(data.specialty) {
+            dataToUpdate.specialty = data.specialty;
+        }
+        if(data.password) {
+            dataToUpdate.password = data.password;
+            target.updatedPasswordAt = new Date();
+            target.firstAccess = true;
+        }
+        if(data.file) {
+            dataToUpdate.file = data.file;
+        }
+        if(data.active) {
+            dataToUpdate.active = data.active;
+        }
+
         try {
             const updatedUser = await prisma.instructor.update({
                 where: {
                     id: id
                 },
-                data: {
-                    username: username,
-                    password: password,
-                    specialty: specialty,
-                    active: active,
-                    attachmentId: attachmentId
-                }
+                data: dataToUpdate
             })
     
             await prisma.log.create({
@@ -559,9 +580,7 @@ export class UserService implements IUserService {
                     oldData: {
                         ...target
                     },
-                    newData: {
-                        ...updatedUser
-                    },
+                    newData: dataToUpdate,
                     adminId: userId,
                     username: ownerUsername
                 }
@@ -577,7 +596,7 @@ export class UserService implements IUserService {
     }
 
     async updateAdmin(id: number, data: updateAdminDTO, userId: number): Promise<Admin> {
-        const { username, password, specialty, active, file } = data
+        const { file } = data
         const ownerUsername = await this.getUsername(userId)
         const attachmentId = await this.attachmentService.upload(file)
 
@@ -593,18 +612,32 @@ export class UserService implements IUserService {
         if(target.attachmentId)
             await this.attachmentService.delete(target?.attachmentId)
 
+        const dataToUpdate: any = {}
+
+        if(data.username) {
+            dataToUpdate.username = data.username
+        }
+        if(data.password) {
+            dataToUpdate.password = data.password;
+            target.updatedPasswordAt = new Date();
+            target.firstAccess = true;
+        }
+        if(data.specialty) {
+            dataToUpdate.specialty = data.specialty
+        }
+        if(data.file) {
+            dataToUpdate.file = data.file
+        }
+        if(data.active) {
+            dataToUpdate.active = data.active
+        }
+        
         try {
             const updatedUser = await prisma.admin.update({
                 where: {
                     id: id
                 },
-                data: {
-                    username: username,
-                    password: password,
-                    specialty: specialty,
-                    active: active,
-                    attachmentId: attachmentId
-                }
+                data: dataToUpdate
             })
 
             await prisma.log.create({
@@ -616,9 +649,7 @@ export class UserService implements IUserService {
                     oldData: {
                         ...target
                     },
-                    newData: {
-                        ...updatedUser
-                    },
+                    newData: dataToUpdate,
                     adminId: userId,
                     username: ownerUsername
                 }
