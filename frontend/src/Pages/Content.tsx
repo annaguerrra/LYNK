@@ -19,10 +19,12 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
-import { getDisciplineById } from "../Services/disciplinesService";
+import { assignCompetence, getDisciplineById } from "../Services/disciplinesService";
 import type { DisciplineDTO } from "../Types/discipline";
 import { createClassService } from "../Services/classesService";
 import ActivityIndicator from "../Components/ActivityIndicator";
+import type { CreateCompetenceDTO } from "../Types/competence";
+import { createCompetenceService } from "../Services/competencesService";
 
 
 
@@ -41,6 +43,8 @@ export function Content() {
     const [editCompetence, setEditCompetence] = useState(false);
     const [excludeTestModal, setExcludeTestModal] = useState(false);
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
+
+    const [competenceName, setCompetenceName] = useState("");
 
     const [discipline, setDiscipline] = useState<DisciplineDTO | null>(null);
 
@@ -107,6 +111,8 @@ export function Content() {
                 disciplineId: discipline.id
             });
 
+            console.log(createdClass.id)
+
             navigate(`/Class/${createdClass.id}`)
 
         } catch (error) {
@@ -116,9 +122,29 @@ export function Content() {
         }
     }
 
+    async function createCompetence() {
+        try {
+            if (!competenceName) {
+                toast.dismiss("Nome da competência não pode ser nulo!")
+                return;
+            }
+
+            const competence = await createCompetenceService(competenceName);
+
+            await assignCompetence({
+                competencyID: competence.id,
+                disciplineID: discipline.id,
+            });
+
+            setCompetenceName("")
+            setNewCompetence(false);
+        } catch (error) {
+            console.error("Erro ao criar e vincular competência:", error);
+        }
+    }
+
     async function loadContent(id: number) {
         try {
-            await new Promise(resolve => setTimeout(resolve, 3000));
             const response = await getDisciplineById(id);
 
             setDiscipline(response);
@@ -275,15 +301,19 @@ export function Content() {
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Registrar competência</h1>
-                            <ButtonClose size={40} onClose={() => setNewCompetence(false)}></ButtonClose>
+                            <ButtonClose size={40} onClose={() => {
+                                setNewCompetence(false)
+                                setCompetenceName("")
+                            }
+                            }></ButtonClose>
                         </div>
                         {/* Input for the competence name */}
                         <div className="textBox">
                             <h2>Nome da competência</h2>
-                            <input type="text" />
+                            <input type="text" value={competenceName} onChange={(e) => setCompetenceName(e.target.value)} />
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => setNewCompetence(false)}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => createCompetence()}></Button>
                     </div>
                 </div>
             )}

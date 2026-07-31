@@ -112,7 +112,7 @@ export function ClassesView({ discipline }: ClassesViewProps) {
                 {classes.map((item) => (
 
                     <RowItem
-                        key={item.name}
+                        key={item.id}
                         onClick={() => navigate(`/Class/${item.id}`)}
                         color="var(--purple)"
                         size="--medium"
