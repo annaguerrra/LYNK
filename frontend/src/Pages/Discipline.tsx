@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
-import type { registerUserDTO, UserType } from "../Types/user";
+import type { registerUserDTO, resetPasswordDTO, UserType } from "../Types/user";
 import { createUser } from "../Services/userService";
 
 
@@ -246,6 +246,23 @@ export function Discipline() {
         }
     }
 
+    async function resetPassword() {
+        const userID = localStorage.getItem()
+        const data: resetPasswordDTO = {
+            newPassword: newPassword,
+            repeatPassword: repeatPassword
+        }
+
+        try {
+            const response = await resetPassword(data);
+
+            setUserPassword("");
+            setNewPassword("");
+            setRepeatPassword("");
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <>
@@ -472,7 +489,7 @@ export function Discipline() {
                 </div>
             )}
 
-            {/* Modal to rest a user password */}
+            {/* Modal to reset a user password */}
             {(resetPasswordModal && isAdmin) && (
                 <div className="modalExcludeOverlay" onClick={() => setResetPasswordModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
@@ -574,7 +591,8 @@ export function Discipline() {
             {/* Modal to edit a area */}
             {editAreaModal && (
                 <div className="modalOverlay" onClick={() => setEditAreaModal(false)}>
-                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                    <div className="modal
+                    Container" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Editar  área</h1>
