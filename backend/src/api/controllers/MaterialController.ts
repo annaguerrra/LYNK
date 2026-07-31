@@ -17,7 +17,11 @@ export default class MaterialController{
             await this.materialService.registerMaterial(data, userId)
             return res.status(200).send({ response: "Material created!"})
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -30,7 +34,11 @@ export default class MaterialController{
             await this.materialService.attachtFile(data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "Material not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -58,7 +66,11 @@ export default class MaterialController{
             await this.materialService.updateMaterial(Number(id), data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "Material not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -71,7 +83,11 @@ export default class MaterialController{
             await this.materialService.deleteMaterial(Number(id), userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "Material not found" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -84,7 +100,11 @@ export default class MaterialController{
             await this.materialService.downloadMaterial(Number(id), materialAttachmentId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
-            return res.status(404).send({ response: "Material not found" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 }
