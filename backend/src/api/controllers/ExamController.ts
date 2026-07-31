@@ -1,5 +1,6 @@
 import { attachtFileDTO, registerExamDTO, updateExamDTO } from "#application/dtos/examDTO.js";
 import { ExamService } from "#infrastructure/services/Exam/ExamService.js"
+import { numberParser } from "config/parser";
 import { Request, Response } from "express";
 
 export default class ExamController{
@@ -10,9 +11,26 @@ export default class ExamController{
     // POST
     //// gets the userid from request and based on data from calls the respective service to create a new Exam
     async register(req: Request, res: Response){
-        const data: registerExamDTO = req.body
-        const userId = req.user.userId
         try {
+            const userId = req.user.userId
+
+            const files = (req.files as Express.Multer.File[]).map(file => ({
+                originalName: file.originalname,
+                mimeType: file.mimetype,
+                buffer: file.buffer
+            }))
+
+            const competencesId = Array.isArray(req.body.competencesId)
+                ? req.body.competencesId
+                : [req.body.competencesId];
+            
+            const data: registerExamDTO = {
+                name: req.body.name,
+                files,
+                disciplineId: Number(req.body.disciplineId),
+                competencesId: competencesId.map(Number)
+            }
+
             await this.examService.registerExam(data, userId)
             return res.status(200).send({ response: "Exam created!"})
         } catch (e) {
@@ -24,12 +42,23 @@ export default class ExamController{
         }
     }
 
-    // POST 
+    // POST
     // receives the exam's data from body and the userId is obtained from request to execute log record
     async attachFile(req: Request, res: Response){
-        const data: attachtFileDTO = req.body
-        const userId = req.user.userId
         try {
+            const userId = req.user.userId
+
+            const files = (req.files as Express.Multer.File[]).map(file => ({
+                originalName: file.originalname,
+                mimeType: file.mimetype,
+                buffer: file.buffer
+            }))
+
+            const data: attachtFileDTO = {
+                id: Number(req.params.id),
+                files
+            }
+
             await this.examService.attachtFile(data, userId)
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
@@ -48,7 +77,11 @@ export default class ExamController{
             const exams = await this.examService.showExams()
             return res.status(200).send({ response: exams })
         } catch (e) {
-            return res.status(404).send({ response: "Exam not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -60,20 +93,32 @@ export default class ExamController{
             const exam = await this.examService.getExamById(Number(id))
             return res.status(200).send({ response: exam })
         } catch (e) {
-            return res.status(404).send({ response: "Exam not found" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
     // GET
     // through the params get all exam's related info and pass it to the download service
     async download(req: Request, res: Response){
-        const { id } = req.params
-        const { examAttachmentId } = req.params
+        const { id, examAttachmentId } = req.params
         try {
-            const downloadedExam = await this.examService.downloadExam(Number(id), Number(examAttachmentId))
-            return res.status(200).send({ response: downloadedExam })
+            const file = await this.examService.downloadExam(Number(id), Number(examAttachmentId))
+            res.setHeader("Content-Type", file.mimeType);
+            res.setHeader(
+                "Content-Disposition",
+                `attachment; filename="${file.fileName}"`
+            );
+            file.stream.pipe(res)
         } catch (e) {
-            return res.status(404).send({ response: "Exam not found!" })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -86,9 +131,13 @@ export default class ExamController{
         const { id } = req.params
         try {
             await this.examService.updateExam(Number(id), data, userId)
-            return res.status(200).send({ response: "Exam created!"})
+            return res.status(200).send({ response: "Exam updated!"})
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -99,9 +148,13 @@ export default class ExamController{
         const userId = req.user.userId
         try {
             await this.examService.removeExam(Number(id), userId)
-            return res.status(200).send({ response: "Exam created!"})
+            return res.status(200).send({ response: "Exam deleted!"})
         } catch (e) {
-            return res.status(500).send({ response: e })
+            if (e instanceof Error)
+                return res.status(500).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 }
