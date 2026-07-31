@@ -516,7 +516,6 @@ export class UserService implements IUserService {
                     ...target
                 },
                 newData: dataToUpdate,
-                
                 ...(isAdmin && { adminId: userId }),
                 ...(!isAdmin && { instructorId: userId }),
                 username: ownerUsername
@@ -527,7 +526,8 @@ export class UserService implements IUserService {
     }
 
     async updateInstructor(id: number, data: updateInstructorDTO, userId: number): Promise<Instructor> {
-        const { username, password, specialty, active, file } = data
+        const { file } = data
+        const isAdmin = await this.isAdmin(userId)
         const attachmentId = await this.attachmentService.upload(file)
         const ownerUsername = await this.getUsername(userId)
 
@@ -539,6 +539,10 @@ export class UserService implements IUserService {
 
         if (!target)
             throw new Error("User not found")
+
+        if(target.id !== userId){
+            throw new Error("Unauthorized");
+        }
 
         if (target.attachmentId)
             await this.attachmentService.delete(target?.attachmentId)
@@ -581,7 +585,8 @@ export class UserService implements IUserService {
                         ...target
                     },
                     newData: dataToUpdate,
-                    adminId: userId,
+                    ...(isAdmin && { adminId: userId }),
+                    ...(!isAdmin && { instructorId: userId }),
                     username: ownerUsername
                 }
             })
@@ -605,9 +610,13 @@ export class UserService implements IUserService {
                 id: id
             }
         })
-
+    
         if (!target)
             throw new Error("User not found")
+
+        if(target.id !== userId){
+            throw new Error("Unauthorized");
+        }
 
         if(target.attachmentId)
             await this.attachmentService.delete(target?.attachmentId)
