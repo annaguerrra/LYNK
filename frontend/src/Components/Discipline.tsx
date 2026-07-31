@@ -12,6 +12,7 @@ import { deleteDiscipline, updateDiscipline } from "../Services/disciplinesServi
 import type { AreaDTO } from "../Types/area";
 import { getAreas } from "../Services/areasService";
 import type { DisciplineDTO } from "../Types/discipline";
+import { ToastContainer, toast } from "react-toastify";
 
 interface DisciplineCompProps {
     Discipline: DisciplineDTO;
@@ -47,6 +48,7 @@ export function DisciplineComp({ Discipline } : DisciplineCompProps) {
     
     async function editDiscipline() {
         try {
+            toast.success("Disciplina editada com sucesso!");
             await updateDiscipline(Discipline.id, {
                 name: disciplineName,
                 areaID: areaId
@@ -55,16 +57,19 @@ export function DisciplineComp({ Discipline } : DisciplineCompProps) {
             setDisciplineName("")
             setEditModal(false);
         } catch (error) {
+            toast.error("Não foi possivel editar a disciplina!");
             console.error(error);
         }
     }
 
     async function removeDiscipline() {
         try {
+            toast.success("Disciplina deletada com sucesso!");
             await deleteDiscipline(Discipline.id);
 
             setExcludeModal(false);
         } catch (error) {
+            toast.error("Não foi possivel deletar a disciplina!");
             console.error(error);
         }
     }
