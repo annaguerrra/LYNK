@@ -11,8 +11,9 @@ import { getDisciplineClasses } from "../../Services/disciplinesService"
 import { toast } from "react-toastify"
 import { isAxiosError } from "axios"
 import api from "../../Services/api"
-import type { ClassItem } from "../../Types/class"
+import type { ClassDTO, ClassItem } from "../../Types/class"
 import type { DisciplineDTO } from "../../Types/discipline"
+import { deleteClassService } from "../../Services/classesService"
 
 
 interface ClassesViewProps {
@@ -25,7 +26,7 @@ export function ClassesView({ discipline }: ClassesViewProps) {
     const navigate = useNavigate();
 
     const [excludeClassModal, setExcludeClassModal] = useState(false);
-    const [selectedClass, setSelectedClass] = useState(null);
+    const [selectedClass, setSelectedClass] = useState<ClassItem | null>(null);
 
     const [classes, setClasses] = useState<ClassItem[]>([]);
     const [loading, setLoading] = useState(true);
@@ -66,14 +67,37 @@ export function ClassesView({ discipline }: ClassesViewProps) {
         }
     }
 
-    
+
     useEffect(() => {
         loadClasses();
     }, [discipline.id]);
 
 
+    async function deleteClass() {
+        if (!discipline) return;
 
-    async function downloadClass(id: number) {
+        try {
+            await deleteClassService(selectedClass.id);
+
+            toast.success("Aula deletada com sucesso.");
+
+            setExcludeClassModal(false)
+            loadClasses();
+
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao deletar aula.");
+            return;
+        }
+
+    }
+
+    function teste(id) {
+        console.log(id)
+    }
+
+    async function downloadClass(id: number, name: string) {
+        console.log(id)
         try {
             const { data } = await api.get(`/class/${id}/content/download`, {
                 responseType: "blob",
@@ -83,7 +107,7 @@ export function ClassesView({ discipline }: ClassesViewProps) {
 
             const link = document.createElement("a");
             link.href = url;
-            link.download = "Aula";
+            link.download = name;
 
             link.click();
 
@@ -124,7 +148,7 @@ export function ClassesView({ discipline }: ClassesViewProps) {
                                 <ButtonIcon
                                     icon="icon-download"
                                     size={28}
-                                    onClick={() => downloadClass(item.id)}
+                                    onClick={() => downloadClass(item.id, item.name)}
                                 />
 
                                 {(isAdmin || isInstructor) && (
@@ -138,7 +162,7 @@ export function ClassesView({ discipline }: ClassesViewProps) {
                                             {
                                                 name: "Excluir aula",
                                                 onClick: () => {
-                                                    // setSelectedClass(item);
+                                                    setSelectedClass(item);
                                                     setExcludeClassModal(true);
                                                 },
                                                 color: "red"
@@ -174,7 +198,7 @@ export function ClassesView({ discipline }: ClassesViewProps) {
                         <div className="buttonsBox">
                             <ButtonExclude
                                 ButtonTitle="Excluir"
-                                onClose={() => setExcludeClassModal(false)}
+                                onClose={() => deleteClass()}
                             />
 
                             <br />

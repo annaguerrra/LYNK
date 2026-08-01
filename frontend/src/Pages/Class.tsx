@@ -45,6 +45,7 @@ import type { CompetenceDTO } from '../Types/competence'
 import { attachMaterialFile, createMaterial } from '../Services/materialsService'
 import ActivityIndicator from '../Components/ActivityIndicator'
 import { getDisciplineCompetences } from '../Services/disciplinesService'
+import api from '../Services/api'
 
 export function Class() {
     //Variables to navigate and open modals
@@ -62,7 +63,7 @@ export function Class() {
 
     const [classItem, setClassItem] = useState<ClassDTO | null>(null);
 
-    const [materials, setMaterials] = useState<MaterialDTO>(null)
+    const [materials, setMaterials] = useState<MaterialDTO[]>([])
     const [competences, setCompetences] = useState<CompetenceDTO[]>([])
     const [allCompetences, setAllCompetences] = useState<CompetenceDTO[]>([])
     const [initialCompetences, setInitialCompetences] = useState<CompetenceDTO[]>([]);
@@ -120,21 +121,6 @@ export function Class() {
         }
     }
 
-    // async function loadCompetences(id: number) {
-    //     try {
-    //         const response = await getClassCompetences(id);
-    //         setCompetences(response)
-    //     } catch (error) {
-    //         if (isAxiosError(error)) {
-    //             if (error.response?.status === 404) {
-    //                 toast.error("404 - Competencias não encontradas.");
-    //                 return;
-    //             }
-    //         }
-    //         toast.error(`${error}`);
-    //         console.log(error)
-    //     }
-    // }
 
     async function loadCompetencesByDiscipline() {
         try {
@@ -255,25 +241,46 @@ export function Class() {
     async function handleFileUpload(file: File) {
         if (!classItem) return;
 
-        const material = classItem.materials[0];
-
-        if (!material) {
-            toast.error("Erro ao anexar material.");
-            console.error("No material entity could be found to attach this file.")
-            return;
-        }
-
         try {
-            await attachMaterialFile(material.id, {
-                files: file
-            });
 
-            toast.success("Material adicionado!");
+            const materialData = new FormData();
 
-            await loadDataClass(classItem.id);
+            materialData.append("name", file.name);
+            materialData.append("classId", String(classItem.id));
+            materialData.append("disciplineId", String(classItem.discipline.id));
+            materialData.append("files", file);
+
+            await createMaterial(materialData);
+
+            toast.success("Material enviado.");
+
+            await loadMaterials(classItem.id);
+
         } catch (error) {
             console.error(error);
-            toast.error("Erro ao adicionar material.");
+            toast.error("Erro ao enviar material.");
+        }
+    }
+
+    async function downloadClass() {
+        try {
+            const { data } = await api.get(`/class/${classItem.id}/content/download`, {
+                responseType: "blob",
+            });
+
+            const url = URL.createObjectURL(data);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = classItem.name;
+
+            link.click();
+
+            URL.revokeObjectURL(url);
+
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao baixar aula.");
         }
     }
 
@@ -305,9 +312,16 @@ export function Class() {
                         <div className='markdownBox'>
                             <div className='toolbar view'>
                                 <span>{titleClass}</span>
-                                {(isAdmin || isInstructor) &&
-                                    <button className='buttonAction' onClick={() => setEditMode(true)}>Editar</button>
-                                }
+                                <div style={{ display: 'inline-flex', gap: "2rem"}}>
+                                    <ButtonIcon
+                                        icon="icon-download"
+                                        size={28}
+                                        onClick={() => downloadClass()}
+                                    />
+                                    {(isAdmin || isInstructor) &&
+                                        <button className='buttonAction' onClick={() => setEditMode(true)}>Editar</button>
+                                    }
+                                </div>
                             </div>
                             <MDXEditor
                                 key={content}
@@ -388,10 +402,10 @@ export function Class() {
                         <div className='attachmentsContent'>
                             <span className='subtitle'>Anexos</span>
                             <div className='attachments'>
-                                {materials.attachments.map((attachment) => (
+                                {materials.map((material) => (
                                     <>
                                         <RowItem
-                                            key={attachment.id}
+                                            key={material.id}
                                             color='var(--purple)'
                                             actions={
                                                 <>
@@ -402,7 +416,7 @@ export function Class() {
                                                 </>
                                             }>
 
-                                            <div>nome</div>
+                                            <div>{material.name}</div>
                                         </RowItem>
                                     </>
                                 ))}

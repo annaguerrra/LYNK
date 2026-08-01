@@ -26,7 +26,7 @@ export async function updateClass(id: number, data: editClass) {
 }
 
 // Delete a class
-export async function deleteClass(id: number) {
+export async function deleteClassService(id: number) {
     const response = await api.delete(`/class/delete/${id}`);
     return response.data;
 }
@@ -34,7 +34,7 @@ export async function deleteClass(id: number) {
 // Get all materials from a class
 export async function getClassMaterials(id: number) {
     const response = await api.get(`/class/${id}/materials`);
-    return response.data.response.materials[0];
+    return response.data.response.materials;
 }
 
 // Get all competences from a class

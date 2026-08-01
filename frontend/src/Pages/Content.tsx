@@ -9,9 +9,7 @@ import { CompetencesView } from "./ContentViews/CompetencesView";
 import { ExamsView } from "./ContentViews/ExamsView";
 import { MoreOpt } from "../Components/MoreOpt";
 import { Button } from "../Components/Button";
-import { ButtonCancel } from "../Components/ButtonCancel";
 import { ButtonClose } from "../Components/ButtonClose";
-import { ButtonExclude } from "../Components/ButtonExclude";
 import { useNavigate } from "react-router-dom";
 import { RowItem } from "../Components/RowItem";
 import LessonSelect from "../Components/LessonSelect";
@@ -25,7 +23,7 @@ import { createClassService } from "../Services/classesService";
 import ActivityIndicator from "../Components/ActivityIndicator";
 import type { CompetenceDTO } from "../Types/competence";
 import { createCompetenceService } from "../Services/competencesService";
-import { createMaterial } from "../Services/materialsService";
+import type { ClassDTO } from "../Types/class";
 
 
 
@@ -43,11 +41,8 @@ export function Content() {
 
     const [selectedTab, setSelectedTab] = useState("classes");
     const [newTest, setNewTest] = useState(false);
-    const [editTest, setEditTest] = useState(false);
     const [newCompetence, setNewCompetence] = useState(false);
     const [editCompetence, setEditCompetence] = useState(false);
-    const [excludeTestModal, setExcludeTestModal] = useState(false);
-    const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
 
     const [competenceName, setCompetenceName] = useState("");
 
@@ -109,38 +104,24 @@ export function Content() {
     async function createClass() {
         if (!discipline) return;
 
-        let createdClass;
-
         try {
-            createdClass = await createClassService({
+
+            const createdClass = await createClassService({
                 name: "Nova Aula",
                 content: templateContent,
                 disciplineId: discipline.id
             });
+
+            navigate(`/Class/${createdClass.id}`);
+
         } catch (error) {
             console.error("Erro ao criar aula:", error);
             toast.error("Erro ao criar a aula.");
             return;
         }
 
-        const materialData = new FormData(); 
-
-        materialData.append("name", `Mateiral_class_${createdClass.id}`);
-        materialData.append("classId", String(createdClass.id));
-        materialData.append("disciplineId", String(createdClass.disciplineId));
-
-        try {
-
-            await createMaterial(materialData);
-            
-        } catch (error) {
-            console.error("Erro ao criar material:", error);
-            toast.error("A aula foi criada, mas ocorreu um erro ao criar o material.");
-            return;
-        }
-
-        navigate(`/Class/${createdClass.id}`);
     }
+
 
     async function createCompetence() {
         try {
@@ -163,6 +144,8 @@ export function Content() {
             console.error("Erro ao criar e vincular competência:", error);
         }
     }
+
+
 
     async function loadCompetencesByDiscipline(disciplineId: number) {
         try {

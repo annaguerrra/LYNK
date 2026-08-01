@@ -8,10 +8,8 @@ export async function getMaterialById(id: number): Promise<ShowMaterialDTO> {
 }
 
 // Create a new material
-export async function createMaterial(data: FormData): Promise<RegisterMaterialDTO> {
-    console.log(data)
+export async function createMaterial(data: FormData) {
     const response = await api.post("/material/create", data);
-    console.log(response.data)
     return response.data;
 }
 
@@ -23,6 +21,7 @@ export async function updateMaterial(id: number, data: UpdateMaterialDTO): Promi
 
 // Attach a file to a material
 export async function attachMaterialFile(id: number, data: AttachFileDTO): Promise<ShowMaterialDTO> {
+    console.log(id, data)
     const response = await api.put(`/material/${id}/attach`, data);
     return response.data.response;
 }

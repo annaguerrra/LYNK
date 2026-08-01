@@ -27,7 +27,7 @@ export default class MaterialController{
                 files
             }
 
-            await this.materialService.registerMaterial(data, userId)
+            const createdMaterial = await this.materialService.registerMaterial(data, userId)
             return res.status(200).send({ response: "Material created!"})
         } catch (e) {
             if (e instanceof Error)
