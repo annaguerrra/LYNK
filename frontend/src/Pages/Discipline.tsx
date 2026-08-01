@@ -236,11 +236,11 @@ export function Discipline() {
         }
     }
 
-    async function resetPassword(data: resetPasswordDTO, id: number) {
-        try {
+    // async function resetPassword(data: resetPasswordDTO, id: number) {
+    //     try {
             
-        }
-    }
+    //     }
+    // }
 
 
     return (

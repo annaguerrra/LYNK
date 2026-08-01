@@ -185,6 +185,12 @@ export function Class() {
         }
     }
 
+    function cancelUpdateClass() {
+        setTitleClass(classItem.name);
+        setContent(classItem.content);
+        setEditMode(false);
+    }
+
     useEffect(() => {
         if (!class_id) return;
 
@@ -300,7 +306,7 @@ export function Class() {
                             <div className='containerButtons'>
 
                             <button className='buttonAction' onClick={() => saveClass()}>Salvar</button>
-                            <button className='buttonCancelAction' onClick={() => {}}>Cancelar</button>
+                            <button className='buttonCancelAction' onClick={() => cancelUpdateClass()}>Cancelar</button>
                             </div>
                             </div>
                             
