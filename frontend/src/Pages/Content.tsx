@@ -19,11 +19,11 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
-import { assignDisciplineCompetence, getDisciplineById } from "../Services/disciplinesService";
+import { assignDisciplineCompetence, getDisciplineById, getDisciplineCompetences } from "../Services/disciplinesService";
 import type { DisciplineDTO } from "../Types/discipline";
 import { createClassService } from "../Services/classesService";
 import ActivityIndicator from "../Components/ActivityIndicator";
-import type { CreateCompetenceDTO } from "../Types/competence";
+import type { CompetenceDTO } from "../Types/competence";
 import { createCompetenceService } from "../Services/competencesService";
 
 
@@ -33,6 +33,10 @@ export function Content() {
     const navigate = useNavigate()
 
     const { discipline_id } = useParams<{ discipline_id: string }>();
+
+
+    const [allCompetences, setAllCompetences] = useState<CompetenceDTO[]>([]);
+    const [examCompetences, setExamCompetences] = useState<CompetenceDTO[]>([]);
 
 
 
@@ -124,7 +128,7 @@ export function Content() {
 
     async function createCompetence() {
         try {
-            
+
             if (!competenceName) {
                 toast.warning("Nome da competência não pode ser nulo!")
                 return;
@@ -144,11 +148,32 @@ export function Content() {
         }
     }
 
+    async function loadCompetencesByDiscipline(disciplineId: number) {
+            try {
+                const response = await getDisciplineCompetences(disciplineId);
+                console.log(response)
+                setAllCompetences(response.competences);
+    
+            } catch (error) {
+                if (isAxiosError(error)) {
+                    if (error.response?.status === 500) {
+                        toast.error("500 - Erro de servidor.");
+                        return;
+                    }
+                }
+    
+                console.error(error);
+                toast.error("Erro ao carregar competências.");
+            }
+    
+        }
+
     async function loadContent(id: number) {
         try {
             const response = await getDisciplineById(id);
 
             setDiscipline(response);
+            loadCompetencesByDiscipline(response.id);
 
         } catch (error) {
             if (isAxiosError(error)) {
@@ -231,12 +256,12 @@ export function Content() {
             {/* -------------------------------------------------------- TEST MODALS -------------------------------------------------------- */}
             {/* Modal to create a test */}
             {newTest && (
-                <div className="modalOverlay" onClick={() => setNewTest(false)}>
+                <div className="modalOverlay" onClick={() => {setNewTest(false), setExamCompetences([])}}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Registrar avaliação</h1>
-                            <ButtonClose size={40} onClose={() => setNewTest(false)}></ButtonClose>
+                            <ButtonClose size={40} onClose={() => {setNewTest(false), setExamCompetences([])}}></ButtonClose>
                         </div>
                         {/* Input for test name */}
                         <div className="textBox">
@@ -244,12 +269,12 @@ export function Content() {
                             <input type="text" />
                         </div>
                         {/* Input to select the discipline */}
-                        <div className="textBox">
+                        {/* <div className="textBox">
                             <h2>Selecione a disciplina</h2>
                             <select name="" id="">
                                 <option value="Tecnologia" selected></option>
                             </select>
-                        </div>
+                        </div> */}
                         {/* Input to select the test file */}
                         <div className="textBox">
                             <h2>Selecione o arquivo</h2>
@@ -261,30 +286,37 @@ export function Content() {
 
                             <div className='attachments' >
                                 {/* Component used to search a competence */}
-                                <LessonSelect lessons={[]}/>
+                                <LessonSelect lessons={allCompetences} onAdd={(competence) => {
+                                    setExamCompetences((prev) => {
+                                        if (prev.some((c) => c.id === competence.id)) {
+                                            toast.warning("Essa competência já foi adicionada.");
+                                            return prev;
+                                        }
+
+                                        return [...prev, competence];
+                                    });
+                                }} />
                                 <br />
                                 <div className="scrollBox">
 
-                                    <RowItem
-                                        type='competence'
-                                        actions={
-                                            <>
-                                                <ButtonClose size={18} onClose={() => { }} />
-                                            </>
-                                        } >
-                                        <div>Fazer sei la o que, comepencia de não sei o que mais </div>
-
-                                    </RowItem>
-                                    <RowItem
-                                        type='competence'
-                                        actions={
-                                            <>
-                                                <ButtonClose size={18} onClose={() => { }} />
-                                            </>
-                                        } >
-                                        <div>Teste de nome para o componente usado para representar uma competencia</div>
-
-                                    </RowItem>
+                                    {examCompetences.map((competence) => (
+                                        <RowItem
+                                            key={competence.id}
+                                            type="competence"
+                                            actions={
+                                                <>
+                                                    <ButtonClose
+                                                        size={18}
+                                                        onClose={() => {
+                                                            // ação para remover a competência
+                                                        }}
+                                                    />
+                                                </>
+                                            }
+                                        >
+                                            <div>{competence.name}</div>
+                                        </RowItem>
+                                    ))}
                                 </div>
                             </div>
 
