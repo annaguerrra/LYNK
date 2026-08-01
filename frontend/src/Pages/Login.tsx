@@ -44,7 +44,7 @@ export function Login() {
             notifySucess();
             navigate("/Disciplines");
         } catch (error: any) {
-            if (error.response?.status === 400) { 
+            if (error.response?.status === 400) {
                 notifyInvalidLogin();
             } else {
                 notifyServer();
@@ -52,7 +52,7 @@ export function Login() {
             // setUsername("");
             // setUserPassword("");
         }
-        
+
     }
 
     async function handleChangePassword() {
@@ -77,7 +77,15 @@ export function Login() {
 
 
     return (
-        <>
+        <form onSubmit={(e) => {
+            e.preventDefault();
+
+            if (mustChangePassword) {
+                handleChangePassword();
+            } else {
+                handleLogin();
+            }
+        }}>
             {/* Whole login page */}
             <div className="backgroundLogin">
                 <div className='containerLogin'>
@@ -124,9 +132,9 @@ export function Login() {
                             </div>
                         </>
                     )}
-                    <Button ButtonTitle={"Entrar"} onClose={mustChangePassword ? handleChangePassword : handleLogin}></Button>               
+                    <Button Type='submit' ButtonTitle={"Entrar"}></Button>
                 </div>
             </div>
-        </>
+        </form>
     )
 }

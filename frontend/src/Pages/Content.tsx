@@ -25,6 +25,7 @@ import { createClassService } from "../Services/classesService";
 import ActivityIndicator from "../Components/ActivityIndicator";
 import type { CompetenceDTO } from "../Types/competence";
 import { createCompetenceService } from "../Services/competencesService";
+import { createMaterial } from "../Services/materialsService";
 
 
 
@@ -106,24 +107,39 @@ export function Content() {
 
 
     async function createClass() {
-        try {
-            if (!discipline) return;
+        if (!discipline) return;
 
-            const createdClass = await createClassService({
+        let createdClass;
+
+        try {
+            createdClass = await createClassService({
                 name: "Nova Aula",
                 content: templateContent,
                 disciplineId: discipline.id
             });
-
-            console.log(createdClass.id)
-
-            navigate(`/Class/${createdClass.id}`)
-
         } catch (error) {
-
-            console.error(error);
+            console.error("Erro ao criar aula:", error);
             toast.error("Erro ao criar a aula.");
+            return;
         }
+
+        const materialData = new FormData(); 
+
+        materialData.append("name", `Mateiral_class_${createdClass.id}`);
+        materialData.append("classId", String(createdClass.id));
+        materialData.append("disciplineId", String(createdClass.disciplineId));
+
+        try {
+
+            await createMaterial(materialData);
+            
+        } catch (error) {
+            console.error("Erro ao criar material:", error);
+            toast.error("A aula foi criada, mas ocorreu um erro ao criar o material.");
+            return;
+        }
+
+        navigate(`/Class/${createdClass.id}`);
     }
 
     async function createCompetence() {
@@ -149,24 +165,23 @@ export function Content() {
     }
 
     async function loadCompetencesByDiscipline(disciplineId: number) {
-            try {
-                const response = await getDisciplineCompetences(disciplineId);
-                console.log(response)
-                setAllCompetences(response);
-    
-            } catch (error) {
-                if (isAxiosError(error)) {
-                    if (error.response?.status === 500) {
-                        toast.error("500 - Erro de servidor.");
-                        return;
-                    }
+        try {
+            const response = await getDisciplineCompetences(disciplineId);
+            setAllCompetences(response);
+
+        } catch (error) {
+            if (isAxiosError(error)) {
+                if (error.response?.status === 500) {
+                    toast.error("500 - Erro de servidor.");
+                    return;
                 }
-    
-                console.error(error);
-                toast.error("Erro ao carregar competências.");
             }
-    
+
+            console.error(error);
+            toast.error("Erro ao carregar competências.");
         }
+
+    }
 
     async function loadContent(id: number) {
         try {
@@ -256,12 +271,12 @@ export function Content() {
             {/* -------------------------------------------------------- TEST MODALS -------------------------------------------------------- */}
             {/* Modal to create a test */}
             {newTest && (
-                <div className="modalOverlay" onClick={() => {setNewTest(false), setExamCompetences([])}}>
+                <div className="modalOverlay" onClick={() => { setNewTest(false), setExamCompetences([]) }}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Registrar avaliação</h1>
-                            <ButtonClose size={40} onClose={() => {setNewTest(false), setExamCompetences([])}}></ButtonClose>
+                            <ButtonClose size={40} onClose={() => { setNewTest(false), setExamCompetences([]) }}></ButtonClose>
                         </div>
                         {/* Input for test name */}
                         <div className="textBox">

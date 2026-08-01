@@ -42,7 +42,7 @@ import { toast } from 'react-toastify'
 import { isAxiosError } from 'axios'
 import type { MaterialDTO } from '../Types/material'
 import type { CompetenceDTO } from '../Types/competence'
-import { createMaterial } from '../Services/materialsService'
+import { attachMaterialFile, createMaterial } from '../Services/materialsService'
 import ActivityIndicator from '../Components/ActivityIndicator'
 import { getDisciplineCompetences } from '../Services/disciplinesService'
 
@@ -62,7 +62,7 @@ export function Class() {
 
     const [classItem, setClassItem] = useState<ClassDTO | null>(null);
 
-    const [materials, setMaterials] = useState<MaterialDTO[]>([])
+    const [materials, setMaterials] = useState<MaterialDTO>(null)
     const [competences, setCompetences] = useState<CompetenceDTO[]>([])
     const [allCompetences, setAllCompetences] = useState<CompetenceDTO[]>([])
     const [initialCompetences, setInitialCompetences] = useState<CompetenceDTO[]>([]);
@@ -255,20 +255,25 @@ export function Class() {
     async function handleFileUpload(file: File) {
         if (!classItem) return;
 
+        const material = classItem.materials[0];
+
+        if (!material) {
+            toast.error("Erro ao anexar material.");
+            console.error("No material entity could be found to attach this file.")
+            return;
+        }
+
         try {
-            await createMaterial({
-                name: file.name,
-                classId: classItem.id,
-                disciplineId: classItem.discipline.id,
-                files: [file]
+            await attachMaterialFile(material.id, {
+                files: file
             });
 
-            toast.success("Material enviado.");
+            toast.success("Material adicionado!");
 
             await loadDataClass(classItem.id);
         } catch (error) {
             console.error(error);
-            toast.error("Erro ao enviar material.");
+            toast.error("Erro ao adicionar material.");
         }
     }
 
@@ -383,10 +388,10 @@ export function Class() {
                         <div className='attachmentsContent'>
                             <span className='subtitle'>Anexos</span>
                             <div className='attachments'>
-                                {materials.map((material) => (
+                                {materials.attachments.map((attachment) => (
                                     <>
                                         <RowItem
-                                            key={material.id}
+                                            key={attachment.id}
                                             color='var(--purple)'
                                             actions={
                                                 <>
@@ -397,7 +402,7 @@ export function Class() {
                                                 </>
                                             }>
 
-                                            <div>{material.name}</div>
+                                            <div>nome</div>
                                         </RowItem>
                                     </>
                                 ))}

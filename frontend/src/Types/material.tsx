@@ -6,6 +6,7 @@ import type { DisciplineDTO } from "./discipline";
 export interface MaterialDTO {
     id: number;
     name: string;
+    attachments: MaterialAttachmentDTO[]
 }
 
 // Response to view materials service
@@ -18,9 +19,8 @@ export interface ViewMaterialsDTO {
 // Used to create a material
 export interface RegisterMaterialDTO {
     name: string;
-    files: UploadedFileDTO[];
-    disciplineId: number;
     classId: number;
+    disciplineId: number;
 }
 
 // Response to show material service
@@ -41,6 +41,5 @@ export interface UpdateMaterialDTO {
 
 // Used to create files and attach to material
 export interface AttachFileDTO {
-    materialId: number;
-    files: UploadedFileDTO[];
+    files: UploadedFileDTO;
 }

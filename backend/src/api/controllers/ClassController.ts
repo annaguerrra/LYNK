@@ -128,19 +128,28 @@ export class ClassController {
 
     // GET
     // used to download content in a class
-    async downloadContent(req: Request, res: Response){
-        const { id } = req.params
-        try {
-            const downloadedContent = await this.classService.downloadContent(Number(id))
-            return res.status(200).send({ response: downloadedContent })
-        } catch (e) {
-            if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+    async downloadContent(req: Request, res: Response) {
+    const { id } = req.params;
 
-            console.log(e)
-            return res.status(500).json({ message: "Unknown error" });
-        }
+    try {
+        const downloadedContent = await this.classService.downloadContent(Number(id));
+
+        res.setHeader("Content-Type", "application/pdf");
+        res.setHeader(
+            "Content-Disposition",
+            `attachment; filename="aula-${id}.pdf"`
+        );
+
+        return res.status(200).send(downloadedContent);
+
+    } catch (e) {
+        if (e instanceof Error)
+            return res.status(500).json({ message: e.message });
+
+        console.log(e);
+        return res.status(500).json({ message: "Unknown error" });
     }
+}
 
     // PUT
     // updates a class
