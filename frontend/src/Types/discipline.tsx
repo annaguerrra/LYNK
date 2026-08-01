@@ -60,6 +60,7 @@ export interface viewClassesDTO{
 }
 
 export interface viewExamsDTO {
+    id: number
     name: string
     exams: {
         name: string

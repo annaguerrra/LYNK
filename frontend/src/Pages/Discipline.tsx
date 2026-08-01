@@ -156,8 +156,8 @@ export function Discipline() {
 
     async function createDisc(data: createDiscipline) {
         try {
-            toast.success("Disciplina criada com sucesso!");
             await createDisciplineService(data);
+            toast.success("Disciplina criada com sucesso!");
 
             await loadDisciplines();
             setNewDisciplineModal(false);
@@ -229,8 +229,8 @@ export function Discipline() {
             setUserPassword("");
             setRepeatPassword("");
             setUserType("STUDENT");
-            console.log(response);
             setNewDisciplineModal(false);
+            toast.success("Usuário criado com sucesso!");
         } catch (error) {
             console.log(error);
         }

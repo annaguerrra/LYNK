@@ -36,7 +36,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { InputFile } from '../Components/InputFile'
 import LessonSelect from '../Components/LessonSelect'
 import { useAuth } from '../Contexts/AuthContext'
-
 import type { ClassDTO } from '../Types/class'
 import { getClassById, getClassCompetences, getClassMaterials, updateClass } from '../Services/classesService'
 import { toast } from 'react-toastify'

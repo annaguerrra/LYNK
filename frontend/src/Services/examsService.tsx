@@ -1,9 +1,10 @@
+import type { viewExamsDTO } from "../Types/discipline";
 import type { registerExamDTO, updateExamDTO } from "../Types/exam";
 import type { AttachFileDTO } from "../Types/material";
 import api from "./api";
 
 // Get all exams
-export async function getExams(): Promise<registerExamDTO[]> {
+export async function getExams(): Promise<viewExamsDTO[]> {
     const response = await api.get("/exams");
     return response.data.response;
 }
