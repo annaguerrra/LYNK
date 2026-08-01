@@ -82,7 +82,7 @@ export class ExamService implements IExamService {
         const isAdmin = await this.userService.isAdmin(userId)
         const username = await this.userService.getUsername(userId)
         // variables used to attach files to an exam
-        const { examId, files } = data
+        const { id, files } = data
         // variable used to store created attachments
         const uploadedIds: string[] = []
 
@@ -99,7 +99,7 @@ export class ExamService implements IExamService {
             // variable used to search if the exam is valid
             const target = await prisma.exam.findUnique({
                 where: {
-                    id: examId
+                    id: Number(id)
                 }
             })
 
@@ -109,7 +109,7 @@ export class ExamService implements IExamService {
             // connect files to exam
             const updatedExam = await prisma.exam.update({
                 where: {
-                    id: examId
+                    id: target.id
                 },
                 data: {
                     attachments: {
@@ -154,15 +154,39 @@ export class ExamService implements IExamService {
     }
 
     async showExams(): Promise<Exam[]> {
-        return await prisma.exam.findMany()
+        return await prisma.exam.findMany({
+            include: {
+                competences: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                attachments: true
+            }
+        })
     }
 
     async getExamById(id: number): Promise<Exam> {
-        return await prisma.exam.findFirstOrThrow({
+        const target = await prisma.exam.findUnique({
             where: {
                 id: id
+            },
+            include: {
+                competences: {
+                    select: {
+                        id: true,
+                        name: true
+                    }
+                },
+                attachments: true
             }
         })
+
+        if(!target)
+            throw new Error("Exam not found!")
+
+        return target
     }
 
     async updateExam(id: number, data: updateExamDTO, userId: number): Promise<Exam> {
@@ -175,7 +199,7 @@ export class ExamService implements IExamService {
         // variable used to search if the exam is valid
         const target = await prisma.exam.findUnique({
             where: {
-                id: id
+                id: Number(id)
             }
         })
 
@@ -184,11 +208,11 @@ export class ExamService implements IExamService {
 
         const updatedExam = await prisma.exam.update({
             where: {
-                id: id
+                id: target.id
             },
             data: {
                 name: name,
-                disciplineId: disciplineId,
+                disciplineId: Number(disciplineId),
                 competences: {
                     connect: competencesId.map(id => ({ id }))
                 }

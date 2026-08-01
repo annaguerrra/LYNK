@@ -1,6 +1,6 @@
 import { authMiddleware } from '#api/middleware/authMiddleware.js';
 import { authorize } from '#api/middleware/authorize.js';
-import { validateAttach, validateRegister, validateUpdate } from '#api/middleware/materialMiddleware.js';
+import { validateRegister, validateUpdate } from '#api/middleware/materialMiddleware.js';
 import { upload } from '#api/middleware/uploadMiddleware.js';
 import { makeMaterialController } from '#infrastructure/Factories/MaterialFactory.js';
 import { JwtTokenService } from '#infrastructure/services/Authetication/JwtToken.service.js';

@@ -10,7 +10,7 @@ export interface registerExamDTO {
 
 // used to create a file and attach to exam
 export interface attachtFileDTO {
-    examId: number
+    id: number
     files: UploadedFile[]
 }
 
