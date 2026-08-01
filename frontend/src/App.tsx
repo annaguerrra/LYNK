@@ -35,7 +35,7 @@ function App() {
               </PrivateRoute>
             } />
             <Route path="/History" element={
-              <PrivateRoute>
+              <PrivateRoute allowedRoles={["ADMIN", "INSTRUCTOR"]}>
                 <History />
               </PrivateRoute>
             } />

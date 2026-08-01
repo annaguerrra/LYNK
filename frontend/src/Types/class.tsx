@@ -1,4 +1,6 @@
+import type { CompetenceDTO } from "./competence"
 import type { DisciplineBasic } from "./discipline"
+import type { MaterialDTO } from "./material"
 
 // used to get class
 export interface ClassDTO{
@@ -6,6 +8,8 @@ export interface ClassDTO{
     name: string
     content: string
     discipline: DisciplineBasic
+    competences: CompetenceDTO[]
+    materials: MaterialDTO[]
     lastUpdate?: Date
 }
 
@@ -33,7 +37,7 @@ export interface ClassResponse{
 
 // used to assign a competency to a class
 export interface assignCompetencyDTO{
-    classId: number
+    id: number
     competencyId: number
 }
 

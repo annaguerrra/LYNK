@@ -37,7 +37,7 @@ import { InputFile } from '../Components/InputFile'
 import LessonSelect from '../Components/LessonSelect'
 import { useAuth } from '../Contexts/AuthContext'
 import type { ClassDTO } from '../Types/class'
-import { getClassById, getClassCompetences, getClassMaterials, updateClass } from '../Services/classesService'
+import { assignClassCompetence, getClassById, getClassCompetences, getClassMaterials, updateClass } from '../Services/classesService'
 import { toast } from 'react-toastify'
 import { isAxiosError } from 'axios'
 import type { MaterialDTO } from '../Types/material'
@@ -65,6 +65,7 @@ export function Class() {
     const [materials, setMaterials] = useState<MaterialDTO[]>([])
     const [competences, setCompetences] = useState<CompetenceDTO[]>([])
     const [allCompetences, setAllCompetences] = useState<CompetenceDTO[]>([])
+    const [initialCompetences, setInitialCompetences] = useState<CompetenceDTO[]>([]);
 
     //Generic content for the markdown
     const [content, setContent] = useState("");
@@ -119,21 +120,21 @@ export function Class() {
         }
     }
 
-    async function loadCompetences(id: number) {
-        try {
-            const response = await getClassCompetences(id);
-            setCompetences(response)
-        } catch (error) {
-            if (isAxiosError(error)) {
-                if (error.response?.status === 404) {
-                    toast.error("404 - Competencias não encontradas.");
-                    return;
-                }
-            }
-            toast.error(`${error}`);
-            console.log(error)
-        }
-    }
+    // async function loadCompetences(id: number) {
+    //     try {
+    //         const response = await getClassCompetences(id);
+    //         setCompetences(response)
+    //     } catch (error) {
+    //         if (isAxiosError(error)) {
+    //             if (error.response?.status === 404) {
+    //                 toast.error("404 - Competencias não encontradas.");
+    //                 return;
+    //             }
+    //         }
+    //         toast.error(`${error}`);
+    //         console.log(error)
+    //     }
+    // }
 
     async function loadCompetencesByDiscipline() {
         try {
@@ -184,9 +185,11 @@ export function Class() {
         }
     }
 
+
     function cancelUpdateClass() {
         setTitleClass(classItem.name);
         setContent(classItem.content);
+        setCompetences(classItem.competences)
         setEditMode(false);
     }
 
@@ -206,6 +209,9 @@ export function Class() {
         setIsContentLoaded(true);
         loadMaterials(classItem.id)
         loadCompetencesByDiscipline();
+        setCompetences(classItem.competences)
+        setInitialCompetences(classItem.competences)
+        // loadCompetences(classItem.id) 
 
     }, [classItem]);
 
@@ -221,6 +227,19 @@ export function Class() {
 
         try {
             await updateClass(classItem.id, data);
+
+            const addedCompetences = competences.filter(
+                c => !initialCompetences.some(o => o.id === c.id)
+            );
+
+            await Promise.all(
+                addedCompetences.map((competence) =>
+                    assignClassCompetence({
+                        id: classItem.id,
+                        competencyId: competence.id
+                    })
+                )
+            );
 
             toast.success("Aula alterada com sucesso!");
             setEditMode(false);
@@ -301,14 +320,14 @@ export function Class() {
                         <div style={{ display: 'flex', flexDirection: 'column', width: "100%" }}>
                             <div className='inputTitleContainer'>
 
-                            <input className='inputTitle' type='text' value={titleClass} onChange={(e) => setTitleClass(e.target.value)}></input>
-                            <div className='containerButtons'>
+                                <input className='inputTitle' type='text' value={titleClass} onChange={(e) => setTitleClass(e.target.value)}></input>
+                                <div className='containerButtons'>
 
-                            <button className='buttonAction' onClick={() => saveClass()}>Salvar</button>
-                            <button className='buttonCancelAction' onClick={() => cancelUpdateClass()}>Cancelar</button>
+                                    <button className='buttonAction' onClick={() => saveClass()}>Salvar</button>
+                                    <button className='buttonCancelAction' onClick={() => cancelUpdateClass()}>Cancelar</button>
+                                </div>
                             </div>
-                            </div>
-                            
+
                             <div className="markdownEditBox">
                                 <MDXEditor className='mdx-editor'
                                     markdown={content}
@@ -349,7 +368,7 @@ export function Class() {
 
                                                     </div>
                                                     <div className='toolbar-end'>
-                                                        
+
                                                     </div>
                                                 </div>
                                             )
@@ -395,7 +414,16 @@ export function Class() {
 
                                 {/* Component used to search a competence */}
                                 {(isAdmin || isInstructor) && editMode &&
-                                    <LessonSelect lessons={allCompetences} />
+                                    <LessonSelect lessons={allCompetences} onAdd={(competence) => {
+                                        setCompetences((prev) => {
+                                            if (prev.some((c) => c.id === competence.id)) {
+                                                toast.warning("Essa competência já foi adicionada.");
+                                                return prev;
+                                            }
+
+                                            return [...prev, competence];
+                                        });
+                                    }} />
                                 }
 
                                 {competences.map((competence) => (

@@ -53,7 +53,7 @@ export async function downloadClassContent(id: number): Promise<Blob> {
 }
 
 // Assign a competence to a class
-export async function assignCompetence(data: assignCompetencyDTO) {
-    const response = await api.put("/class/assigncompetence", data);
+export async function assignClassCompetence(data: assignCompetencyDTO) {
+    const response = await api.put("/class/assigncompetency", data);
     return response.data;
 }

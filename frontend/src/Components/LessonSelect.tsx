@@ -8,17 +8,32 @@ export interface Lesson {
 
 interface LessonSelectProps {
     lessons: Lesson[];
+    onAdd: (lesson: Lesson) => void;
 }
 
-export default function LessonSelect({ lessons }: LessonSelectProps) {
+export default function LessonSelect({
+    lessons,
+    onAdd,
+}: LessonSelectProps) {
     const [query, setQuery] = useState("");
     const [open, setOpen] = useState(false);
+    const [selectedLesson, setSelectedLesson] = useState<Lesson | null>(null);
 
     const filteredLessons = useMemo(() => {
         return lessons.filter((lesson) =>
             lesson.name.toLowerCase().includes(query.toLowerCase())
         );
     }, [lessons, query]);
+
+    function handleAdd() {
+        if (!selectedLesson) return;
+
+        onAdd(selectedLesson);
+
+        setSelectedLesson(null);
+        setQuery("");
+        setOpen(false);
+    }
 
     return (
         <div className="lessonSelect">
@@ -27,7 +42,10 @@ export default function LessonSelect({ lessons }: LessonSelectProps) {
                     type="text"
                     placeholder="Buscar"
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => {
+                        setQuery(e.target.value);
+                        setSelectedLesson(null);
+                    }}
                     onFocus={() => setOpen(true)}
                     onBlur={() => setTimeout(() => setOpen(false), 150)}
                 />
@@ -35,6 +53,8 @@ export default function LessonSelect({ lessons }: LessonSelectProps) {
                 <button
                     type="button"
                     className="actionButton"
+                    onClick={handleAdd}
+                    disabled={!selectedLesson}
                 >
                     +
                 </button>
@@ -53,6 +73,7 @@ export default function LessonSelect({ lessons }: LessonSelectProps) {
                                 type="button"
                                 onMouseDown={() => {
                                     setQuery(lesson.name);
+                                    setSelectedLesson(lesson);
                                     setOpen(false);
                                 }}
                             >

@@ -19,7 +19,7 @@ import { useParams } from "react-router-dom";
 import { useAuth } from "../Contexts/AuthContext";
 import { isAxiosError } from "axios";
 import { toast } from "react-toastify";
-import { assignCompetence, getDisciplineById } from "../Services/disciplinesService";
+import { assignDisciplineCompetence, getDisciplineById } from "../Services/disciplinesService";
 import type { DisciplineDTO } from "../Types/discipline";
 import { createClassService } from "../Services/classesService";
 import ActivityIndicator from "../Components/ActivityIndicator";
@@ -132,7 +132,7 @@ export function Content() {
 
             const competence = await createCompetenceService(competenceName);
 
-            await assignCompetence({
+            await assignDisciplineCompetence({
                 competencyId: competence.id,
                 disciplineId: discipline.id,
             });
