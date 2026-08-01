@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
-import api from "../../Services/api";
+import { getLogDisciplines } from "../../Services/logServices";
 
 export function HDisciplinesView() {
     //Variables to control the users and its interactions
@@ -9,8 +9,8 @@ export function HDisciplinesView() {
     
     async function loadHDisicpline() {
         try {
-            const response = await api.get("/logs/competence");
-            setHDisciplines(response.data);
+            const response = await getLogDisciplines('Discipline');
+            setHDisciplines(response);
         } catch (error) {
             console.error(error);
         }
@@ -19,13 +19,19 @@ export function HDisciplinesView() {
     useEffect(() => {
         loadHDisicpline();
     }, []);
-
+// 
     const actionColors = {
-        CREATE: "var(--green)",
-        PUT: "var(--blue)",
-        DELETE: "var(--red)",
+        CREATED: "var(--green)",
+        UPDATED: "var(--blue)",
+        DELETED: "var(--red)",
     };
 
+    const actionsName = {
+        CREATED: "CRIADO",
+        UPDATED: "EDITADO",
+        DELETED: "DELETADO",
+    };
+    
     return (
         <>
             <div className="view-page">
@@ -35,16 +41,17 @@ export function HDisciplinesView() {
                     size="--medium"
                     userAction={
                         <>
+                            <span>{actionsName[hdiscipline.action]} por</span>
                             <img
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
+                            <span>{hdiscipline.username}</span>
 
-                            <span>instrutor_0023</span>
-                            <span> | </span>
-                            <span>{hdiscipline.updatedAt}</span>
+                            <span>{hdiscipline.updatedAt 
+                                ? new Date(hdiscipline.updatedAt).toLocaleDateString("pt-BR")
+                                : "Sem data"}</span>
                         </>
                     }>
-
                     <span>{hdiscipline.entityName}</span>
 
                 </RowItem>

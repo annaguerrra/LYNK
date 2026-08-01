@@ -22,7 +22,7 @@ export class CompetenceService implements ICompetenceService {
         await prisma.log.create({
             data: {
                 action: "CREATED",
-                entityType: "Compentence",
+                entityType: "COMPENTENCE",
                 entityId: createdCompetence.id,
                 entityName: createdCompetence.name,
                 oldData: {},
@@ -82,7 +82,7 @@ export class CompetenceService implements ICompetenceService {
         await prisma.log.create({
             data: {
                 entityId: target.id,
-                entityType: "Compentence",
+                entityType: "COMPENTENCE",
                 entityName: target.name,
                 action: "UPDATED",
                 oldData: {
@@ -159,7 +159,7 @@ export class CompetenceService implements ICompetenceService {
         await prisma.log.create({
             data: {
                 action: "DELETED",
-                entityType: "Compentence",
+                entityType: "COMPENTENCE",
                 entityId: target.id,
                 entityName: target.name,
                 oldData: {

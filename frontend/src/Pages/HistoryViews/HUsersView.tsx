@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
 import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
-import api from "../../Services/api";
+import { getLogUsers } from "../../Services/logServices";
+import type { HistoricDTO } from "../../Types/historic";
 
 export function HUsersView() {
     //Variables to control the users and its interactions
-    const [husers, setHUser] = useState([])
+    const [husers, setHUser] = useState<HistoricDTO[]>([]);
     
     async function loadHUser() {
         try {
-            const response = await api.get("/logs/competence");
-            setHUser(response.data);
+            const [students, admins, instructors] = await Promise.all([
+                getLogUsers("student"),
+                getLogUsers("admin"),
+                getLogUsers("instructor"),
+            ]);
+
+            setHUser([
+                ...students,
+                ...admins,
+                ...instructors,
+            ]);
         } catch (error) {
             console.error(error);
         }
@@ -21,9 +31,15 @@ export function HUsersView() {
     }, []);
 
     const actionColors = {
-        CREATE: "var(--green)",
-        PUT: "var(--blue)",
-        DELETE: "var(--red)",
+        CREATED: "var(--green)",
+        UPDATED: "var(--blue)",
+        DELETED: "var(--red)",
+    };
+
+    const actionsName = {
+        CREATED: "CRIADO",
+        UPDATED: "EDITADO",
+        DELETED: "DELETADO",
     };
 
     return (
@@ -31,20 +47,23 @@ export function HUsersView() {
             <div className="view-page">
                 {husers.map((huser) => (
                 <RowItem
+                    key={huser.id}
                     color={actionColors[huser.action]}
                     size="--medium"
                     userAction={
                         <>
+                            {/* Ignore the error, it is working */}
+                            <span>{actionsName[huser.action]} por</span>
                             <img
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
+                            <span>{huser.username}</span>
 
-                            <span>instrutor_0023</span>
-                            <span> | </span>
-                            <span>{huser.updatedAt}</span>
+                            <span>{huser.updatedAt 
+                                ? new Date(huser.updatedAt).toLocaleDateString("pt-BR")
+                                : "Sem data"}</span>
                         </>
                     }>
-
                     <span>{huser.entityName}</span>
 
                 </RowItem>

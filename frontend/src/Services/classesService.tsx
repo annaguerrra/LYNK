@@ -1,4 +1,4 @@
-import type { ClassesDTO, ClassDTO, assignCompetencyDTO } from "../Types/class";
+import type { ClassesDTO, ClassDTO, assignCompetencyDTO, editClass, CreateClassDTO, ClassResponse } from "../Types/class";
 import api from "./api";
 
 // Get all classes
@@ -14,19 +14,19 @@ export async function getClassById(id: number): Promise<ClassDTO> {
 }
 
 // Create a new class
-export async function createClass(data: ClassDTO) {
+export async function createClassService(data: CreateClassDTO) : Promise<ClassResponse> {
     const response = await api.post("/class/create", data);
     return response.data.response;
 }
 
 // Update a class
-export async function updateClass(id: number, data: ClassDTO) {
+export async function updateClass(id: number, data: editClass) {
     const response = await api.put(`/class/edit/${id}`, data);
     return response.data.response;
 }
 
 // Delete a class
-export async function deleteClass(id: number) {
+export async function deleteClassService(id: number) {
     const response = await api.delete(`/class/delete/${id}`);
     return response.data;
 }
@@ -34,19 +34,13 @@ export async function deleteClass(id: number) {
 // Get all materials from a class
 export async function getClassMaterials(id: number) {
     const response = await api.get(`/class/${id}/materials`);
-    return response.data;
+    return response.data.response.materials;
 }
 
 // Get all competences from a class
 export async function getClassCompetences(id: number) {
     const response = await api.get(`/class/${id}/competences`);
-    return response.data;
-}
-
-// Get all content from a class
-export async function getClassContent(id: number) {
-    const response = await api.get(`/class/${id}/content`);
-    return response.data;
+    return response.data.response.competences;
 }
 
 // Download class content
@@ -59,7 +53,7 @@ export async function downloadClassContent(id: number): Promise<Blob> {
 }
 
 // Assign a competence to a class
-export async function assignCompetence(data: assignCompetencyDTO) {
-    const response = await api.put("/class/assigncompetence", data);
+export async function assignClassCompetence(data: assignCompetencyDTO) {
+    const response = await api.put("/class/assigncompetency", data);
     return response.data;
 }

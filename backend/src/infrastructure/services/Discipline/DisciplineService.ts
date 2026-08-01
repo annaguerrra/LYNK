@@ -34,7 +34,7 @@ export class DisciplineService implements IDisciplineService{
                 action: "CREATED",
                 entityId: target.id,
                 entityName: target.name,
-                entityType: "Discipline",
+                entityType: "DISCIPLINE",
                 newData: {
                     ...target
                 },
@@ -99,7 +99,7 @@ export class DisciplineService implements IDisciplineService{
             data:{
                 action:"UPDATED",
                 entityId: updatedData.id,
-                entityType: "Discipline",
+                entityType: "DISCIPLINE",
                 entityName: oldData.name,
                 oldData: {
                     ...oldData
@@ -188,7 +188,7 @@ export class DisciplineService implements IDisciplineService{
             await prisma.log.create({
                 data: {
                     action: "CREATED",
-                    entityType: "Discipline",
+                    entityType: "COMPENTENCE",
                     entityId: createdDiscipline.id,
                     entityName: createdDiscipline.name,
                     oldData: {},
@@ -219,7 +219,9 @@ export class DisciplineService implements IDisciplineService{
                 workLoad: true,
                 area: {
                     select: {
-                        name: true
+                        id: true,
+                        name: true,
+                        color: true
                     }
                 },
                 competences: {
@@ -268,7 +270,7 @@ export class DisciplineService implements IDisciplineService{
         const log = await prisma.log.findFirst({
             where:{
                 entityId: id,
-                entityType: "Discipline"
+                entityType: "DISCIPLINE"
             }
         });
         
@@ -462,7 +464,7 @@ export class DisciplineService implements IDisciplineService{
             await prisma.log.create({
                 data:{
                     action:"DELETED",
-                    entityType: "Discipline",
+                    entityType: "DISCIPLINE",
                     entityId: disciplineID,
                     entityName: target.name,
                     oldData:{
@@ -523,7 +525,7 @@ export class DisciplineService implements IDisciplineService{
             const log = await prisma.log.create({
                 data:{
                     action:"UPDATED",
-                    entityType: "Discipline",
+                    entityType: "DISCIPLINE",
                     entityId: disciplineID,
                     entityName: target.name,
                     oldData:{

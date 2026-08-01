@@ -1,5 +1,5 @@
 .backgroundButton {
-    background-color: var(--acqua);
+    background-color: var(--blue);
     width: 20vw;
     height: auto;
     padding: 0.5vw;
@@ -17,5 +17,5 @@
 }
 
 .backgroundButton:hover {
-    background-color: var(--acquaHover);
+    background-color: var(--blueHover);
 }

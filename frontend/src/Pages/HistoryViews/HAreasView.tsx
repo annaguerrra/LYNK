@@ -1,23 +1,25 @@
 import { useEffect, useState } from "react";
 import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
-import { getLogExams } from "../../Services/logServices";
+import { getLogAreas } from "../../Services/logServices";
+import { Action } from "@mdxeditor/editor";
 
-export function HExamsView() {
+export function HAreasView() {
     //Variables to control the users and its interactions
-    const [exam, setHExam] = useState([])
+    const [hareas, setHArea] = useState([])
     
-    async function loadHExam() {
+    async function loadHArea() {
         try {
-            const response = await getLogExams('Exam');
-            setHExam(response);
+            const response = await getLogAreas('Area');
+            
+            setHArea(response);
         } catch (error) {
             console.error(error);
         }
     }
 
     useEffect(() => {
-        loadHExam();
+        loadHArea();
     }, []);
 
     const actionColors = {
@@ -31,32 +33,31 @@ export function HExamsView() {
         UPDATED: "EDITADO",
         DELETED: "DELETADO",
     };
-    
+
     return (
         <>
             <div className="view-page">
-                {exam.map((hexam) => (
+                {hareas.map((harea) => (
                 <RowItem
-                    color={actionColors[hexam.action]}
+                    color={actionColors[harea.action]}
                     size="--medium"
                     userAction={
                         <>
-                            <span>{actionsName[hexam.action]} por</span>
+                            <span>{actionsName[harea.action]} por</span>
                             <img
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
-                            <span>{hexam.username}</span>
+                            <span>{harea.username}</span>
 
-                            <span>{hexam.updatedAt 
-                                ? new Date(hexam.updatedAt).toLocaleDateString("pt-BR")
+                            <span>{harea.updatedAt 
+                                ? new Date(harea.updatedAt).toLocaleDateString("pt-BR")
                                 : "Sem data"}</span>
                         </>
                     }>
-                    <span>{hexam.entityName}</span>
-
+                    <span>{harea.entityName}</span>
+                    <span></span>
                 </RowItem>
                 ))}
-
             </div>
 
 

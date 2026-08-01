@@ -1,7 +1,7 @@
 import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
-import api from "../../Services/api";
 import { useEffect, useState } from "react";
+import { getLogClasses } from "../../Services/logServices";
 
 export function HClassesView() {
     //Variables to control the users and its interactions
@@ -9,8 +9,8 @@ export function HClassesView() {
     
     async function loadHClasses() {
         try {
-            const response = await api.get("/logs/class");
-            setHClasses(response.data);
+            const response = await getLogClasses('Class');
+            setHClasses(response);
         } catch (error) {
             console.error(error);
         }
@@ -21,9 +21,15 @@ export function HClassesView() {
     }, []);
 
     const actionColors = {
-        CREATE: "var(--green)",
-        PUT: "var(--blue)",
-        DELETE: "var(--red)",
+        CREATED: "var(--green)",
+        UPDATED: "var(--blue)",
+        DELETED: "var(--red)",
+    };
+
+    const actionsName = {
+        CREATED: "CRIADO",
+        UPDATED: "EDITADO",
+        DELETED: "DELETADO",
     };
 
     return (
@@ -35,16 +41,18 @@ export function HClassesView() {
                         size="--medium"
                         userAction={
                             <>
+                                <span>{actionsName[hclass.action]} por</span>
                                 <img
                                     src="../../../public/UserDefault/user-purple.png">
                                 </img>
+                                <span>{hclass.username}</span>
 
-                                <span>instrutor_0023</span>
-                                <span> | </span>
-                                <span>{hclass.updatedAt}</span>
+                                <span>{hclass.updatedAt 
+                                    ? new Date(hclass.updatedAt).toLocaleDateString("pt-BR")
+                                    : "Sem data"}</span>
                             </>
                         }>
-                            <span>{hclass.entityName}</span>
+                        <span>{hclass.entityName}</span>
 
                     </RowItem>
                 ))}

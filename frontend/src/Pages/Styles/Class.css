@@ -35,7 +35,7 @@
     min-width: 22rem;
     width: 20rem;
     min-height: 40rem;
-    background-color: rgb(255, 255, 255);
+    /* background-color: rgb(255, 255, 255);  --  Caused an error in the IconButton.  */  
     box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -111,25 +111,55 @@
     border-radius: 10px 10px 0 0;
 }
 
-.buttonEdit {
-    background-color: var(--acqua);
-    border: 0;
+.buttonAction {
+    background-color: var(--blue);
+    border: none;
     color: white;
-    padding: .3rem 1rem;
+    padding: .4rem 2rem;
     font-size: medium;
     height: max-content;
 }
 
-.inputTitle {
+.buttonAction:hover {
+    background-color: var(--blueHover);
+}
+.buttonAction:active {
+    background-color: var(--blueActive);
+}
+
+.buttonCancelAction {
     border: none;
-    border-bottom: 1px solid #000;
+    outline: 2px solid var(--blue);
+    outline-offset: -2px;
+    color: var(--blue);
+    background-color: white;
+    font-weight: bold;
+    padding: .4rem 2rem;
+    font-size: medium;
+    height: max-content;
+}
+
+.containerButtons {
+    display: flex;
+    gap: 1rem
+}
+
+.inputTitle {
     outline: none;
     background: transparent;
-    margin-bottom: 1rem;
     font-size: 30px;
     height: 3rem;
     font-weight: bold;
+    border: none;
+}
+
+.inputTitleContainer {
+    border-bottom: 1px solid #000;
+    display: inline-flex;
     padding: .5rem;
+    margin-bottom: 1rem;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .subtitle {

@@ -3,7 +3,7 @@ import { Button } from '../Components/Button'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../Contexts/AuthContext'
 import { useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 export function Login() {
     //Variables to navigate and open modals
@@ -44,15 +44,15 @@ export function Login() {
             notifySucess();
             navigate("/Disciplines");
         } catch (error: any) {
-            if (error.response?.status === 404) { // alterar para 401 depois que arrumar o bug do backend
+            if (error.response?.status === 400) {
                 notifyInvalidLogin();
             } else {
                 notifyServer();
             }
-            setUsername("");
-            setUserPassword("");
+            // setUsername("");
+            // setUserPassword("");
         }
-        
+
     }
 
     async function handleChangePassword() {
@@ -65,17 +65,27 @@ export function Login() {
 
             setMustChangePassword(false);
 
-            setUsername("");
-            setUserPassword("");
+            // setUsername("");
+            // setUserPassword("");
         } catch (error) {
             notifyServer()
-            console.error(error);
+            console.error(userPassword,
+                newPassword,
+                confirmPassword);
         }
     }
 
 
     return (
-        <>
+        <form onSubmit={(e) => {
+            e.preventDefault();
+
+            if (mustChangePassword) {
+                handleChangePassword();
+            } else {
+                handleLogin();
+            }
+        }}>
             {/* Whole login page */}
             <div className="backgroundLogin">
                 <div className='containerLogin'>
@@ -122,21 +132,9 @@ export function Login() {
                             </div>
                         </>
                     )}
-                    <Button ButtonTitle={"Entrar"} onClose={mustChangePassword ? handleChangePassword : handleLogin}></Button>
-                    <ToastContainer
-                        position="top-center"
-                        autoClose={2500}
-                        hideProgressBar={false}
-                        newestOnTop={true}
-                        closeOnClick={false}
-                        rtl={false}
-                        pauseOnFocusLoss
-                        draggable
-                        pauseOnHover
-                        theme="colored"
-                    />
+                    <Button Type='submit' ButtonTitle={"Entrar"}></Button>
                 </div>
             </div>
-        </>
+        </form>
     )
 }

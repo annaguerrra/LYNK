@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { RowItem } from "../../Components/RowItem"
 import "../Styles/Views.css"
-import api from "../../Services/api";
+import { getLogCompetences } from "../../Services/logServices";
 
 export function HCompetencesView() {
     //Variables to control the users and its interactions
@@ -9,8 +9,8 @@ export function HCompetencesView() {
     
     async function loadHCompetence() {
         try {
-            const response = await api.get("/logs/competence");
-            setHCompetence(response.data);
+            const response = await getLogCompetences('Competence');
+            setHCompetence(response);
         } catch (error) {
             console.error(error);
         }
@@ -21,9 +21,15 @@ export function HCompetencesView() {
     }, []);
 
     const actionColors = {
-        CREATE: "var(--green)",
-        PUT: "var(--blue)",
-        DELETE: "var(--red)",
+        CREATED: "var(--green)",
+        UPDATED: "var(--blue)",
+        DELETED: "var(--red)",
+    };
+
+    const actionsName = {
+        CREATED: "CRIADO",
+        UPDATED: "EDITADO",
+        DELETED: "DELETADO",
     };
 
     return (
@@ -35,16 +41,17 @@ export function HCompetencesView() {
                     size="--medium"
                     userAction={
                         <>
+                            <span>{actionsName[hcompetence.action]} por</span>
                             <img
                                 src="../../../public/UserDefault/user-purple.png">
                             </img>
+                            <span>{hcompetence.username}</span>
 
-                            <span>instrutor_0023</span>
-                            <span> | </span>
-                            <span>{hcompetence.updatedAt}</span>
+                            <span>{hcompetence.updatedAt 
+                                ? new Date(hcompetence.updatedAt).toLocaleDateString("pt-BR")
+                                : "Sem data"}</span>
                         </>
                     }>
-
                     <span>{hcompetence.entityName}</span>
 
                 </RowItem>

@@ -1,36 +1,30 @@
 // used to create a discipline
-export interface CreateDisciplineDTO{
-    name: string
+export interface createDiscipline{
     areaID: number
-    userID: number
+    name: string
 }
 
 // used to assign a competency to a discipline
 export interface assignCompetencyDTO{
-    disciplineID: number
-    competencyID: number
+    disciplineId: number
+    competencyId: number
 }
 
-// response to findAll service
-export interface DisciplinesDTO{
+export interface DisciplineBasic {
+    id: number
     name: string
-    area:{
-        name: string;
-    } | null,
-    competences: {
-
-        name: string
-    }[];
-    lastUpdate: Date | null;
 }
+
 
 // response to findOne service
 export interface DisciplineDTO{
-    id: number;
     name: string;
+    id: number;
     workLoad: number;
     area:{
+        id: number
         name: string
+        color: string
     };
     competences: {
         name: string
@@ -48,8 +42,9 @@ export interface viewMaterialsDTO{
 
 // response to viewCompentences service 
 export interface viewCompetencesDTO{
-    name: string;
+    // name: string;
     competences:{
+        id: number
         name: string
         numOfClasses: number
     }[];
@@ -59,11 +54,13 @@ export interface viewCompetencesDTO{
 export interface viewClassesDTO{
     name: string
     classes:{
+        id: number
         name: string
     }[];
 }
 
 export interface viewExamsDTO {
+    id: number
     name: string
     exams: {
         name: string
@@ -71,8 +68,8 @@ export interface viewExamsDTO {
 }
 
 // response to editDiscipline service 
-export interface EditDisciplineDTO{
+export interface editDisciplineDTO{
     name: string
-    workload: number
+    areaID: number
     lastUpdate?: Date
 }

@@ -1,19 +1,49 @@
-// used to create and edit a class
+import type { CompetenceDTO } from "./competence"
+import type { DisciplineBasic } from "./discipline"
+import type { MaterialDTO } from "./material"
+
+// used to get class
 export interface ClassDTO{
+    id: number
+    name: string
+    content: string
+    discipline: DisciplineBasic
+    competences: CompetenceDTO[]
+    materials: MaterialDTO[]
+    lastUpdate?: Date
+}
+
+export interface ClassDisciplineDTO {
+    id:  number
+    name: string
+    discipline: DisciplineBasic
+}
+
+// used to create class
+export interface CreateClassDTO{
     name: string
     content: string
     disciplineId: number
-    lastUpdate?: Date
+}
+
+// response to createClass
+export interface ClassResponse{
+    id: number
+    name: string
+    content: string
+    disciplineId: number
+    createdAt?: Date
 }
 
 // used to assign a competency to a class
 export interface assignCompetencyDTO{
-    classId: number
+    id: number
     competencyId: number
 }
 
 // response to findAll service
 export interface ClassesDTO {
+    id: number
     name: string;
     content: string;
     createdAt: Date;
@@ -39,11 +69,6 @@ export interface viewCompetencesDTO{
     }[];
 }
 
-// response to view content service
-export interface viewContentDTO{
-    name: string
-    content: string
-}
 
 // used for pdf service
 export interface getContentDTO{
@@ -55,6 +80,10 @@ export interface getContentDTO{
 export interface editClass{
     name: string
     content: string
-    lastUpdate?: Date
+}
+
+export interface ClassItem {
+    id: number
+    name: string
 }
 

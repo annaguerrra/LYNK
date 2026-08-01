@@ -9,31 +9,45 @@ import { CompetencesView } from "./ContentViews/CompetencesView";
 import { ExamsView } from "./ContentViews/ExamsView";
 import { MoreOpt } from "../Components/MoreOpt";
 import { Button } from "../Components/Button";
-import { ButtonCancel } from "../Components/ButtonCancel";
 import { ButtonClose } from "../Components/ButtonClose";
-import { ButtonExclude } from "../Components/ButtonExclude";
 import { useNavigate } from "react-router-dom";
 import { RowItem } from "../Components/RowItem";
 import LessonSelect from "../Components/LessonSelect";
 import { useParams } from "react-router-dom";
-import api from "../Services/api";
 import { useAuth } from "../Contexts/AuthContext";
+import { isAxiosError } from "axios";
+import { toast } from "react-toastify";
+import { assignDisciplineCompetence, getDisciplineById, getDisciplineCompetences } from "../Services/disciplinesService";
+import type { DisciplineDTO } from "../Types/discipline";
+import { createClassService } from "../Services/classesService";
+import ActivityIndicator from "../Components/ActivityIndicator";
+import type { CompetenceDTO } from "../Types/competence";
+import { createCompetenceService } from "../Services/competencesService";
+import type { ClassDTO } from "../Types/class";
+
+
 
 export function Content() {
     //Variables to navigate and open modals
     const navigate = useNavigate()
+
+    const { discipline_id } = useParams<{ discipline_id: string }>();
+
+
+    const [allCompetences, setAllCompetences] = useState<CompetenceDTO[]>([]);
+    const [examCompetences, setExamCompetences] = useState<CompetenceDTO[]>([]);
+
+
+
     const [selectedTab, setSelectedTab] = useState("classes");
     const [newTest, setNewTest] = useState(false);
-    const [editTest, setEditTest] = useState(false);
     const [newCompetence, setNewCompetence] = useState(false);
     const [editCompetence, setEditCompetence] = useState(false);
-    const [excludeTestModal, setExcludeTestModal] = useState(false);
-    const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
-    const [discipline, setDiscipline] = useState(null);
 
+    const [competenceName, setCompetenceName] = useState("");
 
-    const { discipline_id } = useParams();
-    
+    const [discipline, setDiscipline] = useState<DisciplineDTO | null>(null);
+
     //Variables to control the users and its interactions
     const { user } = useAuth();
     const isAdmin = user?.role === "ADMIN";
@@ -51,7 +65,7 @@ export function Content() {
         },
         {
             name: "Nova aula",
-            onClick: () => navigate('/Class')
+            onClick: () => createClass()
         },
     ];
 
@@ -62,27 +76,148 @@ export function Content() {
         { id: "exams", label: "Avaliações" },
     ];
 
-    if (!discipline) {
-        return <div>Carregando...</div>;
+
+    const templateContent = `# Título da Aula
+
+        Introdução breve sobre o tema da aula.
+
+        ## Conteúdo
+
+        Explique os principais pontos abordados.
+
+        ## Exemplo
+
+        \`\`\`
+        Exemplo ou demonstração.
+        \`\`\`
+
+        ## Exercício
+
+        Descreva uma atividade para praticar.
+
+        ## Resumo
+
+        Principais aprendizados da aula.
+    `
+
+
+    async function createClass() {
+        if (!discipline) return;
+
+        try {
+
+            const createdClass = await createClassService({
+                name: "Nova Aula",
+                content: templateContent,
+                disciplineId: discipline.id
+            });
+
+            navigate(`/Class/${createdClass.id}`);
+
+        } catch (error) {
+            console.error("Erro ao criar aula:", error);
+            toast.error("Erro ao criar a aula.");
+            return;
+        }
+
     }
 
-    async function loadContent() {
+
+    async function createCompetence() {
         try {
-            const response = await api.get(`/disipline/${discipline_id}`);
-            setDiscipline(response.data);
+
+            if (!competenceName) {
+                toast.warning("Nome da competência não pode ser nulo!")
+                return;
+            }
+
+            const competence = await createCompetenceService(competenceName);
+
+            await assignDisciplineCompetence({
+                competencyId: competence.id,
+                disciplineId: discipline.id,
+            });
+
+            setCompetenceName("")
+            setNewCompetence(false);
         } catch (error) {
-            console.error(error);
-            navigate("/error")
+            console.error("Erro ao criar e vincular competência:", error);
         }
     }
+
+
+
+    async function loadCompetencesByDiscipline(disciplineId: number) {
+        try {
+            const response = await getDisciplineCompetences(disciplineId);
+            setAllCompetences(response);
+
+        } catch (error) {
+            if (isAxiosError(error)) {
+                if (error.response?.status === 500) {
+                    toast.error("500 - Erro de servidor.");
+                    return;
+                }
+            }
+
+            console.error(error);
+            toast.error("Erro ao carregar competências.");
+        }
+
+    }
+
+    async function loadContent(id: number) {
+        try {
+            const response = await getDisciplineById(id);
+
+            setDiscipline(response);
+            loadCompetencesByDiscipline(response.id);
+
+        } catch (error) {
+            if (isAxiosError(error)) {
+
+                if (error.response?.status === 404) {
+                    toast.error("404 - Disciplina não encontrada.");
+                    navigate("/error");
+                    return;
+                }
+
+                if (error.response?.status === 500) {
+                    toast.error("500 - Erro de servidor.");
+                    return;
+                }
+            }
+
+            console.error(error);
+            toast.error("Erro ao carregar disciplina.");
+        }
+    }
+
 
     useEffect(() => {
+        if (!discipline_id) return;
 
-        if (discipline_id) {
-            loadContent();
+        const id = Number(discipline_id);
+
+        if (isNaN(id)) {
+            navigate("/error");
+            return;
         }
 
+        loadContent(id);
+
     }, [discipline_id]);
+
+
+
+    if (!discipline) {
+        return (
+            <>
+                <Header />
+                <ActivityIndicator size="large" />
+            </>
+        );
+    }
 
 
     return (
@@ -95,10 +230,10 @@ export function Content() {
                 {/* Button to go back and more interative options */}
                 <div className="headerContent">
                     <div className="startBox">
-                        <ButtonBack onClick={() => navigate("/disciplines")} />
+                        <ButtonBack onClick={() => navigate(-1)} />
                         <span style={{ fontWeight: "bold", fontSize: "30px" }}>{discipline.name}</span>
                     </div>
-                    {isAdmin || isInstructor &&
+                    {(isAdmin || isInstructor) &&
                         <MoreOpt data={options} size={30}></MoreOpt>
                     }
                 </div>
@@ -108,9 +243,9 @@ export function Content() {
                         selected={selectedTab}
                         onChange={setSelectedTab} tabs={tabs} />
 
-                    {selectedTab === "classes" && <ClassesView classes />}
-                    {selectedTab === "competences" && <CompetencesView competences={discipline.competences ?? []} />}
-                    {selectedTab === "exams" && <ExamsView />}
+                    {discipline && selectedTab === "classes" && <ClassesView discipline={discipline} />}
+                    {discipline && selectedTab === "competences" && <CompetencesView discipline={discipline} />}
+                    {discipline && selectedTab === "exams" && <ExamsView />}
 
 
                 </div>
@@ -119,12 +254,12 @@ export function Content() {
             {/* -------------------------------------------------------- TEST MODALS -------------------------------------------------------- */}
             {/* Modal to create a test */}
             {newTest && (
-                <div className="modalOverlay" onClick={() => setNewTest(false)}>
+                <div className="modalOverlay" onClick={() => { setNewTest(false), setExamCompetences([]) }}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Registrar avaliação</h1>
-                            <ButtonClose size={40} onClose={() => setNewTest(false)}></ButtonClose>
+                            <ButtonClose size={40} onClose={() => { setNewTest(false), setExamCompetences([]) }}></ButtonClose>
                         </div>
                         {/* Input for test name */}
                         <div className="textBox">
@@ -132,12 +267,12 @@ export function Content() {
                             <input type="text" />
                         </div>
                         {/* Input to select the discipline */}
-                        <div className="textBox">
+                        {/* <div className="textBox">
                             <h2>Selecione a disciplina</h2>
                             <select name="" id="">
                                 <option value="Tecnologia" selected></option>
                             </select>
-                        </div>
+                        </div> */}
                         {/* Input to select the test file */}
                         <div className="textBox">
                             <h2>Selecione o arquivo</h2>
@@ -149,30 +284,37 @@ export function Content() {
 
                             <div className='attachments' >
                                 {/* Component used to search a competence */}
-                                <LessonSelect />
+                                <LessonSelect lessons={allCompetences} onAdd={(competence) => {
+                                    setExamCompetences((prev) => {
+                                        if (prev.some((c) => c.id === competence.id)) {
+                                            toast.warning("Essa competência já foi adicionada.");
+                                            return prev;
+                                        }
+
+                                        return [...prev, competence];
+                                    });
+                                }} />
                                 <br />
                                 <div className="scrollBox">
 
-                                    <RowItem
-                                        type='competence'
-                                        actions={
-                                            <>
-                                                <ButtonClose size={18} onClose={() => { }} />
-                                            </>
-                                        } >
-                                        <div>Fazer sei la o que, comepencia de não sei o que mais </div>
-
-                                    </RowItem>
-                                    <RowItem
-                                        type='competence'
-                                        actions={
-                                            <>
-                                                <ButtonClose size={18} onClose={() => { }} />
-                                            </>
-                                        } >
-                                        <div>Teste de nome para o componente usado para representar uma competencia</div>
-
-                                    </RowItem>
+                                    {examCompetences.map((competence) => (
+                                        <RowItem
+                                            key={competence.id}
+                                            type="competence"
+                                            actions={
+                                                <>
+                                                    <ButtonClose
+                                                        size={18}
+                                                        onClose={() => {
+                                                            // ação para remover a competência
+                                                        }}
+                                                    />
+                                                </>
+                                            }
+                                        >
+                                            <div>{competence.name}</div>
+                                        </RowItem>
+                                    ))}
                                 </div>
                             </div>
 
@@ -183,22 +325,26 @@ export function Content() {
                 </div>
             )}
 
-{/* -------------------------------------------------------- COMPETENCE MODALS -------------------------------------------------------- */}
+            {/* -------------------------------------------------------- COMPETENCE MODALS -------------------------------------------------------- */}
             {newCompetence && (
                 <div className="modalOverlay" onClick={() => setNewCompetence(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Registrar competência</h1>
-                            <ButtonClose size={40} onClose={() => setNewCompetence(false)}></ButtonClose>
+                            <ButtonClose size={40} onClose={() => {
+                                setNewCompetence(false)
+                                setCompetenceName("")
+                            }
+                            }></ButtonClose>
                         </div>
                         {/* Input for the competence name */}
                         <div className="textBox">
                             <h2>Nome da competência</h2>
-                            <input type="text" />
+                            <input type="text" value={competenceName} onChange={(e) => setCompetenceName(e.target.value)} />
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => setNewCompetence(false)}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => createCompetence()}></Button>
                     </div>
                 </div>
             )}
@@ -222,7 +368,7 @@ export function Content() {
                 </div>
             )}
 
-            {excludeCompetenceModal && (
+            {/* {excludeCompetenceModal && (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeCompetenceModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
@@ -235,7 +381,7 @@ export function Content() {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </>
     );
 }

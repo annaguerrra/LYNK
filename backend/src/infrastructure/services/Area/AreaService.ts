@@ -23,7 +23,7 @@ export class AreaService implements IAreaService{
         await prisma.log.create({
             data: {
                 action: "CREATED",
-                entityType: "Area",
+                entityType: "AREA",
                 entityId: createdArea.id,
                 entityName: createdArea.name,
                 oldData: {},
@@ -86,7 +86,7 @@ export class AreaService implements IAreaService{
         await prisma.log.create({
             data: {
                 entityId: target.id,
-                entityType: "Area",
+                entityType: "AREA",
                 entityName: target.name,
                 action: "UPDATED",
                 // uses target to register data before update
@@ -138,7 +138,7 @@ export class AreaService implements IAreaService{
         await prisma.log.create({
             data: {
                 action: "DELETED",
-                entityType: "Area",
+                entityType: "AREA",
                 entityId: target.id,
                 entityName: target.name,
                 oldData: {...target},

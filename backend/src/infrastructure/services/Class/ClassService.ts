@@ -42,7 +42,7 @@ export class ClassService implements IClassService{
         await prisma.log.create({
             data:{
                 action:"CREATED",
-                entityType: "Class",
+                entityType: "CLASS",
                 entityId: createdClass.id,
                 entityName: createdClass.name,
                 oldData:{},
@@ -179,7 +179,7 @@ export class ClassService implements IClassService{
             data:{
                 action: "UPDATED",
                 entityId: target.id,
-                entityType: "Class",
+                entityType: "CLASS",
                 entityName: target.name,
                 newData:{
                     ...updatedClass
@@ -378,7 +378,7 @@ export class ClassService implements IClassService{
         await prisma.log.create({
             data:{
                 action:"DELETED",
-                entityType: "Class",
+                entityType: "CLASS",
                 entityId: target.id,
                 entityName: target.name,
                 oldData:{},
@@ -446,7 +446,7 @@ export class ClassService implements IClassService{
         const log = await prisma.log.create({
             data:{
                 entityId: target.id,
-                entityType:"Class",
+                entityType:"CLASS",
                 entityName: target.name,
                 action: "UPDATED",
                 

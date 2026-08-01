@@ -1,11 +1,24 @@
 import "./Styles/inputFile.css"
 
-export function InputFile() {
+interface InputFileProps {
+    onFileSelect?: (file: File) => void;
+}
+
+export function InputFile({ onFileSelect }: InputFileProps) {
     return (
         <>
             <label className="fileButton">
                 Escolher arquivo
-                <input type="file" />
+                <input
+                    type="file"
+                    onChange={(e) => {
+                        const file = e.target.files?.[0];
+
+                        if (file) {
+                            onFileSelect?.(file);
+                        }
+                    }}
+                />
             </label>
         </>
     )
