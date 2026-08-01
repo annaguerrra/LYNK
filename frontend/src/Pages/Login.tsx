@@ -44,7 +44,7 @@ export function Login() {
             notifySucess();
             navigate("/Disciplines");
         } catch (error: any) {
-            if (error.response?.status === 400) {
+            if (error.response?.status === 404) {
                 notifyInvalidLogin();
             } else {
                 notifyServer();
