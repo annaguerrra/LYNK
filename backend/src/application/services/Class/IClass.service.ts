@@ -1,4 +1,4 @@
-import { assignCompetencyDTO, ClassDTO, editClass, findAllDTO, findOneDTO, viewCompetencesDTO, viewContentDTO, viewMaterialsDTO } from "#application/dtos/classDTO.js";
+import { assignCompetencyDTO, ClassDTO, editClass, findAllDTO, findOneDTO, removeCompetencyDTO, viewCompetencesDTO, viewContentDTO, viewMaterialsDTO } from "#application/dtos/classDTO.js";
 import { Class } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export interface IClassService{
@@ -17,4 +17,5 @@ export interface IClassService{
     deleteMany(classesId: number[]): Promise<boolean>
     // put
     edit(payload: ClassDTO, id: number, userId: number):  Promise<editClass>;
+    removeCompetency(payload: removeCompetencyDTO, userId: number): Promise<Class>
 }

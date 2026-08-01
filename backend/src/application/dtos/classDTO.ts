@@ -14,6 +14,11 @@ export interface assignCompetencyDTO{
     competencyId: number
 }
 
+export interface removeCompetencyDTO{
+    id: number
+    competencyId: number
+}
+
 // response to findAll service
 export interface findAllDTO {
     id: number

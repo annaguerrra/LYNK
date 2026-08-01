@@ -1,4 +1,4 @@
-import { assignCompetencyDTO, ClassDTO, viewMaterialsDTO, editClass, findAllDTO, viewCompetencesDTO, findOneDTO } from "#application/dtos/classDTO.js";
+import { assignCompetencyDTO, ClassDTO, viewMaterialsDTO, editClass, findAllDTO, viewCompetencesDTO, findOneDTO, removeCompetencyDTO } from "#application/dtos/classDTO.js";
 import { IClassService } from "#application/services/Class/IClass.service.js";
 import { Class, Competence, Material } from "#infrastructure/prisma/generated/prisma/client.js";
 import { prisma } from "#infrastructure/lib/prisma.js";
@@ -151,7 +151,7 @@ export class ClassService implements IClassService{
             throw new Error("Competence not Found!");
         }
 
-        const target =  await prisma.class.findUnique({
+        const target = await prisma.class.findUnique({
             where: {
                 id: Number(id)
             }
@@ -174,6 +174,74 @@ export class ClassService implements IClassService{
                 }
             }
         });
+
+        await prisma.log.create({
+            data:{
+                action: "UPDATED",
+                entityId: target.id,
+                entityType: "Class",
+                entityName: target.name,
+                newData:{
+                    ...updatedClass
+                },
+                oldData:{
+                    ...target
+                },
+                ...(isAdmin && { adminId: userId }),
+                ...(!isAdmin && { instructorId: userId }),
+                username: username
+            }
+        });
+
+        // updates the number of classes this competency is related
+        await this.competenceService.updateNumOfClasses(Number(competencyId))
+
+        return {
+            ...updatedClass
+        }
+    }
+
+    async removeCompetency(payload: removeCompetencyDTO, userId: number): Promise<Class> {
+        const isAdmin = await this.userService.isAdmin(userId)
+        const username = await this.userService.getUsername(userId)
+        const { id, competencyId } = payload
+
+        const target = await prisma.class.findUnique({
+            where: {
+                id: Number(id)
+            },
+            include: {
+                competences: {
+                    select: {
+                        id: true
+                    }
+                }
+            }
+        })
+        console.log(target)
+
+        if(!target)
+            throw new Error("Class not found!")
+
+        const hasCompetency = target.competences.some(
+            competency => competency.id === Number(competencyId)
+        )
+
+        if(!hasCompetency)
+            throw new Error("Competency not found!")
+
+        const updatedClass = await prisma.class.update({
+            where: {
+                id: target.id
+            },
+            data: {
+                competences: {
+                    disconnect: {
+                        id: Number(competencyId)
+                    }
+                }
+            }
+        })
 
         await prisma.log.create({
             data:{

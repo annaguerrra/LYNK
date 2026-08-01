@@ -1,6 +1,6 @@
-import { assignCompetencyDTO, ClassDTO } from "#application/dtos/classDTO.js";
+import { assignCompetencyDTO, ClassDTO, removeCompetencyDTO } from "#application/dtos/classDTO.js";
 import { ClassService } from "#infrastructure/services/Class/ClassService.js";
-import { Request, Response } from "express";
+import { Request, response, Response } from "express";
 
 export class ClassController {
     constructor(
@@ -44,6 +44,22 @@ export class ClassController {
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
+        }
+    }
+
+    async removeCompetency(req: Request, res: Response){
+        const data: removeCompetencyDTO = req.body
+        const userId = req.user.userId
+
+        try {
+            const updatedClass = await this.classService.removeCompetency(data, userId)
+            return res.status(200).send({ response: updatedClass })
+        } catch (e) {
+            if (e instanceof Error)
+                return res.status(404).json({ message: e.message })
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" })
         }
     }
 
