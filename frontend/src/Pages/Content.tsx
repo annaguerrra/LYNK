@@ -152,7 +152,7 @@ export function Content() {
             try {
                 const response = await getDisciplineCompetences(disciplineId);
                 console.log(response)
-                setAllCompetences(response.competences);
+                setAllCompetences(response);
     
             } catch (error) {
                 if (isAxiosError(error)) {
@@ -370,7 +370,7 @@ export function Content() {
                 </div>
             )}
 
-            {excludeCompetenceModal && (
+            {/* {excludeCompetenceModal && (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeCompetenceModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
@@ -383,7 +383,7 @@ export function Content() {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
         </>
     );
 }

@@ -140,7 +140,7 @@ export function Class() {
         try {
             const response = await getDisciplineCompetences(classItem.discipline.id);
 
-            setAllCompetences(response.competences);
+            setAllCompetences(response);
 
         } catch (error) {
             if (isAxiosError(error)) {

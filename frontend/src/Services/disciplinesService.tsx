@@ -9,6 +9,7 @@ import type {
     editDisciplineDTO, 
     assignCompetencyDTO 
 } from "../Types/discipline";
+import type { CompetenceItem } from "../Types/competence";
 
 // Create a new discipline
 export async function createDisciplineService(data: createDiscipline) {
@@ -53,9 +54,9 @@ export async function getDisciplineMaterials(id: number): Promise<viewMaterialsD
 }
 
 // Get discipline competences
-export async function getDisciplineCompetences(id: number): Promise<viewCompetencesDTO> {
+export async function getDisciplineCompetences(id: number): Promise<CompetenceItem[]> {
     const response = await api.get(`/discipline/${id}/competences`);
-    return response.data.response;
+    return response.data.response.competences;
 }
 
 // Update a discipline

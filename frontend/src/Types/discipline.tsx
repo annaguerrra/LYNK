@@ -42,7 +42,7 @@ export interface viewMaterialsDTO{
 
 // response to viewCompentences service 
 export interface viewCompetencesDTO{
-    name: string;
+    // name: string;
     competences:{
         id: number
         name: string

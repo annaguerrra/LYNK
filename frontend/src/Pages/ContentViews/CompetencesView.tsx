@@ -13,6 +13,7 @@ import { toast } from "react-toastify"
 import { getDisciplineCompetences } from "../../Services/disciplinesService"
 import type { CompetenceItem } from "../../Types/competence"
 import type { DisciplineDTO } from "../../Types/discipline"
+import { deleteCompetence, updateCompetence } from "../../Services/competencesService"
 
 interface CompetencesViewProps {
     discipline: DisciplineDTO;
@@ -26,6 +27,8 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
     const [openCompetenceModal, setOpenCompetenceModal] = useState(false);
     const [editCompetenceModal, setEditCompetenceModal] = useState(false);
     const [excludeCompetenceModal, setExcludeCompetenceModal] = useState(false);
+
+    const [nameEditCompetence, setNameEditCompetence] = useState("")
 
     const [competences, setCompetences] = useState<CompetenceItem[]>([]);
     const [selectedCompetence, setSelectedCompetence] = useState<CompetenceItem | null>(null);
@@ -41,7 +44,7 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
         try {
             const response = await getDisciplineCompetences(discipline.id);
 
-            setCompetences(response.competences);
+            setCompetences(response);
 
         } catch (error) {
             if (isAxiosError(error)) {
@@ -61,6 +64,85 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
 
         } finally {
             setLoading(false);
+        }
+    }
+
+    async function excludeCompetence() {
+        if (!selectedCompetence) return;
+
+        try {
+            await deleteCompetence(selectedCompetence.id);
+
+            toast.success("Competência excluída com sucesso.");
+
+            setCompetences((prev) =>
+                prev.filter((competence) => competence.id !== selectedCompetence.id)
+            );
+
+            setSelectedCompetence(null);
+            setExcludeCompetenceModal(false);
+
+        } catch (error) {
+            console.error(error);
+
+            if (isAxiosError(error)) {
+                switch (error.response?.status) {
+                    case 404:
+                        toast.error("404 - Competência não encontrada.");
+                        return;
+
+                    case 500:
+                        toast.error("500 - Erro de servidor.");
+                        return;
+                }
+            }
+
+            toast.error("Erro ao excluir competência.");
+        }
+    }
+
+    async function editCompetence() {
+        if (!selectedCompetence) return;
+
+        try {
+            if (!nameEditCompetence) {
+                toast.warning("Nome da competência não pode ser nulo!")
+                return;
+            }
+
+            await updateCompetence(selectedCompetence.id, {
+                name: nameEditCompetence
+            });
+
+            toast.success("Competência alterada com sucesso.");
+
+            setCompetences((prev) =>
+                prev.map((competence) =>
+                    competence.id === selectedCompetence.id
+                        ? { ...competence, name: competence.name }
+                        : competence
+                )
+            );
+
+            setSelectedCompetence(null);
+            setEditCompetenceModal(false);
+
+        } catch (error) {
+            console.error(error);
+
+            if (isAxiosError(error)) {
+                switch (error.response?.status) {
+                    case 404:
+                        toast.error("404 - Competência não encontrada.");
+                        return;
+
+                    case 500:
+                        toast.error("500 - Erro de servidor.");
+                        return;
+                }
+            }
+
+            toast.error("Erro ao editar competência.");
         }
     }
 
@@ -117,7 +199,10 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
                                 }
                             </>
                         }>
+
+
                         <span>{competence.name}</span>
+                        <span style={{ marginRight: "3rem" }}>Contém em {competence.numOfClasses} aulas</span>
                     </RowItem>
                 ))}
             </div>
@@ -178,10 +263,10 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
                         </div>
                         <div className="textBox">
                             <h2>Nome da competência</h2>
-                            <input type="text" />
+                            <input type="text" value={nameEditCompetence} onChange={(e) => setNameEditCompetence(e.target.value)} />
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => setEditCompetenceModal(false)}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => editCompetence()}></Button>
                     </div>
                 </div>
             )}
@@ -189,12 +274,28 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
             {/* Modal to exclude a competence */}
             {excludeCompetenceModal && (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeCompetenceModal(false)}>
-                    <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
-                        <div className="redString"></div>
-                        <p>Deseja excluir a competência?</p>
+                    <div className="modalExcludeContainer --lowGap" onClick={(e) => e.stopPropagation()} >
+                        <div className="redString --marginBottom"></div>
+                        <span>
+                            {selectedCompetence.numOfClasses === 0 ? (
+                                <>
+                                    Ao excluir esta competência, <strong>nenhuma aula</strong> será afetada.
+                                </>
+                            ) : (
+                                <>
+                                    Ao excluir esta competência,{" "}
+                                    <strong>
+                                        {selectedCompetence.numOfClasses}{" "}
+                                        {selectedCompetence.numOfClasses === 1 ? "aula" : "aulas"}
+                                    </strong>{" "}
+                                    {selectedCompetence.numOfClasses === 1 ? "será afetada" : "serão afetadas"}.
+                                </>
+                            )}
+                        </span>
+                        <span>Deseja continuar?</span>
 
-                        <div className="buttonsBox">
-                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => setExcludeCompetenceModal(false)}></ButtonExclude>
+                        <div className="buttonsBox --highMargin">
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => excludeCompetence()}></ButtonExclude>
                             <br />
                             <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeCompetenceModal(false)}></ButtonCancel>
                         </div>
