@@ -35,7 +35,7 @@ export default class ExamController{
             return res.status(200).send({ response: "Exam created!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -63,7 +63,7 @@ export default class ExamController{
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -78,7 +78,7 @@ export default class ExamController{
             return res.status(200).send({ response: exams })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -94,7 +94,7 @@ export default class ExamController{
             return res.status(200).send({ response: exam })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -115,7 +115,7 @@ export default class ExamController{
             file.stream.pipe(res)
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -134,7 +134,7 @@ export default class ExamController{
             return res.status(200).send({ response: "Exam updated!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -151,7 +151,7 @@ export default class ExamController{
             return res.status(200).send({ response: "Exam deleted!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });

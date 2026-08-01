@@ -59,7 +59,7 @@ export default class MaterialController{
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -74,7 +74,11 @@ export default class MaterialController{
             const material = await this.materialService.getMaterialById(Number(id))
             return res.status(200).send({ response: material })
         } catch (e) {
-            return res.status(404).send({ response: "Material not found!" })
+            if (e instanceof Error)
+                return res.status(404).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -104,7 +108,7 @@ export default class MaterialController{
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -121,7 +125,7 @@ export default class MaterialController{
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -143,7 +147,7 @@ export default class MaterialController{
             file.stream.pipe(res);
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });

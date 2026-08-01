@@ -20,7 +20,7 @@ export class DisciplineController{
             return res.status(200).send({response: "Discipline created!"});
         } catch(e){
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -40,7 +40,7 @@ export class DisciplineController{
             return res.status(200).send({response: "Discipline duplicated!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -60,7 +60,7 @@ export class DisciplineController{
             return res.status(200).send({response: "Discipline updated!"});
         } catch(e){
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -77,7 +77,7 @@ export class DisciplineController{
             return res.status(200).send({ response: "Success!"});
         } catch(e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -92,7 +92,7 @@ export class DisciplineController{
             return res.status(200).send({response: disciplines });
         } catch(e){
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -109,7 +109,7 @@ export class DisciplineController{
             return res.status(200).send({response: discipline });
         } catch(e){
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -126,7 +126,7 @@ export class DisciplineController{
             return res.status(200).send({response: exams});
         } catch(e){
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -144,7 +144,7 @@ export class DisciplineController{
             return res.status(200).send({response: classes });
         } catch(e){
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -161,7 +161,7 @@ export class DisciplineController{
             return res.status(200).send({response: materials });
         } catch(e){
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -178,7 +178,7 @@ export class DisciplineController{
             return res.status(200).send({response: competences });
         } catch(e){
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -198,7 +198,7 @@ export class DisciplineController{
             return res.status(200).send({response: "Success"});
         } catch(e){
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -219,7 +219,7 @@ export class DisciplineController{
             return res.status(200).send({response: "Success"});
         } catch(e){
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });

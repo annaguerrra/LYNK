@@ -20,7 +20,7 @@ export class ClassController {
             return res.status(200).send({ response: createdClass })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -37,7 +37,7 @@ export class ClassController {
 
         try {
             await this.classService.assignCompetency(data, userId)
-            return res.status(200).send({ response: "Success!"})
+            return res.status(404).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
                 return res.status(500).json({ message: e.message });
@@ -71,7 +71,7 @@ export class ClassController {
             return res.status(200).send({ response: classes })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -87,7 +87,7 @@ export class ClassController {
             return res.status(200).send({ response: item })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -103,7 +103,7 @@ export class ClassController {
             return res.status(200).send({ response: materials })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -119,7 +119,7 @@ export class ClassController {
             return res.status(200).send({ response: competences })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -135,7 +135,7 @@ export class ClassController {
             return res.status(200).send({ response: content })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -160,7 +160,7 @@ export class ClassController {
 
     } catch (e) {
         if (e instanceof Error)
-            return res.status(500).json({ message: e.message });
+            return res.status(404).json({ message: e.message });
 
         console.log(e);
         return res.status(500).json({ message: "Unknown error" });
@@ -180,7 +180,7 @@ export class ClassController {
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -199,7 +199,7 @@ export class ClassController {
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });

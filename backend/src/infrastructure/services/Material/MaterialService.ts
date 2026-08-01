@@ -84,8 +84,8 @@ export class MaterialService implements IMaterialService {
     }
 
     // selects material by id
-    async getMaterialById(id: number): Promise<showMaterialDTO | null> {
-        return await prisma.material.findUnique({
+    async getMaterialById(id: number): Promise<showMaterialDTO> {
+        const material = await prisma.material.findUnique({
             where: {
                 id: id
             },
@@ -96,6 +96,11 @@ export class MaterialService implements IMaterialService {
                 class: true
             }
         })
+
+        if(!material)
+            throw new Error("Material not found!")
+
+        return material
     }
 
     async updateMaterial(id: number, data: updateMaterialDTO, userId: number): Promise<Material> {

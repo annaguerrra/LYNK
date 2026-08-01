@@ -247,7 +247,7 @@ export class ClassService implements IClassService{
             data:{
                 action: "UPDATED",
                 entityId: target.id,
-                entityType: "Class",
+                entityType: "CLASS",
                 entityName: target.name,
                 newData:{
                     ...updatedClass

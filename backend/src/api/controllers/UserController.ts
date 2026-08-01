@@ -35,7 +35,7 @@ export default class UserController {
             
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -57,7 +57,7 @@ export default class UserController {
         } catch(e) {
             console.log(e)
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -72,7 +72,7 @@ export default class UserController {
             return res.status(200).send({ response: users })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -87,7 +87,7 @@ export default class UserController {
             return res.status(200).send({ response: students })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -100,7 +100,7 @@ export default class UserController {
             return res.status(200).send({ response: instructors })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -113,7 +113,7 @@ export default class UserController {
             return res.status(200).send({ response: admins })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -129,7 +129,7 @@ export default class UserController {
             return res.status(200).send({ response: student })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -143,7 +143,7 @@ export default class UserController {
             return res.status(200).send({ response: instructor })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -157,7 +157,7 @@ export default class UserController {
             return res.status(200).send({ response: admin })
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -176,8 +176,11 @@ export default class UserController {
             await this.userService.resetPassword(data, userId, Number(id), userType);
             return res.status(200).send("Password updated!");
         } catch(e) {
-            console.log(e);
-            return res.status(500).json({message: "Unknown error"});
+            if (e instanceof Error)
+                return res.status(404).json({ message: e.message });
+
+            console.log(e)
+            return res.status(500).json({ message: "Unknown error" });
         }
     }
 
@@ -194,7 +197,7 @@ export default class UserController {
             return res.status(200).send({response: "Password updated"});
         } catch(e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -214,7 +217,7 @@ export default class UserController {
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -231,7 +234,7 @@ export default class UserController {
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -248,7 +251,7 @@ export default class UserController {
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -266,7 +269,7 @@ export default class UserController {
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -282,7 +285,7 @@ export default class UserController {
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });
@@ -298,7 +301,7 @@ export default class UserController {
             return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
-                return res.status(500).json({ message: e.message });
+                return res.status(404).json({ message: e.message });
 
             console.log(e)
             return res.status(500).json({ message: "Unknown error" });

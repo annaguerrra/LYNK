@@ -4,7 +4,7 @@ import { Material } from "#infrastructure/prisma/generated/prisma/client.js";
 
 export interface IMaterialService {
     registerMaterial(data: registerMaterialDTO, userId: number): Promise<Material>
-    getMaterialById(id: number): Promise<showMaterialDTO | null>
+    getMaterialById(id: number): Promise<showMaterialDTO>
     updateMaterial(id: number, data: updateMaterialDTO, userId: number): Promise<Material>
     deleteMaterial(id: number, userId: number): Promise<boolean>
     deleteMany(materialsId: number[]): Promise<boolean>
