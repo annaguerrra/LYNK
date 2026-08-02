@@ -37,7 +37,7 @@ export class ClassController {
 
         try {
             await this.classService.assignCompetency(data, userId)
-            return res.status(404).send({ response: "Success!"})
+            return res.status(200).send({ response: "Success!"})
         } catch (e) {
             if (e instanceof Error)
                 return res.status(500).json({ message: e.message });

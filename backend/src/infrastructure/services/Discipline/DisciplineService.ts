@@ -4,33 +4,33 @@ import { prisma } from "#infrastructure/lib/prisma.js";
 import { Discipline } from "#infrastructure/prisma/generated/prisma/client.js";
 import { UserService } from "#infrastructure/services/User/UserService.js"
 
-export class DisciplineService implements IDisciplineService{
+export class DisciplineService implements IDisciplineService {
     constructor(
         private userService: UserService
-    ) {}
-    
+    ) { }
+
     async create(payload: DisciplineDTO, userID: number): Promise<Discipline> {
         // consults if user creating the discipline is admin
         const admin = await this.userService.isAdmin(userID)
         const username = await this.userService.getUsername(userID)
         // variables used to create discipline
         const { name, areaID } = payload
-        
-        const area = await prisma.area.findUnique({ where:{ id: Number(areaID) }});
-        
-        if(!area){
+
+        const area = await prisma.area.findUnique({ where: { id: Number(areaID) } });
+
+        if (!area) {
             throw new Error("Area not Found");
         }
-        
+
         const target = await prisma.discipline.create({
-            data:{
+            data: {
                 name: name,
-                areaId: area.id               
+                areaId: area.id
             }
         });
-        
+
         await prisma.log.create({
-            data:{
+            data: {
                 action: "CREATED",
                 entityId: target.id,
                 entityName: target.name,
@@ -45,46 +45,46 @@ export class DisciplineService implements IDisciplineService{
                 username: username
             }
         });
-        
+
         return target;
     }
-    
+
     async assignCompetence(payload: assignCompetencyDTO, userId: number): Promise<Discipline> {
         // consults if user updating the discipline is admin
         const admin = await this.userService.isAdmin(userId)
         const username = await this.userService.getUsername(userId)
         // variables used to assign competence to discipline
         const { disciplineId, competencyId } = payload
-        
+
         // stores competence data
-        const competence = await prisma.competence.findUnique({ 
-            where:{ 
+        const competence = await prisma.competence.findUnique({
+            where: {
                 id: Number(competencyId)
             }
         });
-        
-        if(!competence){
+
+        if (!competence) {
             throw new Error("Discipline not Found");
         }
-        
-        const oldData = await prisma.discipline.findUnique({ 
-            where:{ 
+
+        const oldData = await prisma.discipline.findUnique({
+            where: {
                 id: Number(disciplineId)
             }
         });
-        
-        if(!oldData){
+
+        if (!oldData) {
             throw new Error("Discipline not Found");
         }
-        
+
         // connects discipline to competence by its id  
         const updatedData = await prisma.discipline.update({
-            where:{
+            where: {
                 id: Number(disciplineId)
             },
-            data:{
-                competences:{
-                    connect:{
+            data: {
+                competences: {
+                    connect: {
                         id: competence.id
                     }
                 }
@@ -94,17 +94,17 @@ export class DisciplineService implements IDisciplineService{
             }
         })
         console.log(updatedData)
-        
+
         await prisma.log.create({
-            data:{
-                action:"UPDATED",
+            data: {
+                action: "UPDATED",
                 entityId: updatedData.id,
                 entityType: "DISCIPLINE",
                 entityName: oldData.name,
                 oldData: {
                     ...oldData
                 },
-                newData:{
+                newData: {
                     ...updatedData
                 },
                 // uses isAdmin variable to determin if log registers an admin ou an instructor
@@ -113,10 +113,10 @@ export class DisciplineService implements IDisciplineService{
                 username: username
             }
         })
-        
+
         return updatedData;
     }
-    
+
     async duplicate(id: number, userId: number): Promise<Discipline> {
         // consults if user updating the discipline is admin
         const isAdmin = await this.userService.isAdmin(userId)
@@ -137,10 +137,10 @@ export class DisciplineService implements IDisciplineService{
                 }
             }
         })
-        
-        if(!target)
+
+        if (!target)
             throw new Error("Discipline not found!")
-        
+
         try {
             // creates a new discipline using target data
             // uses new discipline id to build relations
@@ -184,7 +184,7 @@ export class DisciplineService implements IDisciplineService{
                     }
                 }
             })
-            
+
             await prisma.log.create({
                 data: {
                     action: "CREATED",
@@ -202,18 +202,18 @@ export class DisciplineService implements IDisciplineService{
                     username: username
                 }
             })
-            
+
             return createdDiscipline
-            
-        } catch(e) {
+
+        } catch (e) {
             throw e
         }
     }
-    
+
     async findAll(): Promise<findAllDTO[]> {
         // finds all disciplines
         const disciplines = await prisma.discipline.findMany({
-            select:{
+            select: {
                 id: true,
                 name: true,
                 workLoad: true,
@@ -232,14 +232,14 @@ export class DisciplineService implements IDisciplineService{
             }
         });
         // resolver nome das competencias
-        
-        if(!disciplines){
+
+        if (!disciplines) {
             throw new Error("Disciplines Not Found");
         }
 
         return disciplines
     }
-    
+
     async findOne(id: number): Promise<findOneDTO> {
         // variable used to search if the discipline is valid
         const target = await prisma.discipline.findUnique({
@@ -262,20 +262,20 @@ export class DisciplineService implements IDisciplineService{
                 }
             }
         });
-        
-        if(!target){
+
+        if (!target) {
             throw new Error("Discipline Not Found");
         }
-        
+
         const log = await prisma.log.findFirst({
-            where:{
+            where: {
                 entityId: id,
                 entityType: "DISCIPLINE"
             }
         });
-        
+
         const lastUpdate = log?.updatedAt;
-        
+
         return {
             id: target.id,
             name: target.name,
@@ -286,7 +286,7 @@ export class DisciplineService implements IDisciplineService{
         }
     }
 
-    async getColor(id: number) : Promise<string> {
+    async getColor(id: number): Promise<string> {
         const target = await prisma.discipline.findFirst({
             where: {
                 areaId: id
@@ -300,7 +300,7 @@ export class DisciplineService implements IDisciplineService{
             }
         });
 
-        if(!target) {
+        if (!target) {
             throw new Error("Area Not Found");
         }
 
@@ -309,10 +309,10 @@ export class DisciplineService implements IDisciplineService{
 
     async viewExams(id: number): Promise<viewExamsDTO> {
         const discipline = await prisma.discipline.findUnique({
-            where:{
+            where: {
                 id: id
             },
-            select:{
+            select: {
                 exams: {
                     select: {
                         id: true,
@@ -323,7 +323,7 @@ export class DisciplineService implements IDisciplineService{
             }
         });
 
-        if(!discipline) {
+        if (!discipline) {
             throw new Error("Discipline Not Found!");
         }
 
@@ -333,10 +333,10 @@ export class DisciplineService implements IDisciplineService{
     async viewClasses(id: number): Promise<viewClassesDTO> {
         // finds discipline and selects it's classes
         const discipline = await prisma.discipline.findUnique({
-            where:{
+            where: {
                 id: id
             },
-            select:{
+            select: {
                 classes: {
                     select: {
                         id: true,
@@ -346,7 +346,7 @@ export class DisciplineService implements IDisciplineService{
             }
         });
 
-        if(!discipline) {
+        if (!discipline) {
             throw new Error("Discipline Not Found!");
         }
 
@@ -356,10 +356,10 @@ export class DisciplineService implements IDisciplineService{
     async viewMaterials(disciplineID: number): Promise<viewMaterialsDTO> {
         // finds discipline and selects it's materials
         const discipline = await prisma.discipline.findUnique({
-            where:{
+            where: {
                 id: disciplineID
             },
-            select:{
+            select: {
                 materials: {
                     select: {
                         id: true,
@@ -370,7 +370,7 @@ export class DisciplineService implements IDisciplineService{
             }
         });
 
-        if(!discipline) {
+        if (!discipline) {
             throw new Error("Discipline Not Found!");
         }
 
@@ -380,10 +380,10 @@ export class DisciplineService implements IDisciplineService{
     async viewCompetences(disciplineID: number): Promise<viewCompetencesDTO> {
         // finds discipline and selects it's competences
         const disciplines = await prisma.discipline.findUnique({
-            where:{
+            where: {
                 id: disciplineID
             },
-            select:{
+            select: {
                 competences: {
                     select: {
                         id: true,
@@ -396,7 +396,7 @@ export class DisciplineService implements IDisciplineService{
             }
         });
 
-        if(!disciplines) {
+        if (!disciplines) {
             throw new Error("Disciplines Not Found!");
         }
 
@@ -408,9 +408,9 @@ export class DisciplineService implements IDisciplineService{
         const admin = await this.userService.isAdmin(userId)
         const username = await this.userService.getUsername(userId)
 
-        const target = await prisma.discipline.findUnique({ 
-            where: { 
-                id: disciplineID 
+        const target = await prisma.discipline.findUnique({
+            where: {
+                id: disciplineID
             },
             include: {
                 classes: true,
@@ -420,17 +420,17 @@ export class DisciplineService implements IDisciplineService{
             }
         });
 
-        if(!target)
+        if (!target)
             throw new Error("Discipline not found!")
 
-        try{
+        try {
             await prisma.discipline.delete({
-                where:{
+                where: {
                     id: disciplineID
                 }
             });
 
-            
+
             const classIds = target.classes.map((item: { id: number }) => item.id);
             const examIds = target.exams.map((exam: { id: number }) => exam.id);
             const competenceIds = target.competences.map((competence: { id: number }) => competence.id);
@@ -441,7 +441,7 @@ export class DisciplineService implements IDisciplineService{
                     id: { in: classIds }
                 }
             });
-            
+
             await prisma.exam.deleteMany({
                 where: {
                     id: { in: examIds }
@@ -460,14 +460,14 @@ export class DisciplineService implements IDisciplineService{
                 }
             });
 
-            
+
             await prisma.log.create({
-                data:{
-                    action:"DELETED",
+                data: {
+                    action: "DELETED",
                     entityType: "DISCIPLINE",
                     entityId: disciplineID,
                     entityName: target.name,
-                    oldData:{
+                    oldData: {
                         ...target
                     },
                     newData: {},
@@ -479,7 +479,7 @@ export class DisciplineService implements IDisciplineService{
                 }
             });
             return true;
-        } catch(error){
+        } catch (error) {
             throw new Error("Error deleting discipline");
         }
     }
@@ -501,50 +501,57 @@ export class DisciplineService implements IDisciplineService{
     }
 
     async edit(payload: DisciplineDTO, disciplineID: number, userID: number): Promise<editDisciplineDTO> {
-        // consults if user updating the discipline is admin
         const admin = await this.userService.isAdmin(userID)
         const username = await this.userService.getUsername(userID)
-        // variables used to update discipline
-        const { name } = payload
 
-        const target = await prisma.discipline.findUnique({ where: { id: disciplineID }});
-        if(!target){
+        const { name, areaID } = payload
+
+        const target = await prisma.discipline.findUnique({
+            where: { id: disciplineID }
+        });
+
+        if (!target) {
             throw new Error("Discipline Not Found");
         }
 
-        try{
+        try {
             await prisma.discipline.update({
-                where:{
+                where: {
                     id: disciplineID
                 },
-                data:{
-                    name: name
+                data: {
+                    name: name,
+                    areaId: areaID
                 }
             });
 
             const log = await prisma.log.create({
-                data:{
-                    action:"UPDATED",
+                data: {
+                    action: "UPDATED",
                     entityType: "DISCIPLINE",
                     entityId: disciplineID,
                     entityName: target.name,
-                    oldData:{
+                    oldData: {
                         ...target
                     },
-                    newData: {},
+                    newData: {
+                        name: name,
+                        areaID: areaID
+                    },
                     updatedAt: new Date(),
-                    // uses isAdmin variable to determin if log register an admin ou an instructor
                     ...(admin && { adminId: userID }),
                     ...(!admin && { instructorId: userID }),
                     username: username
                 }
             });
+
             return {
-                name: target?.name,
+                name: name,
                 workload: target?.workLoad,
                 lastUpdate: log.updatedAt
             };
-        } catch(error){
+
+        } catch (error) {
             throw new Error("Discipline not Found");
         }
     }
@@ -556,7 +563,7 @@ export class DisciplineService implements IDisciplineService{
             }
         })
 
-        if(!target)
+        if (!target)
             throw new Error("Discipline not found!")
 
         const numOfClasses = await prisma.class.count({

@@ -16,9 +16,10 @@ import { ToastContainer, toast } from "react-toastify";
 
 interface DisciplineCompProps {
     Discipline: DisciplineDTO;
+    reload: () => void;
 }
 
-export function DisciplineComp({ Discipline } : DisciplineCompProps) {
+export function DisciplineComp({ Discipline, reload } : DisciplineCompProps) {
     const navigate = useNavigate();
     //Variables to open the modals
     const [editModal, setEditModal] = useState(false);
@@ -56,6 +57,7 @@ export function DisciplineComp({ Discipline } : DisciplineCompProps) {
             
             setDisciplineName("")
             setEditModal(false);
+            await reload()
         } catch (error) {
             toast.error("Não foi possivel editar a disciplina!");
             console.error(error);
@@ -68,6 +70,9 @@ export function DisciplineComp({ Discipline } : DisciplineCompProps) {
             toast.success("Disciplina deletada com sucesso!");
 
             setExcludeModal(false);
+
+            await reload();
+
         } catch (error) {
             toast.error("Não foi possivel deletar a disciplina!");
             console.error(error);

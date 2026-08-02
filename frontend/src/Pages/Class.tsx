@@ -312,7 +312,7 @@ export function Class() {
                         <div className='markdownBox'>
                             <div className='toolbar view'>
                                 <span>{titleClass}</span>
-                                <div style={{ display: 'inline-flex', gap: "2rem"}}>
+                                <div style={{ display: 'inline-flex', gap: "2rem" }}>
                                     <ButtonIcon
                                         icon="icon-download"
                                         size={28}
@@ -403,22 +403,20 @@ export function Class() {
                             <span className='subtitle'>Anexos</span>
                             <div className='attachments'>
                                 {materials.map((material) => (
-                                    <>
-                                        <RowItem
-                                            key={material.id}
-                                            color='var(--purple)'
-                                            actions={
-                                                <>
-                                                    <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
-                                                    {(isAdmin || isInstructor) && editMode &&
-                                                        <ButtonClose size={18} onClose={() => { }} />
-                                                    }
-                                                </>
-                                            }>
+                                    <RowItem
+                                        key={material.id}
+                                        color='var(--purple)'
+                                        actions={
+                                            <>
+                                                <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                                {(isAdmin || isInstructor) && editMode &&
+                                                    <ButtonClose size={18} onClose={() => { }} />
+                                                }
+                                            </>
+                                        }>
 
-                                            <div>{material.name}</div>
-                                        </RowItem>
-                                    </>
+                                        <div>{material.name}</div>
+                                    </RowItem>
                                 ))}
 
 
