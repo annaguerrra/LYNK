@@ -23,6 +23,23 @@ export const validateRegister = (req: Request, res: Response, next: NextFunction
         return res.status(400).send({ response: `Passwords don't match`})
     next()
 }
+export const validateResetPassword = (req: Request, res: Response, next: NextFunction) => {
+    const { newPassword, repeatPassword, userType } = req.body;
+
+    if (!newPassword || !repeatPassword || !userType) {
+        return res.status(400).send({
+            response: "There is empty data."
+        });
+    }
+
+    if (newPassword !== repeatPassword) {
+        return res.status(400).send({
+            response: "Passwords do not match."
+        });
+    }
+
+    return next();
+};
 
 export const validatePassword = (req: Request, res: Response, next: NextFunction) => {
     const { oldPassword, newPassword, repeatPassword} = req.body

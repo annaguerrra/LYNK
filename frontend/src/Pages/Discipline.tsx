@@ -17,7 +17,7 @@ import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
 import type { registerUserDTO, resetPasswordDTO, showStudentDTO, UserType } from "../Types/user";
-import { createUser, getUsers } from "../Services/userService";
+import { createUser, getUsers, resetPassword } from "../Services/userService";
 
 
 export function Discipline() {
@@ -47,7 +47,8 @@ export function Discipline() {
     const [newPassword, setNewPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
     const [userType, setUserType] = useState<UserType>("STUDENT");
-
+    const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+    const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null);
 
     //Options for the option buttons
     const options = [
@@ -199,6 +200,7 @@ export function Discipline() {
             loadUsers();
         }
     }, [usersModal]);
+   
     //---------------------- From User Services ---------------------------------------------------------------- 
     const [showUsers, setShowUsers] = useState<showStudentDTO[]>([])
     
@@ -234,11 +236,38 @@ export function Discipline() {
         }
     }
 
-    // async function resetPassword(data: resetPasswordDTO, id: number) {
-    //     try {
-            
-    //     }
-    // }
+    async function handleResetPassword() {
+        if (selectedUserId === null || selectedUserType === null) {
+            console.log("No user selected");
+            return;
+        }
+
+        const data: resetPasswordDTO = {
+            newPassword,
+            repeatPassword,
+            userType: selectedUserType
+        };
+
+        console.log("DATA ENVIADA:", data);
+        console.log("ID ALVO:", selectedUserId);
+
+        try {
+            const response = await resetPassword(data, selectedUserId);
+
+            console.log(response);
+
+            setNewPassword("");
+            setRepeatPassword("");
+            setSelectedUserId(null);
+            setSelectedUserType(null);
+            setResetPasswordModal(false);
+
+            toast.success("New password successfully created!");
+        } catch(error) {
+            console.log(error);
+            toast.error("Unable to reset password");
+        }
+    }
 
 
     return (
@@ -400,7 +429,7 @@ export function Discipline() {
                         {/* Users display */}
                         <div className="itemsBox">
                             {showUsers.map((users) => (
-                                <RowItem color={"#000000"}>
+                                <RowItem key={`${users.userType}-${users.id}`} color={"#000000"}>
                                     <div className="itemText">
                                         <p>{users.username} | {users.userType}</p>
                                     </div>
@@ -409,14 +438,26 @@ export function Discipline() {
                                         size={25}
                                         data={[
                                             {
+                                                name: "Resetar senha",
+                                                onClick: () => {
+                                                    setSelectedUserId(users.id);
+                                                    setSelectedUserType(users.userType);
+                                                    setUsername(users.username);
+                                                    setResetPasswordModal(true);
+                                                    setUsersModal(false);
+                                                },
+                                                color: "red"
+                                            },
+                                            {
                                                 name: "Excluir",
                                                 onClick: () => {
-                                                    setUserId(users.id);
+                                                    setSelectedUserId(users.id);
                                                     setUsername(users.username);
                                                     setUserType(users.userType);
                                                     setExcludeUserModal(true);
                                                     setUsersModal(false);
                                                 },
+                                                color: "red"
                                             },
                                         ]}
                                     />
@@ -446,15 +487,50 @@ export function Discipline() {
 
             {/* Modal to reset a user password */}
             {(resetPasswordModal && isAdmin) && (
-                <div className="modalExcludeOverlay" onClick={() => setResetPasswordModal(false)}>
-                    <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
-                        <div className="redString"></div>
-                        <p>Deseja resetar a senha o usuário?</p>
+                <div className="modalOverlay" onClick={() => setResetPasswordModal(false)}>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+
+                        <div className="titleContainer">
+                            <h1>Resetar senha</h1>
+                            <ButtonClose size={40} onClose={() => setResetPasswordModal(false)} />
+                        </div>
+
+                        <p>Resetar senha do usuário {username}?</p>
+
+                        <div className="textBox">
+                            <h2>Nova senha</h2>
+                            <input
+                                type="password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="textBox">
+                            <h2>Confirmar nova senha</h2>
+                            <input
+                                type="password"
+                                value={repeatPassword}
+                                onChange={(e) => setRepeatPassword(e.target.value)}
+                            />
+                        </div>
 
                         <div className="buttonsBox">
-                            <ButtonExclude ButtonTitle={"Resetar"} onClose={() => setResetPasswordModal(false)}></ButtonExclude>
+                            <ButtonExclude
+                                ButtonTitle={"Resetar"}
+                                onClose={handleResetPassword}
+                            />
                             <br />
-                            <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setResetPasswordModal(false)}></ButtonCancel>
+                            <ButtonCancel
+                                ButtonTitle={"Cancelar"}
+                                onClose={() => {
+                                    setResetPasswordModal(false);
+                                    setSelectedUserId(null);
+                                    setSelectedUserType(null);
+                                    setNewPassword("");
+                                    setRepeatPassword("");
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
