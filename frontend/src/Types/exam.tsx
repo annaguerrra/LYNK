@@ -1,5 +1,11 @@
 import type { UploadedFileDTO } from "./attachment"
 
+// used to view an exam
+export interface viewExamDTO {
+    name: string
+    competencesId: number[]
+}
+
 // used to create an exam
 export interface registerExamDTO {
     name: string

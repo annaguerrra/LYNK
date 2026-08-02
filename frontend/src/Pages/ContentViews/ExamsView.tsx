@@ -21,7 +21,9 @@ export function ExamsView() {
     const [excludeTestModal, setExcludeTestModal] = useState(false);
 
     const [allCompetences, setAllCompetences] = useState<CompetenceDTO[]>([]);
-        const [examCompetences, setExamCompetences] = useState<CompetenceDTO[]>([]);
+    const [examCompetences, setExamCompetences] = useState<CompetenceDTO[]>([]);
+
+    const [exams, setExams] = useState<>()
 
     //Options for the option buttons
     const options = [
