@@ -169,7 +169,7 @@ export default class UserController {
     async resetPassword(req: Request, res: Response) {
         const data: resetPasswordDTO = req.body;
         const userId = req.user.userId
-        const userType = req.user.usertype
+        const userType = data.userType
         const { id } = req.params
 
         try {

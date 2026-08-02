@@ -45,7 +45,9 @@ export interface loginResponseDTO {
 }
 
 export interface resetPasswordDTO {
-    newPassword: string
+    newPassword: string;
+    repeatPassword: string;
+    userType: UserType;
 }
 
 export interface changePasswordDTO {

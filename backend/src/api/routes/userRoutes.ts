@@ -1,6 +1,6 @@
 import { authMiddleware } from "#api/middleware/authMiddleware.js";
 import { authorize } from "#api/middleware/authorize.js";
-import { validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent, validatePassword } from "#api/middleware/userMiddleware.js";
+import { validateRegister, validateUpdateAdmin, validateUpdateInstructor, validateUpdateStudent, validatePassword, validateResetPassword } from "#api/middleware/userMiddleware.js";
 import { makeUserController } from "#infrastructure/Factories/UserFactory.js";
 import { JwtTokenService } from "#infrastructure/services/Authetication/JwtToken.service.js";
 import { UserType } from "#infrastructure/src/generated/prisma/enums.js";
@@ -38,8 +38,8 @@ router
     .put('/user/updateInst/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateUpdateInstructor, userController.updateInstructor.bind(userController))
     // allows update informations of a specific admin by id
     .put('/user/updateAdmin/:id', authMiddleware(jwt), authorize(UserType.ADMIN), validateUpdateAdmin, userController.updateAdmin.bind(userController))
-    .put('/user/reset-password/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.resetPassword.bind(userController))
-    .put('/user/change-password', authMiddleware(jwt), validatePassword, userController.changePassword.bind(userController)) // ok
+    .put("/user/reset-password/:id", authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), validateResetPassword, userController.resetPassword.bind(userController))
+    .put('/user/change-password/:id', authMiddleware(jwt), validatePassword, userController.changePassword.bind(userController)) // ok
 
     .delete('/user/deleteStud/:id', authMiddleware(jwt), authorize(UserType.ADMIN, UserType.INSTRUCTOR), userController.deleteStudent.bind(userController))
     // deletes an instructor by id

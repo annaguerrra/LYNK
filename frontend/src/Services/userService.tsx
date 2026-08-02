@@ -91,8 +91,8 @@ export async function updateAdmin(
 export async function resetPassword(
     data: resetPasswordDTO,
     id: number
-){
-    const response = await api.put(`user/change-password/${id}`, data);
+) {
+    const response = await api.put(`/user/reset-password/${id}`, data);
     return response.data;
 }
 
