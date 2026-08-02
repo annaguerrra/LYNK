@@ -17,7 +17,7 @@ import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
 import type { registerUserDTO, resetPasswordDTO, showStudentDTO, UserType } from "../Types/user";
-import { createUser, getUsers, resetPassword } from "../Services/userService";
+import { createUser, getUsers, resetPassword, deleteStudent, deleteInstructor, deleteAdmin } from "../Services/userService";
 
 
 export function Discipline() {
@@ -110,7 +110,12 @@ export function Discipline() {
         }
     }
     
-    async function editArea(id: number, data: updateAreaDTO) {
+    async function editArea(id: number | null, data: updateAreaDTO) {
+        if (id === null) {
+            console.log("No area selected");
+            return;
+        }
+
         try {
             await updateArea(id, data);
             await loadAreas();
@@ -118,14 +123,19 @@ export function Discipline() {
 
             setEditAreaModal(false);
             setAreaName("")
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Não foi possivel editar a área!");
             console.log(error.response?.status);
             console.log(error.response?.data);
         }
     }
 
-    async function deleteAreas(id: number) {
+    async function deleteAreas(id: number | null) {
+        if (id === null) {
+            console.log("No area selected");
+            return;
+        }
+
         try {
             await deleteArea(id);
             await loadAreas();
@@ -183,10 +193,10 @@ export function Discipline() {
     }
 
     const filteredDisciplines =
-        selectedAreaId === null
+        selectedAreaFilter === null
             ? disciplines
             : disciplines.filter(
-                (discipline) => discipline.area.id === selectedAreaId
+                (discipline) => discipline.area.id === selectedAreaFilter
             );
     
     useEffect(() => {
@@ -224,7 +234,9 @@ export function Discipline() {
         }
         try {
             const response = await createUser(data);
+            console.log(response);
 
+            await loadUsers();
             setNewUserModal(false);
             setUsername("");
             setNewPassword("");
@@ -272,6 +284,38 @@ export function Discipline() {
     }
 
 
+    async function deleteUser(id: number | null, type: UserType | null) {
+        if (id === null || type === null) {
+            console.log("No user selected");
+            return;
+        }
+
+        try {
+            if (type === "STUDENT") {
+                await deleteStudent(id);
+            }
+            else if (type === "INSTRUCTOR") {
+                await deleteInstructor(id);
+            }
+            else if (type === "ADMIN") {
+                await deleteAdmin(id);
+            }
+
+            await loadUsers();
+
+            setSelectedUserId(null);
+            setSelectedUserType(null);
+            setUsername("");
+            setExcludeUserModal(false);
+
+            toast.success("Usuário deletado com sucesso!");
+        } catch (error) {
+            console.log(error);
+            toast.error("Não foi possível deletar o usuário!");
+        }
+    }
+
+
     return (
         <>
             <Header />
@@ -287,9 +331,9 @@ export function Discipline() {
                         <form>
                             <select
                                 className="selectFilter"
-                                value={selectedAreaId ?? ""}
+                                value={selectedAreaFilter ?? ""}
                                 onChange={(e) =>
-                                    setSelectedAreaId(
+                                    setSelectedAreaFilter(
                                     e.target.value === "" ? null : Number(e.target.value)
                                     )
                                 }
@@ -455,7 +499,7 @@ export function Discipline() {
                                                 onClick: () => {
                                                     setSelectedUserId(users.id);
                                                     setUsername(users.username);
-                                                    setUserType(users.userType);
+                                                    setSelectedUserType(users.userType);
                                                     setExcludeUserModal(true);
                                                     setUsersModal(false);
                                                 },
@@ -476,12 +520,17 @@ export function Discipline() {
                 <div className="modalExcludeOverlay" onClick={() => setExcludeUserModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
-                        <p>Deseja excluir o usuário {user.username}?</p>
+                        <p>Deseja excluir o usuário {username}?</p>
 
                         <div className="buttonsBox">
-                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => deleteUser(userId)}></ButtonExclude>
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => deleteUser(selectedUserId, selectedUserType)}></ButtonExclude>
                             <br />
-                            <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeUserModal(false)}></ButtonCancel>
+                            <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => {
+                                setExcludeUserModal(false);
+                                setSelectedUserId(null);
+                                setSelectedUserType(null);
+                                setUsername("");
+                            }}></ButtonCancel>
                         </div>
                     </div>
                 </div>
@@ -531,6 +580,7 @@ export function Discipline() {
                                     setSelectedUserType(null);
                                     setNewPassword("");
                                     setRepeatPassword("");
+                                    setUsername("");
                                 }}
                             />
                         </div>
@@ -585,7 +635,7 @@ export function Discipline() {
                     </div> 
                     <div className="itemsBox">
                     {areas.map((area) => (
-                        <RowItem color={area.color}>
+                        <RowItem key={area.id} color={area.color}>
                             <div className="itemText">
                                 <p>{area.name}</p>
                             </div>
@@ -624,8 +674,7 @@ export function Discipline() {
             {/* Modal to edit a area */}
             {editAreaModal && (
                 <div className="modalOverlay" onClick={() => setEditAreaModal(false)}>
-                    <div className="modal
-                    Container" onClick={(e) => e.stopPropagation()}>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Editar  área</h1>
