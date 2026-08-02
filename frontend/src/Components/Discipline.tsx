@@ -12,7 +12,7 @@ import { deleteDiscipline, updateDiscipline } from "../Services/disciplinesServi
 import type { AreaDTO } from "../Types/area";
 import { getAreas } from "../Services/areasService";
 import type { DisciplineDTO } from "../Types/discipline";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 
 interface DisciplineCompProps {
     Discipline: DisciplineDTO;
@@ -46,7 +46,7 @@ export function DisciplineComp({ Discipline, reload } : DisciplineCompProps) {
     const [disciplineName, setDisciplineName] = useState(Discipline.name);
     const [areaId, setAreaId] = useState(Discipline.area.id);
     const [areas, setAreas] = useState<AreaDTO[]>([]);
-    
+
     async function editDiscipline() {
         try {
             await updateDiscipline(Discipline.id, {
@@ -90,7 +90,7 @@ export function DisciplineComp({ Discipline, reload } : DisciplineCompProps) {
 
     useEffect(() => {
         loadAreas();
-    }, []);
+    });
 
     return (
         <> 

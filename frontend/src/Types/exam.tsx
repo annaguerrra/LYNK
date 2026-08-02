@@ -1,11 +1,18 @@
 import type { UploadedFileDTO } from "./attachment"
+import type { CompetenceDTO } from "./competence"
+
+// used to view an exam
+export interface viewExamDTO {
+    name: string
+    competencesId: number[]
+}
 
 // used to create an exam
 export interface registerExamDTO {
     name: string
     files: UploadedFileDTO[]
     disciplineId: number
-    competencesId: number[]
+    competencesId: CompetenceDTO[]
 }
 
 // used to create a file and attach to exam

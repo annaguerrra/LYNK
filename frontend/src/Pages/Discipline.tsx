@@ -24,7 +24,6 @@ export function Discipline() {
     //Variables to navigate and open modals
     const navigate = useNavigate();
     const [disciplines, setDisciplines] = useState<DisciplineDTO[]>([])
-    const [selectedAreaFilter, setSelectedAreaFilter] = useState<number | null>(null)
 
 
     const [newDisciplineModal, setNewDisciplineModal] = useState(false);
@@ -32,7 +31,6 @@ export function Discipline() {
     const [newAreaModal, setNewAreaModal] = useState(false);
     const [areasModal, setAreasModal] = useState(false);
     const [newUserModal, setNewUserModal] = useState(false);
-    const [editStudentModal, setEditStudentModal] = useState(false);
     const [excludeUserModal, setExcludeUserModal] = useState(false);
     const [editAreaModal, setEditAreaModal] = useState(false);
     const [excludeAreaModal, setExcludeAreaModal] = useState(false);

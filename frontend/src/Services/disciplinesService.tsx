@@ -38,7 +38,7 @@ export async function getDisciplineById(id: number): Promise<DisciplineDTO> {
 // Get discipline exams
 export async function getDisciplineExams(id: number): Promise<viewExamsDTO> {
     const response = await api.get(`/disciplines/${id}/exams`);
-    return response.data;
+    return response.data.response;
 }
 
 // Get discipline classes
