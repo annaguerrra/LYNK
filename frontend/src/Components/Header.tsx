@@ -33,7 +33,8 @@ export function Header() {
                     {/* User profile */}
                     <div className="userContainer">
                         <button className="user" onClick={() => setOpenBox(!openBox)}>
-                            <img className="userPicture" src="../../public/UserDefault/user-purple.png"></img>
+                            {/* <img className="userPicture" src="../../public/UserDefault/user-purple.png"></img> */}
+                            <i className="icon icon-download"></i>
 
                             <span>{user.username}</span>
                         </button>

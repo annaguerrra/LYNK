@@ -284,6 +284,7 @@ export function Discipline() {
                         <DisciplineComp
                         key={discipline.id}
                         Discipline={discipline}
+                        reload={loadDisciplines}
                         />
                     ))}
                     </div>
