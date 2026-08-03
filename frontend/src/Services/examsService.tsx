@@ -16,8 +16,10 @@ export async function getExamById(id: number): Promise<registerExamDTO> {
 }
 
 // Create a new exam
-export async function createExam(data: registerExamDTO): Promise<registerExamDTO> {
+export async function createExam(data: FormData): Promise<registerExamDTO> {
+    console.log(data)
     const response = await api.post("/exam/create", data);
+    console.log(response)
     return response.data;
 }
 
