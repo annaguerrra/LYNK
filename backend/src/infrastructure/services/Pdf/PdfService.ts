@@ -2,82 +2,208 @@ import { viewContentDTO } from "#application/dtos/classDTO.js";
 import { IPdfService } from "#application/services/Pdf/IPdf.service.js";
 import { marked, Tokens } from "marked";
 import sharp from "sharp";
-import PDFDocument, { lineTo } from 'pdfkit'
+import PDFDocument from "pdfkit";
 
-export class PdfService implements IPdfService{
+export class PdfService implements IPdfService {
 
     private getContentWidth(doc: PDFKit.PDFDocument): number {
         return doc.page.width - doc.page.margins.left - doc.page.margins.right;
     }
 
+    private getBottomLimit(doc: PDFKit.PDFDocument): number {
+        return doc.page.height - doc.page.margins.bottom;
+    }
+
     private ensureSpace(doc: PDFKit.PDFDocument, neededHeight: number): void {
-        const bottomLimit = doc.page.height - doc.page.margins.bottom;
+        const bottomLimit = this.getBottomLimit(doc);
 
         if (doc.y + neededHeight > bottomLimit) {
             doc.addPage();
             this.renderHeader(doc);
         }
     }
+
+    private decodeHtml(value: string): string {
+        return value
+            .replace(/&amp;/g, "&")
+            .replace(/&quot;/g, '"')
+            .replace(/&#39;/g, "'")
+            .replace(/&apos;/g, "'")
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">");
+    }
+
+    private cleanText(text: string): string {
+        return this.decodeHtml(text)
+            .replace(/<br\s*\/?>/gi, "\n")
+            .replace(/<\/?strong>/gi, "")
+            .replace(/<\/?b>/gi, "")
+            .replace(/<\/?em>/gi, "")
+            .replace(/<\/?i>/gi, "")
+            .trim();
+    }
+
+    /**
+     * Converts HTML images into Markdown images before marked.lexer().
+     * This prevents <img> from being split into normal text tokens.
+     */
+    private normalizeImages(markdown: string): string {
+        const decodedMarkdown = this.decodeHtml(markdown);
+
+        return decodedMarkdown.replace(
+            /<img\b[^>]*src\s*=\s*["']([^"']+)["'][^>]*>/gi,
+            (_match, src) => {
+                const cleanSrc = this.decodeHtml(String(src)).trim();
+
+                return `\n\n![](${cleanSrc})\n\n`;
+            }
+        );
+    }
+
+    private extractImageFromHtml(html: string): { src: string; alt?: string } | null {
+        const srcMatch = html.match(/src\s*=\s*["']([^"']+)["']/i);
+        const altMatch = html.match(/alt\s*=\s*["']([^"']*)["']/i);
+
+        if (!srcMatch) {
+            return null;
+        }
+
+        return {
+            src: this.decodeHtml(srcMatch[1].trim()),
+            alt: altMatch?.[1] ? this.decodeHtml(altMatch[1].trim()) : undefined
+        };
+    }
+
     private renderHeader(doc: PDFKit.PDFDocument): void {
         const pageWidth = doc.page.width;
 
-        // draws the header and paints it 
-        doc 
+        doc
             .rect(0, 0, pageWidth, 8)
             .fill("#E20015");
 
-        // BOSCH logo and slogan
         doc
-            .fill("#111111")
+            .fillColor("#111111")
             .font("Helvetica-Bold")
             .fontSize(18)
             .text("BOSCH", 50, 26);
-        
+
         doc
             .fillColor("#333333")
             .font("Helvetica")
             .fontSize(7)
             .text("Tecnologia para a vida", 50, 46);
 
-        // draws a divider line
         doc
             .moveTo(50, 70)
             .lineTo(pageWidth - 50, 70)
             .strokeColor("#dddddd")
+            .lineWidth(1)
             .stroke();
-        
-        // moves down the cursor next to the content, so it wont be too close to the header 
+
         doc.y = 95;
     }
-    
-    // each method below will create and render a md structre
+
     private renderTitle(doc: PDFKit.PDFDocument, title: string): void {
+        this.ensureSpace(doc, 60);
+
         doc
             .fillColor("#111111")
             .font("Helvetica-Bold")
             .fontSize(24)
-            .text(title, {
-                align: "left"
+            .text(this.cleanText(title), {
+                align: "left",
+                width: this.getContentWidth(doc)
             });
-        
-        doc.moveDown(1.5);
+
+        doc.moveDown(1.2);
     }
 
-    // During the the md conversion, if a quote is identified this method will be called, and the styles below will be applied
-    private renderBlockquote(doc: PDFKit.PDFDocument, text: string) : void {
+    private renderHeading(doc: PDFKit.PDFDocument, text: string, depth: number): void {
+        const fontSize = depth === 1 ? 20 : depth === 2 ? 17 : 14;
+
+        this.ensureSpace(doc, fontSize + 40);
+
+        doc.moveDown(0.5);
+
+        doc
+            .fillColor("#111111")
+            .font("Helvetica-Bold")
+            .fontSize(fontSize)
+            .text(this.cleanText(text), {
+                width: this.getContentWidth(doc),
+                lineGap: 2
+            });
+
+        if (depth === 1) {
+            doc
+                .moveTo(doc.page.margins.left, doc.y + 4)
+                .lineTo(doc.page.width - doc.page.margins.right, doc.y + 4)
+                .strokeColor("#E20015")
+                .lineWidth(1)
+                .stroke();
+
+            doc.moveDown(0.8);
+        } else {
+            doc.moveDown(0.4);
+        }
+    }
+
+    private renderParagraph(doc: PDFKit.PDFDocument, text: string): void {
+        const cleanText = this.cleanText(text);
+
+        if (!cleanText) {
+            return;
+        }
+
+        this.ensureSpace(doc, 35);
+
+        doc
+            .fillColor("#222222")
+            .font("Helvetica")
+            .fontSize(11)
+            .text(cleanText, {
+                align: "left",
+                lineGap: 4,
+                width: this.getContentWidth(doc)
+            });
+
+        doc.moveDown(0.8);
+    }
+
+    private renderBlockquote(doc: PDFKit.PDFDocument, text: string): void {
+        const cleanText = this.cleanText(text);
+
+        if (!cleanText) {
+            return;
+        }
+
+        this.ensureSpace(doc, 50);
+
+        const startX = doc.page.margins.left;
+        const startY = doc.y;
+        const width = this.getContentWidth(doc);
+
+        const quoteHeight = doc.heightOfString(cleanText, {
+            width: width - 30,
+            lineGap: 4
+        });
+
+        doc
+            .rect(startX, startY, 4, quoteHeight + 12)
+            .fill("#E20015");
+
         doc
             .fillColor("#555555")
             .font("Helvetica-Oblique")
             .fontSize(11)
-            .text(text, {
-                indent: 18,
+            .text(cleanText, startX + 16, startY + 4, {
+                width: width - 30,
                 lineGap: 4
             });
-        
-        doc.moveDown(0.8);
+
+        doc.y = startY + quoteHeight + 18;
     }
 
-    // During the the md conversion, if a code block is identified this method will be called, and the style below will be applied
     private renderCode(doc: PDFKit.PDFDocument, code: string): void {
         const startX = doc.page.margins.left;
         const width = this.getContentWidth(doc);
@@ -112,6 +238,33 @@ export class PdfService implements IPdfService{
 
         doc.y = startY + boxHeight + 18;
     }
+
+    private renderList(doc: PDFKit.PDFDocument, items: Tokens.ListItem[]): void {
+        for (const item of items) {
+            const cleanText = this.cleanText(item.text);
+
+            if (!cleanText) {
+                continue;
+            }
+
+            this.ensureSpace(doc, 30);
+
+            doc
+                .fillColor("#222222")
+                .font("Helvetica")
+                .fontSize(11)
+                .text(`• ${cleanText}`, {
+                    indent: 16,
+                    lineGap: 3,
+                    width: this.getContentWidth(doc) - 16
+                });
+
+            doc.moveDown(0.3);
+        }
+
+        doc.moveDown(0.5);
+    }
+
     private async loadImageBuffer(src: string): Promise<Buffer> {
         let imageBuffer: Buffer;
 
@@ -126,10 +279,15 @@ export class PdfService implements IPdfService{
         }
 
         else if (src.startsWith("http://") || src.startsWith("https://")) {
-            const response = await fetch(src);
+            const response = await fetch(src, {
+                headers: {
+                    "User-Agent": "Mozilla/5.0",
+                    "Accept": "image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8"
+                }
+            });
 
             if (!response.ok) {
-                throw new Error(`Could not load image: ${src}`);
+                throw new Error(`Could not load image: ${response.status} ${response.statusText} - ${src}`);
             }
 
             const arrayBuffer = await response.arrayBuffer();
@@ -144,21 +302,24 @@ export class PdfService implements IPdfService{
             throw new Error(`Unsupported image source: ${src}`);
         }
 
-        // PDFKit has better support for PNG/JPG.
-        // So we convert possible WEBP/unsupported images to PNG.
         return await sharp(imageBuffer)
             .png()
             .toBuffer();
     }
 
-    private async renderImage( doc: PDFKit.PDFDocument, src: string, alt?: string): Promise<void> {
+    private async renderImage(
+        doc: PDFKit.PDFDocument,
+        src: string,
+        alt?: string
+    ): Promise<void> {
         try {
-            const imageBuffer = await this.loadImageBuffer(src);
+            const cleanSrc = this.decodeHtml(src).trim();
+            const imageBuffer = await this.loadImageBuffer(cleanSrc);
 
             const width = this.getContentWidth(doc);
             const maxImageHeight = 320;
 
-            this.ensureSpace(doc, maxImageHeight + 40);
+            this.ensureSpace(doc, maxImageHeight + 45);
 
             const startY = doc.y;
 
@@ -174,8 +335,9 @@ export class PdfService implements IPdfService{
                     .fillColor("#666666")
                     .font("Helvetica-Oblique")
                     .fontSize(8)
-                    .text(alt, {
-                        align: "center"
+                    .text(this.cleanText(alt), {
+                        align: "center",
+                        width: this.getContentWidth(doc)
                     });
 
                 doc.moveDown(0.8);
@@ -184,85 +346,27 @@ export class PdfService implements IPdfService{
             }
 
         } catch (error) {
+            console.error("Erro ao renderizar imagem no PDF:", {
+                src,
+                error
+            });
+
             doc
                 .fillColor("#B00020")
                 .font("Helvetica-Oblique")
                 .fontSize(9)
-                .text(`[Imagem não carregada: ${src}]`);
+                .text(`[Imagem não carregada: ${src}]`, {
+                    width: this.getContentWidth(doc)
+                });
 
             doc.moveDown(0.8);
         }
     }
 
-    // During the the md conversion, if a list is identified this method will be called, and the style below will be applied
-    private renderList( doc: PDFKit.PDFDocument, items: Tokens.ListItem[]) : void {
-        for( const item of items){ 
-            doc
-                .fillColor("#222222")
-                .font("Helvetica")
-                .fontSize(11)
-                .text(`• ${item.text}`, { // creates the bullets
-                    indent: 16,
-                    lineGap: 3,
-                    width: this.getContentWidth(doc) - 16
-                });
-
-            doc.moveDown(0.3) // line break
-        }
-
-        doc.moveDown(0.5);
-    }
-
-    // During the the md conversion, if a paragraph is identified this method will be called, and the style below will be applied
-    private renderParagraph( doc: PDFKit.PDFDocument, text: string) : void {
-
-        this.ensureSpace(doc, 40);
-
-        doc
-            .fillColor("#222222")
-            .font("Helvetica")
-            .fontSize(11)
-            .text(text, {
-                align: "left",
-                lineGap: 4,
-                width: this.getContentWidth(doc)
-            });
-
-        doc.moveDown(0.8);
-    }
-
-    // During the the md conversion, if a heading is identified this method will be called, and the style below will be applied
-    private renderHeading(  doc: PDFKit.PDFDocument, text: string, depth: number) : void {
-        // depth represents the title level
-        const fontSize = depth === 1 ? 20 : depth == 2 ? 17 : 14
-
-        this.ensureSpace(doc, fontSize + 35);
-        doc.moveDown(0.6);
-
-        doc
-            .fillColor("#111111")
-            .font("Helvetica-Bold")
-            .fontSize(fontSize)
-            .text(text, {
-                lineGap: 2
-            });
-            
-            if( depth === 1) {
-                doc
-                    .moveTo(doc.page.margins.left, doc.y + 4)
-                    .lineTo(doc.page.width - doc.page.margins.right, doc.y + 4)
-                    .strokeColor("#E20015")
-                    .lineWidth(1)
-                    .stroke();
-                
-                    doc.moveDown(0.8);
-            } else {
-                doc.moveDown(0.4);
-            }
-
-    }
-
-    private async renderInlineTokens( doc: PDFKit.PDFDocument, tokens: Tokens.Generic[] ): Promise<void> {
+    private async renderInlineTokens(
+        doc: PDFKit.PDFDocument,
+        tokens: Tokens.Generic[]
+    ): Promise<void> {
         for (const token of tokens) {
             if (token.type === "text") {
                 const textToken = token as Tokens.Text;
@@ -286,6 +390,8 @@ export class PdfService implements IPdfService{
 
                 if (image) {
                     await this.renderImage(doc, image.src, image.alt);
+                } else {
+                    this.renderParagraph(doc, htmlToken.text);
                 }
             }
 
@@ -299,7 +405,8 @@ export class PdfService implements IPdfService{
                     .text(linkToken.text || linkToken.href, {
                         link: linkToken.href,
                         underline: true,
-                        lineGap: 4
+                        lineGap: 4,
+                        width: this.getContentWidth(doc)
                     });
 
                 doc.moveDown(0.6);
@@ -313,7 +420,8 @@ export class PdfService implements IPdfService{
                     .font("Courier")
                     .fontSize(10)
                     .text(codeToken.text, {
-                        lineGap: 4
+                        lineGap: 4,
+                        width: this.getContentWidth(doc)
                     });
 
                 doc.moveDown(0.4);
@@ -321,23 +429,11 @@ export class PdfService implements IPdfService{
         }
     }
 
-    private extractImageFromHtml(html: string): { src: string; alt?: string } | null {
-        const srcMatch = html.match(/src=["']([^"']+)["']/);
-        const altMatch = html.match(/alt=["']([^"']*)["']/);
-
-        if (!srcMatch) {
-            return null;
-        }
-
-        return {
-            src: srcMatch[1],
-            alt: altMatch?.[1]
-        };
-    }
-
-    // token represents a single unit of a structured md object. This method identifies the object and renders it.
-    private async renderToken(doc: PDFKit.PDFDocument, token: Tokens.Generic): Promise<void> {
-        switch(token.type) {
+    private async renderToken(
+        doc: PDFKit.PDFDocument,
+        token: Tokens.Generic
+    ): Promise<void> {
+        switch (token.type) {
             case "heading": {
                 const heading = token as Tokens.Heading;
                 this.renderHeading(doc, heading.text, heading.depth);
@@ -351,9 +447,12 @@ export class PdfService implements IPdfService{
                 if (image) {
                     await this.renderImage(doc, image.src, image.alt);
                 }
+
                 else if (paragraph.tokens && paragraph.tokens.length > 0) {
                     await this.renderInlineTokens(doc, paragraph.tokens as Tokens.Generic[]);
-                } else {
+                }
+
+                else {
                     this.renderParagraph(doc, paragraph.text);
                 }
 
@@ -390,6 +489,8 @@ export class PdfService implements IPdfService{
 
                 if (image) {
                     await this.renderImage(doc, image.src, image.alt);
+                } else {
+                    this.renderParagraph(doc, htmlToken.text);
                 }
 
                 break;
@@ -406,16 +507,19 @@ export class PdfService implements IPdfService{
         }
     }
 
-    // reads the md and transforms the token, which is the identified structure of the md
-    private async renderMarkdown(doc: PDFKit.PDFDocument, markdown: string): Promise<void> {
-        const tokens = marked.lexer(markdown);
+    private async renderMarkdown(
+        doc: PDFKit.PDFDocument,
+        markdown: string
+    ): Promise<void> {
+        const normalizedMarkdown = this.normalizeImages(markdown);
+
+        const tokens = marked.lexer(normalizedMarkdown);
 
         for (const token of tokens) {
             await this.renderToken(doc, token);
         }
     }
 
-    // compiles all the md structures and converts into a pdf document
     async generatePdf(markdownInfo: viewContentDTO): Promise<Buffer> {
         return new Promise((resolve, reject) => {
             const doc = new PDFDocument({
@@ -452,5 +556,4 @@ export class PdfService implements IPdfService{
             buildPdf();
         });
     }
-
 }
