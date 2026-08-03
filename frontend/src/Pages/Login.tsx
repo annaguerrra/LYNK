@@ -65,8 +65,8 @@ export function Login() {
 
             setMustChangePassword(false);
 
-            // setUsername("");
-            // setUserPassword("");
+            setUsername("");
+            setUserPassword("");
         } catch (error) {
             notifyServer()
             console.error(userPassword,
