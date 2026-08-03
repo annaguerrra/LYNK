@@ -17,10 +17,11 @@ import { deleteCompetence, updateCompetence } from "../../Services/competencesSe
 
 interface CompetencesViewProps {
     discipline: DisciplineDTO;
+    refresh?: boolean
 }
 
 
-export function CompetencesView({ discipline }: CompetencesViewProps) {
+export function CompetencesView({ discipline, refresh }: CompetencesViewProps) {
     //Variables to navigate and open modals
     const navigate = useNavigate();
 
@@ -82,6 +83,8 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
             setSelectedCompetence(null);
             setExcludeCompetenceModal(false);
 
+            await loadCompetences();
+
         } catch (error) {
             console.error(error);
 
@@ -127,6 +130,8 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
             setSelectedCompetence(null);
             setEditCompetenceModal(false);
 
+            await loadCompetences();
+
         } catch (error) {
             console.error(error);
 
@@ -148,7 +153,7 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
 
     useEffect(() => {
         loadCompetences();
-    }, [discipline.id]);
+    }, [discipline.id, refresh]);
 
     useEffect(() => {
     }, [competences]);
