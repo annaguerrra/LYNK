@@ -70,8 +70,8 @@ export function Login() {
 
             setUsername("");
             setUserPassword("");
-        } catch (error) {
-            console.log(error.response)
+        } catch (error: any) {
+            console.error(error.response)
             // arruma aqui para disparar a mensagem correta
             notifyServer()
             
