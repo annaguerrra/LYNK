@@ -24,7 +24,7 @@ export async function createExam(data: FormData): Promise<registerExamDTO> {
 }
 
 // Update a exam
-export async function updateExam(id: number, data: updateExamDTO): Promise<updateExamDTO> {
+export async function updateExam(id: number, data: FormData): Promise<updateExamDTO> {
     const response = await api.put(`/exam/edit/${id}`, data);
     return response.data;
 }

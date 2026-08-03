@@ -24,6 +24,7 @@ export interface attachtFileDTO {
 // used to edit an exam
 export interface updateExamDTO {
     name: string
+    files: File[];
     disciplineId: number
     competencesId: number[]
 }
