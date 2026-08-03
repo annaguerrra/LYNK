@@ -167,7 +167,7 @@ export function Content() {
             examData.append("name", data.name);
             examData.append("disciplineId", data.disciplineId.toString());
 
-            data.files.forEach((file) => {
+            data.attachments.forEach((file) => {
                 examData.append("files", file);
             });
 
@@ -184,20 +184,12 @@ export function Content() {
             setExamCompetences([]);
             setNewTest(false);
 
-<<<<<<< HEAD
-            return createdExam;
-        } catch (error) {
-            console.error(error);
-            toast.error("Erro ao criar a avaliação.");
-        }
-=======
         setRefreshExams(prev => !prev);
 
         return createdExam;
     } catch (error) {
         console.error(error);
         toast.error("Erro ao criar a avaliação.");
->>>>>>> a0215a6c58ca65ed952c4ea09f529ec6896b25bb
     }
 
     async function loadCompetencesByDiscipline(disciplineId: number) {
@@ -373,7 +365,10 @@ export function Content() {
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => creatingExam({
-                            name: examName, files: examFile ? [examFile] : [], disciplineId: discipline.id, competencesId: examCompetences.map(c => c.id)}
+                            name: examName, 
+                            attachments: examFile, 
+                            disciplineId: discipline.id,
+                            competencesId: examCompetences.map(c => c.id)}
                         )}></Button>
                     </div>
                 </div>
@@ -438,4 +433,4 @@ export function Content() {
             )} */}
         </>
     );
-}
+}}

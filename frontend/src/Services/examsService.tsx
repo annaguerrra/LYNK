@@ -30,20 +30,25 @@ export async function updateExam(id: number, data: FormData): Promise<updateExam
 }
 
 // Attach a file to a material
-export async function attachExamFile(data: AttachFileDTO): Promise<registerExamDTO> {
-    const response = await api.put("/exam/attach", data);
+export async function attachExamFile(id: number,data: AttachFileDTO): Promise<registerExamDTO> {
+    const response = await api.put(`/exam/${id}/attach`, data);
     return response.data;
 }
 
 // Download a material attachment
-export async function downloadExamFile(id: number, examFileId: number): Promise<Blob> {
-    const response = await api.get<Blob>(`/exam/download/${id}/${examFileId}`, {
-        responseType: "blob",
-    });
+export async function downloadExamFile(
+    id: number,
+    examAttachmentId: number
+): Promise<Blob> {
+    const response = await api.get<Blob>(
+        `/exam/${id}/download/${examAttachmentId}`,
+        {
+            responseType: "blob",
+        }
+    );
 
     return response.data;
 }
-
 // Delete an exam by ID
 export async function deleteExam(id: number) {
     const response = await api.delete(`/exam/delete/${id}`);

@@ -10,7 +10,7 @@ export interface viewExamDTO {
 // used to create an exam
 export interface RegisterExamDTO {
     name: string;
-    files: File[];
+    attachments: File[];
     disciplineId: number;
     competencesId: number[];
 }
@@ -27,4 +27,20 @@ export interface updateExamDTO {
     files: File[];
     disciplineId: number
     competencesId: number[]
+}
+
+export interface ExamAttachmentDTO {
+    id: number;
+    attachmentId: string;
+    examId: number;
+}
+
+export interface ExamDTO {
+    id: number;
+    name: string;
+    attachments: ExamAttachmentDTO[];
+    competences?: {
+        id: number;
+        name: string;
+    }[];
 }

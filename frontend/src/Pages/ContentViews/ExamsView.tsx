@@ -13,10 +13,11 @@ import LessonSelect from "../../Components/LessonSelect"
 import type { CompetenceDTO } from "../../Types/competence"
 import { toast } from "react-toastify"
 import { getDisciplineExams } from "../../Services/disciplinesService"
-import type { DisciplineDTO, viewExamsDTO } from "../../Types/discipline"
 import { isAxiosError } from "axios"
 import type { RegisterExamDTO, updateExamDTO } from "../../Types/exam"
-import { deleteExam, updateExam } from "../../Services/examsService"
+import { deleteExam, downloadExamFile, updateExam } from "../../Services/examsService"
+import type { DisciplineDTO, viewExamsDTO } from "../../Types/discipline"
+import type { ExamDTO } from "../../Types/exam";
 
 
 interface ExamsViewProps {
@@ -50,8 +51,8 @@ export function ExamsView({ refresh }: ExamsViewProps ) {
     const isInstructor = user?.role === "INSTRUCTOR";
     
     const [viewExamModal, setViewExamModal] = useState(false);
-    const [exams, setExams] = useState<RegisterExamDTO[]>([]);
-    const [selectedExam, setSelectedExam] = useState<RegisterExamDTO | null>(null);
+    const [exams, setExams] = useState<ExamDTO[]>([]);
+    const [selectedExam, setSelectedExam] = useState<ExamDTO | null>(null);
     const [loading, setLoading] = useState(true);
 
     const { discipline_id } = useParams<{ discipline_id: string }>();
@@ -89,6 +90,24 @@ export function ExamsView({ refresh }: ExamsViewProps ) {
         }
     }
 
+    async function handleDownloadExamFile(examId: number, examAttachmentId: number) {
+        try {
+            const data = await downloadExamFile(examId, examAttachmentId);
+
+            const url = URL.createObjectURL(data);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = selectedExam?.name ?? "avaliacao";
+
+            link.click();
+
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao baixar arquivo da avaliação.");
+        }
+    }
 
     async function editExam(id: number, data: updateExamDTO) {
         if (!discipline) return;
@@ -169,9 +188,9 @@ export function ExamsView({ refresh }: ExamsViewProps ) {
                     <RowItem
                         key={exam.id}
                         onClick={() => {
-                            setViewExamModal(true)
-                            setExamName(exam.name)
-                            setExamFile(exam.files)
+                            setSelectedExam(exam);
+                            setViewExamModal(true);
+                            setExamName(exam.name);
                         }}
                         color="var(--acqua)"
                         size="--medium"
@@ -226,18 +245,17 @@ export function ExamsView({ refresh }: ExamsViewProps ) {
                         <div className="textBox">
                             <h2>Arquivos</h2>
                             <div className="scrollBox">
-                            {selectedExam?.files.map(file => (
+                            {selectedExam?.attachments?.map((attachment) => (
                                 <RowItem
-                                    key={file.id}
+                                    key={attachment.id}
                                     type="attachment"
                                 >
-                                    <a
-                                        href={file.url}
-                                        target="_blank"
-                                        rel="noreferrer"
+                                    <button
+                                        type="button"
+                                        onClick={() => handleDownloadExamFile(selectedExam.id, attachment.id)}
                                     >
-                                        {file.name}
-                                    </a>
+                                        Baixar anexo {attachment.id}
+                                    </button>
                                 </RowItem>
                             ))}
                             </div>
