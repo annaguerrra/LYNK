@@ -15,8 +15,8 @@ import { toast } from "react-toastify"
 import { getDisciplineExams } from "../../Services/disciplinesService"
 import type { DisciplineDTO, viewExamsDTO } from "../../Types/discipline"
 import { isAxiosError } from "axios"
-import type { updateExamDTO } from "../../Types/exam"
-import { deleteExam } from "../../Services/examsService"
+import type { RegisterExamDTO, updateExamDTO } from "../../Types/exam"
+import { deleteExam, updateExam } from "../../Services/examsService"
 
 
 interface ExamsViewProps {
@@ -49,14 +49,15 @@ export function ExamsView({ discipline }: ExamsViewProps ) {
     const isAdmin = user?.role === "ADMIN";
     const isInstructor = user?.role === "INSTRUCTOR";
     
-    const [exams, setExams] = useState<viewExamsDTO[]>([]);
-    const [selectedExam, setSelectedExam] = useState<viewExamsDTO | null>(null);
+    const [viewExamModal, setViewExamModal] = useState(false);
+    const [exams, setExams] = useState<RegisterExamDTO[]>([]);
+    const [selectedExam, setSelectedExam] = useState<RegisterExamDTO | null>(null);
     const [loading, setLoading] = useState(true);
 
     const { discipline_id } = useParams<{ discipline_id: string }>();
     console.log(discipline_id)
     const [examName, setExamName] = useState("");
-    const [examFile, setExamFile] = useState<File | null>(null);
+    const [examFile, setExamFile] = useState<File[]>([]);
     const [examCompetences, setExamCompetences] = useState<CompetenceDTO[]>([]);
 
     async function loadExams() {
@@ -88,8 +89,40 @@ export function ExamsView({ discipline }: ExamsViewProps ) {
         }
     }
 
-    async function editExam(data: updateExamDTO) {
+
+    async function editExam(id: number, data: updateExamDTO) {
+        if (!discipline) return;
+        if (!id) return;
         
+        try {
+            const examData = new FormData();
+
+            examData.append("name", data.name);
+            examData.append("disciplineId", data.disciplineId.toString());
+
+            data.files.forEach((file) => {
+                examData.append("files", file);
+            });
+
+            data.competencesId.forEach((id) => {
+                examData.append("competencesId", id.toString());
+            });
+
+            const updatedExam = await updateExam(id, examData);
+
+            toast.success("Avaliação atualizada com sucesso!");
+
+            setExamName("");
+            setExamFile(null);
+            setExamCompetences([]);
+            setEditTestModal(false)
+            loadExams();
+
+            return updatedExam;
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao atualizar a avaliação.");
+        }
     }
 
     async function excludeExam() {
@@ -134,6 +167,9 @@ export function ExamsView({ discipline }: ExamsViewProps ) {
                     <RowItem
                         key={exam.id}
                         onClick={() => {
+                            setViewExamModal(true)
+                            setExamName(exam.name)
+                            setExamFile(exam.files)
                         }}
                         color="var(--acqua)"
                         size="--medium"
@@ -143,15 +179,19 @@ export function ExamsView({ discipline }: ExamsViewProps ) {
                                 {(isAdmin || isInstructor) &&
                                     <MoreOpt size={22} data={
                                         [
-                                            {
-                                                name: "Editar avaliação",
-                                                onClick: () => {
-                                                    setEditTestModal(true)
-                                                }
-                                            },
+                                            // {
+                                            //     name: "Editar avaliação",
+                                            //     onClick: () => {
+                                            //         setSelectedExam(exam)
+                                            //         setExamName(exam.name)
+                                            //         setEditTestModal(true)
+                                            //     }
+                                            // },
                                             {
                                                 name: "Excluir avaliação",
                                                 onClick: () => {
+                                                    setSelectedExam(exam)
+                                                    setExamName(exam.name)
                                                     setExcludeTestModal(true)
                                                 },
                                                 color: "red"
@@ -167,76 +207,145 @@ export function ExamsView({ discipline }: ExamsViewProps ) {
                 ))}
             </div>
 
-            {/* Modal to edit the test */}
-            {editTestModal && (
-                            <div className="modalOverlay" onClick={() => { setEditTestModal(false)}}>
-                                <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                                    {/* Title and close button box */}
-                                    <div className="titleContainer">
-                                        <h1>Editar avaliação</h1>
-                                        <ButtonClose size={40} onClose={() => { setEditTestModal(false) }}></ButtonClose>
-                                    </div>
-                                    {/* Input for test name */}
-                                    <div className="textBox">
-                                        <h2>Nome da avaliação</h2>
-                                        <input type="text" value={examName} onChange={(e) => setExamName(e.target.value)} />
-                                    </div>
-                                    {/* Input to select the test file */}
-                                    <div className="textBox">
-                                        <h2>Selecione o arquivo</h2>
-                                        <input type="file" onChange={(e) => {
-                                            const file = e.target.files?.[0] ?? null;
-                                            setExamFile(file);
-                                        }} />
-                                    </div>
-                                    {/* Search for competence and its display */}
-                                    <div className="textBox">
-                                        <h2>Selecione as competências</h2>
-            
-                                        <div className='attachments' >
-                                            {/* Component used to search a competence */}
-                                            <LessonSelect lessons={allCompetences} onAdd={(competence) => {
-                                                setExamCompetences((prev) => {
-                                                    if (prev.some((c) => c.id === competence.id)) {
-                                                        toast.warning("Essa competência já foi adicionada.");
-                                                        return prev;
-                                                    }
-            
-                                                    return [...prev, competence];
-                                                });
-                                            }} />
-                                            <br />
-                                            <div className="scrollBox">
-            
-                                                {examCompetences.map((competence) => (
-                                                    <RowItem
-                                                        key={competence.id}
-                                                        type="competence"
-                                                        actions={
-                                                            <>
-                                                                <ButtonClose
-                                                                    size={18}
-                                                                    onClose={() => {
-                                                                        // ação para remover a competência
-                                                                    }}
-                                                                />
-                                                            </>
-                                                        }
-                                                    >
-                                                        <div>{competence.name}</div>
-                                                    </RowItem>
-                                                ))}
-                                            </div>
-                                        </div>
-            
-                                    </div>
-            
-                                    <Button ButtonTitle={"Enviar"} onClose={() => editExam({
-                                         name: examName, files: examFile ? [examFile] : [], disciplineId: examDiscipline, competencesId: examCompetences}
-                                    )}></Button>
+            {/* Modal to view the test */}
+            {viewExamModal && (
+                <div className="modalOverlay" onClick={() => { setViewExamModal(false)}}>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Visualizar avaliação</h1>
+                            <ButtonClose size={40} onClose={() => { setViewExamModal(false) }}></ButtonClose>
+                        </div>
+                        {/* Input for test name */}
+                        <div className="textBox">
+                            <h2>{examName}</h2>
+                        </div>
+                        {/* Input to select the test file */}
+                        <div className="textBox">
+                            <h2>Arquivos</h2>
+                            <div className="scrollBox">
+                            {selectedExam?.files.map(file => (
+                                <RowItem
+                                    key={file.id}
+                                    type="attachment"
+                                >
+                                    <a
+                                        href={file.url}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        {file.name}
+                                    </a>
+                                </RowItem>
+                            ))}
+                            </div>
+                        </div>
+                        {/* Search for competence and its display */}
+                        <div className="textBox">
+                            <h2>Competências</h2>
+
+                            <div className='attachments' >
+                                {/* Component used to search a competence */}
+                                
+                                <div className="scrollBox">
+
+                                    {examCompetences.map((competence) => (
+                                        <RowItem
+                                            key={competence.id}
+                                            type="competence"
+                                            actions={
+                                                <>
+                                                    <ButtonClose
+                                                        size={18}
+                                                        onClose={() => {
+                                                            // ação para remover a competência
+                                                        }}
+                                                    />
+                                                </>
+                                            }
+                                        >
+                                            <div>{competence.name}</div>
+                                        </RowItem>
+                                    ))}
                                 </div>
                             </div>
-                        )}
+                        </div>
+                            <div></div>
+                    </div>
+                </div>
+            )}
+
+
+            {/* Modal to edit the test */}
+            {editTestModal && (
+                <div className="modalOverlay" onClick={() => { setEditTestModal(false)}}>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Editar avaliação</h1>
+                            <ButtonClose size={40} onClose={() => { setEditTestModal(false) }}></ButtonClose>
+                        </div>
+                        {/* Input for test name */}
+                        <div className="textBox">
+                            <h2>Nome da avaliação</h2>
+                            <input type="text" value={examName} onChange={(e) => setExamName(e.target.value)} />
+                        </div>
+                        {/* Input to select the test file */}
+                        <div className="textBox">
+                            <h2>Selecione o arquivo</h2>
+                            <input type="file" onChange={(e) => {
+                                const file = e.target.files?.[0] ?? null;
+                                setExamFile(file);
+                            }} />
+                        </div>
+                        {/* Search for competence and its display */}
+                        <div className="textBox">
+                            <h2>Selecione as competências</h2>
+
+                            <div className='attachments' >
+                                {/* Component used to search a competence */}
+                                <LessonSelect lessons={allCompetences} onAdd={(competence) => {
+                                    setExamCompetences((prev) => {
+                                        if (prev.some((c) => c.id === competence.id)) {
+                                            toast.warning("Essa competência já foi adicionada.");
+                                            return prev;
+                                        }
+
+                                        return [...prev, competence];
+                                    });
+                                }} />
+                                <br />
+                                <div className="scrollBox">
+
+                                    {examCompetences.map((competence) => (
+                                        <RowItem
+                                            key={competence.id}
+                                            type="competence"
+                                            actions={
+                                                <>
+                                                    <ButtonClose
+                                                        size={18}
+                                                        onClose={() => {
+                                                            // ação para remover a competência
+                                                        }}
+                                                    />
+                                                </>
+                                            }
+                                        >
+                                            <div>{competence.name}</div>
+                                        </RowItem>
+                                    ))}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <Button ButtonTitle={"Enviar"} onClose={() => editExam(selectedExam.id, {
+                            name: examName, files: examFile ? [examFile] : [], disciplineId: discipline.id, competencesId: examCompetences.map(c => c.id)}
+                        )}></Button>
+                    </div>
+                </div>
+            )}
 
             {/* Modal to exclude the test */}
             {excludeTestModal && (

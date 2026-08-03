@@ -149,40 +149,41 @@ export function Content() {
 
     const [examName, setExamName] = useState("");
     // const [examDiscipline, setExamDiscipline] = discipline_id;
-    const [examFile, setExamFile] = useState<File | null>(null);
+    const [examFile, setExamFiles] = useState<File[]>([]);
     const [examCompetences, setExamCompetences] = useState<CompetenceDTO[]>([]);
     
     async function creatingExam(data: RegisterExamDTO) {
-    if (!discipline) return;
+        if (!discipline) return;
 
-    try {
-        const examData = new FormData();
+        try {
+            const examData = new FormData();
 
-        examData.append("name", data.name);
-        examData.append("disciplineId", data.disciplineId.toString());
+            examData.append("name", data.name);
+            examData.append("disciplineId", data.disciplineId.toString());
 
-        data.files.forEach((file) => {
-            examData.append("files", file);
-        });
+            data.files.forEach((file) => {
+                examData.append("files", file);
+            });
 
-        data.competencesId.forEach((id) => {
-            examData.append("competencesId", id.toString());
-        });
+            data.competencesId.forEach((id) => {
+                examData.append("competencesId", id.toString());
+            });
 
-        const createdExam = await createExam(examData);
+            const createdExam = await createExam(examData);
 
-        toast.success("Avaliação criada com sucesso!");
+            toast.success("Avaliação criada com sucesso!");
 
-        setExamName("");
-        setExamFile(null);
-        setExamCompetences([]);
+            setExamName("");
+            setExamFiles(null);
+            setExamCompetences([]);
+            setNewTest(false);
 
-        return createdExam;
-    } catch (error) {
-        console.error(error);
-        toast.error("Erro ao criar a avaliação.");
+            return createdExam;
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao criar a avaliação.");
+        }
     }
-}
 
     async function loadCompetencesByDiscipline(disciplineId: number) {
         try {
@@ -309,9 +310,9 @@ export function Content() {
                         {/* Input to select the test file */}
                         <div className="textBox">
                             <h2>Selecione o arquivo</h2>
-                            <input type="file" onChange={(e) => {
-                                const file = e.target.files?.[0] ?? null;
-                                setExamFile(file);
+                            <input type="file" multiple onChange={(e) => {
+                                const files = Array.from(e.target.files ?? []);
+                                setExamFiles(files);
                             }} />
                         </div>
                         {/* Search for competence and its display */}
