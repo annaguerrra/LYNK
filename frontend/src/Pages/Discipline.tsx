@@ -191,10 +191,10 @@ export function Discipline() {
     }
 
     const filteredDisciplines =
-        selectedAreaFilter === null
+        selectedAreaId === null
             ? disciplines
             : disciplines.filter(
-                (discipline) => discipline.area.id === selectedAreaFilter
+                (discipline) => discipline.area.id === selectedAreaId
             );
     
     useEffect(() => {
@@ -329,9 +329,9 @@ export function Discipline() {
                         <form>
                             <select
                                 className="selectFilter"
-                                value={selectedAreaFilter ?? ""}
+                                value={selectedAreaId ?? ""}
                                 onChange={(e) =>
-                                    setSelectedAreaFilter(
+                                    setSelectedAreaId(
                                     e.target.value === "" ? null : Number(e.target.value)
                                     )
                                 }
