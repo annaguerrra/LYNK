@@ -1,6 +1,6 @@
 import "../Styles/Views.css"
 import { useNavigate, useParams } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ButtonIcon } from "../../Components/ButtonIcon"
 import { MoreOpt } from "../../Components/MoreOpt"
 import { RowItem } from "../../Components/RowItem"
@@ -54,16 +54,18 @@ export function ExamsView({ discipline }: ExamsViewProps ) {
     const [loading, setLoading] = useState(true);
 
     const { discipline_id } = useParams<{ discipline_id: string }>();
+    console.log(discipline_id)
     const [examName, setExamName] = useState("");
-    const [examDiscipline, setExamDiscipline] = discipline_id;
-    const [examFile, setExamFile] = useState<UploadedFileDTO | null>(null);
+    const [examFile, setExamFile] = useState<File | null>(null);
     const [examCompetences, setExamCompetences] = useState<CompetenceDTO[]>([]);
 
     async function loadExams() {
         try {
-            const response = await getDisciplineExams(discipline.id);
+            console.log(discipline);
+            const response = await getDisciplineExams(Number(discipline_id));
+            console.log(response)
 
-            setExams(response);
+            setExams(response.exams);
 
         } catch (error) {
             if (isAxiosError(error)) {
@@ -79,7 +81,7 @@ export function ExamsView({ discipline }: ExamsViewProps ) {
             }
 
             console.error(error);
-            toast.error("Erro ao carregar competências.");
+            toast.error("Erro ao carregar avaliações.");
 
         } finally {
             setLoading(false);
@@ -96,7 +98,7 @@ export function ExamsView({ discipline }: ExamsViewProps ) {
         try {
             await deleteExam(selectedExam.id);
 
-            toast.success("Competência excluída com sucesso.");
+            toast.success("Avaliação excluída com sucesso.");
 
             setSelectedExam(null);
             setExcludeTestModal(false);
@@ -119,6 +121,10 @@ export function ExamsView({ discipline }: ExamsViewProps ) {
             toast.error("Erro ao excluir avaliação.");
         }
     }
+
+    useEffect(() => {
+        loadExams();
+    }, []);
 
     return (
         <>

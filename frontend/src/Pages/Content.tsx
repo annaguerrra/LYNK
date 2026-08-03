@@ -23,10 +23,10 @@ import { createClassService } from "../Services/classesService";
 import ActivityIndicator from "../Components/ActivityIndicator";
 import type { CompetenceDTO } from "../Types/competence";
 import { createCompetenceService } from "../Services/competencesService";
-import type { ClassDTO } from "../Types/class";
+// import type { ClassDTO } from "../Types/class";
 import { createExam } from "../Services/examsService";
-import type { registerExamDTO } from "../Types/exam";
-import type { UploadedFileDTO } from "../Types/attachment";
+import type { RegisterExamDTO } from "../Types/exam";
+// import type { UploadedFileDTO } from "../Types/attachment";
 
 
 
@@ -148,29 +148,41 @@ export function Content() {
     }
 
     const [examName, setExamName] = useState("");
-    const [examDiscipline, setExamDiscipline] = discipline_id;
-    const [examFile, setExamFile] = useState<UploadedFileDTO | null>(null);
+    // const [examDiscipline, setExamDiscipline] = discipline_id;
+    const [examFile, setExamFile] = useState<File | null>(null);
     const [examCompetences, setExamCompetences] = useState<CompetenceDTO[]>([]);
     
-    async function creatingExam(data: registerExamDTO) {
-        if (!discipline) return;
+    async function creatingExam(data: RegisterExamDTO) {
+    if (!discipline) return;
 
-        try {
-            const createdExam = await createExam(data);
-            toast.success("Avaliação criada com sucesso!");
+    try {
+        const examData = new FormData();
 
-            setExamName("");
-            return createdExam;
-        } catch (error) {
-            console.log(error)
-            toast.error("Erro ao criar a avaliação.");
-            return;
-        }
+        examData.append("name", data.name);
+        examData.append("disciplineId", data.disciplineId.toString());
 
+        data.files.forEach((file) => {
+            examData.append("files", file);
+        });
+
+        data.competencesId.forEach((id) => {
+            examData.append("competencesId", id.toString());
+        });
+
+        const createdExam = await createExam(examData);
+
+        toast.success("Avaliação criada com sucesso!");
+
+        setExamName("");
+        setExamFile(null);
+        setExamCompetences([]);
+
+        return createdExam;
+    } catch (error) {
+        console.error(error);
+        toast.error("Erro ao criar a avaliação.");
     }
-
-
-
+}
 
     async function loadCompetencesByDiscipline(disciplineId: number) {
         try {
@@ -345,7 +357,7 @@ export function Content() {
                         </div>
 
                         <Button ButtonTitle={"Enviar"} onClose={() => creatingExam({
-                            name: examName, files: examFile ? [examFile] : [], disciplineId: examDiscipline, competencesId: examCompetences}
+                            name: examName, files: examFile ? [examFile] : [], disciplineId: discipline.id, competencesId: examCompetences.map(c => c.id)}
                         )}></Button>
                     </div>
                 </div>
