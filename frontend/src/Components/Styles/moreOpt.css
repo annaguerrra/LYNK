@@ -1,3 +1,8 @@
+.moreOptContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .moreOpt{
     padding: 0.2vw;
@@ -9,6 +14,7 @@
 .optImg {
     position: static;
     right: 0;
+    cursor: pointer;
 }
 
 .moreOptModal {
@@ -16,6 +22,8 @@
     display: flex;
     flex-direction: column;
     box-shadow: 0 6px 12px -6px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+    min-width: max-content;
 }
 
 .moreOptModal button {
@@ -27,4 +35,5 @@
     font-size: large;
     cursor: pointer;
     border-color: black;
+    white-space: nowrap;
 }
