@@ -71,7 +71,7 @@ export function Login() {
             setUsername("");
             setUserPassword("");
         } catch (error) {
-            console.log(error.response)
+            console.log(error.response.data)
             // arruma aqui para disparar a mensagem correta
             notifyServer()
             
