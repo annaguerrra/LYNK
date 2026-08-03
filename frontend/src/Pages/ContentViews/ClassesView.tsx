@@ -114,7 +114,8 @@ export function ClassesView({ discipline }: ClassesViewProps) {
 
             URL.revokeObjectURL(url);
 
-        } catch (error) {
+        } catch (error: any) {
+            console.log(error.response.data)
             console.error(error);
             toast.error("Erro ao baixar aula.");
         }

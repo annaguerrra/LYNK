@@ -20,10 +20,10 @@ import { deleteExam, updateExam } from "../../Services/examsService"
 
 
 interface ExamsViewProps {
-    discipline: DisciplineDTO;
+    refresh?: boolean
 }
 
-export function ExamsView({ discipline }: ExamsViewProps ) {
+export function ExamsView({ refresh }: ExamsViewProps ) {
     //Variables to navigate and open modals
     const navigate = useNavigate();
     const [editTestModal, setEditTestModal] = useState(false);
@@ -62,7 +62,7 @@ export function ExamsView({ discipline }: ExamsViewProps ) {
 
     async function loadExams() {
         try {
-            console.log(discipline);
+            // console.log(discipline);
             const response = await getDisciplineExams(Number(discipline_id));
             console.log(response)
 
@@ -135,6 +135,8 @@ export function ExamsView({ discipline }: ExamsViewProps ) {
 
             setSelectedExam(null);
             setExcludeTestModal(false);
+
+            await loadExams();
 
         } catch (error) {
             console.error(error);

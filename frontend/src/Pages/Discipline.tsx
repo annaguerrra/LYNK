@@ -254,7 +254,7 @@ export function Discipline() {
             setUserType("STUDENT");
             setNewDisciplineModal(false);
             toast.success("Usuário criado com sucesso!");
-        } catch (error) {
+        } catch (error: any) {
             console.log(error.response.data);
         }
     }

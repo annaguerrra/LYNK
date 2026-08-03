@@ -1,4 +1,4 @@
-# Project Setup
+# LYNK
 
 ## Backend
 

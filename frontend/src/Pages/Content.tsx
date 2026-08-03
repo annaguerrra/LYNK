@@ -48,6 +48,9 @@ export function Content() {
 
     const [competenceName, setCompetenceName] = useState("");
 
+    const [refreshCompetences, setRefreshCompetences] = useState(false);
+    const [refreshExams, setRefreshExams] = useState(false);
+
     const [discipline, setDiscipline] = useState<DisciplineDTO | null>(null);
 
     //Variables to control the users and its interactions
@@ -142,6 +145,9 @@ export function Content() {
 
             setCompetenceName("")
             setNewCompetence(false);
+
+            setRefreshCompetences(prev => !prev);
+
         } catch (error) {
             console.error("Erro ao criar e vincular competência:", error);
         }
@@ -178,11 +184,20 @@ export function Content() {
             setExamCompetences([]);
             setNewTest(false);
 
+<<<<<<< HEAD
             return createdExam;
         } catch (error) {
             console.error(error);
             toast.error("Erro ao criar a avaliação.");
         }
+=======
+        setRefreshExams(prev => !prev);
+
+        return createdExam;
+    } catch (error) {
+        console.error(error);
+        toast.error("Erro ao criar a avaliação.");
+>>>>>>> a0215a6c58ca65ed952c4ea09f529ec6896b25bb
     }
 
     async function loadCompetencesByDiscipline(disciplineId: number) {
@@ -285,8 +300,8 @@ export function Content() {
                     />
 
                     {discipline && selectedTab === "classes" && <ClassesView discipline={discipline} />}
-                    {discipline && selectedTab === "competences" && <CompetencesView discipline={discipline} />}
-                    {discipline && (isAdmin || isInstructor) && selectedTab === "exams" && <ExamsView />}
+                    {discipline && selectedTab === "competences" && <CompetencesView discipline={discipline} refresh={refreshCompetences} />}
+                    {discipline && (isAdmin || isInstructor) && selectedTab === "exams" && <ExamsView refresh={refreshExams} />}
 
 
                 </div>

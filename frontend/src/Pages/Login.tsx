@@ -70,10 +70,21 @@ export function Login() {
 
             setUsername("");
             setUserPassword("");
-        } catch (error: any) {
-            console.error(error.response)
-            // arruma aqui para disparar a mensagem correta
-            notifyServer()
+        } catch (error) {
+            console.log(error.response.data)
+           if (error.response?.status === 400) {
+                if (String(error.response.data.response).includes("do not match")) {
+                    console.log(1)
+                    toast.warning("A nova senha e a confirmação devem ser iguais.")
+                }
+                
+                if (String(error.response.data.response).includes("cannot be the same")) {
+                    toast.warning("A nova senha deve ser diferente da senha atual.")
+                }
+
+            } else {
+                notifyServer();
+            }
             
         }
     }
