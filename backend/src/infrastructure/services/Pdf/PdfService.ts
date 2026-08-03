@@ -266,7 +266,13 @@ export class PdfService implements IPdfService{
         for (const token of tokens) {
             if (token.type === "text") {
                 const textToken = token as Tokens.Text;
-                this.renderParagraph(doc, textToken.text);
+                const image = this.extractImageFromHtml(textToken.text);
+
+                if (image) {
+                    await this.renderImage(doc, image.src, image.alt);
+                } else {
+                    this.renderParagraph(doc, textToken.text);
+                }
             }
 
             else if (token.type === "image") {
@@ -340,8 +346,12 @@ export class PdfService implements IPdfService{
 
             case "paragraph": {
                 const paragraph = token as Tokens.Paragraph;
+                const image = this.extractImageFromHtml(paragraph.text);
 
-                if (paragraph.tokens && paragraph.tokens.length > 0) {
+                if (image) {
+                    await this.renderImage(doc, image.src, image.alt);
+                }
+                else if (paragraph.tokens && paragraph.tokens.length > 0) {
                     await this.renderInlineTokens(doc, paragraph.tokens as Tokens.Generic[]);
                 } else {
                     this.renderParagraph(doc, paragraph.text);
