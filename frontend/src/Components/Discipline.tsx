@@ -87,7 +87,10 @@ export function DisciplineComp({ Discipline, reload } : DisciplineCompProps) {
                 console.error(error);
             }
     }
-
+    function openDiscipline() {
+        navigate(`/Content/${Discipline.id}`);
+    }
+    
     useEffect(() => {
         loadAreas();
     });
@@ -96,12 +99,18 @@ export function DisciplineComp({ Discipline, reload } : DisciplineCompProps) {
         <> 
         {/* Main box for the hole discipline to render with the right options */}
         <div className="disciplineBox">
-            <div className="boxColor" style={{ backgroundColor: Discipline.area.color }} onClick={() => navigate('/Content')}></div>
+            <div
+                className="boxColor"
+                style={{ backgroundColor: Discipline.area.color }}
+                onClick={openDiscipline}
+            ></div>
+
             <div className="whiteBox">
-                <div onClick={() => navigate(`/Content/${Discipline.id}`)} style={{height: '100%'}}>
+                <div onClick={openDiscipline} style={{ height: '100%' }}>
                     <h1>{Discipline.name}</h1>
                     <h2>{Discipline.area.name}</h2>
                 </div>
+
                 {(isAdmin || isInstructor) &&
                     <MoreOpt data={options} size={30}></MoreOpt>
                 }

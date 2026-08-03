@@ -75,6 +75,7 @@ export function ClassesView({ discipline }: ClassesViewProps) {
 
     async function deleteClass() {
         if (!discipline) return;
+        if (!selectedClass) return;
 
         try {
             await deleteClassService(selectedClass.id);
@@ -92,9 +93,9 @@ export function ClassesView({ discipline }: ClassesViewProps) {
 
     }
 
-    function teste(id) {
-        console.log(id)
-    }
+    // function teste(id) {
+    //     console.log(id)
+    // }
 
     async function downloadClass(id: number, name: string) {
         console.log(id)

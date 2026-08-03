@@ -151,7 +151,7 @@ export function Discipline() {
     //Inputs to create and edit a discipline
     const [disciplineName, setDisciplineName] = useState("")
     const [areas, setAreas] = useState<AreaDTO[]>([]);
-    const [areaId, setAreaId] = useState(1);
+    const [areaId, setAreaId] = useState<number | null>(null);
 
 
     async function loadDisciplines() {
@@ -170,14 +170,25 @@ export function Discipline() {
 
             await loadDisciplines();
             setNewDisciplineModal(false);
-            setDisciplineName("")
+            setDisciplineName("");
+            setAreaId(null);
         } catch (error) {
             toast.error("Não foi possivel criar a disciplina!");
             console.error(error);
         }
     }
+    function handleCreateDiscipline() {
+        if (!disciplineName || areaId === null) {
+            toast.error("Preencha o nome e selecione uma área.");
+            return;
+        }
 
-
+        createDisc({
+            name: disciplineName,
+            areaID: areaId
+        });
+    }
+    
     async function duplicate(id: number) {
         try {
             toast.success("Disciplina duplicada com sucesso!");
@@ -384,9 +395,13 @@ export function Discipline() {
                         <div className="textBox">
                             <h2>Selecione a área de conhecimento</h2>
                             <select
-                                value={areaId}
-                                onChange={(e) => setAreaId(Number(e.target.value))}
+                                value={areaId ?? ""}
+                                onChange={(e) =>
+                                    setAreaId(e.target.value === "" ? null : Number(e.target.value))
+                                }
                             >
+                                <option value="">Selecione uma área</option>
+
                                 {areas.map((area) => (
                                     <option key={area.id} value={area.id}>
                                         {area.name}
@@ -395,9 +410,7 @@ export function Discipline() {
                             </select>
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => createDisc({
-                            name: disciplineName, areaID: areaId
-                        })}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={handleCreateDiscipline}></Button>
                     </div>
                 </div>
             )}

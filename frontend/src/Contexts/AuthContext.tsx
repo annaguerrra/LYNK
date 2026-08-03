@@ -80,7 +80,7 @@ export function AuthProvider({
         newPassword: string,
         repeatPassword: string
     ) {
-        await api.put("/user/change-password", {
+        await api.put("/user/change-password/:id", {
             oldPassword,
             newPassword,
             repeatPassword
