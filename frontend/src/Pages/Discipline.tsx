@@ -100,7 +100,7 @@ export function Discipline() {
             await createArea(data);
             await loadAreas();
             toast.success("Área criada com sucesso!");
-            
+
             setNewAreaModal(false);
             setAreaName("")
         } catch (error) {
@@ -108,7 +108,7 @@ export function Discipline() {
             console.error(error);
         }
     }
-    
+
     async function editArea(id: number, data: updateAreaDTO) {
         try {
             await updateArea(id, data);
@@ -168,13 +168,13 @@ export function Discipline() {
         }
     }
 
-    
+
     async function duplicate(id: number) {
         try {
             toast.success("Disciplina duplicada com sucesso!");
             const response = await duplicateDiscipline(id);
             console.log(response);
-            
+
             await loadDisciplines();
         } catch (error) {
             console.log(error);
@@ -187,7 +187,7 @@ export function Discipline() {
             : disciplines.filter(
                 (discipline) => discipline.area.id === selectedAreaId
             );
-    
+
     useEffect(() => {
         loadAreas();
     }, []);
@@ -203,7 +203,7 @@ export function Discipline() {
     }, [usersModal]);
     //---------------------- From User Services ---------------------------------------------------------------- 
     const [showUsers, setShowUsers] = useState<showStudentDTO[]>([])
-    
+
     async function loadUsers() {
         try {
             const response = await getUsers();
@@ -238,7 +238,7 @@ export function Discipline() {
 
     // async function resetPassword(data: resetPasswordDTO, id: number) {
     //     try {
-            
+
     //     }
     // }
 
@@ -261,20 +261,20 @@ export function Discipline() {
                                 value={selectedAreaId ?? ""}
                                 onChange={(e) =>
                                     setSelectedAreaId(
-                                    e.target.value === "" ? null : Number(e.target.value)
+                                        e.target.value === "" ? null : Number(e.target.value)
                                     )
                                 }
-                                >
+                            >
                                 <option value="">Selecione uma área</option>
 
                                 {areas.map((area) => (
                                     <option key={area.id} value={area.id}>
-                                    {area.name}
+                                        {area.name}
                                     </option>
                                 ))}
                             </select>
                         </form>
-                        
+
                         {(isAdmin || isInstructor) &&
                             <MoreOpt data={options} size={40}></MoreOpt>
                         }
@@ -284,12 +284,12 @@ export function Discipline() {
                 <div className="disciplinesContainer">
                     {filteredDisciplines.map((discipline) => (
                         <DisciplineComp
-                        key={discipline.id}
-                        Discipline={discipline}
-                        reload={loadDisciplines}
+                            key={discipline.id}
+                            Discipline={discipline}
+                            reload={loadDisciplines}
                         />
                     ))}
-                    </div>
+                </div>
             </div>
 
             {/* -------------------------------------------------------- DISCIPLINES MODALS -------------------------------------------------------- */}
@@ -425,7 +425,7 @@ export function Discipline() {
                                 </RowItem>
                             ))}
                         </div>
-                    <div></div> 
+                        <div></div>
                     </div>
                 </div>
             )}
@@ -500,56 +500,55 @@ export function Discipline() {
 
             {/* Modal to manage areas */}
             {areasModal && (
-                <div className="modalOverlay" onClick={() => setAreasModal(false)}> 
-                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}> 
-                    {/* Title and close button box */}
-                    <div className="titleContainer"> 
-                        <h1>Gerenciar áreas</h1> 
-                        <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose> 
-                    </div> 
-                    <div className="itemsBox">
-                    {areas.map((area) => (
-                        <RowItem color={area.color}>
-                            <div className="itemText">
-                                <p>{area.name}</p>
-                            </div>
+                <div className="modalOverlay" onClick={() => setAreasModal(false)}>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Gerenciar áreas</h1>
+                            <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose>
+                        </div>
+                        <div className="itemsBox">
+                            {areas.map((area) => (
+                                <RowItem color={area.color}>
+                                    <div className="itemText">
+                                        <p>{area.name}</p>
+                                    </div>
 
-                            <MoreOpt
-                                size={25}
-                                data={[
-                                    {
-                                        name: "Editar",
-                                        onClick: () => {
-                                            setSelectedAreaId(area.id);
-                                            setAreaName(area.name);
-                                            setAreaCor(area.color);
-                                            setEditAreaModal(true);
-                                            setAreasModal(false);
-                                        },
-                                    },
-                                    {
-                                        name: "Excluir",
-                                        onClick: () => {
-                                            setSelectedAreaId(area.id);
-                                            setExcludeAreaModal(true);
-                                            setAreasModal(false);
-                                        },
-                                    },
-                                ]}
-                            />
-                        </RowItem>
-                    ))}
-                </div>
-                    <div></div> 
-                    </div> 
+                                    <MoreOpt
+                                        size={25}
+                                        data={[
+                                            {
+                                                name: "Editar",
+                                                onClick: () => {
+                                                    setSelectedAreaId(area.id);
+                                                    setAreaName(area.name);
+                                                    setAreaCor(area.color);
+                                                    setEditAreaModal(true);
+                                                    setAreasModal(false);
+                                                },
+                                            },
+                                            {
+                                                name: "Excluir",
+                                                onClick: () => {
+                                                    setSelectedAreaId(area.id);
+                                                    setExcludeAreaModal(true);
+                                                    setAreasModal(false);
+                                                },
+                                            },
+                                        ]}
+                                    />
+                                </RowItem>
+                            ))}
+                        </div>
+                        <div></div>
+                    </div>
                 </div>
             )}
 
             {/* Modal to edit a area */}
             {editAreaModal && (
                 <div className="modalOverlay" onClick={() => setEditAreaModal(false)}>
-                    <div className="modal
-                    Container" onClick={(e) => e.stopPropagation()}>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Editar  área</h1>
@@ -558,7 +557,7 @@ export function Discipline() {
                         {/* Input for the area name */}
                         <div className="textBox">
                             <h2>Nome da área</h2>
-                            <input type="text" value={areaName} onChange={(e) => setAreaName(e.target.value)}/>
+                            <input type="text" value={areaName} onChange={(e) => setAreaName(e.target.value)} />
                         </div>
                         {/* Select for the area color */}
                         <div className="textBox">
@@ -573,7 +572,7 @@ export function Discipline() {
                             </select>
                         </div>
 
-                        <Button ButtonTitle={"Enviar"}  onClose={() => editArea(selectedAreaId, {name: areaName, color: areaColor})}>
+                        <Button ButtonTitle={"Enviar"} onClose={() => editArea(selectedAreaId, { name: areaName, color: areaColor })}>
                         </Button>
                     </div>
                 </div>
@@ -587,7 +586,7 @@ export function Discipline() {
                         <p>Deseja excluir a área {areaName}?</p>
 
                         <div className="buttonsBox">
-                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => {deleteAreas(selectedAreaId);}}></ButtonExclude>
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => { deleteAreas(selectedAreaId); }}></ButtonExclude>
                             <br />
                             <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeAreaModal(false)}></ButtonCancel>
                         </div>
