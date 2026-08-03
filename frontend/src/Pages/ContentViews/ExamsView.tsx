@@ -178,7 +178,7 @@ export function ExamsView({ refresh }: ExamsViewProps ) {
 
     useEffect(() => {
         loadExams();
-    }, []);
+    }, [refresh]);
 
     return (
         <>
@@ -230,67 +230,95 @@ export function ExamsView({ refresh }: ExamsViewProps ) {
 
             {/* Modal to view the test */}
             {viewExamModal && (
-                <div className="modalOverlay" onClick={() => { setViewExamModal(false)}}>
-                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                        {/* Title and close button box */}
+                <div
+                    className="modalOverlay"
+                    onClick={() => setViewExamModal(false)}
+                >
+                    <div
+                        className="modalContainer"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* Title */}
                         <div className="titleContainer">
                             <h1>Visualizar avaliação</h1>
-                            <ButtonClose size={40} onClose={() => { setViewExamModal(false) }}></ButtonClose>
+
+                            <ButtonClose
+                                size={40}
+                                onClose={() => setViewExamModal(false)}
+                            />
                         </div>
-                        {/* Input for test name */}
+
+                        {/* Test name */}
                         <div className="textBox">
-                            <h2>{examName}</h2>
+                            <h2>Nome: {examName}</h2>
                         </div>
-                        {/* Input to select the test file */}
+
+                        {/* Files */}
                         <div className="textBox">
                             <h2>Arquivos</h2>
-                            <div className="scrollBox">
-                            {selectedExam?.attachments?.map((attachment) => (
-                                <RowItem
-                                    key={attachment.id}
-                                    type="attachment"
-                                >
-                                    <button
-                                        type="button"
-                                        onClick={() => handleDownloadExamFile(selectedExam.id, attachment.id)}
-                                    >
-                                        Baixar anexo {attachment.id}
-                                    </button>
-                                </RowItem>
-                            ))}
-                            </div>
-                        </div>
-                        {/* Search for competence and its display */}
-                        <div className="textBox">
-                            <h2>Competências</h2>
 
-                            <div className='attachments' >
-                                {/* Component used to search a competence */}
-                                
+                            <div className="attachments">
                                 <div className="scrollBox">
 
-                                    {examCompetences.map((competence) => (
-                                        <RowItem
-                                            key={competence.id}
-                                            type="competence"
-                                            actions={
-                                                <>
-                                                    <ButtonClose
-                                                        size={18}
-                                                        onClose={() => {
-                                                            // ação para remover a competência
-                                                        }}
-                                                    />
-                                                </>
-                                            }
-                                        >
-                                            <div>{competence.name}</div>
-                                        </RowItem>
-                                    ))}
+                                    {selectedExam?.attachments?.length ? (
+                                        selectedExam.attachments.map((attachment) => (
+                                            <RowItem
+                                                key={attachment.id}
+                                                type="attachment"
+                                            >
+                                                <span>
+                                                    Anexo
+                                                </span>
+
+                                                <button
+                                                    className="attachmentButton"
+                                                    onClick={() =>
+                                                        handleDownloadExamFile(
+                                                            selectedExam.id,
+                                                            attachment.id
+                                                        )
+                                                    }
+                                                >
+                                                    Baixar
+                                                </button>
+                                            </RowItem>
+                                        ))
+                                    ) : (
+                                        <span className="emptyText">
+                                            Nenhum arquivo encontrado.
+                                        </span>
+                                    )}
+
                                 </div>
                             </div>
                         </div>
-                            <div></div>
+
+                        {/* Competences */}
+                        <div className="textBox">
+                            <h2>Competências</h2>
+
+                            <div className="attachments">
+                                <div className="scrollBox">
+
+                                    {examCompetences.length ? (
+                                        examCompetences.map((competence) => (
+                                            <RowItem
+                                                key={competence.id}
+                                                type="competence"
+                                            >
+                                                <div>{competence.name}</div>
+                                            </RowItem>
+                                        ))
+                                    ) : (
+                                        <span className="emptyText">
+                                            Nenhuma competência vinculada.
+                                        </span>
+                                    )}
+
+                                </div>
+                            </div>
+                        </div>
+                        <div></div>
                     </div>
                 </div>
             )}

@@ -184,14 +184,6 @@ export function Content() {
             setExamCompetences([]);
             setNewTest(false);
 
-<<<<<<< HEAD
-        setRefreshExams(prev => !prev);
-
-        return createdExam;
-    } catch (error) {
-        console.error(error);
-        toast.error("Erro ao criar a avaliação.");
-=======
             setRefreshExams(prev => !prev);
 
             return createdExam;
@@ -199,7 +191,6 @@ export function Content() {
             console.error(error);
             toast.error("Erro ao criar a avaliação.");
         }
->>>>>>> 89ecc3d59f4f6f04770aad9c8ce14321edb2056d
     }
 
     async function loadCompetencesByDiscipline(disciplineId: number) {
@@ -443,8 +434,4 @@ export function Content() {
             )} */}
         </>
     );
-<<<<<<< HEAD
-}}
-=======
 }
->>>>>>> 89ecc3d59f4f6f04770aad9c8ce14321edb2056d
