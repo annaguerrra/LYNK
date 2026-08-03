@@ -1,7 +1,7 @@
 import { viewContentDTO } from "#application/dtos/classDTO.js";
 import { IPdfService } from "#application/services/Pdf/IPdf.service.js";
 import { marked, Tokens } from "marked";
-import { serialize } from "node:v8";
+import sharp from "sharp";
 import PDFDocument, { lineTo } from 'pdfkit'
 
 export class PdfService implements IPdfService{
@@ -113,7 +113,8 @@ export class PdfService implements IPdfService{
         doc.y = startY + boxHeight + 18;
     }
     private async loadImageBuffer(src: string): Promise<Buffer> {
-        // Image as base64/data URL
+        let imageBuffer: Buffer;
+
         if (src.startsWith("data:image")) {
             const base64 = src.split(",")[1];
 
@@ -121,11 +122,10 @@ export class PdfService implements IPdfService{
                 throw new Error("Invalid base64 image.");
             }
 
-            return Buffer.from(base64, "base64");
+            imageBuffer = Buffer.from(base64, "base64");
         }
 
-        // Image from URL
-        if (src.startsWith("http://") || src.startsWith("https://")) {
+        else if (src.startsWith("http://") || src.startsWith("https://")) {
             const response = await fetch(src);
 
             if (!response.ok) {
@@ -133,11 +133,22 @@ export class PdfService implements IPdfService{
             }
 
             const arrayBuffer = await response.arrayBuffer();
-            return Buffer.from(arrayBuffer);
+            imageBuffer = Buffer.from(arrayBuffer);
         }
 
-        // Local path or relative path
-        return Buffer.from(src);
+        else if (src.startsWith("blob:")) {
+            throw new Error("Blob images cannot be rendered in backend PDF.");
+        }
+
+        else {
+            throw new Error(`Unsupported image source: ${src}`);
+        }
+
+        // PDFKit has better support for PNG/JPG.
+        // So we convert possible WEBP/unsupported images to PNG.
+        return await sharp(imageBuffer)
+            .png()
+            .toBuffer();
     }
 
     private async renderImage( doc: PDFKit.PDFDocument, src: string, alt?: string): Promise<void> {
@@ -263,6 +274,15 @@ export class PdfService implements IPdfService{
                 await this.renderImage(doc, imageToken.href, imageToken.text);
             }
 
+            else if (token.type === "html") {
+                const htmlToken = token as Tokens.HTML;
+                const image = this.extractImageFromHtml(htmlToken.text);
+
+                if (image) {
+                    await this.renderImage(doc, image.src, image.alt);
+                }
+            }
+
             else if (token.type === "link") {
                 const linkToken = token as Tokens.Link;
 
@@ -293,6 +313,20 @@ export class PdfService implements IPdfService{
                 doc.moveDown(0.4);
             }
         }
+    }
+
+    private extractImageFromHtml(html: string): { src: string; alt?: string } | null {
+        const srcMatch = html.match(/src=["']([^"']+)["']/);
+        const altMatch = html.match(/alt=["']([^"']*)["']/);
+
+        if (!srcMatch) {
+            return null;
+        }
+
+        return {
+            src: srcMatch[1],
+            alt: altMatch?.[1]
+        };
     }
 
     // token represents a single unit of a structured md object. This method identifies the object and renders it.
@@ -340,6 +374,17 @@ export class PdfService implements IPdfService{
                 break;
             }
 
+            case "html": {
+                const htmlToken = token as Tokens.HTML;
+                const image = this.extractImageFromHtml(htmlToken.text);
+
+                if (image) {
+                    await this.renderImage(doc, image.src, image.alt);
+                }
+
+                break;
+            }
+
             case "space": {
                 doc.moveDown(0.5);
                 break;
@@ -355,54 +400,47 @@ export class PdfService implements IPdfService{
     private async renderMarkdown(doc: PDFKit.PDFDocument, markdown: string): Promise<void> {
         const tokens = marked.lexer(markdown);
 
-        for(const token of tokens){
-            this.renderToken(doc, token);
+        for (const token of tokens) {
+            await this.renderToken(doc, token);
         }
     }
 
     // compiles all the md structures and converts into a pdf document
     async generatePdf(markdownInfo: viewContentDTO): Promise<Buffer> {
-        
-        return new Promise((resolve, reject) =>{
+        return new Promise((resolve, reject) => {
             const doc = new PDFDocument({
                 size: "A4",
                 margin: 50
             });
 
-            // parts of the pdf are generated and storaged here
             const chunks: Buffer[] = [];
-            
-            // it's like an append on the parts
+
             doc.on("data", (chunk) => {
                 chunks.push(chunk);
             });
-            
-            // returns a single buffer with all the parts of the pdf together
+
             doc.on("end", () => {
-                resolve(Buffer.concat(chunks))
+                resolve(Buffer.concat(chunks));
             });
 
             doc.on("error", (error) => {
                 reject(error);
             });
-            
-            async function buildPdf(service: PdfService) {
+
+            const buildPdf = async () => {
                 try {
-                    service.renderHeader(doc)
-                    service.renderTitle(doc, markdownInfo.name);
-                    await service.renderMarkdown(doc, markdownInfo.content);
+                    this.renderHeader(doc);
+                    this.renderTitle(doc, markdownInfo.name);
+                    await this.renderMarkdown(doc, markdownInfo.content);
 
                     doc.end();
-                } catch(error) {
+                } catch (error) {
                     reject(error);
                 }
-            }
+            };
 
-            buildPdf(this);
-
-            doc.end();
+            buildPdf();
         });
-
     }
 
 }
