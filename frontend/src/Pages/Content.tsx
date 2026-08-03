@@ -75,7 +75,7 @@ export function Content() {
     const tabs = [
         { id: "classes", label: "Aulas" },
         { id: "competences", label: "Competências" },
-        { id: "exams", label: "Avaliações" },
+        { id: "exams", label: "Avaliações", allowedRoles: ["ADMIN", "INSTRUCTOR"] },
     ];
 
 
@@ -266,11 +266,14 @@ export function Content() {
                     {/* Change the content based on the selected tab */}
                     <TabNavigation
                         selected={selectedTab}
-                        onChange={setSelectedTab} tabs={tabs} />
+                        onChange={setSelectedTab} 
+                        tabs={tabs} 
+                        userRole={user.role}
+                    />
 
                     {discipline && selectedTab === "classes" && <ClassesView discipline={discipline} />}
                     {discipline && selectedTab === "competences" && <CompetencesView discipline={discipline} />}
-                    {discipline && selectedTab === "exams" && <ExamsView />}
+                    {discipline && (isAdmin || isInstructor) && selectedTab === "exams" && <ExamsView />}
 
 
                 </div>

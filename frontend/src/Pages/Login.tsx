@@ -38,6 +38,7 @@ export function Login() {
 
             if (changePassword) {
                 setMustChangePassword(true);
+                toast.warning("Sua senha precisa ser redefinida para continuar.")
                 return;
             }
 
@@ -63,15 +64,17 @@ export function Login() {
                 confirmPassword
             );
 
+            toast.success("Senha redefinida com sucesso!")
+
             setMustChangePassword(false);
 
             setUsername("");
             setUserPassword("");
         } catch (error) {
+            console.log(error.response)
+            // arruma aqui para disparar a mensagem correta
             notifyServer()
-            console.error(userPassword,
-                newPassword,
-                confirmPassword);
+            
         }
     }
 
