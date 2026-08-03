@@ -37,6 +37,12 @@ export interface findOneDTO{
     competences: {
         name: string
     }[];
+    classes: {
+        name: string
+    }[];
+    exams: {
+        name: string
+    }[]
     lastUpdate?: Date;
 }
 

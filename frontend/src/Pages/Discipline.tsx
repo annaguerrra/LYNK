@@ -242,8 +242,8 @@ export function Discipline() {
             userType: userType
         }
         try {
+            console.log(data);
             const response = await createUser(data);
-            console.log(response);
 
             await loadUsers();
             setNewUserModal(false);
@@ -255,7 +255,7 @@ export function Discipline() {
             setNewDisciplineModal(false);
             toast.success("Usuário criado com sucesso!");
         } catch (error) {
-            console.log(error);
+            console.log(error.response.data);
         }
     }
 
