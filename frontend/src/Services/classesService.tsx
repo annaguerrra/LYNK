@@ -1,4 +1,4 @@
-import type { ClassesDTO, ClassDTO, assignCompetencyDTO, editClass, CreateClassDTO, ClassResponse } from "../Types/class";
+import type { ClassesDTO, ClassDTO, assignCompetencyDTO, editClass, CreateClassDTO, ClassResponse, removeCompetencyDTO } from "../Types/class";
 import api from "./api";
 
 // Get all classes
@@ -55,5 +55,11 @@ export async function downloadClassContent(id: number): Promise<Blob> {
 // Assign a competence to a class
 export async function assignClassCompetence(data: assignCompetencyDTO) {
     const response = await api.put("/class/assigncompetency", data);
+    return response.data;
+}
+
+// Remove competence 
+export async function removeCompetenceService(data: removeCompetencyDTO) {
+    const response = await api.put("/class/removecompetency", data);
     return response.data;
 }

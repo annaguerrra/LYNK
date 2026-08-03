@@ -37,7 +37,7 @@ import { InputFile } from '../Components/InputFile'
 import LessonSelect from '../Components/LessonSelect'
 import { useAuth } from '../Contexts/AuthContext'
 import type { ClassDTO } from '../Types/class'
-import { assignClassCompetence, getClassById, getClassCompetences, getClassMaterials, updateClass } from '../Services/classesService'
+import { assignClassCompetence, getClassById, getClassCompetences, getClassMaterials, removeCompetenceService, updateClass } from '../Services/classesService'
 import { toast } from 'react-toastify'
 import { isAxiosError } from 'axios'
 import type { MaterialDTO } from '../Types/material'
@@ -142,6 +142,12 @@ export function Class() {
 
     }
 
+function removeCompetenceFromState(idCompetence: number) {
+    setCompetences(prev =>
+        prev.filter(competence => competence.id !== idCompetence)
+    );
+}
+
     async function loadDataClass(id: number) {
         try {
             const response = await getClassById(id);
@@ -174,7 +180,7 @@ export function Class() {
 
     function cancelUpdateClass() {
 
-        if(!classItem) {
+        if (!classItem) {
             return;
         }
 
@@ -211,6 +217,7 @@ export function Class() {
     async function saveClass() {
         if (!classItem) return;
 
+
         const data = {
             name: titleClass,
             content: content
@@ -219,13 +226,30 @@ export function Class() {
         try {
             await updateClass(classItem.id, data);
 
+            // Added competences
             const addedCompetences = competences.filter(
                 c => !initialCompetences.some(o => o.id === c.id)
             );
 
+            // Removed competences
+            const removedCompetences = initialCompetences.filter(
+                initial => !competences.some(current => current.id === initial.id)
+            );
+
+            // Add competences to the backend
             await Promise.all(
                 addedCompetences.map((competence) =>
                     assignClassCompetence({
+                        id: classItem.id,
+                        competencyId: competence.id
+                    })
+                )
+            );
+
+            // Remove competences from the backend
+            await Promise.all(
+                removedCompetences.map((competence) =>
+                    removeCompetenceService({
                         id: classItem.id,
                         competencyId: competence.id
                     })
@@ -236,11 +260,13 @@ export function Class() {
             setEditMode(false);
 
         } catch (error) {
-
             console.error(error);
             toast.error("Erro ao salvar alterações.");
         }
+
+
     }
+
 
 
     async function handleFileUpload(file: File) {
@@ -268,7 +294,7 @@ export function Class() {
     }
 
     async function downloadClassContent() {
-        if(!classItem){
+        if (!classItem) {
             return;
         }
 
@@ -332,17 +358,17 @@ export function Class() {
     }
 
     async function handleDeleteMaterial(materialId: number) {
-        if(!classItem){
+        if (!classItem) {
             return;
         }
 
-        try{ 
+        try {
             await deleteMaterial(materialId);
             setMaterials((item) =>
                 item.filter((material) => material.id !== materialId)
             );
             toast.success("Anexo removido com sucesso!");
-        } catch(e) {
+        } catch (e) {
             console.error(e);
             toast.error("Erro ao remover anexo.");
         }
@@ -513,7 +539,7 @@ export function Class() {
                                                     <ButtonClose
                                                         size={18}
                                                         onClose={() => {
-                                                            // ação para remover a competência
+                                                            removeCompetenceFromState(competence.id)
                                                         }}
                                                     />
                                                 )}

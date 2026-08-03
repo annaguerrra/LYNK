@@ -41,6 +41,12 @@ export interface assignCompetencyDTO{
     competencyId: number
 }
 
+// used to remove a competency
+export interface removeCompetencyDTO{
+    id: number
+    competencyId: number
+}
+
 // response to findAll service
 export interface ClassesDTO {
     id: number

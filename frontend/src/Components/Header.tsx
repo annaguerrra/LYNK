@@ -34,7 +34,7 @@ export function Header() {
                     <div className="userContainer">
                         <button className="user" onClick={() => setOpenBox(!openBox)}>
                             {/* <img className="userPicture" src="../../public/UserDefault/user-purple.png"></img> */}
-                            <i className="icon icon-download"></i>
+                            <i className="icon icon-user" style={{ fontSize: "25px", marginRight: ".7rem"}}></i>
 
                             <span>{user.username}</span>
                         </button>
