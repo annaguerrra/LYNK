@@ -38,9 +38,9 @@ export function Content() {
 
 
     const [allCompetences, setAllCompetences] = useState<CompetenceDTO[]>([]);
-    
-    
-    
+
+
+
     const [selectedTab, setSelectedTab] = useState("classes");
     const [newTest, setNewTest] = useState(false);
     const [newCompetence, setNewCompetence] = useState(false);
@@ -157,7 +157,7 @@ export function Content() {
     // const [examDiscipline, setExamDiscipline] = discipline_id;
     const [examFile, setExamFiles] = useState<File[]>([]);
     const [examCompetences, setExamCompetences] = useState<CompetenceDTO[]>([]);
-    
+
     async function creatingExam(data: RegisterExamDTO) {
         if (!discipline) return;
 
@@ -184,12 +184,22 @@ export function Content() {
             setExamCompetences([]);
             setNewTest(false);
 
+<<<<<<< HEAD
         setRefreshExams(prev => !prev);
 
         return createdExam;
     } catch (error) {
         console.error(error);
         toast.error("Erro ao criar a avaliação.");
+=======
+            setRefreshExams(prev => !prev);
+
+            return createdExam;
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao criar a avaliação.");
+        }
+>>>>>>> 89ecc3d59f4f6f04770aad9c8ce14321edb2056d
     }
 
     async function loadCompetencesByDiscipline(disciplineId: number) {
@@ -286,8 +296,8 @@ export function Content() {
                     {/* Change the content based on the selected tab */}
                     <TabNavigation
                         selected={selectedTab}
-                        onChange={setSelectedTab} 
-                        tabs={tabs} 
+                        onChange={setSelectedTab}
+                        tabs={tabs}
                         userRole={user.role}
                     />
 
@@ -302,7 +312,7 @@ export function Content() {
             {/* -------------------------------------------------------- TEST MODALS -------------------------------------------------------- */}
             {/* Modal to create a test */}
             {newTest && (
-                <div className="modalOverlay" onClick={() => { setNewTest(false)}}>
+                <div className="modalOverlay" onClick={() => { setNewTest(false) }}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
@@ -433,4 +443,8 @@ export function Content() {
             )} */}
         </>
     );
+<<<<<<< HEAD
 }}
+=======
+}
+>>>>>>> 89ecc3d59f4f6f04770aad9c8ce14321edb2056d
