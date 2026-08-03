@@ -5,18 +5,18 @@ export const validateRegister = (req: Request, res: Response, next: NextFunction
     // validates if the necessary data were provided to create a user
     const { username, password, repeatPassword, userType, specialty } = req.body
 
-    // verifies if the usertype to determine the data necessary to create
-    if (userType === UserType.STUDENT){
+    // // verifies if the usertype to determine the data necessary to create
+    // if (userType === UserType.STUDENT){
+
+    //     if(!username || !password || !repeatPassword || !userType)
+    //         return res.status(400).send({ response: `There is empty data`})
+    // }
+
+    // if (userType === UserType.INSTRUCTOR || userType === UserType.ADMIN){
 
         if(!username || !password || !repeatPassword || !userType)
             return res.status(400).send({ response: `There is empty data`})
-    }
-
-    if (userType === UserType.INSTRUCTOR || userType === UserType.ADMIN){
-
-        if(!username || !password || !repeatPassword || !userType || !specialty)
-            return res.status(400).send({ response: `There is empty data`})
-    }
+    // }
 
     // verifies if the passowrd and repeatpassword inputs match
     if(password !== repeatPassword)

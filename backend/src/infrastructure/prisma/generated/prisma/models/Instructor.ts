@@ -344,7 +344,7 @@ export type InstructorUncheckedCreateInput = {
   username: string
   password: string
   userType?: $Enums.UserType
-  specialty: $Enums.Specialties
+  specialty?: $Enums.Specialties
   active?: boolean
   updatedPasswordAt?: Date | string
   firstAccess?: boolean

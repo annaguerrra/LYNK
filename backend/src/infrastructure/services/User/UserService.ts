@@ -80,8 +80,10 @@ export class UserService implements IUserService {
     
     // creates a new instructor and registers in the log table
     async registerInstructor(data: registerInstructorDTO, userId: number): Promise<Instructor> {
-        const { username, password, userType, specialty } = data
+        const { username, password, userType } = data
         const ownerUsername = await this.getUsername(userId)
+
+        const specialty = 'Digital'
         
         const hashedPassword = await this.hashService.hash(data.password);
 
@@ -110,8 +112,10 @@ export class UserService implements IUserService {
     
     // creates a new admin and registers in the log table
     async registerAdmin(data: registerAdminDTO, userId: number): Promise<Admin> {
-        const { username, password, userType, specialty } = data
+        const { username, password, userType } = data
         const ownerUsername = await this.getUsername(userId)
+
+        const specialty = 'Digital'
         
         const hashedPassword = await this.hashService.hash(data.password);
 
