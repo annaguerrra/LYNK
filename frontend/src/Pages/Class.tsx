@@ -42,7 +42,7 @@ import { toast } from 'react-toastify'
 import { isAxiosError } from 'axios'
 import type { MaterialDTO } from '../Types/material'
 import type { CompetenceDTO } from '../Types/competence'
-import { attachMaterialFile, createMaterial } from '../Services/materialsService'
+import { attachMaterialFile, createMaterial, downloadMaterial } from '../Services/materialsService'
 import ActivityIndicator from '../Components/ActivityIndicator'
 import { getDisciplineCompetences } from '../Services/disciplinesService'
 import api from '../Services/api'
@@ -293,6 +293,35 @@ export function Class() {
         );
     }
 
+    async function handleDownloadMaterial(material: MaterialDTO) {
+        const attachment = material.attachments?.[0];
+
+        if (!attachment) {
+            toast.error("Esse material não possui anexo.");
+            return;
+        }
+
+        try {
+            const data = await downloadMaterial(
+                material.id,
+                attachment.id
+            );
+
+            const url = URL.createObjectURL(data);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = material.name;
+
+            link.click();
+
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao baixar material.");
+        }
+    }
+
     return (
         <>
             {/* Header */}
@@ -408,13 +437,18 @@ export function Class() {
                                         color='var(--purple)'
                                         actions={
                                             <>
-                                                <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                                <ButtonIcon
+                                                    size={20}
+                                                    icon="icon-download"
+                                                    onClick={() => handleDownloadMaterial(material,)}
+                                                />
+
                                                 {(isAdmin || isInstructor) && editMode &&
                                                     <ButtonClose size={18} onClose={() => { }} />
                                                 }
                                             </>
-                                        }>
-
+                                        }
+                                    >
                                         <div>{material.name}</div>
                                     </RowItem>
                                 ))}
