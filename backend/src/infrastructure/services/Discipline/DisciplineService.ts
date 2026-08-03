@@ -255,21 +255,9 @@ export class DisciplineService implements IDisciplineService {
                         name: true
                     }
                 },
-                competences: {
-                    select: {
-                        name: true
-                    }
-                },
-                classes: {
-                    select: {
-                        name: true
-                    }
-                },
-                exams: {
-                    select: {
-                        name: true
-                    }
-                }
+                competences: true,
+                classes: true,
+                exams: true
             }
         });
 

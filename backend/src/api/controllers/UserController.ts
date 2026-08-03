@@ -23,7 +23,7 @@ export default class UserController {
                 })
             } 
             
-            if (data.userType === UserType.INSTRUCTOR) {
+            if (data.userType === UserType.INSTRUCTOR || data.userType === UserType.ADMIN) {
                 await this.userService.registerInstructor(data as registerInstructorDTO, userId)
                 return res.status(200).send({ response: "User created!"})
             }
