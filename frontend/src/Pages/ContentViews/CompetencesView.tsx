@@ -169,13 +169,13 @@ export function CompetencesView({ discipline }: CompetencesViewProps) {
                 {competences.map((competence) => (
                     <RowItem
                         key={competence.id}
-                        onClick={() => {
-                            setSelectedCompetence(competence);
-                            setOpenCompetenceModal(true);
-                        }}
+                        // onClick={() => {
+                        //     setSelectedCompetence(competence);
+                        //     setOpenCompetenceModal(true);
+                        // }}
                         color="var(--acqua)"
                         size="--medium"
-                        button={true}
+                        button={false}
                         actions={
                             <>
                                 {(isAdmin || isInstructor) &&

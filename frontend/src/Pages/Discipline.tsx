@@ -107,7 +107,7 @@ export function Discipline() {
             console.error(error);
         }
     }
-    
+
     async function editArea(id: number | null, data: updateAreaDTO) {
         if (id === null) {
             console.log("No area selected");
@@ -188,7 +188,7 @@ export function Discipline() {
             areaID: areaId
         });
     }
-    
+
     async function duplicate(id: number) {
         try {
             toast.success("Disciplina duplicada com sucesso!");
@@ -221,7 +221,7 @@ export function Discipline() {
             loadUsers();
         }
     }, [usersModal]);
-   
+
     //---------------------- From User Services ---------------------------------------------------------------- 
     const [showUsers, setShowUsers] = useState<showStudentDTO[]>([])
 
@@ -285,10 +285,10 @@ export function Discipline() {
             setSelectedUserType(null);
             setResetPasswordModal(false);
 
-            toast.success("New password successfully created!");
-        } catch(error) {
+            toast.success("Nova senha criada com sucesso!");
+        } catch (error) {
             console.log(error);
-            toast.error("Unable to reset password");
+            toast.error("Não foi possível redefinir a senha");
         }
     }
 
@@ -637,19 +637,19 @@ export function Discipline() {
 
             {/* Modal to manage areas */}
             {areasModal && (
-                <div className="modalOverlay" onClick={() => setAreasModal(false)}> 
-                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}> 
-                    {/* Title and close button box */}
-                    <div className="titleContainer"> 
-                        <h1>Gerenciar áreas</h1> 
-                        <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose> 
-                    </div> 
-                    <div className="itemsBox">
-                    {areas.map((area) => (
-                        <RowItem key={area.id} color={area.color}>
-                            <div className="itemText">
-                                <p>{area.name}</p>
-                            </div>
+                <div className="modalOverlay" onClick={() => setAreasModal(false)}>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+                        {/* Title and close button box */}
+                        <div className="titleContainer">
+                            <h1>Gerenciar áreas</h1>
+                            <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose>
+                        </div>
+                        <div className="itemsBox">
+                            {areas.map((area) => (
+                                <RowItem key={area.id} color={area.color}>
+                                    <div className="itemText">
+                                        <p>{area.name}</p>
+                                    </div>
 
                                     <MoreOpt
                                         size={25}
