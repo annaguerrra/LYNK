@@ -1,5 +1,5 @@
 import api from "./api";
-import type { ShowMaterialDTO, RegisterMaterialDTO, UpdateMaterialDTO, AttachFileDTO, MaterialDTO } from "../Types/material";
+import type { ShowMaterialDTO, UpdateMaterialDTO, AttachFileDTO } from "../Types/material";
 
 // Get a material by ID
 export async function getMaterialById(id: number): Promise<ShowMaterialDTO> {
@@ -27,11 +27,8 @@ export async function attachMaterialFile(id: number, data: AttachFileDTO): Promi
 }
 
 // Download a material attachment
-export async function downloadMaterial(id: number): Promise<Blob> {
-    const response = await api.get<Blob>(`/material/${id}/download`, {
-        responseType: "blob",
-    });
-
+export async function downloadMaterial( materialId: number, materialAttachmentId: number): Promise<Blob> {
+    const response = await api.get<Blob>( `/material/${materialId}/attachment/${materialAttachmentId}/download`, { responseType: "blob",});
     return response.data;
 }
 

@@ -42,7 +42,7 @@ import { toast } from 'react-toastify'
 import { isAxiosError } from 'axios'
 import type { MaterialDTO } from '../Types/material'
 import type { CompetenceDTO } from '../Types/competence'
-import { attachMaterialFile, createMaterial } from '../Services/materialsService'
+import { attachMaterialFile, createMaterial, downloadMaterial, deleteMaterial } from '../Services/materialsService'
 import ActivityIndicator from '../Components/ActivityIndicator'
 import { getDisciplineCompetences } from '../Services/disciplinesService'
 import api from '../Services/api'
@@ -122,9 +122,9 @@ export function Class() {
     }
 
 
-    async function loadCompetencesByDiscipline() {
+    async function loadCompetencesByDiscipline(classData: ClassDTO) {
         try {
-            const response = await getDisciplineCompetences(classItem.discipline.id);
+            const response = await getDisciplineCompetences(classData.discipline.id);
 
             setAllCompetences(response);
 
@@ -173,6 +173,11 @@ export function Class() {
 
 
     function cancelUpdateClass() {
+
+        if(!classItem) {
+            return;
+        }
+
         setTitleClass(classItem.name);
         setContent(classItem.content);
         setCompetences(classItem.competences)
@@ -194,7 +199,7 @@ export function Class() {
         setContent(classItem.content);
         setIsContentLoaded(true);
         loadMaterials(classItem.id)
-        loadCompetencesByDiscipline();
+        loadCompetencesByDiscipline(classItem);
         setCompetences(classItem.competences)
         setInitialCompetences(classItem.competences)
         // loadCompetences(classItem.id) 
@@ -262,7 +267,11 @@ export function Class() {
         }
     }
 
-    async function downloadClass() {
+    async function downloadClassContent() {
+        if(!classItem){
+            return;
+        }
+
         try {
             const { data } = await api.get(`/class/${classItem.id}/content/download`, {
                 responseType: "blob",
@@ -293,6 +302,52 @@ export function Class() {
         );
     }
 
+    async function handleDownloadMaterial(material: MaterialDTO) {
+        const attachment = material.attachments?.[0];
+
+        if (!attachment) {
+            toast.error("Esse material não possui anexo.");
+            return;
+        }
+
+        try {
+            const data = await downloadMaterial(
+                material.id,
+                attachment.id
+            );
+
+            const url = URL.createObjectURL(data);
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = material.name;
+
+            link.click();
+
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error(error);
+            toast.error("Erro ao baixar material.");
+        }
+    }
+
+    async function handleDeleteMaterial(materialId: number) {
+        if(!classItem){
+            return;
+        }
+
+        try{ 
+            await deleteMaterial(materialId);
+            setMaterials((item) =>
+                item.filter((material) => material.id !== materialId)
+            );
+            toast.success("Anexo removido com sucesso!");
+        } catch(e) {
+            console.error(e);
+            toast.error("Erro ao remover anexo.");
+        }
+    }
+
     return (
         <>
             {/* Header */}
@@ -316,7 +371,7 @@ export function Class() {
                                     <ButtonIcon
                                         icon="icon-download"
                                         size={28}
-                                        onClick={() => downloadClass()}
+                                        onClick={() => downloadClassContent()}
                                     />
                                     {(isAdmin || isInstructor) &&
                                         <button className='buttonAction' onClick={() => setEditMode(true)}>Editar</button>
@@ -408,13 +463,18 @@ export function Class() {
                                         color='var(--purple)'
                                         actions={
                                             <>
-                                                <ButtonIcon size={20} icon="icon-download" onClick={() => { }} />
+                                                <ButtonIcon
+                                                    size={20}
+                                                    icon="icon-download"
+                                                    onClick={() => handleDownloadMaterial(material,)}
+                                                />
+
                                                 {(isAdmin || isInstructor) && editMode &&
-                                                    <ButtonClose size={18} onClose={() => { }} />
+                                                    <ButtonClose size={18} onClose={() => handleDeleteMaterial(material.id)} />
                                                 }
                                             </>
-                                        }>
-
+                                        }
+                                    >
                                         <div>{material.name}</div>
                                     </RowItem>
                                 ))}

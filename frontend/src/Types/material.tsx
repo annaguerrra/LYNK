@@ -6,7 +6,7 @@ import type { DisciplineDTO } from "./discipline";
 export interface MaterialDTO {
     id: number;
     name: string;
-    attachments: MaterialAttachmentDTO[]
+    attachments: MaterialAttachmentDTO[];
 }
 
 // Response to view materials service

@@ -17,14 +17,13 @@ import type { createDiscipline, DisciplineDTO } from "../Types/discipline";
 import type { AreaDTO, registerAreaDTO, updateAreaDTO } from "../Types/area";
 import { createArea, deleteArea, getAreas, updateArea } from "../Services/areasService";
 import type { registerUserDTO, resetPasswordDTO, showStudentDTO, UserType } from "../Types/user";
-import { createUser, getUsers } from "../Services/userService";
+import { createUser, getUsers, resetPassword, deleteStudent, deleteInstructor, deleteAdmin } from "../Services/userService";
 
 
 export function Discipline() {
     //Variables to navigate and open modals
     const navigate = useNavigate();
     const [disciplines, setDisciplines] = useState<DisciplineDTO[]>([])
-    const [selectedAreaFilter, setSelectedAreaFilter] = useState<number | null>(null)
 
 
     const [newDisciplineModal, setNewDisciplineModal] = useState(false);
@@ -32,7 +31,6 @@ export function Discipline() {
     const [newAreaModal, setNewAreaModal] = useState(false);
     const [areasModal, setAreasModal] = useState(false);
     const [newUserModal, setNewUserModal] = useState(false);
-    const [editStudentModal, setEditStudentModal] = useState(false);
     const [excludeUserModal, setExcludeUserModal] = useState(false);
     const [editAreaModal, setEditAreaModal] = useState(false);
     const [excludeAreaModal, setExcludeAreaModal] = useState(false);
@@ -49,7 +47,8 @@ export function Discipline() {
     const [newPassword, setNewPassword] = useState("");
     const [repeatPassword, setRepeatPassword] = useState("");
     const [userType, setUserType] = useState<UserType>("STUDENT");
-
+    const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
+    const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null);
 
     //Options for the option buttons
     const options = [
@@ -108,8 +107,13 @@ export function Discipline() {
             console.error(error);
         }
     }
+    
+    async function editArea(id: number | null, data: updateAreaDTO) {
+        if (id === null) {
+            console.log("No area selected");
+            return;
+        }
 
-    async function editArea(id: number, data: updateAreaDTO) {
         try {
             await updateArea(id, data);
             await loadAreas();
@@ -117,14 +121,19 @@ export function Discipline() {
 
             setEditAreaModal(false);
             setAreaName("")
-        } catch (error) {
+        } catch (error: any) {
             toast.error("Não foi possivel editar a área!");
             console.log(error.response?.status);
             console.log(error.response?.data);
         }
     }
 
-    async function deleteAreas(id: number) {
+    async function deleteAreas(id: number | null) {
+        if (id === null) {
+            console.log("No area selected");
+            return;
+        }
+
         try {
             await deleteArea(id);
             await loadAreas();
@@ -201,6 +210,7 @@ export function Discipline() {
             loadUsers();
         }
     }, [usersModal]);
+   
     //---------------------- From User Services ---------------------------------------------------------------- 
     const [showUsers, setShowUsers] = useState<showStudentDTO[]>([])
 
@@ -222,7 +232,9 @@ export function Discipline() {
         }
         try {
             const response = await createUser(data);
+            console.log(response);
 
+            await loadUsers();
             setNewUserModal(false);
             setUsername("");
             setNewPassword("");
@@ -236,11 +248,70 @@ export function Discipline() {
         }
     }
 
-    // async function resetPassword(data: resetPasswordDTO, id: number) {
-    //     try {
+    async function handleResetPassword() {
+        if (selectedUserId === null || selectedUserType === null) {
+            console.log("No user selected");
+            return;
+        }
 
-    //     }
-    // }
+        const data: resetPasswordDTO = {
+            newPassword,
+            repeatPassword,
+            userType: selectedUserType
+        };
+
+        console.log("DATA ENVIADA:", data);
+        console.log("ID ALVO:", selectedUserId);
+
+        try {
+            const response = await resetPassword(data, selectedUserId);
+
+            console.log(response);
+
+            setNewPassword("");
+            setRepeatPassword("");
+            setSelectedUserId(null);
+            setSelectedUserType(null);
+            setResetPasswordModal(false);
+
+            toast.success("New password successfully created!");
+        } catch(error) {
+            console.log(error);
+            toast.error("Unable to reset password");
+        }
+    }
+
+
+    async function deleteUser(id: number | null, type: UserType | null) {
+        if (id === null || type === null) {
+            console.log("No user selected");
+            return;
+        }
+
+        try {
+            if (type === "STUDENT") {
+                await deleteStudent(id);
+            }
+            else if (type === "INSTRUCTOR") {
+                await deleteInstructor(id);
+            }
+            else if (type === "ADMIN") {
+                await deleteAdmin(id);
+            }
+
+            await loadUsers();
+
+            setSelectedUserId(null);
+            setSelectedUserType(null);
+            setUsername("");
+            setExcludeUserModal(false);
+
+            toast.success("Usuário deletado com sucesso!");
+        } catch (error) {
+            console.log(error);
+            toast.error("Não foi possível deletar o usuário!");
+        }
+    }
 
 
     return (
@@ -402,7 +473,7 @@ export function Discipline() {
                         {/* Users display */}
                         <div className="itemsBox">
                             {showUsers.map((users) => (
-                                <RowItem color={"#000000"}>
+                                <RowItem key={`${users.userType}-${users.id}`} color={"#000000"}>
                                     <div className="itemText">
                                         <p>{users.username} | {users.userType}</p>
                                     </div>
@@ -411,14 +482,26 @@ export function Discipline() {
                                         size={25}
                                         data={[
                                             {
+                                                name: "Resetar senha",
+                                                onClick: () => {
+                                                    setSelectedUserId(users.id);
+                                                    setSelectedUserType(users.userType);
+                                                    setUsername(users.username);
+                                                    setResetPasswordModal(true);
+                                                    setUsersModal(false);
+                                                },
+                                                color: "red"
+                                            },
+                                            {
                                                 name: "Excluir",
                                                 onClick: () => {
-                                                    setUserId(users.id);
+                                                    setSelectedUserId(users.id);
                                                     setUsername(users.username);
-                                                    setUserType(users.userType);
+                                                    setSelectedUserType(users.userType);
                                                     setExcludeUserModal(true);
                                                     setUsersModal(false);
                                                 },
+                                                color: "red"
                                             },
                                         ]}
                                     />
@@ -435,12 +518,17 @@ export function Discipline() {
                 <div className="modalExcludeOverlay" onClick={() => setExcludeUserModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
-                        <p>Deseja excluir o usuário {user.username}?</p>
+                        <p>Deseja excluir o usuário {username}?</p>
 
                         <div className="buttonsBox">
-                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => deleteUser(userId)}></ButtonExclude>
+                            <ButtonExclude ButtonTitle={"Excluir"} onClose={() => deleteUser(selectedUserId, selectedUserType)}></ButtonExclude>
                             <br />
-                            <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setExcludeUserModal(false)}></ButtonCancel>
+                            <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => {
+                                setExcludeUserModal(false);
+                                setSelectedUserId(null);
+                                setSelectedUserType(null);
+                                setUsername("");
+                            }}></ButtonCancel>
                         </div>
                     </div>
                 </div>
@@ -448,15 +536,51 @@ export function Discipline() {
 
             {/* Modal to reset a user password */}
             {(resetPasswordModal && isAdmin) && (
-                <div className="modalExcludeOverlay" onClick={() => setResetPasswordModal(false)}>
-                    <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
-                        <div className="redString"></div>
-                        <p>Deseja resetar a senha o usuário?</p>
+                <div className="modalOverlay" onClick={() => setResetPasswordModal(false)}>
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
+
+                        <div className="titleContainer">
+                            <h1>Resetar senha</h1>
+                            <ButtonClose size={40} onClose={() => setResetPasswordModal(false)} />
+                        </div>
+
+                        <p>Resetar senha do usuário {username}?</p>
+
+                        <div className="textBox">
+                            <h2>Nova senha</h2>
+                            <input
+                                type="password"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="textBox">
+                            <h2>Confirmar nova senha</h2>
+                            <input
+                                type="password"
+                                value={repeatPassword}
+                                onChange={(e) => setRepeatPassword(e.target.value)}
+                            />
+                        </div>
 
                         <div className="buttonsBox">
-                            <ButtonExclude ButtonTitle={"Resetar"} onClose={() => setResetPasswordModal(false)}></ButtonExclude>
+                            <ButtonExclude
+                                ButtonTitle={"Resetar"}
+                                onClose={handleResetPassword}
+                            />
                             <br />
-                            <ButtonCancel ButtonTitle={"Cancelar"} onClose={() => setResetPasswordModal(false)}></ButtonCancel>
+                            <ButtonCancel
+                                ButtonTitle={"Cancelar"}
+                                onClose={() => {
+                                    setResetPasswordModal(false);
+                                    setSelectedUserId(null);
+                                    setSelectedUserType(null);
+                                    setNewPassword("");
+                                    setRepeatPassword("");
+                                    setUsername("");
+                                }}
+                            />
                         </div>
                     </div>
                 </div>
@@ -500,19 +624,19 @@ export function Discipline() {
 
             {/* Modal to manage areas */}
             {areasModal && (
-                <div className="modalOverlay" onClick={() => setAreasModal(false)}>
-                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
-                        {/* Title and close button box */}
-                        <div className="titleContainer">
-                            <h1>Gerenciar áreas</h1>
-                            <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose>
-                        </div>
-                        <div className="itemsBox">
-                            {areas.map((area) => (
-                                <RowItem color={area.color}>
-                                    <div className="itemText">
-                                        <p>{area.name}</p>
-                                    </div>
+                <div className="modalOverlay" onClick={() => setAreasModal(false)}> 
+                    <div className="modalContainer" onClick={(e) => e.stopPropagation()}> 
+                    {/* Title and close button box */}
+                    <div className="titleContainer"> 
+                        <h1>Gerenciar áreas</h1> 
+                        <ButtonClose size={40} onClose={() => setAreasModal(false)}></ButtonClose> 
+                    </div> 
+                    <div className="itemsBox">
+                    {areas.map((area) => (
+                        <RowItem key={area.id} color={area.color}>
+                            <div className="itemText">
+                                <p>{area.name}</p>
+                            </div>
 
                                     <MoreOpt
                                         size={25}

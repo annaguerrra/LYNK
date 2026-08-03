@@ -24,6 +24,9 @@ import ActivityIndicator from "../Components/ActivityIndicator";
 import type { CompetenceDTO } from "../Types/competence";
 import { createCompetenceService } from "../Services/competencesService";
 import type { ClassDTO } from "../Types/class";
+import { createExam } from "../Services/examsService";
+import type { registerExamDTO } from "../Types/exam";
+import type { UploadedFileDTO } from "../Types/attachment";
 
 
 
@@ -35,10 +38,9 @@ export function Content() {
 
 
     const [allCompetences, setAllCompetences] = useState<CompetenceDTO[]>([]);
-    const [examCompetences, setExamCompetences] = useState<CompetenceDTO[]>([]);
-
-
-
+    
+    
+    
     const [selectedTab, setSelectedTab] = useState("classes");
     const [newTest, setNewTest] = useState(false);
     const [newCompetence, setNewCompetence] = useState(false);
@@ -144,6 +146,29 @@ export function Content() {
             console.error("Erro ao criar e vincular competência:", error);
         }
     }
+
+    const [examName, setExamName] = useState("");
+    const [examDiscipline, setExamDiscipline] = discipline_id;
+    const [examFile, setExamFile] = useState<UploadedFileDTO | null>(null);
+    const [examCompetences, setExamCompetences] = useState<CompetenceDTO[]>([]);
+    
+    async function creatingExam(data: registerExamDTO) {
+        if (!discipline) return;
+
+        try {
+            const createdExam = await createExam(data);
+            toast.success("Avaliação criada com sucesso!");
+
+            setExamName("");
+            return createdExam;
+        } catch (error) {
+            console.log(error)
+            toast.error("Erro ao criar a avaliação.");
+            return;
+        }
+
+    }
+
 
 
 
@@ -254,29 +279,25 @@ export function Content() {
             {/* -------------------------------------------------------- TEST MODALS -------------------------------------------------------- */}
             {/* Modal to create a test */}
             {newTest && (
-                <div className="modalOverlay" onClick={() => { setNewTest(false), setExamCompetences([]) }}>
+                <div className="modalOverlay" onClick={() => { setNewTest(false)}}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
                         <div className="titleContainer">
                             <h1>Registrar avaliação</h1>
-                            <ButtonClose size={40} onClose={() => { setNewTest(false), setExamCompetences([]) }}></ButtonClose>
+                            <ButtonClose size={40} onClose={() => { setNewTest(false) }}></ButtonClose>
                         </div>
                         {/* Input for test name */}
                         <div className="textBox">
                             <h2>Nome da avaliação</h2>
-                            <input type="text" />
+                            <input type="text" value={examName} onChange={(e) => setExamName(e.target.value)} />
                         </div>
-                        {/* Input to select the discipline */}
-                        {/* <div className="textBox">
-                            <h2>Selecione a disciplina</h2>
-                            <select name="" id="">
-                                <option value="Tecnologia" selected></option>
-                            </select>
-                        </div> */}
                         {/* Input to select the test file */}
                         <div className="textBox">
                             <h2>Selecione o arquivo</h2>
-                            <input type="file" />
+                            <input type="file" onChange={(e) => {
+                                const file = e.target.files?.[0] ?? null;
+                                setExamFile(file);
+                            }} />
                         </div>
                         {/* Search for competence and its display */}
                         <div className="textBox">
@@ -320,7 +341,9 @@ export function Content() {
 
                         </div>
 
-                        <Button ButtonTitle={"Enviar"} onClose={() => setNewTest(false)}></Button>
+                        <Button ButtonTitle={"Enviar"} onClose={() => creatingExam({
+                            name: examName, files: examFile ? [examFile] : [], disciplineId: examDiscipline, competencesId: examCompetences}
+                        )}></Button>
                     </div>
                 </div>
             )}
