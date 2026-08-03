@@ -259,6 +259,16 @@ export class DisciplineService implements IDisciplineService {
                     select: {
                         name: true
                     }
+                },
+                classes: {
+                    select: {
+                        name: true
+                    }
+                },
+                exams: {
+                    select: {
+                        name: true
+                    }
                 }
             }
         });
@@ -282,6 +292,8 @@ export class DisciplineService implements IDisciplineService {
             workLoad: target.workLoad,
             area: target.area,
             competences: target.competences,
+            classes: target.classes,
+            exams: target.exams,
             lastUpdate: lastUpdate,
         }
     }
