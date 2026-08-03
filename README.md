@@ -1,31 +1,91 @@
-# LYNK
+# Project Setup
 
-## Class Management System
+## Backend
 
-This project is a class management system designed to organize courses, classes, disciplines, competencies, lessons, exams, users, and learning materials within an educational environment.
+### Requirements
 
-The application has a frontend built with React and a backend developed with TypeScript, providing a structured and scalable architecture for managing educational content and user interactions.
+The following technologies are required:
 
-The system uses a relational database to store structured data, such as users, courses, classes, disciplines, lessons, and relationships between entities. File-based resources, such as PDFs, DOCX documents, images, and profile photos, can be stored separately using MongoDB/GridFS, while the relational database stores only the file reference.
+* Node.js
+* MySQL
+* MongoDB
 
-The goal of this project is to provide an organized platform where administrators, instructors, and students can manage and access educational information according to their roles.
+### Setup
 
-### Main Features
+1. Navigate to the `backend` folder:
 
-- User management with different roles, such as student, instructor, and administrator
-- Course, class, and discipline organization
-- Lesson and competency management
-- Upload and management of learning materials
-- Exam registration and organization
-- File storage integration for documents and images
-- System log structure for auditing user actions
-- Relational database modeling focused on consistency and scalability
+```bash
+cd backend
+```
 
-### Technologies
+2. Install the dependencies:
 
-- Node.js for the frontend environment
-- TypeScript for the backend
-- SQL database for structured system data
-- MongoDB/GridFS or external storage for files and documents
-- API-based architecture
-- Authentication and role-based access control
+```bash
+npm i
+```
+
+3. Create a `.env` file based on the provided example and configure:
+
+* MySQL database URL
+* `JWT_SECRET`
+* MongoDB connection URL, if required
+
+> Make sure MySQL is running locally if the application is configured to use a local database.
+
+4. Run the Prisma migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+5. Generate the Prisma Client:
+
+```bash
+npx prisma generate
+```
+
+6. Run the seed to create the initial data:
+
+```bash
+npm run seed
+```
+
+7. Start the development server:
+
+```bash
+npm run dev
+```
+
+### Admin User
+
+An admin user is required to create new users in the system.
+
+---
+
+## Frontend
+
+### Setup
+
+1. Navigate to the `frontend` folder:
+
+```bash
+cd frontend
+```
+
+2. Install the dependencies:
+
+```bash
+npm i
+```
+
+3. Create a `.env` file based on the provided example and configure the API URL:
+
+```env
+VITE_API_URL=http://localhost:3000
+```
+
+4. Start the development server:
+
+```bash
+npm run dev
+```
