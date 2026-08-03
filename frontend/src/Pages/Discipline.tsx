@@ -417,7 +417,7 @@ export function Discipline() {
             {/* -------------------------------------------------------- USERS MODALS -------------------------------------------------------- */}
 
             {/* Modal to create a user */}
-            {(newUserModal && isAdmin) && (
+            {(newUserModal && (isAdmin || isInstructor)) && (
                 <div className="modalOverlay" onClick={() => setNewUserModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
 
@@ -475,7 +475,7 @@ export function Discipline() {
             )}
 
             {/* Modal to manage users */}
-            {(usersModal && isAdmin) && (
+            {(usersModal && (isAdmin || isInstructor)) && (
                 <div className="modalOverlay" onClick={() => setUsersModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
                         {/* Title and close button box */}
@@ -527,7 +527,7 @@ export function Discipline() {
             )}
 
             {/* Modal to exclude the user */}
-            {(excludeUserModal && isAdmin) && (
+            {(excludeUserModal && (isAdmin || isInstructor)) && (
                 <div className="modalExcludeOverlay" onClick={() => setExcludeUserModal(false)}>
                     <div className="modalExcludeContainer" onClick={(e) => e.stopPropagation()} >
                         <div className="redString"></div>
@@ -548,7 +548,7 @@ export function Discipline() {
             )}
 
             {/* Modal to reset a user password */}
-            {(resetPasswordModal && isAdmin) && (
+            {(resetPasswordModal && (isAdmin || isInstructor)) && (
                 <div className="modalOverlay" onClick={() => setResetPasswordModal(false)}>
                     <div className="modalContainer" onClick={(e) => e.stopPropagation()}>
 

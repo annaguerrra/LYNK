@@ -36,6 +36,9 @@ export class UserService implements IUserService {
             }) ??
             await prisma.instructor.findUnique({
                 where: { id: userId }
+            }) ??
+            await prisma.student.findUnique({
+                where: { id: userId }
             });
 
         if (!user)
@@ -301,9 +304,8 @@ export class UserService implements IUserService {
     }
     
     async changePassword(data: changePasswordDTO, userId: number, userType: UserType): Promise<true> {
-        const ownerUsername = await this.getUsername(userId)
         let user;
-
+        
         const [student, instructor, admin] = await Promise.all([
             prisma.student.findUnique({
                 where: {
@@ -323,7 +325,7 @@ export class UserService implements IUserService {
                 }
             })
         ]);
-
+        
         if(student){
             user = {
                 id: student.id,
@@ -354,19 +356,20 @@ export class UserService implements IUserService {
             console.log(error);
             throw new Error("Invalid Username or Password");
         }
-
+        
         if(!user){
             throw new Error("User Not Found!"); 
         }
         
         // console.log(data.oldPassword, user.password)
         const comparison = await this.hashService.compare(data.oldPassword, user.password);
-
+        
         if(!comparison){
             throw new Error("The password do not match. Try again")
         }
         
         const hashedPassword = await this.hashService.hash(data.newPassword);
+        const ownerUsername = await this.getUsername(userId)
         
         try{
             if(user.userType === UserType.STUDENT) {
